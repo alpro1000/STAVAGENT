@@ -728,8 +728,11 @@ def _load_existing_kb_norms(work_type: str) -> dict:
             for section in sections:
                 if section in all_norms:
                     result[section] = all_norms[section]
-        except Exception:
-            pass
+        except Exception as e:
+            # Silent pass here meant "KB has no norms" was indistinguishable
+            # from "KB file is corrupt" — downstream answers went out thinner
+            # with no trace. Log loud, still degrade gracefully.
+            logger.warning(f"[Norms] {norms_file.name} unreadable, sections skipped: {e}")
 
     # Load bedneni.json for formwork
     if work_type == "bedneni":
@@ -737,8 +740,8 @@ def _load_existing_kb_norms(work_type: str) -> dict:
         if bedneni_file.exists():
             try:
                 result["bedneni_systems"] = json.loads(bedneni_file.read_text(encoding="utf-8"))
-            except Exception:
-                pass
+            except Exception as e:
+                logger.warning(f"[Norms] bedneni.json unreadable, formwork systems skipped: {e}")
 
     return result
 

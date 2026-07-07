@@ -176,8 +176,10 @@ def _find_cached(question: str, kb_dir: Path) -> Optional[dict]:
         if p.exists():
             try:
                 return json.loads(p.read_text(encoding="utf-8"))
-            except Exception:
-                pass
+            except Exception as e:
+                # A corrupt cache file silently re-burned an LLM call every
+                # time — make the cache miss visible.
+                logger.warning(f"[KB research] cached {p.name} unreadable, treating as miss: {e}")
     return None
 
 

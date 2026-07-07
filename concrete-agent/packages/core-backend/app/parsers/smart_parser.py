@@ -253,8 +253,10 @@ class SmartParser:
                         val = entity.dxf.get("actual_measurement", None)
                         if val is not None:
                             dimensions.append(f"{val:.2f}")
-                    except Exception:
-                        pass
+                    except Exception as dim_err:
+                        # DIMENSIONs are Phase-0a Tier-1 data — a dropped one
+                        # must be visible in logs, never a silent gap.
+                        logger.debug(f"SmartParser: DIMENSION entity unreadable, skipped: {dim_err}")
                 elif entity.dxftype() == "INSERT":
                     blocks.append(entity.dxf.name)
 
