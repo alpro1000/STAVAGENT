@@ -12,6 +12,76 @@
       "deck: TZ/passport C35/45-XF2+XD1+XC4 vs soupis 422336 'DO C40/50' — dtto"
     ]
   },
+  "quantities": {
+    "source": "E_Soupis__skupiny_MOSTY_PHS.xlsx, sheet SO 202 (EstiCon), extrahováno 2026-07-07",
+    "scope": "whole_SO (oba mosty; per-bridge = ÷ decks.length pro symetrické prvky)",
+    "items": [
+      {
+        "element": "superstructure_deck",
+        "volume_m3": 2697.941,
+        "rebar_mass_kg": 468886,
+        "prestress_strand_mass_kg": 82840,
+        "source": "pos. 422336 (VV: trámy 2535,668 + příčníky 162,273) + 422365 + 42237",
+        "concrete_class_soupis": "DO C40/50",
+        "soupis_class_is_otskp_band": true
+      },
+      {
+        "element": "foundations_piers",
+        "volume_m3": 518.4,
+        "rebar_mass_kg": 77645,
+        "height_m": 1.8,
+        "source": "pos. 272325 VV [F,G] (P2+P3: 6,0×12,0×1,8 ×2 ×2) + 272365 podíl dle objemu"
+      },
+      {
+        "element": "foundations_abutments",
+        "volume_m3": 348.736,
+        "rebar_mass_kg": 52232,
+        "height_m": 1.2,
+        "source": "pos. 272325 VV [B,C,D,I,J,K] + 272365 podíl dle objemu"
+      },
+      {
+        "element": "abutments",
+        "volume_m3": 557.851,
+        "rebar_mass_kg": 64164,
+        "height_m": 5.0,
+        "source": "pos. 333325 + 333365; výška z VV křídel (4,75–5,19 m)",
+        "concrete_class_soupis": "DO C30/37",
+        "soupis_class_is_otskp_band": true
+      },
+      {
+        "element": "pier_shafts",
+        "volume_m3": 361.384,
+        "rebar_mass_kg": 62577,
+        "height_m": 13.1,
+        "source": "pos. 334326 (VV: 3,84 m² × dříky 10,29–13,1 m) + 334365",
+        "concrete_class_soupis": "DO C40/50",
+        "soupis_class_is_otskp_band": true
+      },
+      {
+        "element": "transition_slabs",
+        "volume_m3": 81.9,
+        "rebar_mass_kg": 12348,
+        "source": "pos. 420324 (VV: 5,0×0,35×11,7 ×4) + 420365"
+      },
+      {
+        "element": "rims",
+        "volume_m3": 266.328,
+        "rebar_mass_kg": 30074,
+        "length_bm": 485.85,
+        "source": "pos. 317325 (VV: pravý 133,146 + levý 133,182) + 317365"
+      },
+      {
+        "element": "blinding_concrete",
+        "volume_m3": 403.092,
+        "source": "pos. 451312 (120,481 C12/15) + 451313 (35,552 C16/20) + 451314 (87,04 C25/30) + 45131A (160,019 C20/25)"
+      },
+      {
+        "element": "plain_footings",
+        "volume_m3": 12.733,
+        "source": "pos. 461314 PATKY Z PROSTÉHO BETONU C25/30"
+      }
+    ]
+  },
   "project": {
     "name": "D6 Olšová Vrata - Žalmanov",
     "stage": "PDPS",

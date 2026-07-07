@@ -42,6 +42,20 @@ live re-verification of fixes after deploy.
 ## tz-passport-json — extraction pipeline «dokumentace → JSON → kalkulátor»
 
 **Severity:** P1 — product feature (Alexander's ask 2026-07-07)
+**STATUS UPDATE 2026-07-07 (later same day): interview RATIFIED, half A gate 1
+✅ SHIPPED.** Decisions: (1) Pydantic v Core = schema single-source
+(`app/models/bridge_passport.py`) + example validated in CI
+(`test_bridge_passport_schema.py`, wired into the MCP workflow); (2+3)
+deferred to B-interview; (4) TZ = calculation default, conflicts visible,
+OTSKP band ≠ grade conflict (Pattern 53); (5) per-SO passport, stavba =
+collection. Gate 1 = mapper `shared/src/parsers/bridge-passport.ts`
+(`mapPassportToPlannerInputs` + `planPassport`), 10 golden tests against
+`example_SO202_zalmanov.json` (deck 3 takty × 449.66 m³ bez validačního
+flagu; honest-ignore; NEPOČÍTÁNO bez quantities; genuine-conflict warning).
+Example extended with `quantities` section (soupis join, provenance per item).
+**Gate 2 (open):** consumer wiring — MCP tool `calculate_from_passport` (all
+counter files!) / Monolit backend route / UI import. **Half B (open):**
+extraction interview (questions 2+3 in requirements.md).
 **Spec seed:** `docs/specs/tz-passport-json/` (requirements draft + canonical
 example `example_SO202_zalmanov.json` — hand-built by Alexander from the SO 202
 TZ, validated against soupis + drawing in the 2026-07-07 E2E session).
