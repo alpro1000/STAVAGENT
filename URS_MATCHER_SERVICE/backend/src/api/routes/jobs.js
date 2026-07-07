@@ -445,7 +445,11 @@ router.post('/text-match', async (req, res) => {
       confidence: m.confidence,
       match_type: m.match_type || m.source || 'local',
       price: m.price || null,
-      source: m.source || 'local'
+      source: m.source || 'local',
+      // Web-search-sourced ÚRS results are suggestions to verify, not
+      // licensed-catalog facts — consumers (UI, MCP) render them as hints.
+      is_web_suggestion: m.is_web_suggestion
+        ?? (m.source === 'perplexity' || m.source === 'brave_search')
     }));
 
     // Generate explanation for best match

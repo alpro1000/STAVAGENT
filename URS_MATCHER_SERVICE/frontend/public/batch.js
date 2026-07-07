@@ -455,8 +455,13 @@ function displayResults(results) {
             rowClass = 'low-confidence';
           }
 
+          // Honest labeling: web-search ÚRS results are suggestions to verify
+          const isWebSource = candidate.is_web_suggestion
+            || candidate.source === 'perplexity' || candidate.source === 'brave_search';
+          const sourceText = candidate.source === 'otskp' ? 'OTSKP katalog'
+            : (isWebSource ? 'ÚRS (web) — ověřte' : candidate.source);
           const sourceLabel = candidate.source
-            ? `<span class="source-badge source-${candidate.source}">${candidate.source}</span>`
+            ? `<span class="source-badge source-${candidate.source}${isWebSource ? ' source-badge--web' : ''}">${sourceText}</span>`
             : '';
 
           row.className = rowClass;

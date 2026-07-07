@@ -175,6 +175,9 @@ async def _perplexity_urs_search(description: str, context: Optional[str]) -> li
                 "catalog_version": None,
                 # A concrete code was extracted → item-level match.
                 "match_kind": "item",
+                # Web-search result = suggestion to verify in the licensed
+                # ÚRS catalog, not a catalog fact.
+                "is_web_suggestion": True,
             })
 
         # If no codes extracted, return the raw text as context
@@ -190,6 +193,7 @@ async def _perplexity_urs_search(description: str, context: Optional[str]) -> li
                 "catalog_version": None,
                 # Raw prose, no code — the adapter maps this to not_verified.
                 "match_kind": "raw_context",
+                "is_web_suggestion": True,
                 "note": "No specific code extracted — see description for context",
             }]
 
@@ -238,6 +242,14 @@ async def _urs_matcher_search(description: str) -> list[dict]:
                     "catalog_version": None,
                     # Matcher candidates are concrete item codes → item-level.
                     "match_kind": "item",
+                    # Honest provenance passthrough: web-search-sourced ÚRS
+                    # results are suggestions to VERIFY in the licensed
+                    # catalog, not catalog facts (matcher sets the flag for
+                    # perplexity/brave-sourced candidates).
+                    "is_web_suggestion": bool(
+                        c.get("is_web_suggestion")
+                        or c.get("source") in ("perplexity", "brave_search")
+                    ),
                 }
                 for c in candidates
             ]
