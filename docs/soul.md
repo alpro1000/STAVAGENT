@@ -358,6 +358,12 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-07-07 (4) — Session: live-test composite panelu — 2 UI fixy (typy + normy)
+
+**Rozhodnuto:** (1) `ELEMENT_TYPES` v `types.ts` neměl `kridla_opery` ani `zaklady_oper` (22 z 24) — composite šablona opěry pak u «Křídla» ZOBRAZOVALA «Základová deska» (React select bez matching option ukazuje první položku; engine přitom počítal správný typ). Oba typy doplněny — poprvé vybratelné i v hlavním dropdownu. (2) «Výrobní normy (methvin.co)» panel liл surový JSON — v4.18 quick-fix jen nahradil [object Object] za JSON.stringify. Nový humanized renderer: mapa-objektů (`systemy`) → řádek per systém, skaláry «k: v · …», stringy zkráceny na 140 znaků.
+**Otevřené otázky:** AI advisor mechanismus vysvětlen Alexandrovi v chatu (multi-role concrete_specialist + kb/research + norms/work-type — 3 nezávislé zdroje v jedné odpovědi).
+**Co dál:** merge větve.
+
 ## 2026-07-07 (3) — Session: tz-passport-json interview RATIFIED + polovina A gate 1
 
 **Rozhodnuto:** Interview (Alexander): (1) Pydantic v Core = schema SSOT + example jako CI-golden; (2+3) kde běží extrakce a LLM/regex split → DEFERRED do B-interview; (4) konflikty TZ↔soupis: OBĚ hodnoty viditelné, TZ = default výpočtu, OTSKP «DO Cxx/yy» pásmo ≠ konflikt marky (Pattern 53 → informativní); (5) passport per-SO, stavba = kolekce. +AC: honest-ignore nekonzumovaných polí (graceful degrade vůči seam/#7), backward-compat, chybějící množství → NEPOČÍTÁNO (v4.38 UncalculatedError). SHIPPED gate 1: `app/models/bridge_passport.py` (Pydantic, strict na čtených polích + extra=allow) + `tests/test_bridge_passport_schema.py` (5 testů, wired do MCP workflow incl. example path-trigger); example rozšířen o `quantities` (soupis join s provenancí per položka); mapper `Monolit-Planner/shared/src/parsers/bridge-passport.ts` — `mapPassportToPlannerInputs` (9 prvků, plné třídy «C30/37-XF4+XD3+XC4» → class+primární expozice, deck: takty z výkresu → num_tacts_override+tz_facts, per-deck split ÷2) + `planPassport` (→ planProject). 10 golden testů: deck 3 takty × 449,66 m³ BEZ tz-flagu, band-note ne-konflikt, genuine-konflikt warning s TZ defaultem, NEPOČÍTÁNO bez quantities, honest-ignore. Shared 1366→**1376**, Python battery 101→106, tsc+vite clean.

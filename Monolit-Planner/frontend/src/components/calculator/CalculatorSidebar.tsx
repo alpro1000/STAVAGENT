@@ -827,37 +827,74 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
                     marginTop: 6, fontSize: 11, color: 'var(--r0-norms-text)',
                     maxHeight: 300, overflowY: 'auto',
                   }}>
+                    {/* 2026-07-07: humanized renderer. The v4.18 quick fix
+                        JSON.stringify'ovala vnořené objekty — KB normy
+                        (bedneni.json: `systemy` mapa plných záznamů) se pak
+                        vylévaly jako surový JSON blob. Teď: mapa-objektů →
+                        řádky per systém, skaláry «k: v · …», stringy zkráceny. */}
                     {Object.entries(advisor.productivity_norms.data).map(([key, val]) => {
-                      const items = Array.isArray(val) ? val : typeof val === 'object' && val ? [val] : [];
+                      const fmtVal = (v: any): string => {
+                        if (v == null) return '—';
+                        if (typeof v === 'number') return String(Math.round(v * 100) / 100);
+                        if (typeof v === 'string') return v.length > 140 ? `${v.slice(0, 140)}…` : v;
+                        if (Array.isArray(v)) {
+                          const head = v.slice(0, 4).map(fmtVal).join(', ');
+                          return v.length > 4 ? `${head} (+${v.length - 4})` : head;
+                        }
+                        const scalars = Object.entries(v)
+                          .filter(([, x]) => typeof x !== 'object' || x == null)
+                          .slice(0, 4)
+                          .map(([k, x]) => `${k}: ${fmtVal(x)}`);
+                        const nested = Object.values(v).filter(x => typeof x === 'object' && x != null).length;
+                        return scalars.join(' · ') + (nested > 0 ? ` (+${nested} vnořených)` : '');
+                      };
+                      // Mapa-objektů (např. `systemy`: {Frami: {...}, TRIO: {...}})
+                      // → jeden řádek per pojmenovaný záznam.
+                      const isRecordMap = (o: any): boolean =>
+                        !!o && typeof o === 'object' && !Array.isArray(o) &&
+                        Object.values(o).length > 0 &&
+                        Object.values(o).every(x => typeof x === 'object' && x != null && !Array.isArray(x));
+                      let rows: Array<{ name?: string; rec: any }>;
+                      if (Array.isArray(val)) {
+                        rows = val.map(rec => ({ rec }));
+                      } else if (isRecordMap(val)) {
+                        rows = Object.entries(val as object).map(([name, rec]) => ({ name, rec }));
+                      } else if (val && typeof val === 'object') {
+                        const inner = Object.entries(val as object).find(([, x]) => isRecordMap(x));
+                        rows = inner
+                          ? Object.entries(inner[1] as object).map(([name, rec]) => ({ name, rec }))
+                          : [{ rec: val }];
+                      } else {
+                        rows = [];
+                      }
                       return (
                         <div key={key} style={{ marginBottom: 8 }}>
                           <div style={{ fontWeight: 600, color: 'var(--r0-norms-accent)', marginBottom: 2 }}>
                             {key.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}
                           </div>
-                          {items.length > 0 ? (
+                          {rows.length > 0 ? (
                             <table style={{ fontSize: 10, borderCollapse: 'collapse', width: '100%' }}>
                               <tbody>
-                                {items.slice(0, 20).map((item: any, i: number) => (
+                                {rows.slice(0, 20).map((row, i) => (
                                   <tr key={i} style={{ borderBottom: '1px solid var(--r0-norms-border)' }}>
-                                    {typeof item === 'object' ? (
-                                      Object.entries(item).slice(0, 5).map(([k, v]) => (
-                                        <td key={k} style={{ padding: '2px 6px', verticalAlign: 'top' }}>
-                                          <span style={{ color: 'var(--r0-muted)' }}>{k}: </span>
-                                          <span style={{ color: 'var(--r0-norms-text)' }}>
-                                            {typeof v === 'object' && v !== null ? JSON.stringify(v) : String(v)}
-                                          </span>
-                                        </td>
-                                      ))
-                                    ) : (
-                                      <td style={{ padding: '2px 6px', color: 'var(--r0-norms-text)' }}>{String(item)}</td>
+                                    {row.name && (
+                                      <td style={{ padding: '2px 6px', fontWeight: 600, whiteSpace: 'nowrap', verticalAlign: 'top' }}>
+                                        {row.name}
+                                      </td>
                                     )}
+                                    <td style={{ padding: '2px 6px', color: 'var(--r0-norms-text)' }}>
+                                      {typeof row.rec === 'object' ? fmtVal(row.rec) : String(row.rec)}
+                                    </td>
                                   </tr>
                                 ))}
+                                {rows.length > 20 && (
+                                  <tr><td style={{ padding: '2px 6px', color: 'var(--r0-muted)' }}>… +{rows.length - 20} dalších</td></tr>
+                                )}
                               </tbody>
                             </table>
                           ) : (
                             <div style={{ fontSize: 10, color: 'var(--r0-norms-text)', padding: '2px 6px' }}>
-                              {typeof val === 'string' ? val : JSON.stringify(val, null, 2).slice(0, 500)}
+                              {fmtVal(val)}
                             </div>
                           )}
                         </div>
