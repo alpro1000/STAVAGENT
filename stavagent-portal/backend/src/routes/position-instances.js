@@ -41,6 +41,50 @@ function safeGetPool() {
 }
 
 // =============================================================================
+// OWNER SCOPING (Sprint A isolation-review fix)
+//
+// The /api/positions mount authenticates via requireAuthOrServiceKey:
+//   - JWT caller  → req.user set → may only touch instances under their own
+//     portal_projects (owner_id) — cross-tenant returns 404 (isolation model
+//     invariant 2: same shape as "not found").
+//   - Service-key caller → req.user absent → trusted server-to-server writer
+//     (Monolit portalWriteBack) — bypasses owner scoping.
+// =============================================================================
+
+/** May the request touch this project? Sends 404 and returns false on deny. */
+async function assertProjectAccess(req, res, db, projectId) {
+  if (!req.user?.userId) return true; // service-key caller
+  const r = await db.query(
+    'SELECT 1 FROM portal_projects WHERE portal_project_id = $1 AND owner_id = $2',
+    [projectId, req.user.userId]
+  );
+  if (r.rows.length === 0) {
+    console.warn(`[PositionInstances] Cross-tenant project access denied: user=${req.user.userId} project=${projectId}`);
+    res.status(404).json({ success: false, error: 'Project not found' });
+    return false;
+  }
+  return true;
+}
+
+/** May the request touch this instance? Sends 404 and returns false on deny. */
+async function assertInstanceAccess(req, res, db, instanceId) {
+  if (!req.user?.userId) return true; // service-key caller
+  const r = await db.query(
+    `SELECT 1 FROM portal_positions pp
+     JOIN portal_objects po ON pp.object_id = po.object_id
+     JOIN portal_projects pr ON po.portal_project_id = pr.portal_project_id
+     WHERE pp.position_instance_id = $1 AND pr.owner_id = $2`,
+    [instanceId, req.user.userId]
+  );
+  if (r.rows.length === 0) {
+    console.warn(`[PositionInstances] Cross-tenant instance access denied: user=${req.user.userId} instance=${instanceId}`);
+    res.status(404).json({ success: false, error: 'Position instance not found' });
+    return false;
+  }
+  return true;
+}
+
+// =============================================================================
 // LIST INSTANCES BY PROJECT
 // =============================================================================
 
@@ -71,6 +115,8 @@ router.get('/project/:projectId', async (req, res) => {
     if (projectResult.rows.length === 0) {
       return res.status(404).json({ success: false, error: 'Project not found' });
     }
+
+    if (!(await assertProjectAccess(req, res, pool, projectId))) return;
 
     // Get objects
     const objectsResult = await pool.query(
@@ -182,6 +228,8 @@ router.get('/project/:projectId/linked', async (req, res) => {
 
   try {
     const { projectId } = req.params;
+
+    if (!(await assertProjectAccess(req, res, pool, projectId))) return;
 
     // Try full query first (requires Phase 8 migration columns).
     // Fall back to a narrower query if Phase 8 columns don't exist yet.
@@ -339,6 +387,8 @@ router.post('/templates', async (req, res) => {
 
     const source = sourceResult.rows[0];
 
+    if (!(await assertProjectAccess(req, res, client, source.portal_project_id))) return;
+
     // Normalize description for matching
     const normalizedDesc = normalizeDescription(source.popis || '');
 
@@ -434,6 +484,8 @@ router.get('/templates/:projectId', async (req, res) => {
     const { projectId } = req.params;
     const { catalog_code } = req.query;
 
+    if (!(await assertProjectAccess(req, res, pool, projectId))) return;
+
     // Check if position_templates exists (created in Phase 8 migration)
     try {
       await pool.query('SELECT 1 FROM position_templates LIMIT 0');
@@ -520,18 +572,23 @@ router.post('/templates/:templateId/apply', async (req, res) => {
 
     const template = templateResult.rows[0];
 
+    if (!(await assertProjectAccess(req, res, client, template.project_id))) return;
+
     // Find matching instances
     let matchQuery;
     let matchParams;
 
     if (target_instance_ids && target_instance_ids.length > 0) {
+      // Scoped to the template's own project — explicit ids must not be
+      // able to reach instances of other projects/owners
       matchQuery = `
         SELECT pp.*, po.portal_project_id
         FROM portal_positions pp
         JOIN portal_objects po ON pp.object_id = po.object_id
         WHERE pp.position_instance_id = ANY($1)
-          AND pp.position_instance_id != $2`;
-      matchParams = [target_instance_ids, template.source_instance_id];
+          AND pp.position_instance_id != $2
+          AND po.portal_project_id = $3`;
+      matchParams = [target_instance_ids, template.source_instance_id, template.project_id];
     } else {
       // Auto-find: same project, same catalog_code
       matchQuery = `
@@ -675,6 +732,8 @@ router.get('/:instanceId', async (req, res) => {
   try {
     const { instanceId } = req.params;
 
+    if (!(await assertInstanceAccess(req, res, pool, instanceId))) return;
+
     const result = await pool.query(
       `SELECT pp.*, po.object_code, po.object_name, po.portal_project_id
        FROM portal_positions pp
@@ -746,6 +805,8 @@ router.post('/project/:projectId/bulk', async (req, res) => {
     if (projectCheck.rows.length === 0) {
       return res.status(404).json({ success: false, error: 'Project not found' });
     }
+
+    if (!(await assertProjectAccess(req, res, client, projectId))) return;
 
     await client.query('BEGIN');
 
@@ -866,6 +927,8 @@ router.put('/:instanceId', async (req, res) => {
     const { instanceId } = req.params;
     const { updated_by = 'manual', ...fields } = req.body;
 
+    if (!(await assertInstanceAccess(req, res, pool, instanceId))) return;
+
     // Whitelist updatable fields
     const ALLOWED_FIELDS = {
       catalog_code: 'kod',
@@ -940,6 +1003,8 @@ router.delete('/:instanceId', async (req, res) => {
   try {
     const { instanceId } = req.params;
 
+    if (!(await assertInstanceAccess(req, res, pool, instanceId))) return;
+
     const result = await pool.query(
       'DELETE FROM portal_positions WHERE position_instance_id = $1 RETURNING position_id',
       [instanceId]
@@ -973,6 +1038,8 @@ router.get('/:instanceId/monolith', async (req, res) => {
 
   try {
     const { instanceId } = req.params;
+
+    if (!(await assertInstanceAccess(req, res, pool, instanceId))) return;
 
     const result = await pool.query(
       'SELECT monolith_payload FROM portal_positions WHERE position_instance_id = $1',
@@ -1015,6 +1082,8 @@ router.post('/:instanceId/monolith', async (req, res) => {
     if (!payload) {
       return res.status(400).json({ success: false, error: 'payload required' });
     }
+
+    if (!(await assertInstanceAccess(req, res, client, instanceId))) return;
 
     await client.query('BEGIN');
 
@@ -1087,6 +1156,8 @@ router.get('/:instanceId/dov', async (req, res) => {
   try {
     const { instanceId } = req.params;
 
+    if (!(await assertInstanceAccess(req, res, pool, instanceId))) return;
+
     const result = await pool.query(
       `SELECT dov_payload, tov_labor, tov_machinery, tov_materials
        FROM portal_positions WHERE position_instance_id = $1`,
@@ -1152,6 +1223,8 @@ router.post('/:instanceId/dov', async (req, res) => {
     if (!payload) {
       return res.status(400).json({ success: false, error: 'payload required' });
     }
+
+    if (!(await assertInstanceAccess(req, res, client, instanceId))) return;
 
     await client.query('BEGIN');
 

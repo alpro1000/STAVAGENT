@@ -683,6 +683,10 @@ router.post('/calculations', async (req, res) => {
 
 /**
  * GET /api/pump/calculations/:positionId — Get saved calculations for position
+ *
+ * Owner-scoped (Sprint A isolation review): a calculation is visible only
+ * when its position instance belongs to one of the caller's projects, OR
+ * the caller created it (covers calculations saved without a position link).
  */
 router.get('/calculations/:positionId', async (req, res) => {
   const pool = safeGetPool();
@@ -690,8 +694,20 @@ router.get('/calculations/:positionId', async (req, res) => {
 
   try {
     const { rows } = await pool.query(
-      'SELECT * FROM pump_calculations WHERE position_instance_id = $1 ORDER BY created_at DESC',
-      [req.params.positionId]
+      `SELECT pc.* FROM pump_calculations pc
+       WHERE pc.position_instance_id = $1
+         AND (
+           pc.created_by = $2
+           OR EXISTS (
+             SELECT 1 FROM portal_positions pp
+             JOIN portal_objects po ON pp.object_id = po.object_id
+             JOIN portal_projects pr ON po.portal_project_id = pr.portal_project_id
+             WHERE pp.position_instance_id = pc.position_instance_id
+               AND pr.owner_id = $2
+           )
+         )
+       ORDER BY pc.created_at DESC`,
+      [req.params.positionId, req.user.userId]
     );
     res.json(rows);
   } catch (error) {

@@ -26,13 +26,36 @@ delete process.env.DISABLE_AUTH;
 delete process.env.SERVICE_API_KEY; // exercise the fail-closed no-key branches
 delete process.env.NODE_ENV;        // dev mode: secrets.js must not throw
 
+// In-memory pool spy (same seam as isolation.e2e.test.js) so the
+// owner-scoping tests can shape query results without Postgres.
+const poolSpy = {
+  calls: [],
+  responders: [],
+  reset() { this.calls = []; this.responders = []; },
+  on(sqlRegex, respond) { this.responders.push({ sqlRegex, respond }); },
+  async query(sql, params = []) {
+    this.calls.push({ sql, params });
+    for (const r of this.responders) {
+      if (r.sqlRegex.test(sql)) return r.respond(sql, params);
+    }
+    return { rows: [], rowCount: 0 };
+  },
+  async connect() {
+    const self = this;
+    return { query: (sql, params) => self.query(sql, params), release: () => {} };
+  },
+};
+
 const { requireAuth } = await import('../src/middleware/auth.js');
 const { requireServiceKey, requireAuthOrServiceKey } = await import('../src/middleware/serviceAuth.js');
 const pumpRoutes = (await import('../src/routes/pump.js')).default;
 const kbResearchRoutes = (await import('../src/routes/kb-research.js')).default;
 const parsePreviewRoutes = (await import('../src/routes/parse-preview.js')).default;
 const coreProxyRoutes = (await import('../src/routes/core-proxy.js')).default;
+const positionInstancesRoutes = (await import('../src/routes/position-instances.js')).default;
 const { optionalAuth } = await import('../src/middleware/auth.js');
+const { __setPoolForTesting } = await import('../src/db/postgres.js');
+__setPoolForTesting(poolSpy);
 
 // Mounts mirror server.js
 const app = express();
@@ -41,6 +64,7 @@ app.use('/api/pump', requireAuth, pumpRoutes);
 app.use('/api/kb/research', requireAuth, kbResearchRoutes);
 app.use('/api/parse-preview', requireAuth, parsePreviewRoutes);
 app.use('/api/core', optionalAuth, coreProxyRoutes);
+app.use('/api/positions', requireAuthOrServiceKey, positionInstancesRoutes);
 app.get('/probe/service-key', requireServiceKey, (_req, res) => res.json({ ok: true }));
 app.get('/probe/auth-or-key', requireAuthOrServiceKey, (_req, res) => res.json({ ok: true }));
 
@@ -108,6 +132,65 @@ describe('Sprint A — billing fail-closed on credited core-proxy POST', () => {
     assert.equal(res.status, 401);
     const body = await res.json();
     assert.equal(body.operation, 'passport_generate');
+  });
+});
+
+describe('Sprint A — position-instances owner scoping (isolation-review fix)', () => {
+  it('GET /api/positions/project/:id — cross-tenant JWT caller gets 404', async () => {
+    poolSpy.reset();
+    // Project exists…
+    poolSpy.on(/SELECT portal_project_id, project_name FROM portal_projects/, () => ({
+      rows: [{ portal_project_id: 'proj-A', project_name: 'Cizí projekt' }], rowCount: 1,
+    }));
+    // …but is NOT owned by the caller (owner-scoped probe returns nothing)
+    poolSpy.on(/SELECT 1 FROM portal_projects WHERE portal_project_id = \$1 AND owner_id = \$2/, () => ({
+      rows: [], rowCount: 0,
+    }));
+    const res = await fetch(`${baseUrl}/api/positions/project/proj-A`, {
+      headers: { Authorization: `Bearer ${tokenFor(7)}` },
+    });
+    assert.equal(res.status, 404);
+  });
+
+  it('GET /api/positions/project/:id — owner passes the scope check', async () => {
+    poolSpy.reset();
+    poolSpy.on(/SELECT portal_project_id, project_name FROM portal_projects/, () => ({
+      rows: [{ portal_project_id: 'proj-A', project_name: 'Můj projekt' }], rowCount: 1,
+    }));
+    poolSpy.on(/SELECT 1 FROM portal_projects WHERE portal_project_id = \$1 AND owner_id = \$2/, (sql, params) => {
+      assert.equal(params[1], 42); // bound to the JWT userId, not a request param
+      return { rows: [{ '?column?': 1 }], rowCount: 1 };
+    });
+    const res = await fetch(`${baseUrl}/api/positions/project/proj-A`, {
+      headers: { Authorization: `Bearer ${tokenFor(42)}` },
+    });
+    assert.equal(res.status, 200);
+  });
+
+  it('GET /api/positions/:instanceId — cross-tenant JWT caller gets 404', async () => {
+    poolSpy.reset();
+    // Ownership join finds nothing for this caller
+    poolSpy.on(/JOIN portal_projects pr ON po\.portal_project_id = pr\.portal_project_id/, () => ({
+      rows: [], rowCount: 0,
+    }));
+    const res = await fetch(`${baseUrl}/api/positions/11111111-1111-1111-1111-111111111111`, {
+      headers: { Authorization: `Bearer ${tokenFor(7)}` },
+    });
+    assert.equal(res.status, 404);
+  });
+
+  it('GET /api/pump/calculations/:positionId — SQL carries the owner predicate', async () => {
+    poolSpy.reset();
+    let sawOwnerPredicate = false;
+    poolSpy.on(/FROM pump_calculations/, (sql, params) => {
+      sawOwnerPredicate = /owner_id = \$2/.test(sql) && params[1] === 7;
+      return { rows: [], rowCount: 0 };
+    });
+    const res = await fetch(`${baseUrl}/api/pump/calculations/pos-1`, {
+      headers: { Authorization: `Bearer ${tokenFor(7)}` },
+    });
+    assert.equal(res.status, 200);
+    assert.equal(sawOwnerPredicate, true);
   });
 });
 

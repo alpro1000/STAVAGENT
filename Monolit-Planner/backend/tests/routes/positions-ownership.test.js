@@ -147,6 +147,35 @@ describe('Positions ownership (Sprint A)', () => {
     expect(res.status).toBe(401);
   });
 
+  it('POST with a VICTIM\'s portal_project_id (Phase-11 dedup) → 403 for intruder', async () => {
+    // Direct bridge_id lookup misses; dedup lookup by portal_project_id
+    // resolves the victim's bridge; the write guard on the RESOLVED
+    // bridge must reject the intruder.
+    mockDb.prepare.mockImplementation((sql) => ({
+      get: jest.fn().mockImplementation(() => {
+        if (sql.includes('FROM bridges WHERE bridge_id = ?')) return undefined;
+        if (sql.includes('WHERE portal_project_id = ?')) {
+          return { bridge_id: 'victim-bridge', portal_user_id: null, registry_project_id: null };
+        }
+        if (sql.includes('FROM monolith_projects')) return { portal_user_id: String(OWNER_ID) };
+        if (sql.includes('owner_id FROM bridges')) return { owner_id: OWNER_ID };
+        return undefined;
+      }),
+      all: jest.fn().mockReturnValue([]),
+      run: jest.fn().mockReturnValue({ changes: 1 }),
+    }));
+
+    const res = await request(app)
+      .post('/api/positions')
+      .set('Authorization', `Bearer ${tokenFor(INTRUDER_ID)}`)
+      .send({
+        bridge_id: 'anything',
+        portal_project_id: 'victims-portal-project',
+        positions: [{ part_name: 'Test', subtype: 'beton', unit: 'M3', qty: 10, days: 5 }],
+      });
+    expect(res.status).toBe(403);
+  });
+
   it('anonymous POST /:id/suggest-days → 401 (LLM cost endpoint)', async () => {
     primeDb({ mpOwner: null, bridgeOwner: null });
     mockDb.prepare.mockImplementation((sql) => ({
