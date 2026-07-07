@@ -42,10 +42,25 @@
 - **A6 hygiena** — `rozpocet-registry/.env` +
   `stavagent-portal/frontend/.env.production` odtrackovány (bez secretů,
   ověřeno); root `.gitignore` už pokrývá.
-- **Testy:** Portal 58/58 (49 + 9 nových negativ), Monolit Jest 73/73
-  (62 + 11 ownership negativ), URS 240/240 (232 + 8 gate negativ),
+- **Isolation review (per root CLAUDE.md) + fixy nálezů** —
+  `cross-user-isolation-reviewer` na celém diffu našel 2 blocking nálezy,
+  oba opraveny v téže větvi:
+  - **CRITICAL `position-instances.js`** — 0 owner-predikátů v SQL (raw
+    UUID = přístup k čemukoli pro každého přihlášeného). Nové
+    `assertProjectAccess`/`assertInstanceAccess`: JWT caller scoped přes
+    `portal_positions → portal_objects → portal_projects.owner_id`
+    (cross-tenant → 404, invariant 2); service-key caller (portalWriteBack)
+    = trusted bypass. Pokryto všech 13 rout; template-apply s explicit ids
+    napinováno na projekt šablony.
+  - **HIGH `pump.js` GET /calculations/:positionId** — nescoped čtení
+    cizích kalkulací → `created_by = caller` OR owner-join.
+  - MEDIUM (přijaté vědomě): Monolit vrací 403 (konvence služby
+    monolith-projects.js), isolation model říká 404 — kandidát na
+    sjednocení; legacy NULL-owner bridges zůstávají kiosk-writable do
+    orphan-migrace (existující P1 backlog).
+- **Testy:** Portal 62/62 (49 + 13 nových), Monolit Jest 74/74
+  (62 + 12 ownership negativ vč. dedup-intruder), URS 240/240 (232 + 8),
   Monolit frontend tsc + Portal frontend tsc clean.
-  `cross-user-isolation-reviewer` spuštěn před pushem (per root CLAUDE.md).
 
 ---
 
@@ -69,10 +84,11 @@
 
 - **URS auth model** — API-key vs Portal-JWT pro veřejné matching routy
   (`URS_REQUIRE_API_KEY` gate je připraven, default off).
-- **Portal `/api/positions`** (position-instances.js) — routy nemají
-  vlastní owner-scoping v SQL (mount-level auth je nyní fail-closed, ale
-  valid-JWT uživatel dosáhne na cizí position instance podle UUID).
-  Viz nález isolation-reviewera — kandidát Sprint A follow-up.
+- **URS klasifikator UI** — model-selector v public frontendu teď vždy
+  selže (503/401) a graceful revertne; buď skrýt, nebo admin-key input
+  (nález reviewera, WARNING — vědomě odloženo).
+- **403 vs 404** — Monolit ownership vrací 403 (konvence služby), model
+  říká 404 (existence oracle); sjednotit v samostatném ticketu.
 - registry-backend nemá test infra (jediný backend bez ní) — negativní
   testy A4 jen syntax-checked; zvážit malý Jest setup.
 
