@@ -30,6 +30,36 @@ no login required at all, vs. logged-in user seeing foreign data): Portal
 **Sprint A** in the audit report and remain the blocker before any public
 demo. Do not reopen this ticket for them.
 
+## urs-sqlite-to-postgres
+
+**Severity:** P1 — data loss on every Cloud Run restart
+**Affects:** URS_MATCHER_SERVICE (Klasifikátor)
+**Source:** 2026-07-01 audit, Sprint B item 6; assessed 2026-07-07
+
+**Symptom:**
+`backend/src/db/init.js` opens SQLite on the container filesystem
+(`file:./data/urs_matcher.db`). Cloud Run's filesystem is ephemeral —
+batch_jobs, work packages and caches vanish on every restart/deploy.
+Catalog data (17 940 OTSKP codes) survives because it re-seeds at boot.
+
+**Why not fixed inline (2026-07-07):** 18 backend files touch the DB
+(sqlite3 driver API), 12 tables in init.js, ~232 tests assume SQLite,
+and the fix needs infra provisioning that cannot be done from the repo:
+a new `urs_matcher` database on the `stavagent-db` Cloud SQL instance +
+DSN secret in Secret Manager + cloudbuild env wiring. A blind partial
+rewrite risks breaking a working service for zero durability gain.
+
+**Dedicated PR scope:**
+1. Provision `urs_matcher` DB on stavagent-db (manual, gcloud) + secret
+2. Introduce a thin query adapter (sqlite3 vs pg) OR migrate to `pg`
+   directly; port 12 CREATE TABLEs (AUTOINCREMENT→SERIAL, datetime fns)
+3. Keep SQLite as the local-dev default via DATABASE_URL switch
+4. Migrate/accept loss of current ephemeral data (it dies on restart
+   anyway — nothing durable to migrate)
+5. Green: full URS test suite + one live batch job surviving a restart
+
+**Estimated effort:** 2-3 days including test port.
+
 ## register-route-redirect
 
 **Severity:** P2 — minor UX, workaround in place
