@@ -101,6 +101,15 @@ const SERVICES: Service[] = [
     status: 'active',
     tags: ['Standalone', 'Beton', 'Bednění', 'Override', 'Rychlý odhad']
   },
+  {
+    id: 'pump-module',
+    name: 'Kalkulačka čerpadel',
+    description: 'Detailní porovnání čerpadel: dodavatelé + vlastní, příplatky za víkend/svátek/noc, český kalendář. Uložení kalkulací k pozicím.',
+    icon: 'Settings',
+    url: '/pump',
+    status: 'active',
+    tags: ['Čerpadlo', 'Porovnání', 'Příplatky', 'Kalendář']
+  },
   // ===== BETA =====
   {
     id: 'document-analysis',
@@ -111,79 +120,20 @@ const SERVICES: Service[] = [
     status: 'beta',
     tags: ['TZ', 'Statika', 'Geologie', 'Cross-document', 'Beta']
   },
-  // ===== PŘIPRAVUJEME =====
   {
     id: 'drawing-analysis',
     name: 'Analýza výkresů',
-    description: 'Nahrajte PDF výkres → AI (GPT-4 Vision + OCR) extrahuje rozměry, objemy a pozice. Automatická klasifikace prací.',
+    description: 'Nahrajte PDF výkres → AI (vision + OCR) extrahuje rozměry, objemy a pozice. Automatická klasifikace prací. Beta — early access.',
     icon: 'Ruler',
     url: '#drawing-analysis',
-    status: 'coming_soon',
-    tags: ['Výkres', 'OCR', 'AI Vision', 'Workflow B']
-  },
-  {
-    id: 'objednavka-betonu',
-    name: 'Objednávka betonu',
-    description: 'Najít betonárny → spočítat cenu (beton + doprava + čerpadlo) → porovnat dodavatele. Ruční zadání cen od prořaba. Jeden flow pro objednávku.',
-    icon: 'Building2',
-    url: '/objednavka-betonu',
-    status: 'coming_soon',
-    tags: ['Betonárny', 'Kalkulačka', 'Porovnání', 'Prořab']
-  },
-  {
-    id: 'pump-module',
-    name: 'Kalkulačka čerpadel',
-    description: 'Detailní porovnání čerpadel: 3 dodavatelé, příplatky za víkend/svátek/noc, český kalendář. Mobilní verze.',
-    icon: 'Settings',
-    url: '/pump',
-    status: 'coming_soon',
-    tags: ['Čerpadlo', 'Mobilní', 'Příplatky', 'Kalendář']
-  },
-  {
-    id: 'price-parser',
-    name: 'Ceníky dodavatelů',
-    description: 'Admin: nahrajte PDF ceníky dodavatelů betonu → strukturovaná data. Batch upload pro srovnání: betony, doprava, čerpadla, příplatky.',
-    icon: 'FileText',
-    url: '/price-parser',
-    status: 'coming_soon',
-    tags: ['PDF', 'Ceník', 'Admin', 'Dodavatelé']
-  },
-  {
-    id: 'scenario-b',
-    name: 'Generátor výkazu výměr',
-    description: 'Nahraje TZ (PDF/DOCX) → AI extrahuje konstrukce a objemy → vygeneruje výkaz výměr (beton + výztuž + bednění). Objemy pouze z dokumentu.',
-    icon: 'Ruler',
-    url: '/portal/scenario-b',
-    status: 'coming_soon',
-    tags: ['TZ', 'Výkaz výměr', 'AI', 'Konstrukce']
-  },
-  {
-    id: 'formwork-calculator',
-    name: 'Kalkulačka bednění',
-    description: 'Specializovaná kalkulačka pro bednící systémy. Optimalizace spotřeby materiálu a nákladů.',
-    icon: 'Package',
-    url: '#',
-    status: 'coming_soon',
-    tags: ['Bednění', 'Optimalizace']
-  },
-  {
-    id: 'earthwork-planner',
-    name: 'Plánovač zemních prací',
-    description: 'Plánování a odhad zemních prací. Výpočet objemů a potřeby techniky.',
-    icon: 'Shovel',
-    url: '#',
-    status: 'coming_soon',
-    tags: ['Zemní práce', 'Výkopy']
-  },
-  {
-    id: 'rebar-optimizer',
-    name: 'Optimalizátor výztuže',
-    description: 'Optimalizace rozmístění výztuže a výpočet řezných plánů pro minimalizaci odpadu.',
-    icon: 'Wrench',
-    url: '#',
-    status: 'coming_soon',
-    tags: ['Výztuž', 'Optimalizace']
+    status: 'beta',
+    tags: ['Výkres', 'OCR', 'AI Vision', 'Beta']
   }
+  // Vitrína zobrazuje POUZE funkční moduly (rozhodnutí 2026-07-07).
+  // Stránky /objednavka-betonu, /price-parser (admin) a /portal/scenario-b
+  // zůstávají routované a dostupné přímou URL — do vitríny se vrátí až po
+  // živém ověření. Placeholder dlaždice (bednění / zemní práce / výztuž)
+  // odstraněny úplně — neexistovala za nimi ani stránka, ani backend.
 ];
 
 export default function PortalPage() {
@@ -575,6 +525,7 @@ export default function PortalPage() {
                 onClick={
                   service.id === 'document-analysis' ? () => navigate('/portal/analysis') :
                   service.id === 'drawing-analysis' ? () => setShowDrawingAnalysis(true) :
+                  service.id === 'pump-module' ? () => navigate('/pump') :
                   undefined
                 }
               />

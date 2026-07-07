@@ -72,7 +72,12 @@ export async function matchUrsItems(text, quantity = 0, unit = 'ks') {
       learnMapping(text, results[0], 'auto');
     }
 
-    return results;
+    // Honest provenance flag: web-search-sourced results are suggestions
+    // to verify in the licensed ÚRS catalog, not catalog facts.
+    return results.map(r => ({
+      ...r,
+      is_web_suggestion: r.source === 'perplexity' || r.source === 'brave_search',
+    }));
 
   } catch (error) {
     logger.error(`[URSMatcher] Error: ${error.message}`);

@@ -117,8 +117,13 @@ export async function matchSingle(request) {
   // Step 4: Score and deduplicate
   candidates = deduplicateAndSort(candidates, minConfidence);
 
-  // Step 5: Limit to topN
-  candidates = candidates.slice(0, topN);
+  // Step 5: Limit to topN + honest provenance flag: web-search-sourced ÚRS
+  // results (Perplexity/Brave scrape, no licensed catalog behind them) are
+  // SUGGESTIONS the user must verify — not catalog facts like local OTSKP.
+  candidates = candidates.slice(0, topN).map(c => ({
+    ...c,
+    is_web_suggestion: c.source === 'perplexity' || c.source === 'brave_search',
+  }));
 
   const executionTimeMs = Date.now() - startTime;
   logger.info(`[Pipeline] matchSingle complete: ${candidates.length} candidates in ${executionTimeMs}ms`);

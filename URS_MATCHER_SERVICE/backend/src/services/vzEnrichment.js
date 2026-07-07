@@ -60,10 +60,16 @@ async function ensureVzFields(db) {
       CREATE INDEX IF NOT EXISTS idx_rozpocet_source_vz_ev ON rozpocet_source(vz_ev_cislo);
     `);
 
-    // Add cpv_correlation to work_packages if needed
+    // Add cpv_correlation to work_packages if needed. The table belongs to
+    // workPackageBuilder and is created lazily — an empty PRAGMA result
+    // means the table does not exist yet, and ALTERing it would throw.
+    // Skip in that case; this migration re-runs on every ensureVzFields
+    // call, so the column self-heals once the table exists.
     const wpColumns = await db.all("PRAGMA table_info(work_packages)").catch(() => []);
     const wpColNames = new Set(wpColumns.map(c => c.name));
-    if (!wpColNames.has('cpv_correlation')) {
+    if (wpColumns.length === 0) {
+      logger.debug('[VZ-ENRICH] work_packages table not created yet — skipping cpv_correlation migration');
+    } else if (!wpColNames.has('cpv_correlation')) {
       await db.run('ALTER TABLE work_packages ADD COLUMN cpv_correlation TEXT');
       logger.info('[VZ-ENRICH] Added cpv_correlation to work_packages');
     }

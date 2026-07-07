@@ -32,8 +32,6 @@ const fileInput = document.getElementById('fileInput');
 const fileDropZone = document.getElementById('fileDropZone');
 const processFileBtn = document.getElementById('processFileBtn');
 const textInput = document.getElementById('textInput');
-const quantityInput = document.getElementById('quantityInput');
-const unitInput = document.getElementById('unitInput');
 const matchBtn = document.getElementById('matchBtn');
 
 const uploadSection = document.getElementById('uploadSection');
@@ -110,213 +108,8 @@ if (themeToggle) {
 // Initialize theme on load
 initTheme();
 
-// ============================================================================
-// MODEL SELECTOR
-// ============================================================================
-
-const modelSelect = document.getElementById('modelSelect');
-const modelStatus = document.getElementById('modelStatus');
-
-/**
- * Load available models from the API
- */
-async function loadModels() {
-  debugLog('🤖 Loading models...');
-
-  try {
-    const response = await fetch(`${API_URL}/settings/models`);
-
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
-
-    const data = await response.json();
-    debugLog('🤖 Models loaded:', data);
-
-    if (!data.success || !data.models) {
-      throw new Error('Invalid response format');
-    }
-
-    // Populate the select dropdown
-    modelSelect.innerHTML = '';
-
-    // Group models by provider
-    const modelsByProvider = {};
-    data.models.forEach(model => {
-      const provider = model.provider || 'other';
-      if (!modelsByProvider[provider]) {
-        modelsByProvider[provider] = [];
-      }
-      modelsByProvider[provider].push(model);
-    });
-
-    // Add models to select, grouped by provider
-    Object.entries(modelsByProvider).forEach(([provider, models]) => {
-      const optgroup = document.createElement('optgroup');
-      optgroup.label = formatProviderName(provider);
-
-      models.forEach(model => {
-        const option = document.createElement('option');
-        option.value = model.id;
-        option.textContent = model.name;
-        option.disabled = !model.available;
-
-        // Mark current model as selected
-        if (data.currentModel && model.id === data.currentModel.model) {
-          option.selected = true;
-        }
-
-        // Add pricing info as data attribute
-        if (model.pricing) {
-          option.dataset.pricing = model.pricing.tier || 'standard';
-        }
-
-        optgroup.appendChild(option);
-      });
-
-      modelSelect.appendChild(optgroup);
-    });
-
-    // Update status badge
-    updateModelStatus(data.currentModel);
-
-    debugLog('🤖 Model selector populated with', data.models.length, 'models');
-
-  } catch (error) {
-    debugError('🤖 Failed to load models:', error);
-    modelSelect.innerHTML = '<option value="">Chyba načítání</option>';
-    updateModelStatus({ error: true });
-  }
-}
-
-/**
- * Format provider name for display
- */
-function formatProviderName(provider) {
-  const names = {
-    'claude': 'Anthropic Claude',
-    'openai': 'OpenAI',
-    'gemini': 'Google Gemini',
-    'deepseek': 'DeepSeek',
-    'grok': 'xAI Grok',
-    'qwen': 'Alibaba Qwen',
-    'glm': 'Zhipu GLM'
-  };
-  return names[provider] || provider.charAt(0).toUpperCase() + provider.slice(1);
-}
-
-/**
- * Update the model status badge
- */
-function updateModelStatus(currentModel) {
-  if (!modelStatus) return;
-
-  if (currentModel?.error) {
-    modelStatus.textContent = 'Chyba';
-    modelStatus.className = 'model-status error';
-    return;
-  }
-
-  if (!currentModel) {
-    modelStatus.textContent = '';
-    return;
-  }
-
-  // Determine pricing tier based on model
-  const modelId = currentModel.model || '';
-  let tier = 'standard';
-  let label = '';
-
-  // Free tier models
-  if (modelId.includes('glm-4-flash') || modelId.includes('glm-4-free')) {
-    tier = 'free';
-    label = 'ZDARMA';
-  }
-  // Cheap tier models
-  else if (modelId.includes('deepseek') || modelId.includes('qwen') || modelId.includes('gemini-flash')) {
-    tier = 'cheap';
-    label = 'Levný';
-  }
-  // Premium tier models
-  else if (modelId.includes('claude') || modelId.includes('gpt-4') || modelId.includes('opus')) {
-    tier = 'premium';
-    label = 'Premium';
-  }
-  else {
-    tier = 'cheap';
-    label = 'Aktivní';
-  }
-
-  modelStatus.textContent = label;
-  modelStatus.className = `model-status ${tier}`;
-}
-
-/**
- * Handle model selection change
- */
-async function handleModelChange(event) {
-  const selectedModel = event.target.value;
-
-  if (!selectedModel) return;
-
-  debugLog('🤖 Changing model to:', selectedModel);
-
-  // Disable select during update
-  modelSelect.disabled = true;
-
-  try {
-    const response = await fetch(`${API_URL}/settings/model`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ model: selectedModel })
-    });
-
-    const data = await response.json();
-
-    if (!response.ok || !data.success) {
-      throw new Error(data.error || 'Failed to set model');
-    }
-
-    debugLog('🤖 Model changed successfully:', data);
-
-    // Update status badge
-    updateModelStatus(data);
-
-    // Save preference to localStorage
-    localStorage.setItem('urs-matcher-model', selectedModel);
-
-  } catch (error) {
-    debugError('🤖 Failed to change model:', error);
-
-    // Revert to previous selection
-    const savedModel = localStorage.getItem('urs-matcher-model');
-    if (savedModel && savedModel !== selectedModel) {
-      modelSelect.value = savedModel;
-    }
-
-    // Show error briefly
-    modelStatus.textContent = 'Chyba!';
-    modelStatus.className = 'model-status error';
-
-    setTimeout(() => {
-      loadModels(); // Reload to get correct state
-    }, 2000);
-
-  } finally {
-    modelSelect.disabled = false;
-  }
-}
-
-// Initialize model selector
-if (modelSelect) {
-  modelSelect.addEventListener('change', handleModelChange);
-  loadModels();
-  debugLog('✅ Model selector initialized');
-} else {
-  debugError('⚠️ Model selector element not found!');
-}
+// Model selector odstranen 2026-07: POST /api/settings/model je admin-only
+// (X-API-Key, Sprint A); runtime model se voli env konfiguraci serveru.
 
 // ============================================================================
 // PROCESSING MODE TOGGLE
@@ -376,8 +169,6 @@ debugLog('✓ DOM Elements found:', {
   fastModeRadio: !!fastModeRadio,
   advancedModeRadio: !!advancedModeRadio,
   textInput: !!textInput,
-  quantityInput: !!quantityInput,
-  unitInput: !!unitInput,
   matchBtn: !!matchBtn,
   uploadSection: !!uploadSection,
   resultsSection: !!resultsSection,
@@ -515,11 +306,9 @@ async function matchText() {
   matchBtn.disabled = true;
   matchBtn.textContent = 'Hledání...';
 
-  const payload = {
-    text,
-    quantity: parseFloat(quantityInput.value) || 0,
-    unit: unitInput.value || 'ks'
-  };
+  // Mnozstvi/MJ pole odstranena 2026-07 — matching je cistě textovy,
+  // backend si drzi defaulty (quantity=0, unit='ks') pro zpetnou kompatibilitu.
+  const payload = { text };
 
   debugLog('🔍 Searching for:', payload);
 
@@ -810,27 +599,38 @@ function displayTextMatchResults(data) {
     html += '<th>Kód</th><th>Název</th><th>MJ</th><th>Cena</th><th>Zdroj</th><th>Jistota</th>';
     html += '</tr></thead><tbody>';
 
+    let hasWebSuggestions = false;
     candidates.forEach((item, idx) => {
       debugLog(`📋 Building row ${idx + 1}:`, item);
       const confidenceClass = item.confidence > 0.8
         ? 'confidence-high'
         : 'confidence-medium';
       const priceStr = item.price ? `${Number(item.price).toLocaleString('cs-CZ')} Kč` : '—';
-      const sourceLabel = item.source === 'otskp' ? 'OTSKP' : (item.source === 'perplexity' ? 'Perplexity' : (item.source || 'local'));
+      // Honest labeling: local catalog = fact; web-search ÚRS = suggestion
+      const isWeb = item.is_web_suggestion
+        || item.source === 'perplexity' || item.source === 'brave_search';
+      if (isWeb) hasWebSuggestions = true;
+      const sourceLabel = item.source === 'otskp' ? 'OTSKP katalog'
+        : (isWeb ? 'ÚRS (web)' : 'Lokální DB');
+      const verifyHint = isWeb
+        ? '<div class="verify-hint">Návrh — ověřte v ÚRS katalogu</div>' : '';
 
       html += `
         <tr>
           <td><strong>${item.urs_code}</strong></td>
-          <td>${item.urs_name}</td>
+          <td>${item.urs_name}${verifyHint}</td>
           <td>${item.unit}</td>
           <td>${priceStr}</td>
-          <td><span class="source-badge">${sourceLabel}</span></td>
+          <td><span class="source-badge${isWeb ? ' source-badge--web' : ''}">${sourceLabel}</span></td>
           <td><span class="confidence-badge ${confidenceClass}">${(item.confidence * 100).toFixed(0)}%</span></td>
         </tr>
       `;
     });
 
     html += '</tbody></table>';
+    if (hasWebSuggestions) {
+      html += '<p class="verify-note">⚠️ Položky se zdrojem <strong>ÚRS (web)</strong> pocházejí z webového vyhledávání (bez licencovaného katalogu) — před použitím je ověřte v ÚRS.</p>';
+    }
   }
 
   if (relatedItems.length > 0) {
@@ -1235,9 +1035,7 @@ copyBtn.addEventListener('click', () => {
 // Get Phase 2 DOM elements
 const openDocUploadBtn = document.getElementById('openDocUploadBtn');
 const docUploadSection = document.getElementById('docUploadSection');
-const contextEditorSection = document.getElementById('contextEditorSection');
 const documentUploadContainer = document.getElementById('documentUploadContainer');
-const contextEditorContainer = document.getElementById('contextEditorContainer');
 
 // Open document upload
 openDocUploadBtn?.addEventListener('click', () => {
@@ -1792,39 +1590,12 @@ function attachDocumentUploadHandlers() {
   }
 }
 
-async function loadContextEditorComponent() {
-  try {
-    debugLog('🔧 Loading ContextEditor.html');
-    const response = await fetch('/components/ContextEditor.html');
-    if (!response.ok) throw new Error('Failed to load component');
-    const html = await response.text();
-    contextEditorContainer.innerHTML = html;
-    showContextEditorSection();
-    debugLog('🔧 ✓ ContextEditor component loaded');
-  } catch (error) {
-    debugError('🔧 Failed to load ContextEditor:', error);
-    showError(`Chyba při načítání editory: ${error.message}`);
-  }
-}
-
 function showDocUploadSection() {
   debugLog('📄 Showing document upload section');
   uploadSection.classList.add('hidden');
   uploadSection.classList.remove('active');
   docUploadSection.classList.remove('hidden');
   docUploadSection.classList.add('active');
-  resultsSection.classList.add('hidden');
-  resultsSection.classList.remove('active');
-  errorSection.classList.add('hidden');
-  errorSection.classList.remove('active');
-}
-
-function showContextEditorSection() {
-  debugLog('🔧 Showing context editor section');
-  uploadSection.classList.add('hidden');
-  uploadSection.classList.remove('active');
-  contextEditorSection.classList.remove('hidden');
-  contextEditorSection.classList.add('active');
   resultsSection.classList.add('hidden');
   resultsSection.classList.remove('active');
   errorSection.classList.add('hidden');
@@ -1849,8 +1620,6 @@ function showPhase3Results() {
   uploadSection.classList.remove('active');
   docUploadSection.classList.add('hidden');
   docUploadSection.classList.remove('active');
-  contextEditorSection.classList.add('hidden');
-  contextEditorSection.classList.remove('active');
   resultsSection.classList.add('hidden');
   resultsSection.classList.remove('active');
   phase3ResultsSection.classList.remove('hidden');

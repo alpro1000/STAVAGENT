@@ -5,6 +5,42 @@ items deferred from in-flight PRs that need their own focused work.
 
 ---
 
+## tz-to-worklist — «TZ text → soupis prací všech profesí» (Blok C, plán ratifikován 2026-07-07)
+
+**Severity:** P1 — founder's core product ask («посчитать любую смету»)
+**Honest baseline (audit 2026-07-07, 4 read-only agenty):** repo kód pokrývá
+~10–14 % reálného BOQ (beton + malba). Piloty Žihle (154 pol.) / RD Jáchymov
+(189 pol., HSV+PSV+TZB+VRN) / HK212 byly MANUÁLNÍ session-práce s pilotními
+skripty — důkaz metodologie, ne služba. Rails existují: `/api/v1/orchestrate`
+(stage-gated TZ→elementy→práce→kódy→export), UWO branch registry (F0/F1 done),
+catalog-binding adapter. Množství dnes JOIN z existujícího soupisu — vlastní
+takeoff z výkresů je pilot-script-only.
+
+**Pořadí (dependency order):**
+1. **tz-passport Gate 2** (~1 session) — napojit hotový `planPassport()` jako
+   MCP tool `calculate_from_passport` (POZOR counter-soubory) / route / UI
+   import. Nejlevnější viditelný výsledek: «TZ+soupis mostu → plán» 1 callem.
+2. **UWO F2/F3** (~2–3 sessions) — portovat work-templates z pilotních skriptů
+   RD Jáchymov + HK212 do KB branch YAMLů (PSV/izolace/zemní…); dokončit
+   catalog-binding status-enum. Branch mechanika už stojí, chybí náplň.
+3. **calculator_prompt_extension** (~144 h ticket) — +14 element types
+   (zemní/komunikace/izolace/svodidla/VRN) v element-classifier.ts +
+   calculator.py → BOQ pokrytí 14 %→80 % na referenčním SO.
+4. **Drawing/DXF takeoff jako služba** — jediná net-new kapacita: množství BEZ
+   vstupního soupisu (produktizace dxf_takeoff/path_c_tier* pilot skriptů +
+   vision). Největší kus, poslední.
+
+**Katalogový search (Blok D nálezy, stejný audit):** OTSKP MCP engine zdravý
+(52 hermetických testů; **prod pgvector recall ŽIVĚ OVĚŘEN 2026-07-07** —
+retrieve_summary embeddings:18, provenance retrieve=embeddings, OTSKP 2026).
+CHYBÍ accuracy benchmark (slibovaných 77 Žihle queries, cíl 80 % top-1 /
+95 % top-3 — nikdy neměřeno) → postavit fixture + runner (~1 session).
+ÚRS = všude web-search (bez licencovaného katalogu; RD Jáchymov draft ~50 %
+FP na hint_strong) → od 2026-07-07 výsledky nesou `is_web_suggestion` a UI je
+značí «Návrh — ověřte»; strategické rozhodnutí koupit ÚRS katalog = Alexander.
+
+---
+
 ## mcp-e2e-zalmanov-findings (2026-07-07) — 5 tickets, all ✅ FIXED same day
 
 **Source:** live MCP E2E test on SO 202 (D6 Olšová Vrata–Žalmanov, most přes

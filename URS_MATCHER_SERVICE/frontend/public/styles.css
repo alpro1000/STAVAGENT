@@ -1487,6 +1487,30 @@ input[type="number"] {
   color: #283593;
 }
 
+/* Web-search-sourced ÚRS results = suggestions to verify (amber) */
+.source-badge--web,
+.source-badge.source-badge--web {
+  background: #FFF8E1;
+  color: #B26A00;
+  border: 1px solid #FFB300;
+}
+
+.verify-hint {
+  font-size: 0.7rem;
+  color: #B26A00;
+  margin-top: 2px;
+}
+
+.verify-note {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: #FFF8E1;
+  border-left: 3px solid #FFB300;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #6D4C00;
+}
+
 .source-badge.source-brave_search {
   background: #FFF3E0;
   color: #E65100;
