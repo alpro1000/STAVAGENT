@@ -125,7 +125,10 @@ describe('Positions API', () => {
 
   describe('DELETE /api/positions/:id', () => {
     it('should return 404 when position not found', async () => {
+      // Sprint A: DELETE resolves the parent bridge first — the position
+      // lookup returns nothing, so the route 404s before any DELETE runs
       mockDb.prepare.mockImplementation(() => ({
+        get: jest.fn().mockReturnValue(undefined),
         run: jest.fn().mockReturnValue({ changes: 0 })
       }));
 
@@ -136,7 +139,11 @@ describe('Positions API', () => {
     });
 
     it('should delete position successfully', async () => {
-      mockDb.prepare.mockImplementation(() => ({
+      // Legacy NULL-owner bridge → anonymous delete stays allowed (kiosk mode)
+      mockDb.prepare.mockImplementation((sql) => ({
+        get: jest.fn().mockReturnValue(
+          sql.includes('FROM positions') ? { bridge_id: 'bridge-1' } : undefined
+        ),
         run: jest.fn().mockReturnValue({ changes: 1 })
       }));
 

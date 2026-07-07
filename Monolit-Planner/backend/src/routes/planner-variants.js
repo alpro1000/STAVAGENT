@@ -16,10 +16,30 @@ import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
+import { optionalAuth } from '../middleware/auth.js';
+import { assertBridgeAccess } from '../services/bridgeOwnership.js';
 
 const router = express.Router();
 
+// Ownership (Sprint A): variants belong to a position, whose bridge owner
+// gates access — position_id → positions.bridge_id → bridge owner.
+router.use(optionalAuth);
+
 const MAX_VARIANTS_PER_POSITION = 10;
+
+/**
+ * Resolve the parent bridge of a position and enforce owner access.
+ * Sends the response (403/404) and returns null when denied/missing.
+ */
+async function assertPositionAccess(req, res, positionId, { write = false } = {}) {
+  const position = await db.prepare('SELECT bridge_id FROM positions WHERE id = ?').get(positionId);
+  if (!position) {
+    res.status(404).json({ error: 'Position not found' });
+    return null;
+  }
+  if (!(await assertBridgeAccess(req, res, position.bridge_id, { write }))) return null;
+  return position;
+}
 
 /**
  * GET /api/planner-variants?position_id=X
@@ -31,6 +51,8 @@ router.get('/', async (req, res) => {
     if (!position_id) {
       return res.status(400).json({ error: 'position_id query param required' });
     }
+
+    if (!(await assertPositionAccess(req, res, position_id))) return;
 
     const rows = await db.prepare(
       `SELECT * FROM planner_variants WHERE position_id = ? ORDER BY variant_number ASC`
@@ -69,11 +91,8 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'input_params and calc_result required' });
     }
 
-    // Check if position exists
-    const position = await db.prepare('SELECT id FROM positions WHERE id = ?').get(position_id);
-    if (!position) {
-      return res.status(404).json({ error: 'Position not found' });
-    }
+    // Check if position exists + enforce bridge ownership
+    if (!(await assertPositionAccess(req, res, position_id, { write: true }))) return;
 
     // Get current variants for this position
     const existing = await db.prepare(
@@ -150,6 +169,8 @@ router.put('/:id', async (req, res) => {
       return res.status(404).json({ error: 'Variant not found' });
     }
 
+    if (!(await assertPositionAccess(req, res, existing.position_id, { write: true }))) return;
+
     // If setting as plan, clear is_plan on all other variants of the same position
     if (is_plan === true) {
       await db.prepare(
@@ -199,6 +220,14 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
+
+    // Resolve the variant's position chain before deleting by raw id
+    const existing = await db.prepare('SELECT position_id FROM planner_variants WHERE id = ?').get(id);
+    if (!existing) {
+      return res.json({ success: true, deleted: 0 });
+    }
+    if (!(await assertPositionAccess(req, res, existing.position_id, { write: true }))) return;
+
     const result = await db.prepare('DELETE FROM planner_variants WHERE id = ?').run(id);
     res.json({ success: true, deleted: result.changes || 0 });
   } catch (error) {

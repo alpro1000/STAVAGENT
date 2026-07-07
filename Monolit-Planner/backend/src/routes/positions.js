@@ -11,8 +11,15 @@ import { logger } from '../utils/logger.js';
 import { extractPartName } from '../utils/text.js';
 import { suggestDays } from '../services/timeNormsService.js';
 import { writeBackBatch } from '../services/portalWriteBack.js';
+import { optionalAuth } from '../middleware/auth.js';
+import { assertBridgeAccess } from '../services/bridgeOwnership.js';
 
 const router = express.Router();
+
+// Ownership (Sprint A): positions belong to a bridge; the bridge's owner
+// (monolith_projects.portal_user_id / bridges.owner_id) gates access.
+// Legacy NULL-owner bridges stay kiosk-open; owned bridges → 403 for others.
+router.use(optionalAuth);
 
 /**
  * Whitelist of allowed field names for SQL updates
@@ -79,6 +86,9 @@ router.get('/', async (req, res) => {
     if (!bridge_id) {
       return res.json([]);
     }
+
+    // Cross-account read guard — owned bridge + different/anonymous caller → 403
+    if (!(await assertBridgeAccess(req, res, bridge_id))) return;
 
     // Get all positions for this bridge
     const positions = await db.prepare(`
@@ -270,9 +280,26 @@ router.post('/', async (req, res) => {
       }
     }
 
+    // Cross-account write guard on the RESOLVED bridge — covers both the
+    // direct-id path and the Phase 11 dedup path (a caller passing someone
+    // else's portal/registry id would otherwise write into their bridge)
+    if (bridgeRow) {
+      if (!(await assertBridgeAccess(req, res, bridge_id, { write: true }))) return;
+    }
+
     if (!bridgeRow) {
       // No existing bridge matches — create one. Standalone path when
       // Portal context is missing; otherwise linked via the columns.
+      // Minting a new owned row requires user identity (isolation model
+      // invariant 1) — anonymous auto-create is rejected, same as
+      // POST /api/bridges.
+      if (!req.user?.userId) {
+        logger.warn(`[Positions] Anonymous POST would auto-create bridge ${bridge_id} — rejected`);
+        return res.status(401).json({
+          error: 'Unauthorized',
+          message: 'Portal JWT required to create a new project. Forward Bearer header.',
+        });
+      }
       const mp = await db.prepare(
         'SELECT object_name, project_name, concrete_m3 FROM monolith_projects WHERE project_id = ?'
       ).get(bridge_id);
@@ -281,11 +308,11 @@ router.post('/', async (req, res) => {
       await db.prepare(
         `INSERT INTO bridges (
           bridge_id, object_name, project_name, concrete_m3, status,
-          portal_project_id, registry_project_id
-        ) VALUES (?, ?, ?, ?, 'active', ?, ?)`
+          portal_project_id, registry_project_id, owner_id
+        ) VALUES (?, ?, ?, ?, 'active', ?, ?, ?)`
       ).run(
         bridge_id, insertObjectName, insertProjectName, mp?.concrete_m3 || 0,
-        portal_project_id, registry_project_id
+        portal_project_id, registry_project_id, req.user.userId
       );
       logger.info(
         `[Phase 11] POST /positions created bridge_id=${bridge_id} ` +
@@ -396,6 +423,9 @@ router.put('/', async (req, res) => {
         error: 'bridge_id and updates array are required'
       });
     }
+
+    // Cross-account write guard
+    if (!(await assertBridgeAccess(req, res, bridge_id, { write: true }))) return;
 
     // VALIDATION: Check all update fields
     for (const update of updates) {
@@ -542,6 +572,14 @@ router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
 
+    // Resolve the parent bridge first — deletion by raw id must respect
+    // the bridge owner (was: unscoped DELETE on any position id)
+    const position = await db.prepare('SELECT bridge_id FROM positions WHERE id = ?').get(id);
+    if (!position) {
+      return res.status(404).json({ error: 'Position not found' });
+    }
+    if (!(await assertBridgeAccess(req, res, position.bridge_id, { write: true }))) return;
+
     const result = await db.prepare('DELETE FROM positions WHERE id = ?').run(id);
 
     if (result.changes === 0) {
@@ -581,6 +619,16 @@ router.post('/:id/suggest-days', async (req, res) => {
     if (!position) {
       return res.status(404).json({ error: 'Position not found' });
     }
+
+    // AI suggestion burns LLM budget — require identity + bridge ownership
+    if (!req.user?.userId) {
+      logger.warn(`[Positions] Anonymous suggest-days rejected (position ${id})`);
+      return res.status(401).json({
+        error: 'Unauthorized',
+        message: 'Portal JWT required for AI suggestions.',
+      });
+    }
+    if (!(await assertBridgeAccess(req, res, position.bridge_id, { write: true }))) return;
 
     // Validate required fields
     if (!position.qty || position.qty <= 0) {
