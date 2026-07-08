@@ -14,7 +14,7 @@
  * download or modal that takes focus).
  */
 
-import { Download, FileSpreadsheet, RotateCcw } from 'lucide-react';
+import { Download, FileSpreadsheet, RotateCcw, Unlock, Link2 } from 'lucide-react';
 
 export interface ExportMenuProps {
   hasSheet: boolean;
@@ -27,6 +27,8 @@ export interface ExportMenuProps {
   onExportProjectWithTOV: () => void;
   onExportToOriginal: () => void;
   onExportToOriginalWithSkupiny: () => void;
+  onDownloadUnlocked: () => void;
+  onDownloadUnlockedWithLinks: () => void;
 }
 
 interface RowProps {
@@ -70,6 +72,8 @@ export function ExportMenu({
   onExportProjectWithTOV,
   onExportToOriginal,
   onExportToOriginalWithSkupiny,
+  onDownloadUnlocked,
+  onDownloadUnlockedWithLinks,
 }: ExportMenuProps) {
   const sheetSuffix = sheetName ? `(${sheetName})` : undefined;
   const projectSuffix = `(${sheetCount} ${sheetCount === 1 ? 'list' : 'listy'})`;
@@ -128,6 +132,26 @@ export function ExportMenu({
         disabled={!hasOriginalFile}
         title={hasOriginalFile ? 'Zapsat ceny + skupiny zpět do originálního souboru' : 'Originální soubor není k dispozici'}
         onClick={onExportToOriginalWithSkupiny}
+      />
+
+      <div className="my-1 border-t" style={{ borderColor: 'var(--flat-border)' }} />
+
+      {/* Section 4: working copies of the original file */}
+      <Row
+        icon={Unlock}
+        label="Původní — odemknout listy"
+        hint="(kopie)"
+        disabled={!hasOriginalFile}
+        title={hasOriginalFile ? 'Stáhnout kopii originálu se sejmutým zámkem listů (sheetProtection)' : 'Originální soubor není k dispozici'}
+        onClick={onDownloadUnlocked}
+      />
+      <Row
+        icon={Link2}
+        label="Původní — odemknout + odkazy"
+        hint="(rekapitulace)"
+        disabled={!hasOriginalFile}
+        title={hasOriginalFile ? 'Odemčená kopie originálu + klikací odkazy z rekapitulace na listy objektů' : 'Originální soubor není k dispozici'}
+        onClick={onDownloadUnlockedWithLinks}
       />
     </div>
   );

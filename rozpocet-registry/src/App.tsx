@@ -16,6 +16,7 @@ import { loadFromBackend, mergeProjects, debouncedPushToBackend, pushProjectToBa
 import { setSuppressAutoSync } from './stores/registryStore';
 import { findExistingProjectForPortalImport, normalizePortalRowRole } from './services/portalImportDedupe';
 import { ensureOriginalFileBackup } from './services/originalFileStore';
+import { downloadUnlockedOriginal, downloadUnlockedOriginalWithLinks } from './services/excel/originalFileTools';
 import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
 import { exportAndDownload, exportFullProjectAndDownload, exportToOriginalFile, exportToOriginalFileWithSkupiny, canExportToOriginal } from './services/export/excelExportService';
 import { mapUnifiedToItems } from './services/sync/unifiedMapper';
@@ -820,6 +821,28 @@ function App() {
     }
   };
 
+  const handleDownloadUnlocked = async () => {
+    if (!selectedProject) return;
+    try {
+      const r = await downloadUnlockedOriginal(selectedProject.id);
+      alert(`✅ Odemčená kopie stažena: ${r.fileName}\nSejmuto zámků listů: ${r.removedProtections}`);
+    } catch (err) {
+      console.error('Unlock original failed:', err);
+      alert(`Chyba: ${err instanceof Error ? err.message : 'Odemčení se nezdařilo'}`);
+    }
+  };
+
+  const handleDownloadUnlockedWithLinks = async () => {
+    if (!selectedProject) return;
+    try {
+      const r = await downloadUnlockedOriginalWithLinks(selectedProject.id);
+      alert(`✅ Staženo: ${r.fileName}\nSejmuto zámků listů: ${r.removedProtections}\nOdkazů v rekapitulaci: ${r.addedLinks}`);
+    } catch (err) {
+      console.error('Unlock+links original failed:', err);
+      alert(`Chyba: ${err instanceof Error ? err.message : 'Vytvoření odkazů se nezdařilo'}`);
+    }
+  };
+
   return (
     <div className="h-screen flex flex-col bg-bg-primary overflow-x-hidden overflow-y-hidden">
       {/* Header */}
@@ -883,6 +906,8 @@ function App() {
             onExportProjectWithTOV={handleExportProjectWithTOV}
             onExportToOriginal={handleExportToOriginal}
             onExportToOriginalWithSkupiny={handleExportToOriginalWithSkupiny}
+            onDownloadUnlocked={handleDownloadUnlocked}
+            onDownloadUnlockedWithLinks={handleDownloadUnlockedWithLinks}
             onImport={() => setIsImportModalOpen(true)}
             onEditMapping={() => {
               if (selectedProject) {
