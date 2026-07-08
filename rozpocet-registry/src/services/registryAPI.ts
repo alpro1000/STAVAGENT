@@ -7,6 +7,16 @@ import { REGISTRY_API_URL } from '../utils/config.js';
 import { portalAuthHeader } from './portalAuth';
 
 const API_URL = REGISTRY_API_URL;
+// Original .xlsx upload/download can be several MB over a slow uplink —
+// give file transfers a much longer leash than JSON round-trips.
+const FILE_TRANSFER_TIMEOUT = 120000;
+
+export interface OriginalFileMeta {
+  exists: boolean;
+  file_name?: string;
+  file_size?: number;
+}
+
 const FETCH_TIMEOUT = 30000; // 30s timeout — was 8 s but Cloud Run cold-starts on the
                              // registry backend regularly exceeded that, causing user-visible
                              // bugs (DELETEs that never reach the backend → projects re-appear
@@ -50,9 +60,9 @@ export function resetBackendCache(): void {
  * Attaching it HERE, in the single shared fetch wrapper, guarantees no
  * call site can forget it — the exact bug that left the PostgreSQL sync
  * silently 401-ing while all project data lived only in IndexedDB. */
-async function fetchWithTimeout(url: string, options: RequestInit = {}): Promise<Response> {
+async function fetchWithTimeout(url: string, options: RequestInit = {}, timeoutMs: number = FETCH_TIMEOUT): Promise<Response> {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const res = await fetch(url, {
       ...options,
@@ -250,6 +260,43 @@ class RegistryAPI {
     if (!res.ok) throw new Error('Failed to bulk create items');
     const data = await res.json();
     return data.created || 0;
+  }
+
+  // ============ ORIGINAL FILES (cross-device "Vrátit do původního") ============
+
+  async uploadOriginalFile(projectId: string, fileName: string, fileData: ArrayBuffer): Promise<void> {
+    const res = await fetchWithTimeout(
+      `${API_URL}/api/registry/projects/${projectId}/original-file?file_name=${encodeURIComponent(fileName)}`,
+      {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/octet-stream' },
+        body: fileData,
+      },
+      FILE_TRANSFER_TIMEOUT,
+    );
+    if (!res.ok) throw new Error(`Failed to upload original file (${res.status})`);
+  }
+
+  async getOriginalFileMeta(projectId: string): Promise<OriginalFileMeta> {
+    const res = await fetchWithTimeout(`${API_URL}/api/registry/projects/${projectId}/original-file/meta`);
+    if (!res.ok) throw new Error(`Failed to fetch original file meta (${res.status})`);
+    const data = await res.json();
+    return { exists: !!data.exists, file_name: data.file_name, file_size: data.file_size };
+  }
+
+  /** Returns null when no original file is stored for the project (404). */
+  async downloadOriginalFile(projectId: string): Promise<{ fileName: string; fileData: ArrayBuffer } | null> {
+    const res = await fetchWithTimeout(
+      `${API_URL}/api/registry/projects/${projectId}/original-file`,
+      {},
+      FILE_TRANSFER_TIMEOUT,
+    );
+    if (res.status === 404) return null;
+    if (!res.ok) throw new Error(`Failed to download original file (${res.status})`);
+    const encoded = res.headers.get('X-File-Name');
+    const fileName = encoded ? decodeURIComponent(encoded) : 'original.xlsx';
+    const fileData = await res.arrayBuffer();
+    return { fileName, fileData };
   }
 }
 
