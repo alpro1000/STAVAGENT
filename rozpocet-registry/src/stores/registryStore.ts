@@ -181,6 +181,20 @@ export const useRegistryStore = create<RegistryState>()(
 
       // Проекты
       addProject: (project) => {
+        // Idempotent by id: adding an id that already exists only selects
+        // the existing project instead of appending a duplicate tab. Two
+        // async import paths (Portal open, backend merge) used to race and
+        // append copies with the SAME id on every Portal visit because the
+        // Portal-open dedupe compared against a stale pre-hydration snapshot.
+        const existing = get().projects.find((p) => p.id === project.id);
+        if (existing) {
+          console.warn(`[RegistryStore] addProject: id ${project.id} ("${existing.projectName}") already exists — selecting existing project, duplicate ignored`);
+          set({
+            selectedProjectId: existing.id,
+            selectedSheetId: existing.sheets.length > 0 ? existing.sheets[0].id : null,
+          });
+          return;
+        }
         set((state) => ({
           projects: [...state.projects, project],
           selectedProjectId: project.id,
@@ -1115,6 +1129,22 @@ export const useRegistryStore = create<RegistryState>()(
     }
   )
 );
+
+/**
+ * Resolve once the persist middleware has finished rehydrating the store
+ * from IndexedDB. Rehydration is ASYNC (idbStorage) — any code that reads
+ * `projects` right after mount (Portal-open dedupe, deep-links) sees an
+ * empty array unless it awaits this first.
+ */
+export function waitForRegistryHydration(): Promise<void> {
+  if (useRegistryStore.persist.hasHydrated()) return Promise.resolve();
+  return new Promise((resolve) => {
+    const unsub = useRegistryStore.persist.onFinishHydration(() => {
+      unsub();
+      resolve();
+    });
+  });
+}
 
 /**
  * Register auto-link callback: when sync succeeds and project has no portalLink,
