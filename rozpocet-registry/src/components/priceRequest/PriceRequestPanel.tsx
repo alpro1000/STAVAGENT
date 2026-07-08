@@ -5,12 +5,13 @@
  * LIGHT THEME - легкий читаемый стиль
  */
 
-import React, { useState, useMemo, useRef } from 'react';
-import { Search, Download, Upload, FileSpreadsheet, Check, AlertCircle, X, Filter, Package } from 'lucide-react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { Search, Download, Upload, FileSpreadsheet, Check, AlertCircle, X, Filter, Package, CheckSquare, Square } from 'lucide-react';
 import { useRegistryStore } from '../../stores/registryStore';
 import {
   createPriceRequestReport,
   downloadPriceRequest,
+  buildPoptavkaFileName,
   reverseImportPrices,
   applyImportedPrices,
   type PriceRequestReport,
@@ -37,6 +38,45 @@ const LIGHT = {
   backdrop: 'rgba(0, 0, 0, 0.4)',
   shadow: '0 25px 50px rgba(0, 0, 0, 0.25)',
 };
+
+/** «Vybrat vše / Zrušit vše» pair for a chip list (projects, skupiny). */
+function BulkSelectButtons({ allCount, selectedCount, onSelectAll, onClearAll }: {
+  allCount: number;
+  selectedCount: number;
+  onSelectAll: () => void;
+  onClearAll: () => void;
+}) {
+  const btnStyle = (disabled: boolean): React.CSSProperties => ({
+    color: disabled ? LIGHT.borderLight : LIGHT.textMuted,
+    cursor: disabled ? 'not-allowed' : 'pointer',
+  });
+  return (
+    <div className="flex items-center gap-3 text-xs">
+      <button
+        type="button"
+        disabled={selectedCount === allCount}
+        onClick={onSelectAll}
+        className="flex items-center gap-1"
+        style={btnStyle(selectedCount === allCount)}
+        title="Vybrat všechny"
+      >
+        <CheckSquare size={13} className="w-[13px] h-[13px]" />
+        Vybrat vše
+      </button>
+      <button
+        type="button"
+        disabled={selectedCount === 0}
+        onClick={onClearAll}
+        className="flex items-center gap-1"
+        style={btnStyle(selectedCount === 0)}
+        title="Zrušit výběr"
+      >
+        <Square size={13} className="w-[13px] h-[13px]" />
+        Zrušit vše
+      </button>
+    </div>
+  );
+}
 
 interface PriceRequestPanelProps {
   isOpen: boolean;
@@ -79,15 +119,20 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
     return items;
   }, [projects]);
 
-  // Get items from selected projects (or all if none selected)
+  // Get items from selected projects (or all if none selected).
+  // Membership comes from the ACTUAL containing project (projects tree),
+  // not item.source.projectId — that field drifts on imported/restored
+  // projects and made skupiny vanish or leak across projects (§19 bug).
   const projectItems = useMemo(() => {
     if (selectedProjects.length === 0) {
       return allItems;
     }
-    return allItems.filter(item =>
-      selectedProjects.includes(item.source.projectId)
-    );
-  }, [allItems, selectedProjects]);
+    const items: ParsedItem[] = [];
+    projects
+      .filter(p => selectedProjects.includes(p.id))
+      .forEach(p => p.sheets.forEach(sheet => items.push(...sheet.items)));
+    return items;
+  }, [allItems, projects, selectedProjects]);
 
   // Get unique groups from selected projects only
   const availableGroups = useMemo(() => {
@@ -97,6 +142,15 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
     });
     return Array.from(groups).sort();
   }, [projectItems]);
+
+  // Drop group selections that are no longer visible (e.g. after picking a
+  // project) — otherwise an invisible chip keeps filtering the item list.
+  useEffect(() => {
+    setSelectedGroups(prev => {
+      const next = prev.filter(g => availableGroups.includes(g));
+      return next.length === prev.length ? prev : next;
+    });
+  }, [availableGroups]);
 
   // Filter items based on search and filters
   const filteredItems = useMemo(() => {
@@ -199,12 +253,18 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
   const handleExport = () => {
     if (!report) return;
 
+    // File name from the CURRENT selection: 1 skupina → its name; more →
+    // first selected (click order) + counter; none → project name / vse.
+    const selectedProjectNames = projects
+      .filter(p => selectedProjects.includes(p.id))
+      .map(p => p.projectName);
     const options: PriceRequestExportOptions = {
       title: exportTitle,
       supplierName,
       notes,
       includeSourceInfo,
       includeSkupina: true,
+      fileName: buildPoptavkaFileName(selectedGroups, selectedProjectNames),
     };
 
     downloadPriceRequest(report, options);
@@ -351,9 +411,17 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
             {/* Project filter */}
             {projects.length > 0 && (
               <div>
-                <label className="block text-sm font-medium mb-2" style={{ color: LIGHT.text }}>
-                  Projekty:
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-medium" style={{ color: LIGHT.text }}>
+                    Projekty:
+                  </label>
+                  <BulkSelectButtons
+                    allCount={projects.length}
+                    selectedCount={selectedProjects.length}
+                    onSelectAll={() => setSelectedProjects(projects.map(p => p.id))}
+                    onClearAll={() => setSelectedProjects([])}
+                  />
+                </div>
                 <div className="flex flex-wrap gap-2">
                   {projects.map(project => (
                     <button
@@ -376,9 +444,17 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
             {/* Group filter */}
             {availableGroups.length > 0 && (
               <div>
-                <label className="block text-sm font-medium mb-2" style={{ color: LIGHT.text }}>
-                  Skupiny:
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-medium" style={{ color: LIGHT.text }}>
+                    Skupiny:
+                  </label>
+                  <BulkSelectButtons
+                    allCount={availableGroups.length}
+                    selectedCount={selectedGroups.length}
+                    onSelectAll={() => setSelectedGroups(availableGroups)}
+                    onClearAll={() => setSelectedGroups([])}
+                  />
+                </div>
                 <div className="flex flex-wrap gap-2">
                   {availableGroups.map(group => (
                     <button

@@ -358,6 +358,16 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-07-08 — Session: Poptávka cen — bulk-select + project-scoped skupiny + file naming (§19 CLOSED)
+
+**Rozhodnuto:** Alexandrův UX-request na Poptávka cen (= next-session §19 živý bug + feature): (1) **skupiny podle projektu** — filtr srovnával `item.source.projectId`, který na importovaných/obnovených projektech drejfuje od skutečného id → skupiny mizely nebo prosakovaly mezi projekty; teď membership z reálného `projects`-stromu + prune neviditelných aktivních skupin (useEffect na availableGroups); (2) **«Vybrat vše / Zrušit vše»** pro Projekty i Skupiny (`BulkSelectButtons`, CheckSquare/Square 13px + w/h classes, disabled states dle §19 AC); (3) **jméno exportu podle výběru** — `buildPoptavkaFileName`: 1 skupina → `Poptavka_PILOTY_2026-07-08.xlsx`; N skupin → první VYBRANÁ (click order) + `_a_dalsi_N-1`; 0 skupin → jméno projektu (1 vybraný) / `vse`; diakritika NFD-stripped. Schéma multi-jména vybral Alexander interaktivně (AskUserQuestion: «První + počítadlo», preview varianty A-D). `PriceRequestExportOptions.fileName` override (legacy searchQuery-name zůstává fallback). +5 vitest → **225 registry testů**, build clean.
+
+**Odmítnuto:** Výčet до 3 jmen (+N) a projekt+počet — Alexander zvolil první+počítadlo. Multi-projektový výběr NEzakázán (užitečný okrajově), jen skupiny jsou nyní vždy jednoznačně z vybraných projektů.
+
+**Co dál:** LIVE: vybrat projekt → jen jeho skupiny; Vybrat vše → poptávka; export pojmenován dle skupiny.
+
+
+
 ## 2026-07-08 — Session: Portal outage guard — pool starvation z registry syncu (P1 root cause CLOSED)
 
 **Rozhodnuto:** Alexandrova diagnóza z Cloud Logging potvrdila hypotézu A: `[LOGIN ERROR] timeout exceeded when trying to connect` — Portal pool (max 10) vyhladověl, `stavagent-db` má **max_connections=25** (1 vCPU/628 MB, «Underprovisioned» health issue), graf Total connections narážel na limit v čase výpadku; `import-from-registry` opakovaně padal a držel spojení. Trojitý fix jedním PR: (1) **Portal** — transakce import-from-registry dostala `SET LOCAL statement_timeout=20s / lock_timeout=5s / idle_in_transaction_session_timeout=30s` + `pg_try_advisory_xact_lock(hashtext(registry_project_id))` fail-fast 409 `sync_in_progress` (dva prohlížeče tlačící TÝŽ projekt se už nefrontují na row-locích); (2) **Registry** — portalAutoSync per-project **failure backoff 5 min** (retry storm na ležící Portál byl spolutvůrce výpadku; success backoff maže); (3) **Monolit modal UX** — anonymous case («Nejste přihlášeni — otevřete Kalkulátor z Portálu, token platí 24 h») místo matoucího «Žádné projekty» (Alexandrův druhý repro «import stále nefunguje» = protuхлý/chybějící auth_token po výpadku Portálu, ne bug #1439). Testy: +4 registry vitest (backoff arm/clear/per-project) → 220; Portal backend 62/62; Monolit frontend tsc+build clean. Tímto uzavřen P1 «Cross-kiosk sync Phase 3 — Portal 500 root cause» (byl to connection starvation, ne DB constraint).

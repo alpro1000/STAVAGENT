@@ -400,7 +400,11 @@ is stable in production.
 
 ---
 
-## 19. Poptávka cen modal — фильтр скупин regression + bulk-select toolbar (medium-high)
+## 19. Poptávka cen modal — фильтр скупин regression + bulk-select toolbar — ✅ RESOLVED (2026-07-08)
+
+> Shipped: containment-based фильтр скупин (item.source.projectId дрейфовал → фильтр по реальному projects-дереву), prune невидимых активных скупин, «Vybrat vše / Zrušit vše» для Projekty и Skupiny (CheckSquare/Square 13px, disabled states), имя файла экспорта по выбору: 1 скупина → её имя; N → первая ВЫБРАННАЯ + `_a_dalsi_N-1`; 0 → проект/vse (`buildPoptavkaFileName`, +5 тестов). Схему multi-имени выбрал Alexander interactively.
+
+<details><summary>Původní zadání</summary>
 
 Live-bug + UX-feature на одной поверхности; closely связаны (фикс фильтра делает кнопку «Vybrat vše» работающей), поэтому один PR закроет обе.
 
@@ -450,6 +454,8 @@ States:
 - Не трогает ribbon / AppRibbon layout.
 - Не меняет priceRequestService API / экспорт XLSX.
 - Не добавляет «select inverse» / «select by filter» — только bulk all/none.
+
+</details>
 
 ---
 
