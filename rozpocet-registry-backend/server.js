@@ -340,10 +340,14 @@ app.put('/api/registry/projects/:id/original-file', requireAuth, requireDB, orig
     // Ownership enforced INSIDE the statement (single snapshot — no
     // check-then-act window): the INSERT…SELECT produces a row only when
     // the project belongs to the caller; zero rows returned = not found.
+    // Explicit casts are REQUIRED here: in INSERT…SELECT (unlike VALUES)
+    // Postgres does not infer parameter types from the target columns, so
+    // the binary $4 was resolved as text → 500 on the bytea column
+    // (live failure 2026-07-08).
     const result = await pool.query(
       `INSERT INTO registry_files (project_id, file_name, file_size, file_data, stored_at)
-       SELECT $1, $2, $3, $4, NOW()
-       WHERE EXISTS (SELECT 1 FROM registry_projects WHERE project_id = $1 AND owner_id = $5)
+       SELECT $1::varchar, $2::varchar, $3::integer, $4::bytea, NOW()
+       WHERE EXISTS (SELECT 1 FROM registry_projects WHERE project_id = $1::varchar AND owner_id = $5::integer)
        ON CONFLICT (project_id) DO UPDATE SET
          file_name = EXCLUDED.file_name,
          file_size = EXCLUDED.file_size,
