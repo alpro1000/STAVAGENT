@@ -59,6 +59,8 @@ export function AppRibbon({
     onExportProjectWithTOV: () => { closeExport(); exportProps.onExportProjectWithTOV(); },
     onExportToOriginal: () => { closeExport(); exportProps.onExportToOriginal(); },
     onExportToOriginalWithSkupiny: () => { closeExport(); exportProps.onExportToOriginalWithSkupiny(); },
+    onDownloadUnlocked: () => { closeExport(); exportProps.onDownloadUnlocked(); },
+    onDownloadUnlockedWithLinks: () => { closeExport(); exportProps.onDownloadUnlockedWithLinks(); },
   };
   return (
     <header
