@@ -36,6 +36,45 @@ export interface PriceRequestExportOptions {
   notes?: string;
   includeSkupina?: boolean;
   includeSourceInfo?: boolean;
+  /** Explicit download file name (with .xlsx). Overrides the legacy searchQuery-based name. */
+  fileName?: string;
+}
+
+/** Filesystem-safe ASCII slug: strips diacritics, collapses non-word runs to '_'. */
+function sanitizeFileToken(s: string): string {
+  return s
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^\w-]+/g, '_')
+    .replace(/_+/g, '_')
+    .replace(/^_+|_+$/g, '');
+}
+
+/**
+ * Poptávka file name from the current selection (scheme chosen by the
+ * user 2026-07-08 — «first selected skupina + counter»):
+ *  - 1 skupina   → Poptavka_PILOTY_2026-07-08.xlsx
+ *  - N skupin    → Poptavka_PILOTY_a_dalsi_4_2026-07-08.xlsx
+ *                  (first in CLICK order — the user's primary intent)
+ *  - 0 skupin    → Poptavka_<projekt>_… (single selected project) or Poptavka_vse_…
+ */
+export function buildPoptavkaFileName(
+  selectedGroups: string[],
+  selectedProjectNames: string[],
+  date: Date = new Date(),
+): string {
+  const day = date.toISOString().split('T')[0];
+  let base: string;
+  if (selectedGroups.length === 1) {
+    base = `Poptavka_${sanitizeFileToken(selectedGroups[0])}`;
+  } else if (selectedGroups.length > 1) {
+    base = `Poptavka_${sanitizeFileToken(selectedGroups[0])}_a_dalsi_${selectedGroups.length - 1}`;
+  } else if (selectedProjectNames.length === 1) {
+    base = `Poptavka_${sanitizeFileToken(selectedProjectNames[0])}`;
+  } else {
+    base = 'Poptavka_vse';
+  }
+  return `${base}_${day}.xlsx`;
 }
 
 export interface PriceRequestReport {
@@ -622,7 +661,8 @@ export function downloadPriceRequest(
   options: PriceRequestExportOptions = {}
 ): void {
   const blob = exportPriceRequest(report, options);
-  const fileName = `poptavka_${report.searchQuery.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.xlsx`;
+  const fileName = options.fileName
+    || `poptavka_${report.searchQuery.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.xlsx`;
 
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
