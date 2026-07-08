@@ -246,6 +246,10 @@ app.post('/api/registry/projects', requireAuth, requireDB, async (req, res) => {
     const userId = req.user.userId;
     const projectId = project_id || `reg_${uuidv4()}`;
 
+    // Owner-guarded conflict path (isolation review 2026-07-08): project_id
+    // is client-supplied, so without the WHERE a caller who knows another
+    // account's project_id could rename it, stamp a portal_project_id onto
+    // it, and read the full row back via RETURNING *.
     const result = await pool.query(
       `INSERT INTO registry_projects (project_id, project_name, owner_id, portal_project_id, created_at, updated_at)
        VALUES ($1, $2, $3, $4, NOW(), NOW())
@@ -253,9 +257,17 @@ app.post('/api/registry/projects', requireAuth, requireDB, async (req, res) => {
          project_name = EXCLUDED.project_name,
          portal_project_id = COALESCE(EXCLUDED.portal_project_id, registry_projects.portal_project_id),
          updated_at = NOW()
+       WHERE registry_projects.owner_id = EXCLUDED.owner_id
        RETURNING *`,
       [projectId, project_name, userId, portal_project_id]
     );
+
+    if (result.rows.length === 0) {
+      // Conflict path skipped by the owner guard — the id exists under a
+      // different account. Ids are UUID-based, so a legitimate collision
+      // is practically impossible.
+      return res.status(409).json({ success: false, error: 'Project id belongs to another account' });
+    }
 
     res.json({ success: true, project: result.rows[0] });
   } catch (error) {
@@ -317,9 +329,6 @@ async function callerOwnsProject(projectId, userId) {
 // Upload/replace the original imported file for a project
 app.put('/api/registry/projects/:id/original-file', requireAuth, requireDB, originalFileRaw, async (req, res) => {
   try {
-    if (!(await callerOwnsProject(req.params.id, req.user.userId))) {
-      return res.status(404).json({ success: false, error: 'Project not found' });
-    }
     if (!Buffer.isBuffer(req.body) || req.body.length === 0) {
       return res.status(400).json({ success: false, error: 'Empty body — send the file as application/octet-stream' });
     }
@@ -328,16 +337,24 @@ app.put('/api/registry/projects/:id/original-file', requireAuth, requireDB, orig
     // query values — decoding again would throw on filenames containing
     // a literal '%'.
     const fileName = String(req.query.file_name || 'original.xlsx').slice(0, 512);
-    await pool.query(
+    // Ownership enforced INSIDE the statement (single snapshot — no
+    // check-then-act window): the INSERT…SELECT produces a row only when
+    // the project belongs to the caller; zero rows returned = not found.
+    const result = await pool.query(
       `INSERT INTO registry_files (project_id, file_name, file_size, file_data, stored_at)
-       VALUES ($1, $2, $3, $4, NOW())
+       SELECT $1, $2, $3, $4, NOW()
+       WHERE EXISTS (SELECT 1 FROM registry_projects WHERE project_id = $1 AND owner_id = $5)
        ON CONFLICT (project_id) DO UPDATE SET
          file_name = EXCLUDED.file_name,
          file_size = EXCLUDED.file_size,
          file_data = EXCLUDED.file_data,
-         stored_at = NOW()`,
-      [req.params.id, fileName, req.body.length, req.body]
+         stored_at = NOW()
+       RETURNING project_id`,
+      [req.params.id, fileName, req.body.length, req.body, req.user.userId]
     );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Project not found' });
+    }
     res.json({ success: true, file_name: fileName, file_size: req.body.length });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -348,12 +365,18 @@ app.put('/api/registry/projects/:id/original-file', requireAuth, requireDB, orig
 // "Vrátit do původního" button availability probe)
 app.get('/api/registry/projects/:id/original-file/meta', requireAuth, requireDB, async (req, res) => {
   try {
+    // Pre-check distinguishes "not your project" (404) from "your project,
+    // no file yet" (exists:false); the file read below still carries its
+    // own owner JOIN so the answer never leaks across a delete/recreate race.
     if (!(await callerOwnsProject(req.params.id, req.user.userId))) {
       return res.status(404).json({ success: false, error: 'Project not found' });
     }
     const r = await pool.query(
-      'SELECT file_name, file_size, stored_at FROM registry_files WHERE project_id = $1',
-      [req.params.id]
+      `SELECT f.file_name, f.file_size, f.stored_at
+       FROM registry_files f
+       JOIN registry_projects p ON p.project_id = f.project_id
+       WHERE f.project_id = $1 AND p.owner_id = $2`,
+      [req.params.id, req.user.userId]
     );
     if (r.rows.length === 0) {
       return res.json({ success: true, exists: false });
@@ -368,15 +391,18 @@ app.get('/api/registry/projects/:id/original-file/meta', requireAuth, requireDB,
 // Download the original file (binary)
 app.get('/api/registry/projects/:id/original-file', requireAuth, requireDB, async (req, res) => {
   try {
-    if (!(await callerOwnsProject(req.params.id, req.user.userId))) {
-      return res.status(404).json({ success: false, error: 'Project not found' });
-    }
+    // Owner predicate folded into the read itself (single statement, no
+    // check-then-act window). Zero rows = not the caller's project OR no
+    // stored file — both are 404 and the frontend treats them identically.
     const r = await pool.query(
-      'SELECT file_name, file_data FROM registry_files WHERE project_id = $1',
-      [req.params.id]
+      `SELECT f.file_name, f.file_data
+       FROM registry_files f
+       JOIN registry_projects p ON p.project_id = f.project_id
+       WHERE f.project_id = $1 AND p.owner_id = $2`,
+      [req.params.id, req.user.userId]
     );
     if (r.rows.length === 0) {
-      return res.status(404).json({ success: false, error: 'Original file not stored for this project' });
+      return res.status(404).json({ success: false, error: 'Original file not found' });
     }
     const f = r.rows[0];
     res.set({

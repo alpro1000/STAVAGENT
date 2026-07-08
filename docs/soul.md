@@ -364,6 +364,8 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 **Odmítnuto:** DELETE routa pro soubor (CASCADE při smazání projektu stačí; lokální delete zůstal lokální). Base64/JSON transport (33 % inflace + global 10mb json limit).
 
+**Isolation review (agent, PASS):** diff bez cross-tenant nálezů; oba LOW hardening pointy zapracovány (owner-predikát složen DO samotných statementů — PUT atomický INSERT…SELECT WHERE EXISTS, download/meta owner-JOIN, žádné check-then-act okno). Bonus: opraven **pre-existující CRITICAL** mimo diff — `POST /api/registry/projects` `ON CONFLICT DO UPDATE` neměl owner-guard → cizí project_id šlo přejmenovat + přečíst `RETURNING *`; teď `WHERE registry_projects.owner_id = EXCLUDED.owner_id` + 409 při cizím id. Zbylý LOW (backend test harness) → next-session §20.6.
+
 **Otevřené otázky:** Soubory > 25 MB zůstávají local-only (warn v konzoli). `loadFromBackend` nerekonstruuje per-sheet `config.columns` (§20.4 next-session) — na patch-export by nemělo mít vliv (patchExporter čte originál), ale hlídat.
 
 **Co dál:** LIVE po deployi: import v prohlížeči A → otevřít v prohlížeči B → «Vrátit do původního» musí být aktivní a vrátit bit-identický soubor. Pro Turnov: otevřít projekt v prohlížeči 1 (self-healing upload), pak export v prohlížeči 2.

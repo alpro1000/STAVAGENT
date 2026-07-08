@@ -491,3 +491,5 @@ PR 2 Variant B (single active-skupina toolbar above table) + compensation pack (
 4. **P3: `loadFromBackend` не восстанавливает sheet `config.columns`** — hardcode A-F; на экспорт «Vrátit do původního» после cross-device restore может влиять per-sheet mapping (§14 смежное).
 
 5. **Original-file cross-device (2026-07-08, druhá část session):** LIVE-проверка после деплоя backend+frontend — импорт Excel в браузере A → открыть проект в браузере B → «Vrátit do původního» активна и возвращает bit-идентичный файл. Для старых проектов (Turnov): открыть в браузере-источнике → self-healing upload (`ensureOriginalFileBackup`) → экспорт заработает везде. Файлы > 25 MB остаются local-only (warn в консоли) — если встретится реальный кейс, поднять cap или перейти на GCS.
+
+6. **Registry-backend test harness (LOW z isolation review 2026-07-08):** backend nemá žádné testy — přidat minimální supertest harness a isolation regres pro original-file routy (anonymous → 401; cizí JWT → 404 na PUT/GET/meta; POST /projects s cizím project_id → 409).
