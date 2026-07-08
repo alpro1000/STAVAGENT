@@ -11,6 +11,13 @@ import { useState, useEffect, useCallback } from 'react';
 import { ChevronDown, ChevronUp, ExternalLink, Loader } from 'lucide-react';
 import { API_URL } from '../../services/api';
 
+/** Bearer header from the stored Portal JWT. The /api/positions mount is
+ *  fail-closed since Sprint A — without it this GET 401s. */
+function authHeader(): Record<string, string> {
+  const token = localStorage.getItem('auth_token');
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
 interface LinkedPosition {
   position_instance_id: string;
   catalog_code: string;
@@ -55,7 +62,9 @@ export function PositionsPanel({ projectId }: PositionsPanelProps) {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch(`${API_URL}/api/positions/project/${projectId}/linked`);
+      const res = await fetch(`${API_URL}/api/positions/project/${projectId}/linked`, {
+        headers: { ...authHeader() },
+      });
       if (!res.ok) {
         if (res.status === 404) {
           setPositions([]);
