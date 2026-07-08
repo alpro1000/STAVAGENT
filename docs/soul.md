@@ -366,7 +366,7 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 **Otevřené otázky:** Portal 500 na `import-from-registry` při auto-syncu (Alexandrův console log) — známý P1 (DB constraint unknown); čeká na `[PortalAutoSync] Sync failed — …` řádek s parsovaným error body.
 
-**Co dál:** LIVE: Export → «Původní — odemknout + odkazy» na Turnovu → listy editovatelné, rekapitulace klikací.
+**Co dál:** LIVE: Export → «Původní — odemknout + odkazy» na Turnovu → listy editovatelné, rekapitulace klikací. DOPLNĚNO týž den (Alexandrův follow-up): kombinovaný export «Vrátit do původního (vše)» — `exportToOriginalFileWithSkupiny(project, {unlock, recapLinks})` aplikuje obě transformace na už sestavený zip s cenami+skupinami (unlock PŘED odkazy), suffix `_skupiny_odemceno_odkazy.xlsx`.
 
 
 ## 2026-07-08 — Session: Monolit «Načíst z Rozpočtu» prázdný — Sprint A JWT forwarding (třetí fix dne)

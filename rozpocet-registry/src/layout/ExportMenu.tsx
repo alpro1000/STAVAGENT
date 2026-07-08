@@ -29,6 +29,7 @@ export interface ExportMenuProps {
   onExportToOriginalWithSkupiny: () => void;
   onDownloadUnlocked: () => void;
   onDownloadUnlockedWithLinks: () => void;
+  onExportToOriginalFull: () => void;
 }
 
 interface RowProps {
@@ -74,6 +75,7 @@ export function ExportMenu({
   onExportToOriginalWithSkupiny,
   onDownloadUnlocked,
   onDownloadUnlockedWithLinks,
+  onExportToOriginalFull,
 }: ExportMenuProps) {
   const sheetSuffix = sheetName ? `(${sheetName})` : undefined;
   const projectSuffix = `(${sheetCount} ${sheetCount === 1 ? 'list' : 'listy'})`;
@@ -152,6 +154,14 @@ export function ExportMenu({
         disabled={!hasOriginalFile}
         title={hasOriginalFile ? 'Odemčená kopie originálu + klikací odkazy z rekapitulace na listy objektů' : 'Originální soubor není k dispozici'}
         onClick={onDownloadUnlockedWithLinks}
+      />
+      <Row
+        icon={RotateCcw}
+        label="Vrátit do původního (vše)"
+        hint="(ceny + skupiny + odemknout + odkazy)"
+        disabled={!hasOriginalFile}
+        title={hasOriginalFile ? 'Zapsat ceny + skupiny do originálu, sejmout zámky listů a přidat odkazy z rekapitulace' : 'Originální soubor není k dispozici'}
+        onClick={onExportToOriginalFull}
       />
     </div>
   );

@@ -50,6 +50,7 @@ export interface RibbonLayoutProps {
   onExportToOriginalWithSkupiny: () => void;
   onDownloadUnlocked: () => void;
   onDownloadUnlockedWithLinks: () => void;
+  onExportToOriginalFull: () => void;
   onImport: () => void;
   onEditMapping: () => void;
   /** The ItemsTable (or any other body content) rendered below the ribbon. */
@@ -79,6 +80,7 @@ export function RibbonLayout({
   onExportToOriginalWithSkupiny,
   onDownloadUnlocked,
   onDownloadUnlockedWithLinks,
+  onExportToOriginalFull,
   onImport,
   onEditMapping,
   children,
@@ -104,6 +106,7 @@ export function RibbonLayout({
           onExportToOriginalWithSkupiny,
           onDownloadUnlocked,
           onDownloadUnlockedWithLinks,
+          onExportToOriginalFull,
         }}
         onImport={onImport}
         hasProjects={hasProjects}

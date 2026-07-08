@@ -61,6 +61,7 @@ export function AppRibbon({
     onExportToOriginalWithSkupiny: () => { closeExport(); exportProps.onExportToOriginalWithSkupiny(); },
     onDownloadUnlocked: () => { closeExport(); exportProps.onDownloadUnlocked(); },
     onDownloadUnlockedWithLinks: () => { closeExport(); exportProps.onDownloadUnlockedWithLinks(); },
+    onExportToOriginalFull: () => { closeExport(); exportProps.onExportToOriginalFull(); },
   };
   return (
     <header
