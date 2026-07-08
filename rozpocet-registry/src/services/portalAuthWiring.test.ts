@@ -83,3 +83,50 @@ describe('PR-1 auth wiring — Registry → Portal fetch sites', () => {
     });
   }
 });
+
+// ── Registry → registry-backend auth wiring (repair 2026-07-07) ─────────────
+//
+// The registry backend (rozpocet-registry-backend, Cloud Run) has required
+// a Bearer JWT on every /api/registry route since the isolation hotfix
+// (2026-05-19) — but registryAPI.ts never sent one, so the PostgreSQL sync
+// silently 401-ed for ~7 weeks and all project data lived only in IndexedDB.
+// These checks pin the repair: the shared fetch wrapper spreads
+// portalAuthHeader() (Bearer from the cross-subdomain cookie), and the
+// beforeunload keepalive flush in backendSync.ts carries it too.
+// NOTE: credentials:'include' is NOT asserted here — the backend lives on
+// run.app (different registrable domain), cookies can't reach it; Bearer
+// header is the only viable channel.
+
+const REGISTRY_BACKEND_SITES: WiredSite[] = [
+  { file: 'src/services/registryAPI.ts', urlMarker: '/api/registry/projects' },
+  { file: 'src/services/backendSync.ts', urlMarker: 'keepalive: true' },
+];
+
+describe('Registry-backend auth wiring — Bearer on every sync call', () => {
+  for (const site of REGISTRY_BACKEND_SITES) {
+    it(`${site.file} (marker: ${site.urlMarker}) carries portalAuthHeader`, () => {
+      const path = resolve(ROOT, site.file);
+      const source = readFileSync(path, 'utf-8');
+
+      expect(
+        source.includes(site.urlMarker),
+        `${site.file}: URL marker "${site.urlMarker}" not found in file`,
+      ).toBe(true);
+
+      expect(
+        /from ['"][^'"]*portalAuth['"]/.test(source),
+        `${site.file}: missing import from the portalAuth module`,
+      ).toBe(true);
+
+      expect(
+        /portalAuthHeader\(\)/.test(source),
+        `${site.file}: portalAuthHeader() never invoked`,
+      ).toBe(true);
+    });
+  }
+
+  it('registryAPI.ts no longer ships the hardcoded USER_ID = 1 legacy', () => {
+    const source = readFileSync(resolve(ROOT, 'src/services/registryAPI.ts'), 'utf-8');
+    expect(/USER_ID\s*=\s*1/.test(source)).toBe(false);
+  });
+});
