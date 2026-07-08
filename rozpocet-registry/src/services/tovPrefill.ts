@@ -19,7 +19,7 @@ import type { TOVData, LaborResource, MachineryResource, MaterialResource, Formw
  * Check if a MonolithPayload has extended cost data suitable for TOV pre-fill.
  */
 export function hasExtendedCosts(mp: MonolithPayload | null | undefined): boolean {
-  return !!(mp?.costs && mp?.resources);
+  return !!(mp?.costs && mp?.resources) || !!(mp?.tov_entries?.labor?.length);
 }
 
 /**
@@ -27,14 +27,38 @@ export function hasExtendedCosts(mp: MonolithPayload | null | undefined): boolea
  * Returns undefined if payload lacks extended cost breakdown.
  */
 export function prefillTOVFromMonolit(mp: MonolithPayload): TOVData | undefined {
-  if (!mp.costs || !mp.resources) return undefined;
+  const hasCalcEntries = !!mp.tov_entries?.labor?.length;
+  if (!hasCalcEntries && (!mp.costs || !mp.resources)) return undefined;
 
   const { costs, resources, formwork_info } = mp;
   const labor: LaborResource[] = [];
   let idCounter = 1;
 
+  if (hasCalcEntries) {
+    // Preferred source: exact per-profession rows from the calculator's
+    // «Aplikovat» (incl. Ošetřovatel, Specialista předpětí, Tesař podpěry).
+    // Registry semantics: normHours is the headline total; hours = per-worker
+    // (normHours / count). totalCost is preserved verbatim (presence × rate).
+    for (const e of mp.tov_entries!.labor) {
+      const count = Math.max(1, e.count || 1);
+      labor.push({
+        id: `prefill-${idCounter++}`,
+        profession: e.profession,
+        professionCode: e.professionCode,
+        count,
+        hours: Math.round(((e.normHours || 0) / count) * 10) / 10,
+        normHours: Math.round((e.normHours || 0) * 10) / 10,
+        hourlyRate: e.hourlyRate || 0,
+        totalCost: Math.round(e.totalCost || 0),
+        linkedCalcId: mp.monolit_position_id,
+      });
+    }
+  }
+
+  // Legacy reconstruction from the cost breakdown — only when the exact
+  // rows are absent (payloads written before the tov_entries forwarding).
   // Betonář (pour labor)
-  if (costs.pour_labor_czk > 0) {
+  if (!hasCalcEntries && costs && resources && costs.pour_labor_czk > 0) {
     const wageH = resources.wage_pour_czk_h || mp.wage_czk_ph || 398;
     const totalCost = costs.pour_labor_czk + (costs.pour_night_premium_czk || 0);
     const normHours = wageH > 0 ? totalCost / wageH : 0;
@@ -52,7 +76,7 @@ export function prefillTOVFromMonolit(mp: MonolithPayload): TOVData | undefined 
   }
 
   // Tesař/Bednář (formwork labor)
-  if (costs.formwork_labor_czk > 0) {
+  if (!hasCalcEntries && costs && resources && costs.formwork_labor_czk > 0) {
     const wageH = resources.wage_formwork_czk_h || mp.wage_czk_ph || 385;
     const normHours = wageH > 0 ? costs.formwork_labor_czk / wageH : 0;
     const count = resources.total_formwork_workers || resources.crew_size_formwork || 1;
@@ -70,7 +94,7 @@ export function prefillTOVFromMonolit(mp: MonolithPayload): TOVData | undefined 
   }
 
   // Železář (rebar labor)
-  if (costs.rebar_labor_czk > 0) {
+  if (!hasCalcEntries && costs && resources && costs.rebar_labor_czk > 0) {
     const wageH = resources.wage_rebar_czk_h || mp.wage_czk_ph || 420;
     const normHours = wageH > 0 ? costs.rebar_labor_czk / wageH : 0;
     const count = resources.total_rebar_workers || resources.crew_size_rebar || 1;
@@ -88,7 +112,7 @@ export function prefillTOVFromMonolit(mp: MonolithPayload): TOVData | undefined 
   }
 
   // Props labor (if present)
-  if (costs.props_labor_czk > 0) {
+  if (!hasCalcEntries && costs && resources && costs.props_labor_czk > 0) {
     const wageH = resources.wage_formwork_czk_h || mp.wage_czk_ph || 385;
     const normHours = wageH > 0 ? costs.props_labor_czk / wageH : 0;
     labor.push({
@@ -111,7 +135,7 @@ export function prefillTOVFromMonolit(mp: MonolithPayload): TOVData | undefined 
 
   // Machinery — minimal: ponorný vibrátor for concrete
   const machinery: MachineryResource[] = [];
-  if (costs.pour_labor_czk > 0) {
+  if (labor.some(l => l.professionCode === 'BET')) {
     machinery.push({
       id: `prefill-mach-1`,
       type: 'Ponorný vibrátor',
@@ -125,6 +149,23 @@ export function prefillTOVFromMonolit(mp: MonolithPayload): TOVData | undefined 
 
   // Materials — concrete volume if known
   const materials: MaterialResource[] = [];
+  // Calculator rental rows (formwork/props) land here verbatim when the
+  // detailed formwork_info block is absent (it lives only on the main
+  // beton position) — the rental czk must stay visible either way.
+  if (!formwork_info && mp.tov_entries?.materials?.length) {
+    for (const m of mp.tov_entries.materials) {
+      materials.push({
+        id: `prefill-mat-r${materials.length + 1}`,
+        name: m.name,
+        quantity: m.quantity,
+        unit: m.unit,
+        unitPrice: m.unitPrice,
+        totalCost: Math.round(m.totalCost || 0),
+        linkedCalcId: mp.monolit_position_id,
+        linkedCalcType: 'monolit',
+      });
+    }
+  }
   if (mp.concrete_m3 && mp.concrete_m3 > 0) {
     materials.push({
       id: `prefill-mat-1`,
@@ -140,7 +181,10 @@ export function prefillTOVFromMonolit(mp: MonolithPayload): TOVData | undefined 
 
   // Formwork rental rows
   const formworkRental: FormworkRentalRow[] = [];
-  if (formwork_info && costs.formwork_rental_czk > 0) {
+  const fwRentalCzk = costs?.formwork_rental_czk
+    ?? mp.tov_entries?.materials?.find(m => m.unit === 'm²' && /pronájem/i.test(m.name))?.totalCost
+    ?? 0;
+  if (formwork_info && fwRentalCzk > 0) {
     const fi = formwork_info;
     const pocetTaktu = fi.num_tacts || 1;
     const pocetSad = fi.num_sets || 1;
@@ -201,5 +245,38 @@ export function prefillTOVFromMonolit(mp: MonolithPayload): TOVData | undefined 
       part_name: mp.part_name,
       position_id: mp.monolit_position_id,
     },
+  };
+}
+
+// ─── Refresh merge («Aktualizovat z Kalkulátoru») ───────────────────────────
+
+/** Calculator-origin labor row marker (prefill rows carry linkedCalcId). */
+export function isCalcLaborRow(row: LaborResource): boolean {
+  return !!row.linkedCalcId || row.id.startsWith('prefill-');
+}
+
+/**
+ * Merge a fresh calculator prefill into an existing TOV. Replaces ONLY
+ * calculator-origin rows: labor with linkedCalcId/prefill ids and prefill
+ * formwork-rental rows. Manual labor, machinery and materials stay
+ * untouched (user agreement 2026-07-08).
+ */
+export function mergeCalcRefresh(prev: TOVData, fresh: TOVData): TOVData {
+  const manualLabor = prev.labor.filter(l => !isCalcLaborRow(l));
+  const labor = [...manualLabor, ...fresh.labor];
+
+  const manualFw = (prev.formworkRental ?? []).filter(r => !r.id.startsWith('prefill-'));
+  const freshFw = fresh.formworkRental ?? [];
+  const formworkRental = [...manualFw, ...freshFw];
+
+  return {
+    ...prev,
+    labor,
+    laborSummary: {
+      totalNormHours: labor.reduce((s, l) => s + l.normHours, 0),
+      totalWorkers: labor.reduce((s, l) => s + l.count, 0),
+    },
+    formworkRental: formworkRental.length > 0 ? formworkRental : prev.formworkRental,
+    monolitMetadata: fresh.monolitMetadata ?? prev.monolitMetadata,
   };
 }

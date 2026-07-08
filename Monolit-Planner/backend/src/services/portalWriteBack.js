@@ -29,6 +29,22 @@ const WRITE_BACK_CONCURRENCY = parseInt(process.env.PORTAL_WRITE_BACK_CONCURRENC
  * @returns {object} MonolithPayload
  */
 export function buildMonolithPayload(pos, bridgeId) {
+  // Calculator blob persisted by Aplikovat (applyPlanToPositions writes it
+  // into positions.metadata): tov_entries (exact per-profession labor rows
+  // incl. Ošetřovatel/Předpětí, canonical Nh vs presence hours) + extended
+  // costs/resources/formwork_info from PlannerOutput. Forwarding it lets
+  // Registry's TOV modal pre-fill Lidé + formwork rental from the real
+  // calculation instead of never lighting up (the payload used to carry
+  // only the basic summary, so hasExtendedCosts() was always false).
+  let meta = null;
+  if (pos.metadata != null) {
+    try {
+      meta = typeof pos.metadata === 'string' ? JSON.parse(pos.metadata) : pos.metadata;
+    } catch {
+      meta = null; // corrupt blob — ship the basic payload, never throw
+    }
+  }
+
   return {
     monolit_position_id: pos.id,
     monolit_project_id: bridgeId || pos.bridge_id,
@@ -52,7 +68,11 @@ export function buildMonolithPayload(pos, bridgeId) {
     source_tag: 'MONOLIT_LIVE',
     assumptions_log: '',
     confidence: 1.0,
-    calculated_at: new Date().toISOString()
+    calculated_at: meta?.calculated_at || new Date().toISOString(),
+    ...(meta?.costs ? { costs: meta.costs } : {}),
+    ...(meta?.resources ? { resources: meta.resources } : {}),
+    ...(meta?.formwork_info ? { formwork_info: meta.formwork_info } : {}),
+    ...(meta?.tov_entries ? { tov_entries: meta.tov_entries } : {}),
   };
 }
 

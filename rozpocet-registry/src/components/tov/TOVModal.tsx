@@ -13,7 +13,7 @@
  */
 
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { X, Users, Truck, Package, Calculator, ExternalLink, Check, ArrowRight, Zap } from 'lucide-react';
+import { X, Users, Truck, Package, Calculator, ExternalLink, Check, ArrowRight, Zap , RefreshCw} from 'lucide-react';
 import type { ParsedItem } from '../../types';
 import type { TOVData, LaborResource, MachineryResource, MaterialResource, FormworkRentalRow, PumpRentalData, CraneCalcData, DeliveryCalcData } from '../../types/unified';
 import { LaborTab } from './LaborTab';
@@ -21,7 +21,7 @@ import { MachineryTab } from './MachineryTab';
 import { MaterialsTab } from './MaterialsTab';
 import { TOVSummary } from './TOVSummary';
 import { MONOLIT_FRONTEND_URL } from '../../utils/config.js';
-import { hasExtendedCosts, prefillTOVFromMonolit } from '../../services/tovPrefill';
+import { hasExtendedCosts, prefillTOVFromMonolit, mergeCalcRefresh } from '../../services/tovPrefill';
 
 interface TOVModalProps {
   isOpen: boolean;
@@ -305,6 +305,35 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
               className="px-3 py-1.5 text-sm font-medium bg-orange-500 text-white rounded hover:bg-orange-600 transition-colors whitespace-nowrap"
             >
               Předvyplnit TOV
+            </button>
+          </div>
+        )}
+
+        {/* Refresh banner — TOV already filled, a calculator result is available.
+            Replaces ONLY calculator-origin rows (linkedCalcId / prefill ids);
+            manual labor, machinery and materials stay untouched. */}
+        {hasExtendedCosts(item.monolith_payload) && localData.labor.length > 0 && (
+          <div className="mx-4 mt-3 px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-between">
+            <div className="flex items-center gap-2 text-xs text-blue-800">
+              <RefreshCw size={13} className="w-[13px] h-[13px] text-blue-500" />
+              <span>
+                <strong>Kalkulátor betonáže</strong> — k dispozici výpočet
+                {item.monolith_payload?.calculated_at
+                  ? ` z ${new Date(item.monolith_payload.calculated_at).toLocaleString('cs-CZ', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}`
+                  : ''}
+                . Aktualizace nahradí jen řádky z kalkulátoru, ruční zůstanou.
+              </span>
+            </div>
+            <button
+              onClick={() => {
+                const fresh = prefillTOVFromMonolit(item.monolith_payload!);
+                if (fresh) {
+                  setLocalData(prev => mergeCalcRefresh(prev, fresh));
+                }
+              }}
+              className="px-3 py-1 text-xs font-medium text-blue-700 bg-blue-100 rounded hover:bg-blue-200 transition-colors whitespace-nowrap border border-blue-300"
+            >
+              Aktualizovat z Kalkulátoru
             </button>
           </div>
         )}

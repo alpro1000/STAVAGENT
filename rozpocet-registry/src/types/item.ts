@@ -138,4 +138,38 @@ export interface MonolithPayload {
     total_days: number;
     tact_count: number;
   };
+  /**
+   * Exact per-profession TOV rows written by the calculator's «Aplikovat»
+   * (Monolit positions.metadata.tov_entries, forwarded via write-back).
+   * Richer than the costs/resources reconstruction: carries Ošetřovatel,
+   * Specialista předpětí etc. with canonical normHours vs presence hours.
+   */
+  tov_entries?: {
+    labor: Array<{
+      id: string;
+      profession: string;
+      professionCode: string;
+      count: number;
+      /** Presence (paid) hours — total for the crew. */
+      hours: number;
+      /** Canonical normohodiny (×0.8) — total for the crew. */
+      normHours: number;
+      hourlyRate: number;
+      totalCost: number;
+      note?: string;
+      source?: 'calculator' | 'manual';
+    }>;
+    materials: Array<{
+      id: string;
+      name: string;
+      quantity: number;
+      unit: string;
+      unitPrice: number;
+      totalCost: number;
+      rentalMonths?: number;
+      note?: string;
+    }>;
+    source: 'calculator' | 'manual';
+    calculated_at: string;
+  };
 }
