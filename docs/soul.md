@@ -364,7 +364,7 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 **Odmítnuto:** Automatická změna Cloud SQL tieru (Alexandrova akce v konzoli — doporučeno zvětšit instanci NEBO alespoň db flag max_connections; 25 je strukturálně těsných pro 4 backendy × pool 10). Vypnutí auto-syncu (backoff řeší bouři, sync zůstává).
 
-**Co dál:** Alexander: zvážit upgrade `stavagent-db` (health issue «Underprovisioned»). LIVE: Kalkulátor otevřít Z PORTÁLU (předá čerstvý auth_token) → «Načíst z Rozpočtu» ukáže projekty.
+**Co dál:** Alexander: zvážit upgrade `stavagent-db` (health issue «Underprovisioned»). DOPLNĚNO týž den: Alexandrův repro «stále Nejste přihlášeni» přes dlaždice vitríny — dlaždice (na rozdíl od «Otevřít» u projektu) NEPŘEDÁVAJÍ `?auth_token=`. Fix: Monolit frontend čte JWT s fallbackem na cross-subdomain cookie `stavagent_jwt` (stejný mechanismus jako Registry portalAuth) — centrální `getAuthToken()` v `services/api.ts` (localStorage z URL-handoffu má přednost), axios interceptor + `authHeader()` + FlatHeader gating; logout maže i sdílenou cookie (jinak by fallback uživatele hned zase přihlásil). Přihlášení v Portálu теперь stačí pro JAKÝKOLIV vstup do Kalkulátoru (dlaždice, přímá URL, záložka).
 
 
 

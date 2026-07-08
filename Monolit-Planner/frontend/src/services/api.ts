@@ -60,19 +60,46 @@ const api = axios.create({
 });
 
 /**
+ * Resolve the Portal JWT. Two sources, priority order:
+ *  1. localStorage 'auth_token' — set by the ?auth_token= URL handoff when
+ *     a kiosk is opened from a linked project («Otevřít» in Portal)
+ *  2. cross-subdomain 'stavagent_jwt' cookie set by the Portal frontend on
+ *     login (domain=.stavagent.cz) — covers the Portal showcase tiles and
+ *     direct visits to kalkulator.stavagent.cz, which pass NO URL token.
+ *     Same mechanism Registry uses (rozpocet-registry portalAuth.ts).
+ */
+const SHARED_COOKIE_NAME = 'stavagent_jwt';
+
+function readSharedCookie(): string | null {
+  if (typeof document === 'undefined') return null;
+  for (const raw of document.cookie.split(';')) {
+    const trimmed = raw.trim();
+    if (!trimmed.startsWith(`${SHARED_COOKIE_NAME}=`)) continue;
+    const value = trimmed.slice(SHARED_COOKIE_NAME.length + 1);
+    if (!value) return null;
+    try { return decodeURIComponent(value) || null; } catch { return value || null; }
+  }
+  return null;
+}
+
+export function getAuthToken(): string | null {
+  return localStorage.getItem('auth_token') || readSharedCookie();
+}
+
+/**
  * Authorization header for raw fetch() calls that bypass this axios client.
  * Backend positions/planner-variants routes enforce bridge ownership —
  * without the Bearer token those calls run anonymous and get 401/403
  * on owned projects.
  */
 export function authHeader(): Record<string, string> {
-  const token = localStorage.getItem('auth_token');
+  const token = getAuthToken();
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
 // Add JWT token to all requests
 api.interceptors.request.use(request => {
-  const token = localStorage.getItem('auth_token');
+  const token = getAuthToken();
   if (token) {
     request.headers.Authorization = `Bearer ${token}`;
   }
