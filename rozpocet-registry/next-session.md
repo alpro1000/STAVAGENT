@@ -478,3 +478,14 @@ States:
 PR 2 Variant B (single active-skupina toolbar above table) + compensation pack (subordinate visual distinction, vertical column dividers, sticky header fix, split Poř. column, hide empty monolit column) отправлен через ветку `claude/registry-toolbar-group-Qophc`. Двойной scroll сознательно принят как меньшее зло до реализации п. 10. PR-2-B / PR 3 (detail panel) / PR 4 (extend BulkActionsBar) / PR 5 (click-cells) остаются в плане `AUDIT_Registry_FlatLayout.md` §5.3.1.
 
 **Stashed на ветке**: `stash@{0}: classifier-migration WIP — user paused` — one-time migration для legacy items без `rowRole`. Ждёт решения при реализации п. 11: забрать как bandage или дропнуть в пользу полного rewrite.
+
+---
+
+## 20. Portal-open duplicate fix (2026-07-08) — follow-ups
+
+Контекст: FIX commit `e8b4d8c` — дедуп по `?project_id=` + идемпотентный `addProject` + per-sheet retry пуша. Хвосты:
+
+1. **LIVE-проверка после деплоя** (обязательно): открыть XLS_ZM01_ŽST_Turnov из Portal «Otevřít» дважды подряд → должен пере-выбраться ОДИН проект («no re-import» в консоли), иерархия main/subordinate сохранена. Затем в браузере с полной IndexedDB-копией дождаться catch-up push → в Postgres должно стать 68/68 листов (было 28/68).
+2. **Ручной уборка уже созданных дубликатов**: локальные дубли-табы в Registry (Smazat — удаление тумбстоунится и уходит в backend), дубли проектов в Portal DB («E_Soupis__skupiny MOSTY» ×3 и Turnov-эхо-копии).
+3. **P3: row_role write-through в Portal** — `import-from-registry` UPSERT не пишет `row_role` (колонка в `portal_positions` существует, `for-registry` её читает). После дедуп-фикса реимпорт-путь почти недостижим, поэтому отложено. Если делать: добавить в оба пути (UPDATE + INSERT) + прокинуть `rowRole` в body `syncProjectToPortal`.
+4. **P3: `loadFromBackend` не восстанавливает sheet `config.columns`** — hardcode A-F; на экспорт «Vrátit do původního» после cross-device restore может влиять per-sheet mapping (§14 смежное).

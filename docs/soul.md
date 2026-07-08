@@ -358,6 +358,17 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-07-08 — Session: Registry duplicate-project fix (Portal-open × BackendSync race)
+
+**Rozhodnuto:** Alexandrův live repro (XLS_ZM01_ŽST_Turnov, 68 listů) diagnostikován a opraven jedním FIX commitem na fronту Registry — Portal «Otevřít» tvořil při KAŽDÉM otevření nový zploštělý duplikát projektu. 3 nezávislé defekty: (a) **dedupe proti stale closure** — `loadFromPortal` porovnával s render-time `projects`, které je při mountu VŽDY prázdné (IndexedDB rehydratace je async) → dedupe z v4.26 byl fakticky mrtvý kód; teď čeká na persist-hydrataci + startup backend-merge (module-level deferred `backendSyncReady`) a čte FRESH state; primární klíč dedupu = dosud IGNOROVANÝ URL param `?project_id=` (Portal posílá původní registry id z kiosk_links); nový pure helper `services/portalImportDedupe.ts`. (b) **addProject neidempotentní** — apendoval kopie se STEJNÝM id; teď existující id → select, ne append. (c) **pushProjectToBackend nepřežil jeden timeout** — 68 listů = ~137 sekvenčních requestů, jeden 30s abort zabil celý cyklus → trvalá parciální kopie v Postgres (28/68 listů, Alexandrova «dobrá» kopie je NEÚPLNÁ!); teď per-sheet retry (1×, 2s), pokračování po chybě, честný «Uloženo částečně: X/Y listů» badge, startup catch-up push i pro projekty s MÉNĚ listy/položkami na backendu (samo-doléčení parciálních kopií), per-project debounce timery (sdílený timer zahazoval pushe ostatních projektů), busy push se re-armuje místo tichého dropu. Bonus: fallback reimport mapuje `row_role → rowRole`. Testy +13 → **213 registry vitest** green, tsc+build clean, Chromium smoke: seeded IndexedDB + `?project_id=` → «no re-import», bez deadlocku.
+
+**Odmítnuto:** Zápis `row_role` na straně Portalu (import-from-registry UPSERT) — Portal echo stejně nenese parentItemId/popisDetail, dedupe dělá reimport nedosažitelným; samostatný ticket kdyby bylo třeba. Oprava deep-link stale closure šla mimochodem (getState()), širší refactor App effectů ne.
+
+**Otevřené otázky:** Duplikáty už vzniklé v Portal DB («E_Soupis__skupiny MOSTY» ×3) a v registry-backendu — ruční úklid Alexandrem po deployi. Parciální backend kopie (28/68) se doléčí až otevřením v prohlížeči, kde žije plná IndexedDB kopie.
+
+**Co dál:** Deploy Registry frontendu (Vercel) → LIVE ověření: otevřít projekt z Portalu 2×, ověřit 1 projekt bez duplikátu + hierarchie zachována; pak úklid duplikátů. Follow-ups v `rozpocet-registry/next-session.md` §20.
+
+
 ## 2026-07-08 — Session: Sprint A ship + deploy + service-audit sweep (7 PR merged live)
 
 **Rozhodnuto:** Dlouhá relace navazující na Sprint A — vše shipnuto do main + deployed + auditní úklid služby na Alexandrův pokyn («убрать что не работает, вывести одну рабочую версию по всем темам»).
