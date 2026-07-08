@@ -15,6 +15,7 @@ import { useRegistryStore, waitForRegistryHydration } from './stores/registrySto
 import { loadFromBackend, mergeProjects, debouncedPushToBackend, pushProjectToBackend } from './services/backendSync';
 import { setSuppressAutoSync } from './stores/registryStore';
 import { findExistingProjectForPortalImport, normalizePortalRowRole } from './services/portalImportDedupe';
+import { ensureOriginalFileBackup } from './services/originalFileStore';
 import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
 import { exportAndDownload, exportFullProjectAndDownload, exportToOriginalFile, exportToOriginalFileWithSkupiny, canExportToOriginal } from './services/export/excelExportService';
 import { mapUnifiedToItems } from './services/sync/unifiedMapper';
@@ -774,6 +775,10 @@ function App() {
     if (selectedProject) {
       const available = await canExportToOriginal(selectedProject.id);
       setHasOriginalFile(available);
+      // Self-healing backup: files imported before the cross-device
+      // feature (or while offline) get uploaded to the registry backend
+      // now, so «Vrátit do původního» starts working in other browsers.
+      ensureOriginalFileBackup(selectedProject.id).catch(() => {});
     } else {
       setHasOriginalFile(false);
     }

@@ -67,3 +67,15 @@ CREATE INDEX IF NOT EXISTS idx_registry_permissions_user ON registry_permissions
 
 -- Migration: add skupina column to existing tables (idempotent)
 ALTER TABLE registry_items ADD COLUMN IF NOT EXISTS skupina VARCHAR(50);
+
+-- Original imported files (cross-device "Vrátit do původního" export).
+-- One file per project; BYTEA is fine for .xlsx sizes (guarded to 30 MB
+-- at the route level, Cloud Run request cap is 32 MB). Ownership is
+-- derived from the parent registry_projects row — no owner_id here.
+CREATE TABLE IF NOT EXISTS registry_files (
+  project_id VARCHAR(255) PRIMARY KEY REFERENCES registry_projects(project_id) ON DELETE CASCADE,
+  file_name VARCHAR(512) NOT NULL,
+  file_size INTEGER NOT NULL,
+  file_data BYTEA NOT NULL,
+  stored_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

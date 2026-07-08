@@ -15,7 +15,7 @@ import type { ParsedItem } from '../../types/item';
 import type { Project } from '../../types/project';
 import type { TOVData } from '../../types/unified';
 import { generateKrosPopis } from '../../components/tov/FormworkRentalSection';
-import { getOriginalFile } from '../originalFileStore';
+import { getOriginalFile, hasOriginalFile } from '../originalFileStore';
 
 /**
  * Exportable project (compatibility type for export)
@@ -1218,6 +1218,8 @@ export async function exportToOriginalFileWithSkupiny(
  * Check if original file is available for export
  */
 export async function canExportToOriginal(projectId: string): Promise<boolean> {
-  const originalFile = await getOriginalFile(projectId);
-  return !!originalFile;
+  // Lightweight probe: local IndexedDB hit OR backend meta check — must
+  // NOT download the whole file just to enable a button (this runs on
+  // every project select).
+  return hasOriginalFile(projectId);
 }
