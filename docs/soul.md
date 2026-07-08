@@ -358,6 +358,15 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-07-08 — Session: Monolit «Načíst z Rozpočtu» prázdný — Sprint A JWT forwarding (třetí fix dne)
+
+**Rozhodnuto:** Alexandrův repro (kalkulator.stavagent.cz → «Načíst z Rozpočtu» → «Žádné projekty v Registry»): stejná třída jako PR #1434 — Sprint A zavřel Portal `list-registry-projects` (requireAuth + owner-scope) i registry-backend `/api/registry/projects` (JWT-owner), ale Monolit-backend proxy (`routes/import-from-registry.js`) volal oba upstreamy ANONYMNĚ → 401 → prázdný merge. Fix: `forwardedAuthHeaders(req)` přeposílá caller's Bearer na všech 7 upstream fetch-sites (GET listing 2× + POST import: Portal for-registry + Registry project/sheets/items fallback); anonymní POST teď fail-fast 401 «Přihlaste se v Portálu» místo zavádějícího 404 «no sheets». +4 Jest (supertest harness, mock fetch: Bearer na obou upstreamech, anonymous empty bez upstream callů, POST 401, POST forwarding) → **78 backend Jest**. Vedle toho hotfix #1438: original-file PUT 500 — `INSERT…SELECT` bez explicitních castů (`inconsistent types deduced for parameter $1`; Postgres v SELECT-listu neodvozuje typy z target kolon) → `::varchar/::integer/::bytea`, **reprodukováno + verifikováno na lokálním Postgres 16 + node-pg s produkční schema.sql** (round-trip byte-identical, foreign-owner 0 rows, UPSERT replace OK).
+
+**Odmítnuto:** Service-key mezi Monolitem a Portal/Registry (uživatelský JWT je správný nosič identity — owner-scope musí zůstat per-user).
+
+**Co dál:** LIVE po deployi Monolit-backendu: modal ukáže projekty + import Turnova projde. Sledovat další mrtvé anonymní server-to-server volání po Sprint A (grep `fetch(` bez auth headers napříč kiosky — kandidát na mini-audit).
+
+
 ## 2026-07-08 — Session: Registry original-file cross-device («Vrátit do původního» z jiného prohlížeče)
 
 **Rozhodnuto:** Alexandrův nález — export «Vrátit do původního» (bit-identický zápis cen/skupin do importovaného .xlsx) fungoval jen v prohlížeči, kde proběhl import (originál žil pouze v IndexedDB `rozpocet-registry-files`). Řešení = **serverová kopie per-user v registry-backendu**: nová tabulka `registry_files` (BYTEA, PK = project_id, FK ON DELETE CASCADE na registry_projects, ownership odvozen z parent řádku) + 3 routy `PUT/GET/GET-meta /api/registry/projects/:id/original-file` (requireAuth + owner-scoped `callerOwnsProject`, route-scoped `express.raw` 30 MB, filename v URL-encoded query paramu, CORS `exposedHeaders: X-File-Name`). Frontend `originalFileStore` = dvouvrstvý cache: IndexedDB → lazy download z backendu (+ zpětné cache), upload fire-and-forget při importu (cap 25 MB), **self-healing** `ensureOriginalFileBackup` při výběru projektu (doplní backup souborů importovaných PŘED featurou — Alexandrův Turnov se srovná sám z prohlížeče 1). `canExportToOriginal` = lehký probe (lokál ‖ meta), žádný download kvůli badge. GCS zavržen (nová infra kvůli 1–10 MB souborům), rekonstrukce z dat nemožná (ztrácí formát = smysl funkce). +9 vitest → 209 registry testů, tsc+build clean, `node --check` server.js.
