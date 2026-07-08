@@ -27,6 +27,19 @@ const PORTAL_API = process.env.PORTAL_API_URL || 'https://stavagent-portal-backe
 const DEFAULTS = { crew_size: 4, wage_czk_ph: 398, shift_hours: 10, days: 0 };
 
 /**
+ * Headers for upstream (Portal / Registry backend) fetches, forwarding the
+ * caller's Bearer JWT. Both upstreams became requireAuth in Sprint A —
+ * anonymous server-to-server calls now 401 and the modal showed
+ * «Žádné projekty v Registry» even for users with projects.
+ */
+function forwardedAuthHeaders(req) {
+  const headers = { 'Content-Type': 'application/json' };
+  const auth = req.headers.authorization;
+  if (auth && auth.startsWith('Bearer ')) headers['Authorization'] = auth;
+  return headers;
+}
+
+/**
  * Determine Monolit subtype from item fields.
  *
  * Pure unit-based heuristics misclassify aggregate fills ("VÝPLŇ Z KAMENIVA
@@ -83,14 +96,13 @@ router.get('/projects', async (req, res) => {
     registry: { tried: false, ok: false, count: 0, error: null },
   };
 
-  // Helper: fetch Portal projects via public integration endpoint (no auth)
-  // Uses /api/integration/list-registry-projects which filters by kiosk_type='registry'
-  // intrinsically — no user-scoping, no auth required (cross-kiosk pattern).
+  // Helper: fetch Portal projects. The endpoint is requireAuth + owner-scoped
+  // since Sprint A — forward the caller's JWT or it 401s.
   const fetchPortalProjects = async () => {
     debug.portal.tried = true;
     try {
       const response = await fetch(`${PORTAL_API}/api/integration/list-registry-projects`, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: forwardedAuthHeaders(req),
         signal: AbortSignal.timeout(PORTAL_TIMEOUT),
       });
       if (!response.ok) {
@@ -119,12 +131,17 @@ router.get('/projects', async (req, res) => {
     }
   };
 
-  // Helper: fetch Registry projects directly (fallback)
+  // Helper: fetch Registry projects directly (fallback). The registry
+  // backend derives owner from the forwarded JWT; the legacy user_id
+  // query param is ignored server-side and kept only for log traceability.
   const fetchRegistryProjects = async () => {
     debug.registry.tried = true;
     try {
       const url = `${REGISTRY_API}/api/registry/projects?user_id=${encodeURIComponent(userId)}`;
-      const regRes = await fetch(url, { signal: AbortSignal.timeout(REGISTRY_TIMEOUT) });
+      const regRes = await fetch(url, {
+        headers: forwardedAuthHeaders(req),
+        signal: AbortSignal.timeout(REGISTRY_TIMEOUT),
+      });
       if (!regRes.ok) {
         debug.registry.error = `HTTP ${regRes.status}`;
         return [];
@@ -178,6 +195,13 @@ router.post('/', async (req, res) => {
     const { portal_project_id, project_name, source } = req.body;
     const portalUserId = req.user?.userId || null;
 
+    // Both upstream sources are requireAuth since Sprint A — an anonymous
+    // import would 401 on Portal AND Registry and end as a misleading
+    // «Project has no sheets». Fail fast with an actionable message.
+    if (!portalUserId) {
+      return res.status(401).json({ error: 'Přihlaste se v Portálu — import vyžaduje přihlášení' });
+    }
+
     if (!portal_project_id) {
       return res.status(400).json({ error: 'portal_project_id is required' });
     }
@@ -199,7 +223,7 @@ router.post('/', async (req, res) => {
     // Try Portal first (primary path)
     try {
       const response = await fetch(`${PORTAL_API}/api/integration/for-registry/${portal_project_id}`, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: forwardedAuthHeaders(req),
         signal: AbortSignal.timeout(PORTAL_TIMEOUT),
       });
       if (response.ok) {
@@ -218,6 +242,7 @@ router.post('/', async (req, res) => {
       const REGISTRY_API = process.env.REGISTRY_API_URL || 'https://rozpocet-registry-backend-1086027517695.europe-west3.run.app';
       try {
         const regRes = await fetch(`${REGISTRY_API}/api/registry/projects/${portal_project_id}`, {
+          headers: forwardedAuthHeaders(req),
           signal: AbortSignal.timeout(REGISTRY_TIMEOUT),
         });
         if (regRes.ok) {
@@ -225,6 +250,7 @@ router.post('/', async (req, res) => {
           const regProject = regData.project;
           if (regProject) {
             const sheetsRes = await fetch(`${REGISTRY_API}/api/registry/projects/${portal_project_id}/sheets`, {
+              headers: forwardedAuthHeaders(req),
               signal: AbortSignal.timeout(REGISTRY_TIMEOUT),
             });
             if (sheetsRes.ok) {
@@ -235,6 +261,7 @@ router.post('/', async (req, res) => {
                 (sheetsData.sheets || []).map(async (sheet) => {
                   try {
                     const itemsRes = await fetch(`${REGISTRY_API}/api/registry/sheets/${sheet.sheet_id}/items`, {
+                      headers: forwardedAuthHeaders(req),
                       signal: AbortSignal.timeout(REGISTRY_TIMEOUT),
                     });
                     if (itemsRes.ok) {
