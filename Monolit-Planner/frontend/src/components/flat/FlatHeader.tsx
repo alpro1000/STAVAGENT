@@ -3,6 +3,7 @@
  */
 
 import { PanelLeftOpen, LogOut, AlertCircle, ExternalLink } from 'lucide-react';
+import { getAuthToken } from '../../services/api';
 import { useUI } from '../../context/UIContext';
 import { useProjects } from '../../hooks/useProjects';
 import { useState, useEffect } from 'react';
@@ -15,7 +16,7 @@ export default function FlatHeader() {
   const selectedObj = projects.find(p => p.bridge_id === selectedProjectId);
 
   useEffect(() => {
-    const token = localStorage.getItem('auth_token');
+    const token = getAuthToken();
     if (!token) return;
     fetch('/api/auth/me', { headers: { Authorization: `Bearer ${token}` } })
       .then(res => { if (!res.ok) setTokenExpired(true); })
@@ -24,6 +25,10 @@ export default function FlatHeader() {
 
   const handleLogout = () => {
     localStorage.removeItem('auth_token');
+    // Also expire the cross-subdomain Portal cookie — otherwise the cookie
+    // fallback in getAuthToken() logs the user right back in on reload.
+    document.cookie = 'stavagent_jwt=; path=/; domain=.stavagent.cz; max-age=0; samesite=lax';
+    document.cookie = 'stavagent_jwt=; path=/; max-age=0; samesite=lax';
     window.location.reload();
   };
 
@@ -64,7 +69,7 @@ export default function FlatHeader() {
             <AlertCircle size={13} /> Token vypršel
           </span>
         )}
-        {localStorage.getItem('auth_token') && (
+        {getAuthToken() && (
           <button className="sb__icon-btn" onClick={handleLogout} title="Odhlásit">
             <LogOut size={15} />
           </button>
