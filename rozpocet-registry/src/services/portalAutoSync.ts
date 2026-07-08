@@ -26,6 +26,28 @@ const syncTimers = new Map<string, ReturnType<typeof setTimeout>>();
 // Prevent parallel in-flight syncs for the same project (avoids duplicate auto-link calls)
 const syncInProgress = new Set<string>();
 
+// ── Failure backoff (outage guard, 2026-07-08) ──────────────────────────────
+// When a sync fails/times out, hold off further AUTO syncs of that project
+// for a while. Without this, the 3s-debounced subscriber kept re-firing
+// multi-MB pushes at an already-choking Portal — the retry storm held DB
+// connections and helped starve max_connections=25 into a full outage.
+const SYNC_BACKOFF_MS = 5 * 60_000;
+const syncBackoffUntil = new Map<string, number>();
+
+/** True when auto-sync of this project is paused after a recent failure. */
+export function isSyncBackedOff(projectId: string): boolean {
+  const until = syncBackoffUntil.get(projectId);
+  return until != null && Date.now() < until;
+}
+
+function noteSyncFailure(projectId: string): void {
+  syncBackoffUntil.set(projectId, Date.now() + SYNC_BACKOFF_MS);
+}
+
+function noteSyncSuccess(projectId: string): void {
+  syncBackoffUntil.delete(projectId);
+}
+
 // Track portal project IDs for registry projects
 const portalProjectMap = new Map<string, string>();
 
@@ -141,6 +163,7 @@ export async function syncProjectToPortal(
     if (response.ok) {
       const data = await response.json();
       if (data.success && data.portal_project_id) {
+        noteSyncSuccess(project.id);
         portalProjectMap.set(project.id, data.portal_project_id);
         console.log(`[PortalAutoSync] Synced project "${project.projectName}" → Portal ${data.portal_project_id} (${data.items_imported} items)`);
 
@@ -153,6 +176,7 @@ export async function syncProjectToPortal(
         return data.portal_project_id;
       }
     } else {
+      noteSyncFailure(project.id);
       // Phase 4 (2026-04-15): Portal integration now returns structured
       // error bodies with {error, error_type, error_code, constraint}
       // for PG errors (409 conflict, 400 FK/missing-field, …). Parse
@@ -174,6 +198,7 @@ export async function syncProjectToPortal(
       }
     }
   } catch (error) {
+    noteSyncFailure(project.id);
     // Silent fail — don't block UI if Portal is down
     if (error instanceof DOMException && error.name === 'AbortError') {
       console.warn('[PortalAutoSync] Sync timeout — Portal may be sleeping');
@@ -216,6 +241,12 @@ export function debouncedSyncToPortal(
   if (existing) clearTimeout(existing);
 
   const timer = setTimeout(async () => {
+    // Backoff gate: a recent failure pauses AUTO syncs of this project for
+    // 5 min (manual pushes elsewhere still call syncProjectToPortal directly).
+    if (isSyncBackedOff(project.id)) {
+      console.log(`[PortalAutoSync] Skip "${project.projectName}" — backoff after recent sync failure`);
+      return;
+    }
     // Skip if another sync for this project is already in-flight (parallel timer race)
     if (syncInProgress.has(project.id)) return;
     syncInProgress.add(project.id);

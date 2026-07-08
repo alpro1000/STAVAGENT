@@ -24,6 +24,8 @@ interface RegistryProject {
 interface DebugInfo {
   portal?: { tried: boolean; ok: boolean; count: number; error: string | null };
   registry?: { tried: boolean; ok: boolean; count: number; error: string | null };
+  /** 'anonymous' = backend saw no Portal JWT — sources were not queried at all. */
+  reason?: string;
 }
 
 interface Props {
@@ -151,9 +153,22 @@ export default function ImportRegistryModal({ onClose }: Props) {
         ) : filtered.length === 0 ? (
           <div style={{ textAlign: 'center', padding: 24, color: 'var(--flat-text-secondary)' }}>
             <FolderOpen size={32} style={{ marginBottom: 8, opacity: 0.3 }} />
+            {debug?.reason === 'anonymous' ? (
+              <>
+                <p style={{ margin: '4px 0', fontWeight: 500, color: 'var(--flat-text)' }}>
+                  Nejste přihlášeni — import vyžaduje přihlášení přes Portál.
+                </p>
+                <p style={{ fontSize: 12, margin: '6px 0 0' }}>
+                  Otevřete Kalkulátor z Portálu (www.stavagent.cz/portal → dlaždice
+                  Kalkulátor, nebo «Otevřít» u propojeného projektu) — tím se předá
+                  přihlašovací token. Token platí 24 hodin.
+                </p>
+              </>
+            ) : (
             <p style={{ margin: '4px 0' }}>
               {search ? 'Žádný projekt nevyhovuje filtru.' : 'Žádné projekty v Registry.'}
             </p>
+            )}
             {!search && sourcesTried && (
               <p style={{ fontSize: 10, color: 'var(--stone-400)', marginTop: 8, fontFamily: 'monospace' }}>
                 {sourcesTried}

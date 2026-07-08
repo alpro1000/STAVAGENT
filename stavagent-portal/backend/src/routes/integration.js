@@ -536,6 +536,38 @@ router.post('/import-from-registry', requireAuth, async (req, res) => {
 
     await client.query('BEGIN');
 
+    // ── Guard rails (P1 root cause, outage 2026-07-08) ──────────────────
+    // A stuck registry sync (thousands of row upserts in ONE transaction,
+    // client aborts after 30 s but the server keeps grinding) used to hold
+    // its pool connection + row locks for minutes. With max_connections=25
+    // on stavagent-db, two concurrent big syncs starved EVERY Portal route
+    // — auth included — into connection-timeout 500s. SET LOCAL scopes the
+    // limits to this transaction only.
+    await client.query(`SET LOCAL statement_timeout = '20s'`);
+    await client.query(`SET LOCAL lock_timeout = '5s'`);
+    await client.query(`SET LOCAL idle_in_transaction_session_timeout = '30s'`);
+
+    // One sync per project at a time: concurrent pushes of the SAME
+    // project (typically two browsers with auto-sync) otherwise queue on
+    // identical row locks. Advisory xact-lock releases automatically on
+    // COMMIT/ROLLBACK. Fail fast with 409 — the Registry client retries
+    // via its own debounce/backoff.
+    const syncLockKey = registry_project_id || portal_project_id;
+    if (syncLockKey) {
+      const lock = await client.query(
+        'SELECT pg_try_advisory_xact_lock(hashtext($1)) AS locked',
+        [String(syncLockKey)]
+      );
+      if (!lock.rows[0].locked) {
+        await client.query('ROLLBACK');
+        return res.status(409).json({
+          success: false,
+          error: 'Sync of this project is already in progress',
+          error_type: 'sync_in_progress',
+        });
+      }
+    }
+
     // Create or reuse portal project
     let projectId = portal_project_id;
 
