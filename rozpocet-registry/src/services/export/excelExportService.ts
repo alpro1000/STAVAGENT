@@ -16,6 +16,7 @@ import type { Project } from '../../types/project';
 import type { TOVData } from '../../types/unified';
 import { generateKrosPopis } from '../../components/tov/FormworkRentalSection';
 import { getOriginalFile, hasOriginalFile } from '../originalFileStore';
+import { unlockWorkbook, addRecapHyperlinks } from '../excel/originalFileTools';
 
 /**
  * Exportable project (compatibility type for export)
@@ -1067,9 +1068,14 @@ function updateDimension(doc: Document, newColLetter: string): void {
 /**
  * Export original file with skupiny column added.
  * Same as exportToOriginalFile but appends a "Skupina" column after the last data column.
+ * Options (2026-07-08): `unlock` strips sheet protection from every sheet,
+ * `recapLinks` adds internal hyperlinks from the recap sheet to object
+ * sheets — so one download carries ceny + skupiny + editable sheets +
+ * clickable rekapitulace.
  */
 export async function exportToOriginalFileWithSkupiny(
-  project: Project
+  project: Project,
+  options: { unlock?: boolean; recapLinks?: boolean } = {}
 ): Promise<ReturnToOriginalResult> {
   const result: ReturnToOriginalResult = {
     success: false,
@@ -1188,6 +1194,15 @@ export async function exportToOriginalFileWithSkupiny(
       zip.file(fullPath, patchedXml);
     }
 
+    // Post-transforms on the assembled zip (order matters: unlock first so
+    // the hyperlink styling never fights a protection element)
+    if (options.unlock) {
+      await unlockWorkbook(zip);
+    }
+    if (options.recapLinks) {
+      await addRecapHyperlinks(zip);
+    }
+
     // Generate and download
     const blob = await zip.generateAsync({
       type: 'blob',
@@ -1196,7 +1211,10 @@ export async function exportToOriginalFileWithSkupiny(
       compressionOptions: { level: 6 },
     });
 
-    const fileName = originalFile.fileName.replace(/\.[^.]+$/, '') + '_skupiny.xlsx';
+    const suffix = '_skupiny'
+      + (options.unlock ? '_odemceno' : '')
+      + (options.recapLinks ? '_odkazy' : '');
+    const fileName = originalFile.fileName.replace(/\.[^.]+$/, '') + suffix + '.xlsx';
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;

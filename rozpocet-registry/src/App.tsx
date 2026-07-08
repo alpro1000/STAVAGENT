@@ -821,6 +821,15 @@ function App() {
     }
   };
 
+  const handleExportToOriginalFull = async () => {
+    if (!selectedProject) return;
+    const result = await exportToOriginalFileWithSkupiny(selectedProject, { unlock: true, recapLinks: true });
+    if (!result.success) {
+      console.error('Export to original (full) failed:', result.errors);
+      alert(`Chyba: ${result.errors.join('\n')}`);
+    }
+  };
+
   const handleDownloadUnlocked = async () => {
     if (!selectedProject) return;
     try {
@@ -908,6 +917,7 @@ function App() {
             onExportToOriginalWithSkupiny={handleExportToOriginalWithSkupiny}
             onDownloadUnlocked={handleDownloadUnlocked}
             onDownloadUnlockedWithLinks={handleDownloadUnlockedWithLinks}
+            onExportToOriginalFull={handleExportToOriginalFull}
             onImport={() => setIsImportModalOpen(true)}
             onEditMapping={() => {
               if (selectedProject) {
