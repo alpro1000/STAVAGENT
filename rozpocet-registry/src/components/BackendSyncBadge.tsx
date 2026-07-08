@@ -62,12 +62,15 @@ function visualFor(status: BackendSyncStatus, lastError: string | null, pendingN
       };
     case 'offline':
       return {
-        label: 'Offline',
+        // Two distinct offline causes share this state: backend unreachable
+        // vs user not logged in to Portal — lastError carries which one.
+        label: lastError?.includes('Nepřihlášen') ? 'Jen lokálně' : 'Offline',
         icon: <CloudOff size={13} />,
         bg: '#fef2f2',
         border: '#fecaca',
         color: '#991b1b',
-        title: 'Backend není dostupný. Data se ukládají pouze lokálně v prohlížeči.',
+        title: lastError
+          || 'Backend není dostupný. Data se ukládají pouze lokálně v prohlížeči.',
       };
     case 'error':
       return {

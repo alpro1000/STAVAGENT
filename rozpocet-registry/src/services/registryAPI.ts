@@ -4,9 +4,9 @@
  */
 
 import { REGISTRY_API_URL } from '../utils/config.js';
+import { portalAuthHeader } from './portalAuth';
 
 const API_URL = REGISTRY_API_URL;
-const USER_ID = 1; // Default user for now (no auth)
 const FETCH_TIMEOUT = 30000; // 30s timeout — was 8 s but Cloud Run cold-starts on the
                              // registry backend regularly exceeded that, causing user-visible
                              // bugs (DELETEs that never reach the backend → projects re-appear
@@ -43,12 +43,22 @@ export function resetBackendCache(): void {
   _lastCheck = 0;
 }
 
-/** Fetch with timeout */
+/** Fetch with timeout + Portal JWT.
+ *
+ * The registry backend requires a Bearer token on every /api/registry
+ * route (owner_id is derived from the JWT — isolation hotfix 2026-05).
+ * Attaching it HERE, in the single shared fetch wrapper, guarantees no
+ * call site can forget it — the exact bug that left the PostgreSQL sync
+ * silently 401-ing while all project data lived only in IndexedDB. */
 async function fetchWithTimeout(url: string, options: RequestInit = {}): Promise<Response> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
   try {
-    const res = await fetch(url, { ...options, signal: controller.signal });
+    const res = await fetch(url, {
+      ...options,
+      headers: { ...(options.headers || {}), ...portalAuthHeader() },
+      signal: controller.signal,
+    });
     return res;
   } finally {
     clearTimeout(timeout);
@@ -112,7 +122,8 @@ class RegistryAPI {
   // ============ PROJECTS ============
   
   async getProjects(): Promise<RegistryProject[]> {
-    const res = await fetchWithTimeout(`${API_URL}/api/registry/projects?user_id=${USER_ID}`);
+    // owner comes from the verified JWT — the backend ignores user_id params
+    const res = await fetchWithTimeout(`${API_URL}/api/registry/projects`);
     if (!res.ok) throw new Error('Failed to fetch projects');
     const data = await res.json();
     return data.projects || [];
@@ -126,7 +137,6 @@ class RegistryAPI {
         project_id: projectId,
         project_name: name,
         portal_project_id: portalProjectId,
-        user_id: USER_ID,
       }),
     });
     if (!res.ok) throw new Error('Failed to create project');

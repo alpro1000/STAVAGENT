@@ -10,6 +10,7 @@
  */
 
 import { isBackendAvailable, registryAPI } from './registryAPI';
+import { isPortalLoggedIn, portalAuthHeader } from './portalAuth';
 import { tombstoneProject, isTombstoned, dropTombstoned, forgetTombstone } from './tombstoneStore';
 import {
   serializeClassification,
@@ -98,13 +99,14 @@ if (typeof window !== 'undefined') {
           || 'https://rozpocet-registry-backend-1086027517695.europe-west3.run.app'}/api/registry/projects`;
         fetch(url, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          // Backend derives owner_id from the JWT — without the Bearer
+          // header this keepalive flush 401s and saves nothing.
+          headers: { 'Content-Type': 'application/json', ...portalAuthHeader() },
           keepalive: true,
           body: JSON.stringify({
             project_id: p.id,
             project_name: p.projectName,
             portal_project_id: p.portalLink?.portalProjectId,
-            user_id: 1,
           }),
         }).catch(() => {});
       } catch {
@@ -119,6 +121,15 @@ if (typeof window !== 'undefined') {
  * Returns merged projects array (backend projects that aren't in local store).
  */
 export async function loadFromBackend(): Promise<Project[]> {
+  // Backend routes require a Portal JWT — without the cross-subdomain
+  // cookie every call 401s, so be honest up front instead of surfacing
+  // a generic sync error.
+  if (!isPortalLoggedIn()) {
+    console.log('[BackendSync] Not logged in to Portal — data stays in this browser only');
+    setState({ status: 'offline', lastError: 'Nepřihlášen do Portálu — data pouze v tomto prohlížeči' });
+    return [];
+  }
+
   const available = await isBackendAvailable();
   if (!available) {
     console.log('[BackendSync] Backend not available — using local storage only');
@@ -248,6 +259,14 @@ export async function pushProjectToBackend(project: Project): Promise<void> {
   // The tombstone outranks any pending push — skip silently.
   if (isTombstoned(project.id)) {
     console.log(`[BackendSync] Skip push for tombstoned project "${project.projectName}" (${project.id})`);
+    return;
+  }
+
+  // No Portal JWT → the backend would 401 every request. Honest status
+  // instead of a scary error; sync resumes automatically once the user
+  // logs in to Portal (cookie appears) and the next change fires.
+  if (!isPortalLoggedIn()) {
+    setState({ status: 'offline', lastError: 'Nepřihlášen do Portálu — data pouze v tomto prohlížeči' });
     return;
   }
 
