@@ -11,13 +11,15 @@ import { SearchResults } from './components/search/SearchResults';
 import { PriceRequestPanel } from './components/priceRequest/PriceRequestPanel';
 import { MonolitCompareDrawer } from './components/comparison/MonolitCompareDrawer';
 import { startPolling, stopPolling, refreshNow, type PollState, type ComparisonItem } from './services/monolithPolling';
-import { useRegistryStore } from './stores/registryStore';
+import { useRegistryStore, waitForRegistryHydration } from './stores/registryStore';
 import { loadFromBackend, mergeProjects, debouncedPushToBackend, pushProjectToBackend } from './services/backendSync';
 import { setSuppressAutoSync } from './stores/registryStore';
+import { findExistingProjectForPortalImport, normalizePortalRowRole } from './services/portalImportDedupe';
 import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
 import { exportAndDownload, exportFullProjectAndDownload, exportToOriginalFile, exportToOriginalFileWithSkupiny, canExportToOriginal } from './services/export/excelExportService';
 import { mapUnifiedToItems } from './services/sync/unifiedMapper';
 import type { TOVData } from './types/unified';
+import type { Project } from './types';
 import { RibbonLayout } from './layout/RibbonLayout';
 import { PORTAL_API_URL } from './utils/config.js';
 import { portalAuthHeader } from './services/portalAuth';
@@ -142,6 +144,18 @@ function buildTOVFromPortalItem(item: Record<string, unknown>): TOVData | null {
   };
 }
 
+/**
+ * Resolves after the startup backend sync (loadFromBackend + merge) has
+ * finished — successfully or not. Portal-open import paths await this
+ * (plus IndexedDB rehydration) BEFORE their dedupe check, so a project
+ * already restored from the registry backend is re-selected instead of
+ * re-imported as a flattened duplicate.
+ */
+let resolveBackendSyncReady: () => void = () => {};
+const backendSyncReady = new Promise<void>((resolve) => {
+  resolveBackendSyncReady = resolve;
+});
+
 function App() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [reimportProject, setReimportProject] = useState<typeof projects[0] | undefined>(undefined);
@@ -205,38 +219,59 @@ function App() {
     if (backendSyncDone.current) return;
     backendSyncDone.current = true;
 
-    loadFromBackend().then((backendProjects) => {
-      const { projects: localProjects } = useRegistryStore.getState();
+    (async () => {
+      try {
+        // Wait for IndexedDB rehydration BEFORE merging — a setState made
+        // pre-hydration gets clobbered when the persisted snapshot lands.
+        await waitForRegistryHydration();
+        const backendProjects = await loadFromBackend();
+        const { projects: localProjects } = useRegistryStore.getState();
 
-      // 1. Merge backend → local: add backend projects not already local
-      if (backendProjects.length > 0) {
-        const merged = mergeProjects(localProjects, backendProjects);
-        if (merged.length > localProjects.length) {
-          setSuppressAutoSync(true);
-          const localIds = new Set(localProjects.map(p => p.id));
-          for (const p of merged) {
-            if (!localIds.has(p.id)) {
-              useRegistryStore.getState().addProject(p);
+        // 1. Merge backend → local: add backend projects not already local
+        if (backendProjects.length > 0) {
+          const merged = mergeProjects(localProjects, backendProjects);
+          if (merged.length > localProjects.length) {
+            setSuppressAutoSync(true);
+            const localIds = new Set(localProjects.map(p => p.id));
+            for (const p of merged) {
+              if (!localIds.has(p.id)) {
+                useRegistryStore.getState().addProject(p);
+              }
             }
+            setSuppressAutoSync(false);
           }
-          setSuppressAutoSync(false);
         }
-      }
 
-      // 2. Push local → backend: for any local project not in backend
-      // (ensures IndexedDB-only data reaches PostgreSQL on next session load)
-      const backendIds = new Set(backendProjects.map(p => p.id));
-      const localOnly = localProjects.filter(p => !backendIds.has(p.id));
-      if (localOnly.length > 0) {
-        console.log(`[App] Pushing ${localOnly.length} local-only projects to backend...`);
-        // Push sequentially (not parallel) to avoid overwhelming the backend
-        (async () => {
-          for (const project of localOnly) {
+        // Merge done — dedupe has everything it needs. Unblock Portal-open
+        // NOW: the catch-up pushes below can take minutes on big projects.
+        resolveBackendSyncReady();
+
+        // 2. Push local → backend: for any local project the backend lacks
+        // OR holds only partially (an aborted push used to persist e.g.
+        // 28 of 68 sheets and never retry, because this diff only looked
+        // at project ids). Compare sheet/item counts so a fuller local
+        // copy re-pushes and completes the backend one.
+        const backendById = new Map(backendProjects.map(p => [p.id, p]));
+        const countItems = (p: Project) => p.sheets.reduce((s, sh) => s + sh.items.length, 0);
+        const needsPush = localProjects.filter(p => {
+          const b = backendById.get(p.id);
+          if (!b) return true;
+          return p.sheets.length > b.sheets.length || countItems(p) > countItems(b);
+        });
+        if (needsPush.length > 0) {
+          console.log(`[App] Pushing ${needsPush.length} local projects missing/incomplete on backend...`);
+          // Push sequentially (not parallel) to avoid overwhelming the backend
+          for (const project of needsPush) {
             await pushProjectToBackend(project).catch(() => {});
           }
-        })();
+        }
+      } catch {
+        // loadFromBackend already logs; never block Portal-open on this
+      } finally {
+        // Unblock Portal-open dedupe even when backend is unreachable
+        resolveBackendSyncReady();
       }
-    }).catch(() => {});
+    })();
   }, []);
 
   // Backend sync: push changes to PostgreSQL on project updates
@@ -276,6 +311,9 @@ function App() {
     const params = new URLSearchParams(window.location.search);
     const source = params.get('source');
     const portalProjectId = params.get('portal_project');
+    // Original Registry project id — Portal's «Otevřít» sends it as
+    // ?project_id= (kiosk_links.kiosk_project_id). Primary dedupe key.
+    const registryProjectIdParam = params.get('project_id');
     const portalFileId = params.get('portal_file_id');
     const portalApi = params.get('portal_api');
     const deepLinkInstanceId = params.get('position_instance_id');
@@ -283,9 +321,10 @@ function App() {
     // Deep-link: scroll to specific position by position_instance_id
     if (deepLinkInstanceId) {
       window.history.replaceState({}, '', window.location.pathname);
-      // Find item across all projects/sheets and select it
+      // Find item across all projects/sheets and select it — read fresh
+      // store state, the render-time `projects` is pre-hydration (empty)
       setTimeout(() => {
-        for (const project of projects) {
+        for (const project of useRegistryStore.getState().projects) {
           for (const sheet of project.sheets) {
             const item = sheet.items.find(i => i.position_instance_id === deepLinkInstanceId);
             if (item) {
@@ -319,7 +358,7 @@ function App() {
 
     // Legacy Monolit-export flow: portal_project (old integration endpoint)
     if (portalProjectId) {
-      loadFromPortal(portalProjectId);
+      loadFromPortal(portalProjectId, registryProjectIdParam);
       return;
     }
 
@@ -408,8 +447,12 @@ function App() {
       const data = await response.json();
       if (!data.success) throw new Error(data.error || 'Failed to load file');
 
-      // Deduplicate: if already imported, re-select
-      const existingProject = projects.find(p => p.id === portalFileId);
+      // Deduplicate: if already imported, re-select. Wait for IndexedDB
+      // rehydration + backend merge and read FRESH state — the render-time
+      // `projects` closure is empty at mount (same bug as loadFromPortal).
+      await waitForRegistryHydration();
+      await backendSyncReady;
+      const existingProject = useRegistryStore.getState().projects.find(p => p.id === portalFileId);
       if (existingProject) {
         setSelectedProject(existingProject.id);
         return;
@@ -482,11 +525,37 @@ function App() {
   };
 
   // Load project from Portal via legacy Monolit-export integration
-  const loadFromPortal = async (portalProjectId: string) => {
+  const loadFromPortal = async (portalProjectId: string, registryProjectIdParam?: string | null) => {
     // Clean URL params immediately so page refresh doesn't re-trigger import
     window.history.replaceState({}, '', window.location.pathname);
 
     try {
+      // --- Readiness gate (duplicate-on-every-open root cause) ---
+      // The dedupe below used to compare against the render-time
+      // `projects` closure, which is ALWAYS empty: the store rehydrates
+      // from IndexedDB asynchronously, and the backend merge finishes
+      // even later. Every Portal open therefore re-imported a flattened
+      // copy. Wait for both, then read FRESH state at decision time.
+      await waitForRegistryHydration();
+      await backendSyncReady;
+
+      // Pre-fetch dedupe: if the project is already local (by the original
+      // Registry id from ?project_id=, or by portalLink), select it and
+      // skip the Portal fetch entirely — no re-import, no alert.
+      const preMatch = findExistingProjectForPortalImport(
+        useRegistryStore.getState().projects,
+        { registryProjectId: registryProjectIdParam, portalProjectId },
+      );
+      if (preMatch) {
+        setSelectedProject(preMatch.id);
+        // (Re-)link so a backend-restored copy whose portal_project_id was
+        // NULL in PostgreSQL gets its badge + sync back. Preserve the
+        // stored portal name — we skipped the fetch that would carry it.
+        linkToPortal(preMatch.id, portalProjectId, preMatch.portalLink?.portalProjectName);
+        console.log(`[Portal Import] Re-selected existing project "${preMatch.projectName}" (${preMatch.id}) — no re-import`);
+        return; // Preserve hierarchy + skupiny — do NOT re-import
+      }
+
       const PORTAL_API = PORTAL_API_URL;
       // Auth wiring (PR-1 of cross-subdomain auth fix series). The
       // existing `credentials: 'include'` only attaches the cookie —
@@ -509,15 +578,18 @@ function App() {
 
       // --- Deduplicate: if a project with this Portal ID already exists, just re-select it ---
       // This prevents skupiny and other local edits from being wiped on repeated portal opens.
-      // Match either by direct id (when Portal echoes the original Registry id back) OR by
-      // an existing portalLink — without the second branch, every project that was first
-      // imported as Excel and then synced to Portal lands here with mismatching ids
-      // (Registry uses its own UUID, `portalProject.id` is the `portal_project_id` returned
-      // by /for-registry/), so addProject() below silently created a second copy with the
-      // classification dropped (Portal's `for-registry` payload echoes only kod/popis/cena/
-      // skupina/row_role — popisDetail/parentItemId/_rawCells/sectionId never make the trip).
-      const existingProject = projects.find(p =>
-        p.id === portalProject.id || p.portalLink?.portalProjectId === portalProjectId
+      // Re-checked post-fetch (fresh state again — time passed) and extended with
+      // `portalProject.id`: the id under which a previous buggy re-import stored its
+      // duplicate. A re-import here permanently flattens hierarchy (Portal's
+      // `for-registry` payload echoes only kod/popis/cena/skupina/row_role —
+      // popisDetail/parentItemId/_rawCells/sectionId never make the trip).
+      const existingProject = findExistingProjectForPortalImport(
+        useRegistryStore.getState().projects,
+        {
+          registryProjectId: registryProjectIdParam,
+          portalProjectId,
+          portalEchoProjectId: portalProject.id,
+        },
       );
       if (existingProject) {
         setSelectedProject(existingProject.id);
@@ -538,6 +610,10 @@ function App() {
           projectId: portalProject.id,
           items: sheet.items.map((item: any) => ({
             ...item,
+            // Portal echoes snake_case `row_role`; the UI reads `rowRole`.
+            // Map it so even this fallback import keeps at least the role
+            // (parent links / detail lines are not in the echo at all).
+            rowRole: normalizePortalRowRole(item.rowRole ?? item.row_role),
             // Keep Portal position_instance_id for cross-kiosk linking
             position_instance_id: item.position_instance_id || null,
             // Normalise source so cascade-sort (source.rowStart) doesn't produce NaN

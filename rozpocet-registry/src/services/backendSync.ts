@@ -20,14 +20,16 @@ import {
 import type { Project, Sheet, ParsedItem } from '../types';
 
 let _syncInProgress = false;
-let _syncTimer: ReturnType<typeof setTimeout> | null = null;
+// Per-project debounce timers. A single shared timer meant the last-edited
+// project silently cancelled the pending push of every other project.
+const _syncTimers = new Map<string, ReturnType<typeof setTimeout>>();
 // 2026-04-15: reduced from 5000 → 2000 ms. 5s was long enough that
 // users closing the tab after an import lost everything. 2s is still
 // plenty of debounce for keystroke-level edits but survives quick
 // close-tab patterns.
 const SYNC_DEBOUNCE_MS = 2000;
-/** Pending project to flush on beforeunload. */
-let _pendingProject: Project | null = null;
+/** Pending projects to flush on beforeunload (latest snapshot per id). */
+const _pendingProjects = new Map<string, Project>();
 
 // ─── Phase 3 (2026-04-15): sync status pub/sub ─────────────────────────────
 //
@@ -90,11 +92,10 @@ export function subscribeBackendSync(cb: Listener): () => void {
 // header here and rely on the next session load to re-push the rest.
 if (typeof window !== 'undefined') {
   window.addEventListener('beforeunload', () => {
-    if (_pendingProject) {
+    for (const p of _pendingProjects.values()) {
       // Fire keepalive POST directly — skip pushProjectToBackend because
       // it's async and won't complete before the tab dies.
       try {
-        const p = _pendingProject;
         const url = `${(import.meta as any).env?.VITE_REGISTRY_API_URL
           || 'https://rozpocet-registry-backend-1086027517695.europe-west3.run.app'}/api/registry/projects`;
         fetch(url, {
@@ -248,10 +249,59 @@ export async function loadFromBackend(): Promise<Project[]> {
 }
 
 /**
+ * Push one sheet (UPSERT sheet row + bulk-UPSERT its items) with a single
+ * retry after a short pause — Cloud Run cold-start timeouts are transient
+ * and used to abort the WHOLE multi-sheet push mid-way, leaving a partial
+ * backend copy (e.g. 28 of 68 sheets) that never completed.
+ */
+const SHEET_RETRY_DELAY_MS = 2000;
+
+async function pushSheetToBackend(projectId: string, sheet: Sheet, order: number): Promise<void> {
+  // Pack the row-classifier output (rowRole, parentItemId, sectionId,
+  // _rawCells, popisDetail, originalTyp, …) into the `sync_metadata`
+  // JSON column so a localStorage wipe or cross-device load can
+  // reconstruct hierarchy on the next pull.
+  const bulkItems = sheet.items.map((item, idx) => ({
+    item_id: item.id,
+    kod: item.kod || '',
+    popis: item.popis || '',
+    mnozstvi: item.mnozstvi || 0,
+    mj: item.mj || '',
+    cena_jednotkova: item.cenaJednotkova ?? undefined,
+    cena_celkem: item.cenaCelkem ?? undefined,
+    item_order: idx,
+    skupina: item.skupina || undefined,
+    sync_metadata: serializeClassification(item) ?? undefined,
+  }));
+
+  const attempt = async () => {
+    // Both endpoints are UPSERTs (ON CONFLICT DO UPDATE), so a retry
+    // re-running the sheet POST after a mid-flight abort is safe.
+    await registryAPI.createSheet(projectId, sheet.name, order, sheet.id);
+    if (bulkItems.length > 0) {
+      await registryAPI.bulkCreateItems(sheet.id, bulkItems);
+    }
+  };
+
+  try {
+    await attempt();
+  } catch {
+    await new Promise((r) => setTimeout(r, SHEET_RETRY_DELAY_MS));
+    await attempt();
+  }
+}
+
+/**
  * Push a single project to the backend (full upsert: project + sheets + items).
  */
 export async function pushProjectToBackend(project: Project): Promise<void> {
-  if (_syncInProgress) return;
+  if (_syncInProgress) {
+    // A push is already in flight — re-arm instead of silently dropping
+    // this project's changes (the old early-return lost them until the
+    // next unrelated edit).
+    debouncedPushToBackend(project);
+    return;
+  }
 
   // Race guard: a debounced push that fired BEFORE the user clicked
   // delete (or fires after delete because Zustand re-emitted the
@@ -290,34 +340,28 @@ export async function pushProjectToBackend(project: Project): Promise<void> {
       project.id,
     );
 
-    // 2. Sync each sheet + its items. The sheet POST endpoint is also
-    //    UPSERT (ON CONFLICT DO UPDATE on sheet_id), so we can skip the
-    //    "fetch existing sheets" pre-check too.
+    // 2. Sync each sheet + its items, tolerating per-sheet failures.
+    //    One timeout used to throw out of this loop and silently drop
+    //    every remaining sheet — the backend then held a partial copy
+    //    forever. Now: retry once per sheet, keep going, and report
+    //    partial success honestly.
+    const failedSheets: string[] = [];
     for (let si = 0; si < project.sheets.length; si++) {
       const sheet = project.sheets[si];
-
-      await registryAPI.createSheet(project.id, sheet.name, si, sheet.id);
-
-      // Bulk upsert items. Pack the row-classifier output (rowRole,
-      // parentItemId, sectionId, _rawCells, popisDetail, originalTyp,
-      // …) into the `sync_metadata` JSON column so a localStorage wipe
-      // or cross-device load can reconstruct hierarchy on the next pull
-      // — pre-codec, those fields silently dropped on push.
-      if (sheet.items.length > 0) {
-        const bulkItems = sheet.items.map((item, idx) => ({
-          item_id: item.id,
-          kod: item.kod || '',
-          popis: item.popis || '',
-          mnozstvi: item.mnozstvi || 0,
-          mj: item.mj || '',
-          cena_jednotkova: item.cenaJednotkova ?? undefined,
-          cena_celkem: item.cenaCelkem ?? undefined,
-          item_order: idx,
-          skupina: item.skupina || undefined,
-          sync_metadata: serializeClassification(item) ?? undefined,
-        }));
-        await registryAPI.bulkCreateItems(sheet.id, bulkItems);
+      try {
+        await pushSheetToBackend(project.id, sheet, si);
+      } catch (err) {
+        failedSheets.push(sheet.name);
+        console.warn(`[BackendSync] Sheet "${sheet.name}" failed after retry:`, err);
       }
+    }
+
+    if (failedSheets.length > 0) {
+      const okCount = project.sheets.length - failedSheets.length;
+      const msg = `Uloženo částečně: ${okCount}/${project.sheets.length} listů — zbytek se doplní při další změně nebo příštím načtení`;
+      console.warn(`[BackendSync] Partial sync of "${project.projectName}": ${msg} (failed: ${failedSheets.join(', ')})`);
+      setState({ status: 'error', lastError: msg, pendingProjectName: null });
+      return;
     }
 
     console.log(`[BackendSync] Full sync: "${project.projectName}" (${project.sheets.length} sheets, ${project.sheets.reduce((s, sh) => s + sh.items.length, 0)} items)`);
@@ -347,19 +391,26 @@ export async function pushProjectToBackend(project: Project): Promise<void> {
  * quick close-tab doesn't lose the project header.
  */
 export function debouncedPushToBackend(project: Project): void {
-  _pendingProject = project;
+  _pendingProjects.set(project.id, project);
   // Phase 3: flip status to 'pending' so the UI shows "Čeká se na uložení…"
   // while the debounce timer is armed. Don't clobber 'syncing' / 'error'
   // states (a retry will reset them correctly on next push).
   if (_state.status !== 'syncing' && _state.status !== 'offline') {
     setState({ status: 'pending', pendingProjectName: project.projectName });
   }
-  if (_syncTimer) clearTimeout(_syncTimer);
-  _syncTimer = setTimeout(() => {
+  const existing = _syncTimers.get(project.id);
+  if (existing) clearTimeout(existing);
+  _syncTimers.set(project.id, setTimeout(() => {
+    _syncTimers.delete(project.id);
     pushProjectToBackend(project)
-      .then(() => { _pendingProject = null; })
+      .then(() => {
+        // Clear only if no newer snapshot got queued meanwhile
+        if (_pendingProjects.get(project.id) === project) {
+          _pendingProjects.delete(project.id);
+        }
+      })
       .catch(() => {});
-  }, SYNC_DEBOUNCE_MS);
+  }, SYNC_DEBOUNCE_MS));
 }
 
 /**
