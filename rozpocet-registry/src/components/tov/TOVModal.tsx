@@ -410,7 +410,7 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
                 <div className="text-sm">
                   <span className="text-text-secondary">Celkový náklad TOV: </span>
                   <span className="font-bold text-accent-primary">
-                    {calculatedTotals.totalCost.toLocaleString('cs-CZ')} Kč
+                    {calculatedTotals.totalCost.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                   </span>
                   {calculatedTotals.quantity > 1 && (
                     <span className="ml-3 text-text-muted">
@@ -465,22 +465,22 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
               {/* Price breakdown */}
               <div className="flex flex-wrap gap-4 mt-2 text-xs text-text-muted">
                 {calculatedTotals.laborCost > 0 && (
-                  <span>Práce: {calculatedTotals.laborCost.toLocaleString('cs-CZ')} Kč</span>
+                  <span>Práce: {calculatedTotals.laborCost.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč</span>
                 )}
                 {calculatedTotals.machineryCost > 0 && (
-                  <span>Mechanizace: {calculatedTotals.machineryCost.toLocaleString('cs-CZ')} Kč</span>
+                  <span>Mechanizace: {calculatedTotals.machineryCost.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč</span>
                 )}
                 {calculatedTotals.materialsCost > 0 && (
-                  <span>Materiály: {calculatedTotals.materialsCost.toLocaleString('cs-CZ')} Kč</span>
+                  <span>Materiály: {calculatedTotals.materialsCost.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč</span>
                 )}
                 {calculatedTotals.formworkCost > 0 && (
                   <span className="text-blue-600">
-                    Nájem bednění: {calculatedTotals.formworkCost.toLocaleString('cs-CZ')} Kč
+                    Nájem bednění: {calculatedTotals.formworkCost.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                   </span>
                 )}
                 {calculatedTotals.pumpCost > 0 && (
                   <span className="text-blue-600">
-                    Betonočerpadlo: {calculatedTotals.pumpCost.toLocaleString('cs-CZ')} Kč
+                    Betonočerpadlo: {calculatedTotals.pumpCost.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                   </span>
                 )}
               </div>

@@ -341,7 +341,7 @@ export function PumpRentalSection({ pumpRental, onChange, itemQuantity, itemLabe
           )}
           {hasData && !isExpanded && (
             <span className="text-xs text-blue-500 font-mono ml-1">
-              {data.konecna_cena.toLocaleString('cs-CZ')} Kč
+              {data.konecna_cena.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
             </span>
           )}
         </div>
@@ -433,9 +433,9 @@ export function PumpRentalSection({ pumpRental, onChange, itemQuantity, itemLabe
               <div className="flex flex-col gap-1 justify-end">
                 <span className="text-[11px] text-text-muted">Doprava / přistavení</span>
                 <div className="bg-blue-50/50 rounded px-2 py-1.5 text-xs text-blue-600 font-medium tabular-nums text-center">
-                  {dopravaPerPristaveni.toLocaleString('cs-CZ')} Kč
+                  {dopravaPerPristaveni.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                   <span className="text-[10px] text-text-muted ml-1">
-                    ({data.pristaveni_fixed_czk.toLocaleString()} + {data.vzdalenost_km} km × {data.czk_km} × 2)
+                    ({data.pristaveni_fixed_czk.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} + {data.vzdalenost_km} km × {data.czk_km} × 2)
                   </span>
                 </div>
               </div>
@@ -653,7 +653,7 @@ export function PumpRentalSection({ pumpRental, onChange, itemQuantity, itemLabe
                           />
                         </td>
                         <td className="py-1 px-2 text-right font-medium tabular-nums bg-slate-50/50">
-                          {a.celkem.toLocaleString('cs-CZ')} Kč
+                          {a.celkem.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                         </td>
                         <td className="py-1 px-1">
                           <button onClick={() => removeAccessory(a.id)} className="p-1 text-red-400 hover:bg-red-500/10 rounded">
@@ -724,7 +724,7 @@ export function PumpRentalSection({ pumpRental, onChange, itemQuantity, itemLabe
                           />
                         </td>
                         <td className="py-1 px-2 text-right font-medium tabular-nums bg-slate-50/50">
-                          {s.celkem.toLocaleString('cs-CZ')} Kč
+                          {s.celkem.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                         </td>
                         <td className="py-1 px-1">
                           <button onClick={() => removeSurcharge(s.id)} className="p-1 text-red-400 hover:bg-red-500/10 rounded">
@@ -771,10 +771,10 @@ export function PumpRentalSection({ pumpRental, onChange, itemQuantity, itemLabe
               {data.celkem_doprava > 0 && (
                 <div className="flex items-start justify-between text-xs gap-2">
                   <span className="text-text-muted">
-                    Doprava ({data.celkem_pristaveni}× přist. × {dopravaPerPristaveni.toLocaleString('cs-CZ')} Kč):
+                    Doprava ({data.celkem_pristaveni}× přist. × {dopravaPerPristaveni.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč):
                   </span>
                   <span className="tabular-nums font-medium shrink-0">
-                    {data.celkem_doprava.toLocaleString('cs-CZ')} Kč
+                    {data.celkem_doprava.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                   </span>
                 </div>
               )}
@@ -783,10 +783,10 @@ export function PumpRentalSection({ pumpRental, onChange, itemQuantity, itemLabe
               {data.celkem_manipulace > 0 && (
                 <div className="flex items-start justify-between text-xs gap-2">
                   <span className="text-text-muted">
-                    Manipulace ({data.celkem_hodiny.toFixed(2)} h × {data.manipulace_czk_h.toLocaleString('cs-CZ')} Kč/h):
+                    Manipulace ({data.celkem_hodiny.toFixed(2)} h × {data.manipulace_czk_h.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč/h):
                   </span>
                   <span className="tabular-nums font-medium shrink-0">
-                    {data.celkem_manipulace.toLocaleString('cs-CZ')} Kč
+                    {data.celkem_manipulace.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                   </span>
                 </div>
               )}
@@ -798,7 +798,7 @@ export function PumpRentalSection({ pumpRental, onChange, itemQuantity, itemLabe
                     Příplatek za čerpání ({data.celkem_m3.toFixed(1)} m³ × {data.priplatek_czk_m3} Kč/m³):
                   </span>
                   <span className="tabular-nums font-medium shrink-0">
-                    {data.celkem_priplatek_m3.toLocaleString('cs-CZ')} Kč
+                    {data.celkem_priplatek_m3.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                   </span>
                 </div>
               )}
@@ -810,7 +810,7 @@ export function PumpRentalSection({ pumpRental, onChange, itemQuantity, itemLabe
                     {a.nazev || 'Příslušenství'} ({a.mnozstvi} {a.unit} × {a.czk_per_unit} Kč):
                   </span>
                   <span className="tabular-nums font-medium shrink-0">
-                    {a.celkem.toLocaleString('cs-CZ')} Kč
+                    {a.celkem.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                   </span>
                 </div>
               ))}
@@ -819,10 +819,10 @@ export function PumpRentalSection({ pumpRental, onChange, itemQuantity, itemLabe
               {data.surcharges.map(s => s.celkem > 0 && (
                 <div key={s.id} className="flex items-start justify-between text-xs gap-2">
                   <span className="text-text-muted">
-                    {s.nazev || 'Příplatek'} ({data.celkem_pristaveni}× × {s.czk_per_pristaveni.toLocaleString('cs-CZ')} Kč):
+                    {s.nazev || 'Příplatek'} ({data.celkem_pristaveni}× × {s.czk_per_pristaveni.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč):
                   </span>
                   <span className="tabular-nums font-medium shrink-0">
-                    {s.celkem.toLocaleString('cs-CZ')} Kč
+                    {s.celkem.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                   </span>
                 </div>
               ))}
@@ -831,7 +831,7 @@ export function PumpRentalSection({ pumpRental, onChange, itemQuantity, itemLabe
               <div className="border-t border-border-color/40 pt-2 mt-1 flex items-center justify-between">
                 <span className="text-sm font-bold text-blue-600">Konečná cena pumpy:</span>
                 <span className="text-sm font-bold text-blue-600 tabular-nums">
-                  {data.konecna_cena.toLocaleString('cs-CZ')} Kč
+                  {data.konecna_cena.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                 </span>
               </div>
               {data.celkem_m3 > 0 && (

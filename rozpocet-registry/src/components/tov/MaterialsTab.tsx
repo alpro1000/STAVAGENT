@@ -143,7 +143,7 @@ export function MaterialsTab({
                     />
                   </td>
                   <td className="py-2 px-3 text-right font-medium tabular-nums text-green-600">
-                    {(resource.totalCost || 0).toLocaleString('cs-CZ')} Kč
+                    {(resource.totalCost || 0).toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                   </td>
                   <td className="py-2 px-1 flex items-center gap-1">
                     {/* Link to Monolit for concrete materials */}
@@ -171,7 +171,7 @@ export function MaterialsTab({
               <tr className="bg-bg-tertiary/30">
                 <td colSpan={4} className="py-2 px-3 font-medium text-right">Celkem materiály:</td>
                 <td className="py-2 px-3 text-right font-bold tabular-nums text-green-600">
-                  {totalCost.toLocaleString('cs-CZ')} Kč
+                  {totalCost.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                 </td>
                 <td></td>
               </tr>

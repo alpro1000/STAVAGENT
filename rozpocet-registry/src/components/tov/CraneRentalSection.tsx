@@ -83,7 +83,7 @@ export function CraneRentalSection({ data, onChange }: Props) {
       >
         <span><Building2 size={14} className="inline" /> Jeřáb: {crane.manufacturer} {crane.model} ({crane.capacity_t}t)</span>
         <div className="flex items-center gap-2">
-          <span className="font-mono">{calc.total_czk.toLocaleString('cs-CZ')} Kč</span>
+          <span className="font-mono">{calc.total_czk.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč</span>
           {expanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
         </div>
       </button>
@@ -173,7 +173,7 @@ export function CraneRentalSection({ data, onChange }: Props) {
           {/* Total */}
           <div className="flex justify-end pt-2 border-t border-border-color/50">
             <span className="font-mono font-bold text-blue-700">
-              Celkem: {calc.total_czk.toLocaleString('cs-CZ')} Kč
+              Celkem: {calc.total_czk.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
             </span>
           </div>
         </div>

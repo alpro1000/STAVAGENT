@@ -49,7 +49,7 @@ export function TOVSummary({ data }: TOVSummaryProps) {
               </span>
               <span className="text-text-muted">|</span>
               <span className="font-medium tabular-nums">
-                {laborCost.toLocaleString('cs-CZ')} Kč
+                {laborCost.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
               </span>
             </div>
           )}
@@ -63,7 +63,7 @@ export function TOVSummary({ data }: TOVSummaryProps) {
               </span>
               <span className="text-text-muted">|</span>
               <span className="font-medium tabular-nums">
-                {machineryCost.toLocaleString('cs-CZ')} Kč
+                {machineryCost.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
               </span>
             </div>
           )}
@@ -77,7 +77,7 @@ export function TOVSummary({ data }: TOVSummaryProps) {
               </span>
               <span className="text-text-muted">|</span>
               <span className="font-medium tabular-nums">
-                {materialsCost.toLocaleString('cs-CZ')} Kč
+                {materialsCost.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
               </span>
             </div>
           )}
@@ -89,7 +89,7 @@ export function TOVSummary({ data }: TOVSummaryProps) {
               <span className="text-text-secondary">bednění</span>
               <span className="text-text-muted">|</span>
               <span className="font-medium tabular-nums text-blue-600">
-                {formworkCost.toLocaleString('cs-CZ')} Kč
+                {formworkCost.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
               </span>
             </div>
           )}
@@ -101,7 +101,7 @@ export function TOVSummary({ data }: TOVSummaryProps) {
               <span className="text-text-secondary">pumpa</span>
               <span className="text-text-muted">|</span>
               <span className="font-medium tabular-nums text-blue-600">
-                {pumpCost.toLocaleString('cs-CZ')} Kč
+                {pumpCost.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
               </span>
             </div>
           )}
@@ -113,7 +113,7 @@ export function TOVSummary({ data }: TOVSummaryProps) {
               <span className="text-text-secondary">jeřáb</span>
               <span className="text-text-muted">|</span>
               <span className="font-medium tabular-nums text-amber-600">
-                {craneCost.toLocaleString('cs-CZ')} Kč
+                {craneCost.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
               </span>
             </div>
           )}
@@ -125,7 +125,7 @@ export function TOVSummary({ data }: TOVSummaryProps) {
               <span className="text-text-secondary">doprava</span>
               <span className="text-text-muted">|</span>
               <span className="font-medium tabular-nums text-emerald-600">
-                {deliveryCost.toLocaleString('cs-CZ')} Kč
+                {deliveryCost.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
               </span>
             </div>
           )}
@@ -135,7 +135,7 @@ export function TOVSummary({ data }: TOVSummaryProps) {
         <div className="flex items-center gap-3">
           <span className="text-sm text-text-secondary">Celkem TOV:</span>
           <span className="text-lg font-bold tabular-nums text-accent-primary">
-            {totalCost.toLocaleString('cs-CZ')} Kč
+            {totalCost.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
           </span>
         </div>
       </div>
