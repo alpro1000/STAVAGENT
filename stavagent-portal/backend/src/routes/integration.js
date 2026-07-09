@@ -926,8 +926,8 @@ router.post('/import-from-registry', requireAuth, async (req, res) => {
         const ROW_TAIL = `,'registry',NOW(),'registry_import','registry_import',NOW(),NOW()`;
         const NCOL = 17;
         const rowParams = (entry) => [
-          uuidv4(),                                              // position_instance_id
-          `pos_${uuidv4()}`,                                     // position_id
+          entry.positionInstanceId || uuidv4(),                  // position_instance_id
+          entry.positionId || `pos_${uuidv4()}`,                 // position_id
           entry.dbObjectId,
           (entry.item.kod || '').toString().slice(0, 100),
           (entry.item.popis || '').toString(),
@@ -951,6 +951,13 @@ router.post('/import-from-registry', requireAuth, async (req, res) => {
           if (!entry.dbObjectId) {
             insertErrors.push({ registry_item_id: entry.registryItemId, kod: entry.item.kod, error: 'Missing object_id' });
           } else {
+            // Pre-generate stable ids so a row keeps the SAME position_instance_id
+            // across the bulk attempt and the per-item fallback. (Defensive: the
+            // bulk is rolled back to its SAVEPOINT on failure so regenerated ids
+            // wouldn't actually collide, but stable ids keep the fallback
+            // obviously correct against future refactors.)
+            entry.positionInstanceId = uuidv4();
+            entry.positionId = `pos_${uuidv4()}`;
             validInserts.push(entry);
           }
         }
