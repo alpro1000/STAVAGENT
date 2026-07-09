@@ -364,9 +364,11 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 **Odmítnuto:** Cpát planPassport výstup do SoupisTab (shape-mismatch — plán ≠ parsovaný soupis; vlastní viewer plánu = budoucí práce). Volat planPassport uvnitř `/passport/generate` (produkuje jiné schéma `ProjectPassport`, ne `tz-bridge-passport`, které planPassport čte — potřebovalo by half-B extrakci). Re-dump validovaného modelu (ztráta aliasů). Smazání `frontend/components/DocumentUpload.html` (stale duplikát, ale mimo scope).
 
-**Otevřené otázky:** LIVE po deployi CORE + Monolit-backend: (a) MCP `calculate_from_passport` proti reálnému Cloud Run enginu (golden = `example_SO202_zalmanov.json` → 9 prvků, 0 uncalculated); (b) SoupisTab se rozsvítí pro XLSX upload do «Analýza dokumentace» (datetime fix). Vlastní viewer PLÁNU (aggregate Nh/dny/náklad z planPassport) zatím není — dnes je plán jen agent/MCP-facing.
+**Otevřené otázky:** Vlastní viewer PLÁNU (aggregate Nh/dny/náklad z planPassport) zatím není — dnes je plán jen agent/MCP-facing (SoupisTab renderuje parsovaný BOQ, ne plán). SoupisTab XLSX (datetime fix) čeká na UI-ověření v Portálu.
 
-**Co dál:** BACKLOG `tz-to-worklist` krok 2 = UWO F2/F3 (portovat work-templates z pilotních skriptů RD Jáchymov + HK212 do KB branch YAMLů). Testy zelené: CORE 93 pass (MCP compat + endpoints + stage-gating credits sync + schema + 6 nových passport) · Monolit backend engine 22 + parita 18 · shared bridge-passport golden 10.
+**LIVE OVĚŘENO (2026-07-09, po deployi):** PR **#1447 merged do main** (merge-commit `f9b2b0e`, CI zelený — jediný „failure" byl cancelled no-op „CI Summary" agregátor na push-eventu, infra raner, ne kód; pull_request-eventy MCP Compat + Monolit CI + Test Coverage všechny success). CORE nasazen → **21 MCP nástrojů**, `calculate_from_passport` živý. **Živý E2E vůči Cloud Run**: SO-202 Žalmanov passport → **9 prvků, 0 uncalculated, `source: monolit_planner_api`** (potvrzeno delegování na kanonický engine, ne divergentní Python). Agregát: 2 832,09 m³ · 14 740,4 Nh · 251,9 dní · 6 325 799 Kč. Per-deck split (÷2), TZ-marky nad soupis-pásmy (deck C35/45 ne «DO C40/50»; piliry C35/45 ne C40/50), 3 takty z výkresu ctěny, `warnings: []` (OTSKP-pásma = informativní nota, ne konflikt, Pattern 53). Gate 2 UZAVŘEN + live-verified.
+
+**Co dál:** BACKLOG `tz-to-worklist` krok 2 = UWO F2/F3 (portovat work-templates z pilotních skriptů RD Jáchymov + HK212 do KB branch YAMLů). Testy zelené: CORE 93 pass (MCP compat + endpoints + stage-gating credits sync + schema + 6 nových passport) · Monolit backend engine 24 + parita 18 · shared bridge-passport golden 10.
 
 
 ## 2026-07-08 — Session: worklist-audit + session close (10 PR dne)
