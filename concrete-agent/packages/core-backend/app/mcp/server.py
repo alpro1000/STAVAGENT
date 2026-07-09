@@ -66,6 +66,13 @@ from app.mcp.tools.calculator import calculate_pump  # noqa: E402
 mcp.tool()(calculate_pump)
 
 
+# ── Tool 4c: Passport → whole-SO plan (tz-passport-json Gate 2) ──────────────
+
+from app.mcp.tools.passport_plan import calculate_from_passport  # noqa: E402
+
+mcp.tool()(calculate_from_passport)
+
+
 # ── Tool 5: Budget Parser ────────────────────────────────────────────────────
 
 from app.mcp.tools.budget import parse_construction_budget  # noqa: E402
@@ -187,6 +194,7 @@ _REGISTERED_TOOL_NAMES = {
     "classify_construction_element",
     "calculate_concrete_works",
     "calculate_pump",
+    "calculate_from_passport",
     "parse_construction_budget",
     "analyze_construction_document",
     "create_work_breakdown",

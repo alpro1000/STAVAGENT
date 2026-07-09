@@ -14,8 +14,13 @@
 import { describe, test, expect, afterEach } from '@jest/globals';
 import express from 'express';
 import request from 'supertest';
-import { planElement, classifyElement, planComposite } from '@stavagent/monolit-shared';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+import { planElement, classifyElement, planComposite, planPassport } from '@stavagent/monolit-shared';
 import engineRouter from '../../src/routes/engine.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 app.use(express.json());
@@ -171,6 +176,70 @@ describe('POST /api/classify — thin delegate to classifyElement', () => {
 
   test('400 when name too long (>500 chars)', async () => {
     const res = await request(app).post('/api/classify').send({ name: 'x'.repeat(501) });
+    expect(res.status).toBe(400);
+  });
+});
+
+describe('POST /api/calculate-from-passport — thin delegate to planPassport', () => {
+  // Golden source = the canonical SO-202 Žalmanov passport (same fixture the
+  // shared bridge-passport golden suite asserts). The endpoint must add NO
+  // logic: its output === planPassport(passport) called directly.
+  const EXAMPLE_PATH = join(
+    __dirname, '..', '..', '..', '..',
+    'docs', 'specs', 'tz-passport-json', 'example_SO202_zalmanov.json',
+  );
+  const loadExample = () => JSON.parse(readFileSync(EXAMPLE_PATH, 'utf-8'));
+
+  test('parity: endpoint === direct planPassport (SO-202 golden)', async () => {
+    const passport = loadExample();
+    const direct = norm(planPassport(passport));
+    const res = await request(app).post('/api/calculate-from-passport').send(passport);
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual(direct);
+  });
+
+  test('SO-202 passport → 9 elements, all calculated, real totals', async () => {
+    const res = await request(app).post('/api/calculate-from-passport').send(loadExample());
+    expect(res.status).toBe(200);
+    expect(res.body.mapping.elements).toHaveLength(9);
+    expect(res.body.project.aggregate.elements_total).toBe(9);
+    expect(res.body.project.aggregate.elements_uncalculated).toBe(0);
+    expect(res.body.project.aggregate.total_norm_hours).toBeGreaterThan(0);
+  });
+
+  test('missing quantities → 200 (NOT 422): planProject isolates per-element NEPOČÍTÁNO', async () => {
+    const passport = loadExample();
+    delete passport.quantities;
+    const res = await request(app).post('/api/calculate-from-passport').send(passport);
+    // Contract: unlike /api/calculate (which returns 422 on a missing volume),
+    // this route NEVER degrades to 422/500 — planProject isolates each
+    // UncalculatedError into aggregate.elements_uncalculated. If a future engine
+    // change let UncalculatedError escape, this assertion turns red.
+    expect(res.status).toBe(200);
+    expect(res.body.error).toBeUndefined();
+    expect(res.body.mapping.elements.length).toBeGreaterThan(0);
+    expect(res.body.project.aggregate.elements_calculated).toBe(0);
+    expect(res.body.project.aggregate.elements_uncalculated)
+      .toBe(res.body.project.aggregate.elements_total);
+  });
+
+  test('empty object {} → 200, no mappable element (honest-ignore, not a crash)', async () => {
+    const res = await request(app).post('/api/calculate-from-passport').send({});
+    expect(res.status).toBe(200);
+    expect(res.body.error).toBeUndefined();
+    expect(res.body.mapping.elements).toHaveLength(0);
+    expect(res.body.mapping.warnings.length).toBeGreaterThan(0); // "no mappable element"
+  });
+
+  test('400 when body is not a JSON object (array)', async () => {
+    const res = await request(app).post('/api/calculate-from-passport')
+      .set('Content-Type', 'application/json').send('[1,2,3]');
+    expect(res.status).toBe(400);
+  });
+
+  test('400 when body is a JSON null', async () => {
+    const res = await request(app).post('/api/calculate-from-passport')
+      .set('Content-Type', 'application/json').send('null');
     expect(res.status).toBe(400);
   });
 });

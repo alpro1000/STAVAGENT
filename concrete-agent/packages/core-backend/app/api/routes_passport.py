@@ -208,9 +208,17 @@ async def generate_passport(
 
             logger.info(f"Passport generated: {passport_id}, time: {response.processing_time_ms}ms")
 
-        # v5.0: Attach soupis data if available (from universal parser)
+        # v5.0: Attach soupis data if available (from universal parser).
+        # mode='json' is REQUIRED: the passport carries datetime fields
+        # (generated_at); a plain model_dump() leaves them as datetime objects,
+        # which JSONResponse's json.dumps cannot serialize → 500 on exactly this
+        # (XLSX) path — which is why SoupisTab never lit up for spreadsheet
+        # uploads. mode='json' renders datetimes to ISO strings.
         if soupis_data:
-            resp_dict = response.model_dump() if hasattr(response, 'model_dump') else response.dict()
+            resp_dict = (
+                response.model_dump(mode='json')
+                if hasattr(response, 'model_dump') else response.dict()
+            )
             resp_dict["soupis_praci"] = soupis_data
             return JSONResponse(content=resp_dict)
 
@@ -330,7 +338,11 @@ async def _generate_adaptive_summary(
         "format": "adaptive_v2",
         "project_name": project_name,
         "adaptive_summary": result,
-        "classification": classification.model_dump(),
+        # mode='json' for the same reason as the /generate soupis branch: this
+        # dict is handed to JSONResponse (json.dumps), which cannot serialize
+        # datetimes/enums — render them defensively so a future datetime field
+        # on ClassificationInfo can't 500 this path.
+        "classification": classification.model_dump(mode='json'),
         # Minimal passport stub for backward compatibility
         "passport": {
             "passport_id": f"summary_{int(_time.time())}",

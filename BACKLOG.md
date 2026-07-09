@@ -17,9 +17,15 @@ catalog-binding adapter. Množství dnes JOIN z existujícího soupisu — vlast
 takeoff z výkresů je pilot-script-only.
 
 **Pořadí (dependency order):**
-1. **tz-passport Gate 2** (~1 session) — napojit hotový `planPassport()` jako
-   MCP tool `calculate_from_passport` (POZOR counter-soubory) / route / UI
-   import. Nejlevnější viditelný výsledek: «TZ+soupis mostu → plán» 1 callem.
+1. ✅ **tz-passport Gate 2** — HOTOVO 2026-07-09 (v4.39.0). `planPassport()`
+   napojen: MCP tool `calculate_from_passport` (6 counter-souborů synchronně,
+   tools 20→21, credits 10) → deleguje na Monolit backend route
+   `POST /api/calculate-from-passport` (tenký SSOT wrapper nad planPassport).
+   Golden = `example_SO202_zalmanov.json` (9 prvků, 0 uncalculated). Vedle:
+   opraven `/passport/generate` soupis-500 (datetime `model_dump(mode='json')`)
+   → SoupisTab se pro XLSX rozsvítí. Zbývá LIVE ověření po deployi + vlastní
+   viewer PLÁNU (planPassport agregát dnes jen agent/MCP-facing, SoupisTab
+   ukazuje parsovaný BOQ, ne plán — jiný tvar).
 2. **UWO F2/F3** (~2–3 sessions) — portovat work-templates z pilotních skriptů
    RD Jáchymov + HK212 do KB branch YAMLů (PSV/izolace/zemní…); dokončit
    catalog-binding status-enum. Branch mechanika už stojí, chybí náplň.
