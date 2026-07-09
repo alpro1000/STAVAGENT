@@ -11,7 +11,7 @@
  */
 
 import { useState, useMemo } from 'react';
-import { ChevronDown, ChevronUp, Truck } from 'lucide-react';
+import { ChevronDown, ChevronUp, Truck, Trash2 } from 'lucide-react';
 
 // Mixer truck types (autodomíchávač)
 const MIXER_TYPES = [
@@ -42,6 +42,9 @@ interface Props {
   onChange: (data: DeliveryCalcData) => void;
   defaultVolume?: number;
   defaultClass?: string;
+  /** Clears the calculation (sets the field back to undefined) — the section
+   *  returns to its "+ Přidat" state and stops contributing to the TOV total. */
+  onRemove?: () => void;
 }
 
 function recompute(d: DeliveryCalcData): DeliveryCalcData {
@@ -67,11 +70,13 @@ function recompute(d: DeliveryCalcData): DeliveryCalcData {
     transport_czk: Math.round(transport_czk),
     concrete_czk: Math.round(concrete_czk),
     surcharges_czk: Math.round(surcharges),
-    total_czk: Math.round(transport_czk + concrete_czk + surcharges),
+    // The concrete MATERIAL is counted in Materiály — exclude it from the
+    // delivery total by default so it isn't double-counted in the TOV total.
+    total_czk: Math.round(transport_czk + (d.include_concrete ? concrete_czk : 0) + surcharges),
   };
 }
 
-export function DeliveryCalcSection({ data, onChange, defaultVolume, defaultClass }: Props) {
+export function DeliveryCalcSection({ data, onChange, defaultVolume, defaultClass, onRemove }: Props) {
   const [expanded, setExpanded] = useState(!!data);
 
   const defaultData: DeliveryCalcData = {
@@ -82,6 +87,7 @@ export function DeliveryCalcSection({ data, onChange, defaultVolume, defaultClas
     concrete_price_m3: CONCRETE_PRICES[defaultClass || 'C30/37'] || 3100,
     weekend_surcharge: false,
     small_qty_surcharge: false,
+    include_concrete: false,
     waiting_hours: 0,
     waiting_czk_h: 600,
     num_deliveries: 0,
@@ -116,16 +122,28 @@ export function DeliveryCalcSection({ data, onChange, defaultVolume, defaultClas
 
   return (
     <div className="border border-green-200 rounded-lg overflow-hidden">
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center justify-between px-3 py-2 bg-green-50 text-sm font-medium text-green-800"
-      >
-        <span><Truck size={14} className="inline" /> Doprava betonu: {calc.volume_m3} m³ {calc.concrete_class}</span>
-        <div className="flex items-center gap-2">
-          <span className="font-mono">{calc.total_czk.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč</span>
-          {expanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-        </div>
-      </button>
+      <div className="w-full flex items-center bg-green-50 text-sm font-medium text-green-800">
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="flex-1 flex items-center justify-between px-3 py-2 min-w-0"
+        >
+          <span className="truncate"><Truck size={14} className="inline" /> Doprava betonu: {calc.volume_m3} m³ {calc.concrete_class}</span>
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="font-mono">{calc.total_czk.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč</span>
+            {expanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+          </div>
+        </button>
+        {onRemove && (
+          <button
+            onClick={() => { setExpanded(false); onRemove(); }}
+            className="px-2.5 py-2 text-red-500 hover:bg-red-500/10 transition-colors shrink-0 border-l border-green-200"
+            title="Odebrat kalkulaci dopravy"
+            aria-label="Odebrat kalkulaci dopravy"
+          >
+            <Trash2 size={14} className="w-[14px] h-[14px]" />
+          </button>
+        )}
+      </div>
 
       {expanded && (
         <div className="p-3 space-y-3 text-sm">
@@ -202,13 +220,22 @@ export function DeliveryCalcSection({ data, onChange, defaultVolume, defaultClas
               />
               Malé množství ({'<'}3 m³, +800 Kč)
             </label>
+            <label className="flex items-center gap-1.5 text-xs" title="Cena betonu je obvykle v záložce Materiály — zapněte jen pokud ji chcete počítat zde.">
+              <input type="checkbox" checked={!!calc.include_concrete}
+                onChange={e => update({ include_concrete: e.target.checked })}
+              />
+              Zahrnout cenu betonu (jinak v Materiálech)
+            </label>
           </div>
 
           {/* Breakdown */}
           <div className="bg-bg-tertiary/30 rounded p-2 space-y-1 text-xs">
-            <div className="flex justify-between">
-              <span>Beton: {calc.volume_m3} m³ × {calc.concrete_price_m3} Kč</span>
-              <span className="font-mono">{calc.concrete_czk.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč</span>
+            <div className={`flex justify-between ${calc.include_concrete ? '' : 'text-text-muted line-through/0'}`}>
+              <span>
+                Beton: {calc.volume_m3} m³ × {calc.concrete_price_m3} Kč
+                {!calc.include_concrete && <span className="not-italic ml-1 text-[10px]">(v Materiálech — nezapočítáno)</span>}
+              </span>
+              <span className={`font-mono ${calc.include_concrete ? '' : 'opacity-50'}`}>{calc.concrete_czk.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč</span>
             </div>
             <div className="flex justify-between">
               <span>Doprava: {calc.num_deliveries}× {mixer.label} ({calc.distance_km} km)</span>

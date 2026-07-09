@@ -201,6 +201,19 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
     });
   };
 
+  // Explicit removal of an auto-saved mini-calculator (pump / crane / delivery):
+  // drop the field so it stops contributing to the TOV total, and persist
+  // immediately (same auto-save path as the change handlers above).
+  const handleRemoveAutoSection = (key: 'pumpRental' | 'craneRental' | 'deliveryCalc') => {
+    setLocalData(prev => {
+      const updatedData = { ...prev };
+      delete updatedData[key];
+      isAutoSaving.current = true;
+      onSave(updatedData);
+      return updatedData;
+    });
+  };
+
   // D: save keeps the modal OPEN and shows a "✓ Uloženo" indicator, so the save
   // is visibly confirmed (the previous save+close gave no feedback). The user
   // closes via Zavřít / X (now a clean, non-dirty close).
@@ -408,10 +421,13 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
               itemLabel={item.kod ? `${item.kod} - ${item.popis}` : item.popis}
               pumpRental={localData.pumpRental}
               onPumpRentalChange={handlePumpRentalChange}
+              onPumpRentalRemove={() => handleRemoveAutoSection('pumpRental')}
               craneRental={localData.craneRental}
               onCraneRentalChange={handleCraneRentalChange}
+              onCraneRentalRemove={() => handleRemoveAutoSection('craneRental')}
               deliveryCalc={localData.deliveryCalc}
               onDeliveryCalcChange={handleDeliveryCalcChange}
+              onDeliveryCalcRemove={() => handleRemoveAutoSection('deliveryCalc')}
               defaultVolume={item.mnozstvi || undefined}
             />
           )}

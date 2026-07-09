@@ -24,10 +24,13 @@ interface MachineryTabProps {
   itemLabel?: string;           // "kod - popis" for PumpRentalSection nazev pre-fill
   pumpRental?: PumpRentalData;
   onPumpRentalChange?: (data: PumpRentalData) => void;
+  onPumpRentalRemove?: () => void;
   craneRental?: CraneCalcData;
   onCraneRentalChange?: (data: CraneCalcData) => void;
+  onCraneRentalRemove?: () => void;
   deliveryCalc?: DeliveryCalcData;
   onDeliveryCalcChange?: (data: DeliveryCalcData) => void;
+  onDeliveryCalcRemove?: () => void;
   defaultVolume?: number;
   defaultConcreteClass?: string;
 }
@@ -66,10 +69,13 @@ export function MachineryTab({
   itemLabel,
   pumpRental,
   onPumpRentalChange,
+  onPumpRentalRemove,
   craneRental,
   onCraneRentalChange,
+  onCraneRentalRemove,
   deliveryCalc,
   onDeliveryCalcChange,
+  onDeliveryCalcRemove,
   defaultVolume,
   defaultConcreteClass,
 }: MachineryTabProps) {
@@ -360,6 +366,7 @@ export function MachineryTab({
         <PumpRentalSection
           pumpRental={pumpRental}
           onChange={onPumpRentalChange}
+          onRemove={onPumpRentalRemove}
           itemQuantity={itemQuantity}
           itemLabel={itemLabel}
         />
@@ -371,10 +378,12 @@ export function MachineryTab({
         <CraneRentalSection
           data={craneRental}
           onChange={onCraneRentalChange || (() => {})}
+          onRemove={onCraneRentalRemove}
         />
         <DeliveryCalcSection
           data={deliveryCalc}
           onChange={onDeliveryCalcChange || (() => {})}
+          onRemove={onDeliveryCalcRemove}
           defaultVolume={defaultVolume}
           defaultClass={defaultConcreteClass}
         />
