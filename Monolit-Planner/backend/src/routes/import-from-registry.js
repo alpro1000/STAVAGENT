@@ -232,6 +232,10 @@ router.post('/', async (req, res) => {
     const REGISTRY_TIMEOUT = parseInt(process.env.REGISTRY_TIMEOUT_MS || '8000', 10);
 
     let projectData = null;
+    // Per-source diagnostics surfaced in the 404 body so a failed import names
+    // its own cause (which source returned what) instead of an opaque 404.
+    let portalNote = 'nezkoušeno';
+    let registryNote = 'nezkoušeno';
 
     // Try Portal first (primary path)
     try {
@@ -242,10 +246,13 @@ router.post('/', async (req, res) => {
       if (response.ok) {
         const data = await response.json();
         projectData = data.project;
+        portalNote = `${projectData?.sheets?.length || 0} listů`;
       } else {
+        portalNote = `HTTP ${response.status}`;
         logger.warn(`[ImportRegistry] Portal returned ${response.status} for project ${portal_project_id}`);
       }
     } catch (portalErr) {
+      portalNote = `chyba (${portalErr.message})`;
       logger.warn(`[ImportRegistry] Portal fetch failed: ${portalErr.message}`);
     }
 
@@ -266,6 +273,7 @@ router.post('/', async (req, res) => {
               headers: forwardedAuthHeaders(req),
               signal: AbortSignal.timeout(REGISTRY_TIMEOUT),
             });
+            registryNote = sheetsRes.ok ? 'listy načteny' : `listy: HTTP ${sheetsRes.status}`;
             if (sheetsRes.ok) {
               const sheetsData = await sheetsRes.json();
 
@@ -303,6 +311,7 @@ router.post('/', async (req, res) => {
               );
 
               const sheets = sheetResults.filter(Boolean);
+              registryNote = `${sheets.length} listů`;
               if (sheets.length > 0) {
                 projectData = {
                   id: portal_project_id,
@@ -313,15 +322,27 @@ router.post('/', async (req, res) => {
                 logger.info(`[ImportRegistry] Loaded ${sheets.length} sheets from Registry${skipped > 0 ? ` (${skipped} failed)` : ''}`);
               }
             }
+          } else {
+            registryNote = 'projekt nenalezen';
           }
+        } else {
+          registryNote = `HTTP ${regRes.status}`;
         }
       } catch (regErr) {
+        registryNote = `chyba (${regErr.message})`;
         logger.warn(`[ImportRegistry] Registry direct fetch failed: ${regErr.message}`);
       }
     }
 
     if (!projectData || !projectData.sheets || projectData.sheets.length === 0) {
-      return res.status(404).json({ error: 'Project has no sheets/positions in Portal or Registry' });
+      // Name the cause so the frontend alert is actionable (which source
+      // returned what) instead of an opaque 404.
+      logger.warn(`[ImportRegistry] No sheets for ${portal_project_id} — Portal: ${portalNote} · Registry: ${registryNote}`);
+      return res.status(404).json({
+        error: 'Projekt nemá žádné listy/pozice v Portalu ani Registry.',
+        detail: `Portal: ${portalNote} · Registry: ${registryNote}`,
+        hint: 'Otevřete projekt v Registry, ověřte že má položky a je synchronizovaný do Portálu, pak zkuste znovu.',
+      });
     }
 
     const projectName = project_name || projectData.name || 'Import z Rozpočtu';

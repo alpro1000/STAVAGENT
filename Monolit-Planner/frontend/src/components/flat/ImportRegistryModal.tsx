@@ -78,7 +78,13 @@ export default function ImportRegistryModal({ onClose }: Props) {
       onClose();
     } catch (err) {
       console.error('Import failed:', err);
-      alert('Import z Registry selhal: ' + (err instanceof Error ? err.message : 'unknown'));
+      // Surface the backend's reason (which source returned what) instead of the
+      // opaque axios "Request failed with status code 404".
+      const resp = (err as { response?: { data?: { error?: string; detail?: string; hint?: string } } })?.response?.data;
+      const msg = resp?.error
+        ? [resp.error, resp.detail, resp.hint].filter(Boolean).join('\n')
+        : (err instanceof Error ? err.message : 'neznámá chyba');
+      alert('Import z Registry selhal:\n\n' + msg);
     } finally {
       setImporting(null);
     }
