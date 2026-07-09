@@ -358,10 +358,11 @@ def test_breakdown_otskp_bundles_formwork_and_curing():
         assert "zahrnuto v betonu" in (it.get("code_note") or "")
         assert it["code_confidence"] == 1.0  # a positive rule, not floor-None
 
-    # Beton + výztuž actually search OTSKP (bound here via the fake catalog).
-    assert by_verb["Beton"]["code_status"] == "bound"
+    # Beton + výztuž actually search OTSKP → status `candidate` (F3: unified enum;
+    # OTSKP text-search top above floor is a candidate, was the synonym "bound").
+    assert by_verb["Beton"]["code_status"] == "candidate"
     assert by_verb["Beton"]["otskp_code"]
-    assert by_verb["Výztuž"]["code_status"] == "bound"
+    assert by_verb["Výztuž"]["code_status"] == "candidate"
 
 
 # ── enforce_or_raise async-context safety (review fix) ────────────────────────

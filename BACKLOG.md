@@ -29,6 +29,20 @@ takeoff z výkresů je pilot-script-only.
 2. **UWO F2/F3** (~2–3 sessions) — portovat work-templates z pilotních skriptů
    RD Jáchymov + HK212 do KB branch YAMLů (PSV/izolace/zemní…); dokončit
    catalog-binding status-enum. Branch mechanika už stojí, chybí náplň.
+   - ✅ **F3 (status-enum) HOTOVO 2026-07-09 (v4.39.1):** jednotný `CodeStatus`
+     enum v `app/models/item_schemas.py` (single source, design §2.2/§5.1);
+     sjednoceny divergentní literály — adapter `candidate|not_verified` a
+     breakdown `bound|no_match` collapsnuty (`bound`→`candidate`, `no_match`→
+     `not_verified`; `bundled`+`not_calculated` jako reálné extra stavy).
+     `catalog_binding_adapter.py` + `breakdown.py` čerpají z enumu; +6 testů
+     `test_code_status_enum.py` (102 pass napříč UWO/stage-gating/catalog/MCP).
+     `position_enricher` `match` axis (jiná osa = kvalita shody) VĚDOMĚ odloženo.
+   - ⏭ **F2 (branch content) ZBÝVÁ:** portovat sandbox `templates.mjs` sekce
+     S2–S10 (koupelna/vinyl/parkety/SDK/elektro/kotel/okna/schodiště/VRN) +
+     RD Jáchymov izolace/zemní `DECOMP` do KB YAMLů (`malba.yaml` shape); pro
+     nové `qty_source` hodnoty rozšířit `_decompose_interier_psv`; nová větev
+     (izolace/zemni) potřebuje loader + router-vocab (interier_psv už scanuje
+     glob → nová sekce = jen YAML).
 3. **calculator_prompt_extension** (~144 h ticket) — +14 element types
    (zemní/komunikace/izolace/svodidla/VRN) v element-classifier.ts +
    calculator.py → BOQ pokrytí 14 %→80 % na referenčním SO.

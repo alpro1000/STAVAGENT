@@ -30,6 +30,40 @@ class CodeSystem(str, Enum):
 
 
 # ---------------------------------------------------------------------------
+# Catalog-binding status (UWO F3 — single source of truth)
+# ---------------------------------------------------------------------------
+class CodeStatus(str, Enum):
+    """Unified catalog-binding status for a work-atom's `code_status` field.
+
+    SINGLE SOURCE (design.md universal-work-decomposer §2.2 / §5.1). Before F3
+    the value lived as divergent string literals across the two binding paths:
+    the catalog-binding adapter used ``candidate``/``not_verified`` while the
+    work-breakdown OTSKP path used ``bound``/``no_match`` for the *same*
+    outcomes. Those synonyms are collapsed here — ``bound`` → ``candidate``,
+    ``no_match`` → ``not_verified`` — so every producer emits from one vocabulary.
+
+    INVARIANT: ``exact`` is RESERVED for a deterministic OTSKP DB exact-code hit
+    (conf 1.0). A text-search / ÚRS-matcher / Perplexity match is at most
+    ``candidate`` — a client must never mistake a candidate for an official code.
+
+    The design's canonical binding-outcome set is the first four. ``bundled`` and
+    ``not_calculated`` extend it for two real states the ``code_status`` field
+    also carries: a catalog-design rule (no standalone code) and the work-first
+    frozen state (binding not yet run, Pattern 15).
+
+    NOTE (scope): ``position_enricher.py``'s separate ``match`` axis
+    (``exact|partial|none`` — match *quality*, not binding status) is a different
+    concept and is intentionally NOT merged here; converging it is a follow-up.
+    """
+    EXACT = "exact"                  # deterministic OTSKP DB exact-code hit (reserved)
+    CANDIDATE = "candidate"          # item match above floor (OTSKP text / ÚRS matcher) — needs confirm
+    GROUP_ONLY = "group_only"        # only a skupina/kapitola prefix found, no concrete item
+    NOT_VERIFIED = "not_verified"    # binding ran, no acceptable match / raw context
+    BUNDLED = "bundled"              # no standalone code by CATALOG design (RULE, conf 1.0)
+    NOT_CALCULATED = "not_calculated"  # work-first frozen: catalog binding not yet run (Pattern 15)
+
+
+# ---------------------------------------------------------------------------
 # Namespace — who owns which data block
 # ---------------------------------------------------------------------------
 class Namespace(str, Enum):

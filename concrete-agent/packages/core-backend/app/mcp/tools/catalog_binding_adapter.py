@@ -21,6 +21,8 @@ from __future__ import annotations
 
 import logging
 
+from app.models.item_schemas import CodeStatus
+
 logger = logging.getLogger(__name__)
 
 # ── Floor for URS `candidate` (CONTRACT §6 decision 4) ───────────────────────
@@ -46,12 +48,12 @@ def map_status(match_kind: str | None, confidence: float | None, source: str | N
         # Floor only the matcher branch — perplexity's 0.80 is a flat stamp, not a
         # comparable score (see _FLOORED_SOURCES note above).
         if source in _FLOORED_SOURCES and conf < URS_CANDIDATE_FLOOR:
-            return "not_verified"
-        return "candidate"
+            return CodeStatus.NOT_VERIFIED.value
+        return CodeStatus.CANDIDATE.value
     if match_kind == "group":
-        return "group_only"
+        return CodeStatus.GROUP_ONLY.value
     # raw_context / none / unknown → honest not_verified, never a fabricated code.
-    return "not_verified"
+    return CodeStatus.NOT_VERIFIED.value
 
 
 # ── Catalog choice by procurement mode (reuse kb/urs_otskp_routing.yaml) ──────
@@ -79,7 +81,7 @@ async def bind_catalog_code(
         "catalog": catalog,
         "procurement_mode": procurement_mode,
         "code": None,
-        "status": "not_verified",
+        "status": CodeStatus.NOT_VERIFIED.value,
         "confidence": 0.0,
         "match_kind": "none",
         "matched_description": None,
@@ -100,7 +102,7 @@ async def bind_catalog_code(
                 # text-search top candidate is a `candidate`, not `exact`.
                 binding.update(
                     code=top.get("code"),
-                    status="candidate",
+                    status=CodeStatus.CANDIDATE.value,
                     confidence=top.get("confidence", 0.0),
                     match_kind="item",
                     matched_description=top.get("description"),
@@ -120,7 +122,7 @@ async def bind_catalog_code(
             binding.update(
                 # Only surface a code for an accepted item match — never for
                 # raw_context / not_verified (no fabricated codes).
-                code=top.get("code") if status in ("candidate", "group_only") else None,
+                code=top.get("code") if status in (CodeStatus.CANDIDATE.value, CodeStatus.GROUP_ONLY.value) else None,
                 status=status,
                 confidence=top.get("confidence", 0.0),
                 match_kind=match_kind,
