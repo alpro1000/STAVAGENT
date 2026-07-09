@@ -1085,8 +1085,10 @@ router.post('/:instanceId/monolith', async (req, res) => {
 
     if (!(await assertInstanceAccess(req, res, client, instanceId))) return;
 
-    await client.query('BEGIN');
-
+    // The payload write is a single atomic UPDATE — no explicit transaction
+    // needed. Keeping it outside a transaction lets the SECONDARY audit-log
+    // write fail independently (see below) instead of aborting the whole
+    // transaction and rolling the payload back.
     const result = await client.query(
       `UPDATE portal_positions
        SET monolith_payload = $1,
@@ -1099,27 +1101,30 @@ router.post('/:instanceId/monolith', async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      await client.query('ROLLBACK');
       return res.status(404).json({ success: false, error: 'Position instance not found' });
     }
 
-    // Audit log
-    const posRow = result.rows[0];
-    await client.query(
-      `INSERT INTO position_audit_log (event, actor, project_id, position_instance_id, details)
-       SELECT 'monolith_written', 'kiosk:monolit', po.portal_project_id, $1, $2
-       FROM portal_positions pp
-       JOIN portal_objects po ON pp.object_id = po.object_id
-       WHERE pp.position_instance_id = $1`,
-      [instanceId, JSON.stringify({
-        monolit_position_id: payload.monolit_position_id,
-        subtype: payload.subtype,
-        cost_czk: payload.cost_czk,
-        kros_total_czk: payload.kros_total_czk
-      })]
-    );
-
-    await client.query('COMMIT');
+    // Audit log — NON-FATAL. A failure here (e.g. schema drift on
+    // position_audit_log — a missing `actor` column silently 500'd every
+    // write-back and broke Registry's TOV pre-fill) must never undo the
+    // payload write above, which is the primary deliverable.
+    try {
+      await client.query(
+        `INSERT INTO position_audit_log (event, actor, project_id, position_instance_id, details)
+         SELECT 'monolith_written', 'kiosk:monolit', po.portal_project_id, $1, $2
+         FROM portal_positions pp
+         JOIN portal_objects po ON pp.object_id = po.object_id
+         WHERE pp.position_instance_id = $1`,
+        [instanceId, JSON.stringify({
+          monolit_position_id: payload.monolit_position_id,
+          subtype: payload.subtype,
+          cost_czk: payload.cost_czk,
+          kros_total_czk: payload.kros_total_czk
+        })]
+      );
+    } catch (auditErr) {
+      console.warn(`[PositionInstances] Audit-log write skipped (non-fatal) for ${instanceId}: ${auditErr.code || ''} ${auditErr.message}`);
+    }
 
     console.log(`[PositionInstances] Monolith payload written: ${instanceId}`);
 
@@ -1130,9 +1135,10 @@ router.post('/:instanceId/monolith', async (req, res) => {
     });
 
   } catch (error) {
-    await client.query('ROLLBACK');
-    console.error('[PositionInstances] Error writing monolith payload:', error);
-    res.status(500).json({ success: false, error: 'Failed to write monolith payload' });
+    // Surface the Postgres code/detail so a future failure names its own cause
+    // in the logs and in the response body (Monolit's WARN prints it).
+    console.error(`[PositionInstances] Error writing monolith payload: ${error.code || ''} ${error.message}${error.detail ? ' — ' + error.detail : ''}`);
+    res.status(500).json({ success: false, error: 'Failed to write monolith payload', code: error.code || null, detail: error.detail || null });
   } finally {
     client.release();
   }

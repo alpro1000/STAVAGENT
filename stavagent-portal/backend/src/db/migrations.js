@@ -851,6 +851,21 @@ async function runPhase11SafetyMigrations() {
     `ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS overrides JSONB`,
     `ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS created_by VARCHAR(100) DEFAULT 'legacy'`,
     `ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS updated_by VARCHAR(100) DEFAULT 'legacy'`,
+    // position_audit_log — an older prod table predates the `actor` column
+    // (both schema-postgres.sql and add-position-instance-architecture.sql use
+    // CREATE TABLE IF NOT EXISTS, which no-ops on the existing table and never
+    // adds new columns). The missing `actor` column made every Monolit
+    // write-back (POST /:instanceId/monolith) roll back with
+    // `column "actor" of relation "position_audit_log" does not exist` → 500,
+    // so Registry's TOV pre-fill never lit up. Add every column the audit
+    // INSERT references, nullable (values are always supplied by the INSERT).
+    `ALTER TABLE position_audit_log ADD COLUMN IF NOT EXISTS event VARCHAR(100)`,
+    `ALTER TABLE position_audit_log ADD COLUMN IF NOT EXISTS actor VARCHAR(255)`,
+    `ALTER TABLE position_audit_log ADD COLUMN IF NOT EXISTS project_id VARCHAR(255)`,
+    `ALTER TABLE position_audit_log ADD COLUMN IF NOT EXISTS position_instance_id UUID`,
+    `ALTER TABLE position_audit_log ADD COLUMN IF NOT EXISTS template_id UUID`,
+    `ALTER TABLE position_audit_log ADD COLUMN IF NOT EXISTS details JSONB`,
+    `ALTER TABLE position_audit_log ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT NOW()`,
   ];
 
   for (const sql of safeAlters) {
