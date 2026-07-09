@@ -163,9 +163,12 @@ interface PumpRentalSectionProps {
   onChange: (data: PumpRentalData) => void;
   itemQuantity?: number | null;
   itemLabel?: string;      // e.g. "272324 - ZÁKLADY ZE ŽELEZOBETONU DO C25/30"
+  /** Clears the pump calculation (sets the field back to undefined) so it stops
+   *  contributing to the TOV total. Shown only once the calc has data. */
+  onRemove?: () => void;
 }
 
-export function PumpRentalSection({ pumpRental, onChange, itemQuantity, itemLabel }: PumpRentalSectionProps) {
+export function PumpRentalSection({ pumpRental, onChange, itemQuantity, itemLabel, onRemove }: PumpRentalSectionProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [showParamsAdvanced, setShowParamsAdvanced] = useState(false);
   const [supplierId, setSupplierId] = useState<string>('beton_union');
@@ -326,27 +329,40 @@ export function PumpRentalSection({ pumpRental, onChange, itemQuantity, itemLabe
     <div className="mt-6 border border-blue-500/30 rounded-lg bg-blue-500/5">
 
       {/* ── Header ── */}
-      <button
-        type="button"
-        onClick={() => setIsExpanded(v => !v)}
-        className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-blue-500/10 rounded-t-lg transition-colors"
-      >
-        <div className="flex items-center gap-2">
-          <Truck size={16} className="text-blue-500 shrink-0" />
-          <span className="text-sm font-semibold text-blue-600">Kalkulátor betonočerpadla</span>
-          {data.pump_label && (
-            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
-              {data.pump_label.split('(')[0].trim()}
-            </span>
-          )}
-          {hasData && !isExpanded && (
-            <span className="text-xs text-blue-500 font-mono ml-1">
-              {data.konecna_cena.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
-            </span>
-          )}
-        </div>
-        {isExpanded ? <ChevronUp size={16} className="text-blue-400" /> : <ChevronDown size={16} className="text-blue-400" />}
-      </button>
+      <div className="w-full flex items-center rounded-t-lg">
+        <button
+          type="button"
+          onClick={() => setIsExpanded(v => !v)}
+          className="flex-1 flex items-center justify-between px-4 py-3 text-left hover:bg-blue-500/10 rounded-tl-lg transition-colors min-w-0"
+        >
+          <div className="flex items-center gap-2 min-w-0">
+            <Truck size={16} className="text-blue-500 shrink-0" />
+            <span className="text-sm font-semibold text-blue-600 truncate">Kalkulátor betonočerpadla</span>
+            {data.pump_label && (
+              <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full shrink-0">
+                {data.pump_label.split('(')[0].trim()}
+              </span>
+            )}
+            {hasData && !isExpanded && (
+              <span className="text-xs text-blue-500 font-mono ml-1 shrink-0">
+                {data.konecna_cena.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
+              </span>
+            )}
+          </div>
+          {isExpanded ? <ChevronUp size={16} className="text-blue-400 shrink-0" /> : <ChevronDown size={16} className="text-blue-400 shrink-0" />}
+        </button>
+        {onRemove && hasData && (
+          <button
+            type="button"
+            onClick={() => { setIsExpanded(false); onRemove(); }}
+            className="px-3 py-3 text-red-500 hover:bg-red-500/10 transition-colors shrink-0 border-l border-blue-500/20 rounded-tr-lg"
+            title="Odebrat kalkulaci betonočerpadla"
+            aria-label="Odebrat kalkulaci betonočerpadla"
+          >
+            <Trash2 size={15} className="w-[15px] h-[15px]" />
+          </button>
+        )}
+      </div>
 
       {isExpanded && (
         <div className="px-4 pb-4 space-y-5">

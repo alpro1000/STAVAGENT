@@ -491,6 +491,10 @@ export interface DeliveryCalcData {
   small_qty_surcharge: boolean;
   waiting_hours: number;
   waiting_czk_h: number;
+  // When true the concrete MATERIAL price is added to total_czk. Default false:
+  // the material belongs in Materiály, so delivery counts only transport +
+  // surcharges (avoids double-counting the concrete in the TOV total).
+  include_concrete?: boolean;
   // Computed
   num_deliveries: number;
   transport_czk: number;

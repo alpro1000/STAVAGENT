@@ -7,7 +7,7 @@
  */
 
 import { useState, useMemo } from 'react';
-import { ChevronDown, ChevronUp, Building2 } from 'lucide-react';
+import { ChevronDown, ChevronUp, Building2, Trash2 } from 'lucide-react';
 
 // Inline crane KB (from concrete-agent/knowledge_base/B9_Equipment_Specs/cranes.json)
 const CRANES = [
@@ -26,6 +26,9 @@ import type { CraneCalcData } from '../../types/unified';
 interface Props {
   data: CraneCalcData | undefined;
   onChange: (data: CraneCalcData) => void;
+  /** Clears the calculation (sets the field back to undefined) — the section
+   *  returns to its "+ Přidat" state and stops contributing to the TOV total. */
+  onRemove?: () => void;
 }
 
 const defaultData: CraneCalcData = {
@@ -55,7 +58,7 @@ function recompute(d: CraneCalcData): CraneCalcData {
   return { ...d, total_czk: base + mobilization };
 }
 
-export function CraneRentalSection({ data, onChange }: Props) {
+export function CraneRentalSection({ data, onChange, onRemove }: Props) {
   const [expanded, setExpanded] = useState(!!data);
   const calc = useMemo(() => recompute(data || defaultData), [data]);
   const crane = CRANES.find(c => c.id === calc.crane_id) || CRANES[0];
@@ -77,16 +80,28 @@ export function CraneRentalSection({ data, onChange }: Props) {
 
   return (
     <div className="border border-blue-200 rounded-lg overflow-hidden">
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center justify-between px-3 py-2 bg-blue-50 text-sm font-medium text-blue-800"
-      >
-        <span><Building2 size={14} className="inline" /> Jeřáb: {crane.manufacturer} {crane.model} ({crane.capacity_t}t)</span>
-        <div className="flex items-center gap-2">
-          <span className="font-mono">{calc.total_czk.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč</span>
-          {expanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-        </div>
-      </button>
+      <div className="w-full flex items-center bg-blue-50 text-sm font-medium text-blue-800">
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="flex-1 flex items-center justify-between px-3 py-2 min-w-0"
+        >
+          <span className="truncate"><Building2 size={14} className="inline" /> Jeřáb: {crane.manufacturer} {crane.model} ({crane.capacity_t}t)</span>
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="font-mono">{calc.total_czk.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč</span>
+            {expanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+          </div>
+        </button>
+        {onRemove && (
+          <button
+            onClick={() => { setExpanded(false); onRemove(); }}
+            className="px-2.5 py-2 text-red-500 hover:bg-red-500/10 transition-colors shrink-0 border-l border-blue-200"
+            title="Odebrat kalkulaci jeřábu"
+            aria-label="Odebrat kalkulaci jeřábu"
+          >
+            <Trash2 size={14} className="w-[14px] h-[14px]" />
+          </button>
+        )}
+      </div>
 
       {expanded && (
         <div className="p-3 space-y-3 text-sm">

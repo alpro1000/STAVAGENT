@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
 import type { LaborResource } from '../../types/unified';
 import { v4 as uuidv4 } from 'uuid';
+import { TOV_FIELD_TEXT, TOV_FIELD_NUM, TOV_HEADER_CELL } from './fieldStyles';
 
 interface LaborTabProps {
   resources: LaborResource[];
@@ -83,14 +84,14 @@ export function LaborTab({ resources, onChange, itemQuantity }: LaborTabProps) {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-border-color">
-                <th className="text-left py-2 px-3 font-medium text-text-secondary">Profese</th>
-                <th className="text-center py-2 px-3 font-medium text-text-secondary w-20">Počet</th>
-                <th className="text-center py-2 px-3 font-medium text-text-secondary w-24">Hodiny</th>
-                <th className="text-center py-2 px-3 font-medium text-text-secondary w-28">Normohodiny</th>
-                <th className="text-center py-2 px-3 font-medium text-text-secondary w-28">Sazba (Kč/h)</th>
-                <th className="text-right py-2 px-3 font-medium text-text-secondary w-32">Náklady</th>
-                <th className="w-10"></th>
+              <tr>
+                <th className={`${TOV_HEADER_CELL} text-left`}>Profese</th>
+                <th className={`${TOV_HEADER_CELL} text-center w-20`}>Počet</th>
+                <th className={`${TOV_HEADER_CELL} text-center w-24`}>Hodiny</th>
+                <th className={`${TOV_HEADER_CELL} text-center w-28`}>Normohodiny</th>
+                <th className={`${TOV_HEADER_CELL} text-center w-28`}>Sazba (Kč/h)</th>
+                <th className={`${TOV_HEADER_CELL} text-right w-32`}>Náklady</th>
+                <th className={`${TOV_HEADER_CELL} w-10`}></th>
               </tr>
             </thead>
             <tbody>
@@ -101,7 +102,7 @@ export function LaborTab({ resources, onChange, itemQuantity }: LaborTabProps) {
                       type="text"
                       value={resource.profession}
                       onChange={e => updateResource(resource.id, { profession: e.target.value })}
-                      className="w-full bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-accent-primary rounded px-1"
+                      className={TOV_FIELD_TEXT}
                       list="professions"
                     />
                   </td>
@@ -111,7 +112,7 @@ export function LaborTab({ resources, onChange, itemQuantity }: LaborTabProps) {
                       min="1"
                       value={resource.count}
                       onChange={e => updateResource(resource.id, { count: parseInt(e.target.value) || 1 })}
-                      className="w-full text-center bg-bg-secondary/50 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-accent-primary"
+                      className={TOV_FIELD_NUM}
                     />
                   </td>
                   <td className="py-2 px-3">
@@ -121,7 +122,7 @@ export function LaborTab({ resources, onChange, itemQuantity }: LaborTabProps) {
                       step="0.5"
                       value={resource.hours}
                       onChange={e => updateResource(resource.id, { hours: parseFloat(e.target.value) || 0 })}
-                      className="w-full text-center bg-bg-secondary/50 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-accent-primary"
+                      className={TOV_FIELD_NUM}
                     />
                   </td>
                   <td className="py-2 px-3 text-center font-medium text-accent-primary">
@@ -133,7 +134,7 @@ export function LaborTab({ resources, onChange, itemQuantity }: LaborTabProps) {
                       min="0"
                       value={resource.hourlyRate || 0}
                       onChange={e => updateResource(resource.id, { hourlyRate: parseFloat(e.target.value) || 0 })}
-                      className="w-full text-center bg-bg-secondary/50 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-accent-primary"
+                      className={TOV_FIELD_NUM}
                     />
                   </td>
                   <td className="py-2 px-3 text-right font-medium tabular-nums">

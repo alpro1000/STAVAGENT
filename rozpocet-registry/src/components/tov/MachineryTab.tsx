@@ -12,6 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { PumpRentalSection } from './PumpRentalSection';
 import { CraneRentalSection } from './CraneRentalSection';
 import { DeliveryCalcSection } from './DeliveryCalcSection';
+import { TOV_FIELD_TEXT, TOV_FIELD_NUM, TOV_HEADER_CELL } from './fieldStyles';
 
 // Work groups where the concrete pump calculator is relevant
 const PUMP_SKUPINY = new Set(['BETON_MONOLIT', 'BETON_PREFAB', 'PILOTY']);
@@ -24,10 +25,13 @@ interface MachineryTabProps {
   itemLabel?: string;           // "kod - popis" for PumpRentalSection nazev pre-fill
   pumpRental?: PumpRentalData;
   onPumpRentalChange?: (data: PumpRentalData) => void;
+  onPumpRentalRemove?: () => void;
   craneRental?: CraneCalcData;
   onCraneRentalChange?: (data: CraneCalcData) => void;
+  onCraneRentalRemove?: () => void;
   deliveryCalc?: DeliveryCalcData;
   onDeliveryCalcChange?: (data: DeliveryCalcData) => void;
+  onDeliveryCalcRemove?: () => void;
   defaultVolume?: number;
   defaultConcreteClass?: string;
 }
@@ -66,10 +70,13 @@ export function MachineryTab({
   itemLabel,
   pumpRental,
   onPumpRentalChange,
+  onPumpRentalRemove,
   craneRental,
   onCraneRentalChange,
+  onCraneRentalRemove,
   deliveryCalc,
   onDeliveryCalcChange,
+  onDeliveryCalcRemove,
   defaultVolume,
   defaultConcreteClass,
 }: MachineryTabProps) {
@@ -197,14 +204,14 @@ export function MachineryTab({
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-border-color">
-                <th className="text-left py-2 px-3 font-medium text-text-secondary">Typ stroje</th>
-                <th className="text-center py-2 px-3 font-medium text-text-secondary w-20">Počet</th>
-                <th className="text-center py-2 px-3 font-medium text-text-secondary w-24">Hodiny</th>
-                <th className="text-center py-2 px-3 font-medium text-text-secondary w-28">Strojhodiny</th>
-                <th className="text-center py-2 px-3 font-medium text-text-secondary w-28">Sazba (Kč/h)</th>
-                <th className="text-right py-2 px-3 font-medium text-text-secondary w-32">Náklady</th>
-                <th className="w-10"></th>
+              <tr>
+                <th className={`${TOV_HEADER_CELL} text-left`}>Typ stroje</th>
+                <th className={`${TOV_HEADER_CELL} text-center w-20`}>Počet</th>
+                <th className={`${TOV_HEADER_CELL} text-center w-24`}>Hodiny</th>
+                <th className={`${TOV_HEADER_CELL} text-center w-28`}>Strojhodiny</th>
+                <th className={`${TOV_HEADER_CELL} text-center w-28`}>Sazba (Kč/h)</th>
+                <th className={`${TOV_HEADER_CELL} text-right w-32`}>Náklady</th>
+                <th className={`${TOV_HEADER_CELL} w-10`}></th>
               </tr>
             </thead>
             <tbody>
@@ -215,7 +222,7 @@ export function MachineryTab({
                       type="text"
                       value={resource.type}
                       onChange={e => updateResource(resource.id, { type: e.target.value })}
-                      className="w-full bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-accent-primary rounded px-1"
+                      className={TOV_FIELD_TEXT}
                       list="machinery"
                     />
                   </td>
@@ -225,7 +232,7 @@ export function MachineryTab({
                       min="1"
                       value={resource.count}
                       onChange={e => updateResource(resource.id, { count: parseInt(e.target.value) || 1 })}
-                      className="w-full text-center bg-bg-secondary/50 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-accent-primary"
+                      className={TOV_FIELD_NUM}
                     />
                   </td>
                   <td className="py-2 px-3">
@@ -235,7 +242,7 @@ export function MachineryTab({
                       step="0.5"
                       value={resource.hours}
                       onChange={e => updateResource(resource.id, { hours: parseFloat(e.target.value) || 0 })}
-                      className="w-full text-center bg-bg-secondary/50 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-accent-primary"
+                      className={TOV_FIELD_NUM}
                     />
                   </td>
                   <td className="py-2 px-3 text-center font-medium text-blue-500">
@@ -247,7 +254,7 @@ export function MachineryTab({
                       min="0"
                       value={resource.hourlyRate || 0}
                       onChange={e => updateResource(resource.id, { hourlyRate: parseFloat(e.target.value) || 0 })}
-                      className="w-full text-center bg-bg-secondary/50 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-accent-primary"
+                      className={TOV_FIELD_NUM}
                     />
                   </td>
                   <td className="py-2 px-3 text-right font-medium tabular-nums">
@@ -360,6 +367,7 @@ export function MachineryTab({
         <PumpRentalSection
           pumpRental={pumpRental}
           onChange={onPumpRentalChange}
+          onRemove={onPumpRentalRemove}
           itemQuantity={itemQuantity}
           itemLabel={itemLabel}
         />
@@ -371,10 +379,12 @@ export function MachineryTab({
         <CraneRentalSection
           data={craneRental}
           onChange={onCraneRentalChange || (() => {})}
+          onRemove={onCraneRentalRemove}
         />
         <DeliveryCalcSection
           data={deliveryCalc}
           onChange={onDeliveryCalcChange || (() => {})}
+          onRemove={onDeliveryCalcRemove}
           defaultVolume={defaultVolume}
           defaultClass={defaultConcreteClass}
         />
