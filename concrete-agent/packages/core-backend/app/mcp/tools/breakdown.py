@@ -11,6 +11,7 @@ concrete, insulation...) → OTSKP/ÚRS code matching from the database.
 import logging
 from typing import Optional
 
+from app.models.item_schemas import CodeStatus
 from app.services.catalog_matching import classify_work_type
 
 logger = logging.getLogger(__name__)
@@ -148,7 +149,7 @@ def _decompose_interier_psv(name: str, elem: dict) -> list[dict]:
             # reserved catalog/price slots — bound later by the ÚRS adapter
             "urs_code": None,
             "unit_price_czk": None,
-            "code_status": "not_calculated",
+            "code_status": CodeStatus.NOT_CALCULATED.value,
             "calc": None,
             "calc_status": "not_calculated",
             "calc_warnings": [],
@@ -288,7 +289,7 @@ async def _attach_catalog_codes(items: list[dict], catalog: str) -> list[dict]:
             item["otskp_code"] = None
             item["unit_price_czk"] = None
             item["total_price_czk"] = None
-            item["code_status"] = "bundled"
+            item["code_status"] = CodeStatus.BUNDLED.value
             item["code_note"] = "zahrnuto v betonu dle OTSKP"
             item["code_confidence"] = 1.0
             continue
@@ -304,13 +305,16 @@ async def _attach_catalog_codes(items: list[dict], catalog: str) -> list[dict]:
             item["otskp_description"] = top["description"]
             item["unit_price_czk"] = top.get("unit_price_czk")
             item["total_price_czk"] = round((top.get("unit_price_czk") or 0.0) * item["quantity"], 0)
-            item["code_status"] = "bound"
+            # F3: OTSKP text-search top above floor = `candidate` (unified with the
+            # catalog-binding adapter, which calls the identical operation
+            # `candidate`). `exact` stays reserved for a deterministic DB code hit.
+            item["code_status"] = CodeStatus.CANDIDATE.value
             item["code_confidence"] = top.get("confidence")
         else:
             item["otskp_code"] = None
             item["unit_price_czk"] = None
             item["total_price_czk"] = None
-            item["code_status"] = "no_match"
+            item["code_status"] = CodeStatus.NOT_VERIFIED.value  # F3: was "no_match"
             item["code_note"] = "v OTSKP nenalezena spolehlivá shoda"
             item["code_confidence"] = top.get("confidence") if top else 0.0
     return items
