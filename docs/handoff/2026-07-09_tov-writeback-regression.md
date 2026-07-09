@@ -20,6 +20,19 @@ Infra facts confirmed this session: Cloud SQL `stavagent-db` = **db-f1-micro, 0.
 
 ---
 
+## 2. ✅ RESOLVED — TOV write-back regression (fixed 2026-07-09, next session)
+
+> **Fix shipped:** Portal-side "never downgrade rich→thin" guard —
+> `stavagent-portal/backend/src/db/monolithPayloadMerge.js`
+> (`isRichMonolithPayload` + `monolithPayloadMergeSql`), wired into BOTH writers
+> (`integration.js` import-from-monolit UPDATE + `position-instances.js`
+> POST `/:instanceId/monolith`). Atomic SQL `CASE` keeps the stored payload when
+> it is rich (costs+resources OR non-empty `tov_entries.labor`) and the incoming
+> one is thin. `hasExtendedCosts` untouched. `template_apply` UPDATE left as-is
+> (separate intentional feature). 15 hermetic tests in
+> `tests/monolithPayloadMerge.test.js`. **Live verify on 272324 still pending
+> post-deploy.** Root-cause analysis below retained for the record.
+
 ## 2. ⭐ OPEN BUG #1 — TOV write-back regression (CONFIRMED by user)
 
 **Symptom:** In Registry, an item (e.g. **272324 ZÁKLADY ZE ŽELEZOBETONU DO C25/30**) shows the green HardHat (monolith link present) but the TOV modal shows **no «Předvyplnit TOV» banner** and empty TOV — even though the user DID run «Vypočítat plán» + «Aplikovat» in the calculator.
