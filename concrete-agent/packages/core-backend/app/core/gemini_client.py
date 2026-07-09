@@ -28,6 +28,16 @@ except ImportError:
     VERTEX_AVAILABLE = False
 
 from app.core.config import settings
+from concurrent.futures import ThreadPoolExecutor, TimeoutError as _FuturesTimeout
+
+# Per-call timeout for a single Vertex generate_content(). Without it, a Vertex
+# call can hang ~10 min during a 429 storm (observed 598s in prod), blowing the
+# request budget and 502-ing heavy endpoints like passport/generate (dozens of
+# sequential calls). A shared executor runs each call on a worker thread;
+# result(timeout=...) bounds OUR wait so a stuck call is abandoned and retried
+# instead of hanging. Override with VERTEX_CALL_TIMEOUT_S.
+_VERTEX_CALL_TIMEOUT_S = float(os.environ.get("VERTEX_CALL_TIMEOUT_S", "90"))
+_VERTEX_EXECUTOR = ThreadPoolExecutor(max_workers=8, thread_name_prefix="vertex-call")
 
 logger = logging.getLogger(__name__)
 
@@ -504,10 +514,21 @@ class VertexGeminiClient:
                     "max_output_tokens": self.max_tokens,
                 }
 
-                response = self._model_cls.generate_content(
+                # Bound the call so a hung Vertex request (429 storm) can't block
+                # ~10 min and 502 the endpoint. On timeout we raise and let the
+                # transient-retry below re-attempt / fail fast.
+                _fut = _VERTEX_EXECUTOR.submit(
+                    self._model_cls.generate_content,
                     full_prompt,
                     generation_config=generation_config,
                 )
+                try:
+                    response = _fut.result(timeout=_VERTEX_CALL_TIMEOUT_S)
+                except _FuturesTimeout:
+                    _fut.cancel()
+                    raise TimeoutError(
+                        f"Vertex Gemini call exceeded {_VERTEX_CALL_TIMEOUT_S:.0f}s"
+                    )
 
                 elapsed_ms = int((time.monotonic() - t0) * 1000)
 
@@ -563,11 +584,14 @@ class VertexGeminiClient:
                         or "resource exhausted" in str(e).lower()
                     )
 
-                if _is_resource_exhausted and attempt < max_attempts:
+                # A per-call timeout is transient too — retry it like a 429.
+                _is_timeout = isinstance(e, TimeoutError)
+
+                if (_is_resource_exhausted or _is_timeout) and attempt < max_attempts:
                     delay = backoff_delays[attempt - 1]
                     logger.warning(
-                        f"⚠️  Vertex Gemini 429 Resource Exhausted ({elapsed_ms}ms), "
-                        f"retry {attempt}/{max_attempts} after {delay}s..."
+                        f"⚠️  Vertex Gemini {'timeout' if _is_timeout else '429 Resource Exhausted'} "
+                        f"({elapsed_ms}ms), retry {attempt}/{max_attempts} after {delay}s..."
                     )
                     time.sleep(delay)
                     t0 = time.monotonic()  # reset timer for next attempt
