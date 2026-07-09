@@ -214,6 +214,11 @@ export default function FlatPositionsTable() {
     params.set('subtype', 'beton');
     if (betonPos.concrete_m3) params.set('volume_m3', String(betonPos.concrete_m3));
     if (betonPos.qty) params.set('qty', String(betonPos.qty));
+    // Carry the position's rate/shift into the calculator so it opens with the
+    // project rate (propagated from Nastavení projektu) instead of the hardcoded
+    // 398/10 default — previously the calc ignored these and Aplikovat wrote 398 back.
+    if (betonPos.wage_czk_ph) params.set('wage_czk_ph', String(betonPos.wage_czk_ph));
+    if (betonPos.shift_hours) params.set('shift_hours', String(betonPos.shift_hours));
     if (bedneniPos?.id) params.set('bedneni_position_id', bedneniPos.id);
     if (bedneniPos?.qty) params.set('bedneni_m2', String(bedneniPos.qty));
     if (vystuzPos?.id) params.set('vyzuz_position_id', vystuzPos.id);
@@ -627,14 +632,20 @@ function ElementBlock({
             {/* Vypočítat / Upřesnit + Monolith override + Delete */}
             {!isLocked && betonPos && (
               <>
-                <button
-                  className={`flat-btn flat-btn--sm ${hasDays ? '' : 'flat-btn--primary'}`}
-                  onClick={onCalculate}
-                  style={{ flexShrink: 0 }}
-                >
-                  <Zap size={13} />
-                  {hasDays ? 'Upřesnit' : 'Vypočítat'}
-                </button>
+                {/* Vypočítat only for monoliths. isMonolith already reflects
+                    the manual override (metadata.is_monolith_override): clicking
+                    the "X" (mark NEMONOLIT) flips isMonolith→false and hides the
+                    button, so a non-monolith can no longer open the calculator. */}
+                {isMonolith && (
+                  <button
+                    className={`flat-btn flat-btn--sm ${hasDays ? '' : 'flat-btn--primary'}`}
+                    onClick={onCalculate}
+                    style={{ flexShrink: 0 }}
+                  >
+                    <Zap size={13} />
+                    {hasDays ? 'Upřesnit' : 'Vypočítat'}
+                  </button>
+                )}
 
                 {/* Monolith override toggle. Auto state shows the opposite
                     action; explicit override shows a small badge + "auto"

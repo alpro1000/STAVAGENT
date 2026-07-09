@@ -81,6 +81,10 @@ export default function useCalculator() {
       part_name: partName,
       subtype: searchParams.get('subtype'),
       volume_m3: searchParams.get('volume_m3') ? parseFloat(searchParams.get('volume_m3')!) : undefined,
+      // Project rate/shift carried from the position (Nastavení projektu → position).
+      // Seeds the form wage/shift so the calc doesn't fall back to the hardcoded 398/10.
+      wage_czk_ph: searchParams.get('wage_czk_ph') ? parseFloat(searchParams.get('wage_czk_ph')!) : undefined,
+      shift_hours: searchParams.get('shift_hours') ? parseFloat(searchParams.get('shift_hours')!) : undefined,
       concrete_class: (searchParams.get('concrete_class') || extractedConcreteClass) as ConcreteClass | undefined,
       exposure_class: extractedExposure,
       // Sibling position IDs for TOV mapping (bednění, výztuž, zrání, odbednění)
@@ -183,6 +187,11 @@ export default function useCalculator() {
     if (positionContext.concrete_class) f.concrete_class = positionContext.concrete_class;
     if (positionContext.bedneni_m2) f.formwork_area_m2 = String(positionContext.bedneni_m2);
     if (positionContext.vyzuz_qty) f.rebar_mass_kg = String(positionContext.vyzuz_qty);
+    // Seed the base rate/shift from the position (= project default, propagated
+    // from Nastavení projektu). Without this the calc opened at the hardcoded
+    // 398/10 and Aplikovat wrote 398 back, so the top VÝCHOZÍ SAZBA never landed.
+    if (positionContext.wage_czk_ph) f.wage_czk_h = positionContext.wage_czk_ph;
+    if (positionContext.shift_hours) f.shift_h = positionContext.shift_hours;
 
     // Auto-detect bridge deck subtype and is_prestressed from part_name
     if (f.element_type === 'mostovkova_deska' && positionContext.part_name) {
