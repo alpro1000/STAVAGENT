@@ -183,6 +183,36 @@ function autoDetectDataStartRow(
 }
 
 /**
+ * Detects a "Skupina" (work-group) column in the sheet header, independent of
+ * the import template. The Registry export writes work groups into a plain
+ * "Skupina" column; reading it back on import lets the export→import round-trip
+ * (and a re-import after deleting the project) keep the user's grouping.
+ *
+ * Scans the rows above the first data row (the header band) for a cell whose
+ * text is exactly "Skupina" (case-insensitive). Returns the 0-based column
+ * index, or -1 when no such column exists.
+ */
+function detectSkupinaColumn(
+  sheet: XLSX.WorkSheet,
+  range: XLSX.Range,
+  actualStartRow: number
+): number {
+  // Look at the header band (rows before data). Guard to at least row 0 and a
+  // few rows so a flexible-mode sheet with a header still gets scanned.
+  const lastHeaderRow = Math.min(range.e.r, Math.max(actualStartRow - 1, 0));
+  for (let row = range.s.r; row <= lastHeaderRow; row++) {
+    for (let col = range.s.c; col <= range.e.c; col++) {
+      const cell = sheet[XLSX.utils.encode_cell({ r: row, c: col })];
+      const text = cell?.v?.toString().trim().toLowerCase();
+      if (text === 'skupina') {
+        return col;
+      }
+    }
+  }
+  return -1;
+}
+
+/**
  * Парсит позиции из листа
  */
 function parseItems(
@@ -211,6 +241,15 @@ function parseItems(
   const userConfiguredStartRow = config.dataStartRow > 1;
   const detectedStartRow = autoDetectDataStartRow(sheet, config, userConfiguredStartRow);
   const actualStartRow = detectedStartRow - 1; // 0-based
+
+  // Если файл už nese sloupec "Skupina" (např. reimport dřívějšího exportu
+  // z Registru, který ho zapisuje), přečteme přiřazení skupin z něj — jinak
+  // by se po smazání projektu a novém importu ztratily a uživatel by je
+  // musel nastavovat znovu. Sloupec hledáme v hlavičce nezávisle na šabloně.
+  const skupinaCol = detectSkupinaColumn(sheet, range, actualStartRow);
+  if (skupinaCol >= 0) {
+    debugInfo.push(`Sloupec "Skupina" nalezen (col ${skupinaCol}) — přiřazení skupin bude přečteno ze souboru`);
+  }
 
   // Гибкий режим: парсить все строки с контентом
   const flexibleMode = config.flexibleMode ?? false;
@@ -260,6 +299,17 @@ function parseItems(
       const cenaJednotkovaCell = sheet[XLSX.utils.encode_cell({ r: row, c: colIndices.cenaJednotkova })];
       const cenaCelkemCell = sheet[XLSX.utils.encode_cell({ r: row, c: colIndices.cenaCelkem })];
 
+      // Read a pre-existing skupina from the file when a "Skupina" column is
+      // present. 'SEKCE' is the export's section marker, not a work group, and
+      // TOV:* rows are export-only breakdown lines — neither is a real skupina.
+      let fileSkupina: string | null = null;
+      if (skupinaCol >= 0) {
+        const raw = sheet[XLSX.utils.encode_cell({ r: row, c: skupinaCol })]?.v?.toString().trim() || '';
+        if (raw && raw.toUpperCase() !== 'SEKCE' && !raw.startsWith('TOV:')) {
+          fileSkupina = raw;
+        }
+      }
+
       currentItem = {
         id: uuidv4(),
         kod: kodValue,
@@ -270,7 +320,7 @@ function parseItems(
         mnozstvi: parseNumber(mnozstviCell?.v),
         cenaJednotkova: parseNumber(cenaJednotkovaCell?.v),
         cenaCelkem: parseNumber(cenaCelkemCell?.v),
-        skupina: null,
+        skupina: fileSkupina,
         skupinaSuggested: null,
         source: {
           projectId: options.projectId,
