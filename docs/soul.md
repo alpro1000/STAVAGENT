@@ -3099,6 +3099,18 @@ flat `severity` column, so the table schema does not change again.
 
 ---
 
+## 2026-07-09 — Session: TOV окно (B–F) + import/502 firefight + confirmed write-back regression
+
+**Rozhodnuto (merged):** #1461 TOV окно B–F (editable-field styling, unsaved-changes prompt, visible saved, «Doprava betonu» без бетона + чекбокс, «Odebrat» у pump/crane/delivery) · #1462 import читает колонку «Skupina» (round-trip групп) · #1463 Monolit import больших проектов (timeout 45s + chunked bulk-INSERT `buildPositionInsertChunks`) · #1464 CORE per-call timeout на Vertex Gemini (`VERTEX_CALL_TIMEOUT_S`=90s) — лечит passport/generate 502 (Vertex завис ~598s на 429-шторме). Инфра: Cloud SQL max_connections 25→50, оба backend `PG_POOL_MAX=8`, gcloud → info@stavagent.cz.
+
+**Otevřené (KRITICKÉ, potvrzeno uživatelem):** TOV write-back regression — item 272324 имеет monolith-link (зелёная каска, `crew_size=4` = import default), но `hasExtendedCosts(payload)` false (нет `costs/resources/tov_entries`) → нет баннера «Předvyplnit TOV», хотя Aplikovat запускался. Гипотеза: тонкий write (`export-to-registry.js:153`, без costs/resources/tov_entries) перезаписал богатый Aplikovat-payload (`applyPlanToPositions.ts:504-509`) в Portal. **Полный разбор + точные next-steps:** [`docs/handoff/2026-07-09_tov-writeback-regression.md`](handoff/2026-07-09_tov-writeback-regression.md).
+
+**Další otevřené:** phantom «Auto-created» + гонка синка 409 (`portalAutoSync.ts`) · MCP-OAuth `connection already closed` (`app/mcp/auth.py::_execute` rollback на закрытом соединении) · otskp/R-code 404 noise (безвредно).
+
+**Co dál:** новая сессия с ветки `claude/passport-mcp-worklist-bla05q` (restart from origin/main) → взять handoff §2, проверить Portal merge-vs-overwrite семантику monolith_payload, выровнять два write-пути, проверить на 272324.
+
+---
+
 ## 10. Document metadata
 
 | Field | Value |
