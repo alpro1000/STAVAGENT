@@ -136,6 +136,22 @@ TOOL_MANIFESTS: dict[str, ToolManifest] = {
         requires_confirmation=False,
         version="2.0.0",  # v2: explicit work_first/work_with_catalog mode (PR2)
     ),
+    # tz-passport-json Gate 2 — deterministic passport → whole-SO plan (delegates
+    # to the canonical engine planPassport). Read-only, replayable; a work-
+    # atomization sibling of calculate_concrete_works.
+    "calculate_from_passport": ToolManifest(
+        tool_name="calculate_from_passport",
+        category=ToolCategory.DETERMINISTIC_CALCULATION,
+        side_effect_level=SideEffectLevel.NONE,
+        requires_session=False,
+        writes_state=False,
+        audit_required=True,
+        replayable=True,
+        billable=True,
+        credits=10,
+        requires_confirmation=False,
+        version="1.0.0",
+    ),
     "find_urs_code": ToolManifest(
         tool_name="find_urs_code",
         category=ToolCategory.CATALOG_BINDING,

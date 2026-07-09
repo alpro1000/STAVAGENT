@@ -1158,6 +1158,14 @@ TOOL_DESCRIPTIONS = {
         "Spočítá betonářské práce pro jeden ŽB prvek (7engine pipeline): "
         "bednění, výztuž, zrání, podpěry, harmonogram, CZK/m³."
     ),
+    "calculate_from_passport": (
+        "Z pasportu mostního SO (JSON extrahovaný z dokumentace — TZ + výkresy "
+        "+ soupis) spočítá plán betonářských prací celého objektu jedním "
+        "voláním (planPassport → planProject): mapuje na prvky (NK, opěry, "
+        "pilíře, základy, přechodové desky, římsy, podkladní beton) a vrátí "
+        "per-prvek plán + agregát s poctivými dílčími součty (chybějící "
+        "množství = NEPOČÍTÁNO, ne fabrikace)."
+    ),
     "calculate_pump": (
         "Spočítá náklady na betonpumpu (TOV multi-supplier) podle objemu: "
         "čerpadlo, přistavení, doprava, vibrátor, příplatek + volitelně "
@@ -1242,6 +1250,7 @@ TOOL_ORDER = [
     "classify_construction_element",
     "calculate_concrete_works",
     "calculate_pump",
+    "calculate_from_passport",
     "parse_construction_budget",
     "analyze_construction_document",
     "create_work_breakdown",
@@ -1373,6 +1382,28 @@ async def rest_calculate(
 
     from app.mcp.tools.calculator import calculate_concrete_works
     return await calculate_concrete_works(**body.model_dump())
+
+
+class PassportPlanRequest(BaseModel):
+    # The whole bridge passport JSON is the payload (schema single-source =
+    # app/models/bridge_passport.py). Accept it as an open object; the tool
+    # validates it against BridgePassport before delegating.
+    passport: dict
+
+
+@router.post("/tools/calculate-from-passport")
+async def rest_calculate_from_passport(
+    body: PassportPlanRequest,
+    authorization: Optional[str] = Header(None),
+):
+    """Compute a whole-SO plan from a bridge passport (10 credits)."""
+    api_key = _extract_bearer(authorization)
+    credit_check = mcp_auth.check_credits(api_key or "", "calculate_from_passport")
+    if not credit_check["ok"]:
+        raise HTTPException(status_code=402, detail=credit_check["error"])
+
+    from app.mcp.tools.passport_plan import calculate_from_passport
+    return await calculate_from_passport(body.passport)
 
 
 class PumpRequest(BaseModel):

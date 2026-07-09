@@ -220,3 +220,14 @@ async def delegate_calculate(payload: dict) -> dict:
 async def delegate_classify(payload: dict) -> dict:
     """POST /api/classify — returns ElementProfile (verbatim) or raises."""
     return await delegate("/api/classify", payload)
+
+
+async def delegate_calculate_from_passport(passport: dict) -> dict:
+    """POST /api/calculate-from-passport — returns {mapping, project} or raises.
+
+    The whole per-SO bridge passport JSON IS the request body (planPassport =
+    map → planProject on the canonical engine). Same fail-mode contract as the
+    other delegates: 4xx → EngineInvalidInput, 5xx → EngineError, timeout →
+    EngineUnavailable — never a Python-computed fallback.
+    """
+    return await delegate("/api/calculate-from-passport", passport)

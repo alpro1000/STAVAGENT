@@ -62,6 +62,8 @@ EXPECTED_TOOLS = [
     "classify_construction_element",
     "calculate_concrete_works",
     "calculate_pump",
+    # tz-passport-json Gate 2 — passport (JSON) → whole-SO plan (planPassport).
+    "calculate_from_passport",
     "parse_construction_budget",
     "analyze_construction_document",
     "create_work_breakdown",

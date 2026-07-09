@@ -15,7 +15,7 @@
  * (the engine functions are sync) and return the engine output verbatim.
  */
 import express from 'express';
-import { planElement, classifyElement, planComposite } from '@stavagent/monolit-shared';
+import { planElement, classifyElement, planComposite, planPassport } from '@stavagent/monolit-shared';
 
 const router = express.Router();
 
@@ -118,6 +118,36 @@ router.post('/calculate', (req, res) => {
     }
     // Detail to server logs only (Phase 2 debugging); client gets a generic error.
     console.error('[engine] /api/calculate failed:', err);
+    return res.status(500).json({ error: 'engine_error' });
+  }
+});
+
+/**
+ * POST /api/calculate-from-passport — per-SO bridge passport (JSON) → whole-SO
+ * plan via the canonical engine (planPassport = map → planProject).
+ *
+ * SSOT thin wrapper (tz-passport-json Gate 2): NO calculation or mapping logic
+ * here — it only exposes the existing in-bundle `planPassport` over HTTP so the
+ * MCP/agent surface can turn a documentation-derived passport into a plan in ONE
+ * call, using the SAME engine as the UI. The request body IS the passport JSON
+ * (schema single-source = Pydantic app/models/bridge_passport.py in Core).
+ *
+ * Honest degradation is inherited from the engine: the mapper emits an element
+ * even when a quantity is missing (volume 0) and `planProject` isolates each
+ * per-element `UncalculatedError` as `aggregate.elements_uncalculated` — so a
+ * throw here is a genuine mapper/engine fault, not a missing-input case.
+ *
+ * Returns `{ mapping: { elements[], warnings[] }, project }` verbatim.
+ */
+router.post('/calculate-from-passport', (req, res) => {
+  const passport = req.body;
+  if (!passport || typeof passport !== 'object' || Array.isArray(passport)) {
+    return res.status(400).json({ error: 'passport must be a JSON object' });
+  }
+  try {
+    return res.json(planPassport(passport));
+  } catch (err) {
+    console.error('[engine] /api/calculate-from-passport failed:', err);
     return res.status(500).json({ error: 'engine_error' });
   }
 });
