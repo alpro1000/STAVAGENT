@@ -71,6 +71,54 @@ function determineSubtype(item) {
   return 'jiné';
 }
 
+// Column order for the positions bulk INSERT — shared by the builder and the
+// (implicit) test so the two never drift.
+export const POSITION_INSERT_COLUMNS = [
+  'id', 'bridge_id', 'part_name', 'item_name', 'subtype', 'unit',
+  'qty', 'crew_size', 'wage_czk_ph', 'shift_hours', 'days', 'otskp_code',
+  'concrete_m3', 'cost_czk', 'unit_cost_native', 'position_instance_id',
+];
+
+/**
+ * Build chunked multi-row INSERT statements for a project's positions.
+ *
+ * A per-row awaited INSERT loop over ~9.5k rows on the shared Cloud SQL
+ * instance blew the request budget (thousands of sequential round-trips).
+ * Batching into ≤`chunkSize`-row multi-VALUES inserts stays well under
+ * Postgres' 65535-parameter cap (16 cols × 500 = 8000) and turns thousands
+ * of round-trips into a handful.
+ *
+ * Pure + exported so the parameter/placeholder math is unit-tested without a DB.
+ */
+export function buildPositionInsertChunks(positions, bridgeId, opts, chunkSize = 500) {
+  const { crewSize, wageDefault, shiftDefault, days } = opts;
+  const nCols = POSITION_INSERT_COLUMNS.length;
+  const cols = POSITION_INSERT_COLUMNS.join(', ');
+  const chunks = [];
+  for (let off = 0; off < positions.length; off += chunkSize) {
+    const slice = positions.slice(off, off + chunkSize);
+    const rows = [];
+    const values = [];
+    slice.forEach((pos, i) => {
+      const base = i * nCols;
+      rows.push(`(${Array.from({ length: nCols }, (_, c) => `$${base + c + 1}`).join(',')})`);
+      // `${bridgeId}_${off + i}` is unique within the batch; the handler
+      // DELETEs the bridge's rows first, so index-based ids never collide.
+      values.push(
+        `${bridgeId}_${off + i}`,
+        bridgeId,
+        pos.part_name, pos.item_name, pos.subtype, pos.unit, pos.qty,
+        crewSize, wageDefault, shiftDefault, days,
+        pos.otskp_code, pos.concrete_m3,
+        pos.total_price || null, pos.unit_price || null,
+        pos.position_instance_id,
+      );
+    });
+    chunks.push({ text: `INSERT INTO positions (${cols}) VALUES ${rows.join(', ')}`, values });
+  }
+  return chunks;
+}
+
 /**
  * GET /api/import-from-registry/projects
  * Returns list of projects available for import.
@@ -227,9 +275,13 @@ router.post('/', async (req, res) => {
 
     logger.info(`[ImportRegistry] Importing project ${portal_project_id} (source=${source || 'portal'})...`);
 
-    // Configurable timeouts via env
-    const PORTAL_TIMEOUT = parseInt(process.env.PORTAL_TIMEOUT_MS || '5000', 10);
-    const REGISTRY_TIMEOUT = parseInt(process.env.REGISTRY_TIMEOUT_MS || '8000', 10);
+    // Import fetches the ENTIRE project (all sheets + all items) in one shot.
+    // The 5s list-timeout is far too short for a large project (9k+ positions
+    // timed out on Portal → misleading «no lists/positions»). Use import-specific
+    // ceilings, kept under the frontend axios timeout (180s) even if Portal times
+    // out AND the Registry fallback runs after it.
+    const PORTAL_TIMEOUT = parseInt(process.env.PORTAL_IMPORT_TIMEOUT_MS || '45000', 10);
+    const REGISTRY_TIMEOUT = parseInt(process.env.REGISTRY_IMPORT_TIMEOUT_MS || '30000', 10);
 
     let projectData = null;
     // Per-source diagnostics surfaced in the 404 body so a failed import names
@@ -420,22 +472,16 @@ router.post('/', async (req, res) => {
           await client.query('BEGIN');
           await client.query('DELETE FROM positions WHERE bridge_id = $1', [bridgeId]);
 
-          for (const pos of positions) {
-            const id = `${bridgeId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-            await client.query(`
-              INSERT INTO positions (
-                id, bridge_id, part_name, item_name, subtype, unit,
-                qty, crew_size, wage_czk_ph, shift_hours, days, otskp_code,
-                concrete_m3, cost_czk, unit_cost_native, position_instance_id
-              ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)
-            `, [
-              id, bridgeId,
-              pos.part_name, pos.item_name, pos.subtype, pos.unit, pos.qty,
-              DEFAULTS.crew_size, wageDefault, shiftDefault, DEFAULTS.days,
-              pos.otskp_code, pos.concrete_m3,
-              pos.total_price || null, pos.unit_price || null,
-              pos.position_instance_id,
-            ]);
+          // Chunked bulk INSERT — a per-row loop over thousands of positions
+          // was too slow on the shared instance (see buildPositionInsertChunks).
+          const chunks = buildPositionInsertChunks(positions, bridgeId, {
+            crewSize: DEFAULTS.crew_size,
+            wageDefault,
+            shiftDefault,
+            days: DEFAULTS.days,
+          });
+          for (const chunk of chunks) {
+            await client.query(chunk.text, chunk.values);
           }
 
           await client.query('COMMIT');

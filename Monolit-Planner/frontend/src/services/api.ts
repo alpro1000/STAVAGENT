@@ -367,10 +367,13 @@ export const uploadAPI = {
     return data;
   },
   importFromRegistry: async (portalProjectId: string, projectName?: string) => {
+    // Large projects (thousands of positions) need well over the default 60s:
+    // the backend fetches the whole project from Portal, then bulk-inserts all
+    // positions. Give this heavy, user-initiated call a generous ceiling.
     const { data } = await api.post('/api/import-from-registry', {
       portal_project_id: portalProjectId,
       project_name: projectName,
-    });
+    }, { timeout: 180000 });
     return data;
   },
   getRegistryProjects: async () => {
