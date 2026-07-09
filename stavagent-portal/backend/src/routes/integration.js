@@ -903,69 +903,132 @@ router.post('/import-from-registry', requireAuth, async (req, res) => {
         }
       }
 
-      // Step 4: Batch INSERT new positions (with per-item error handling)
+      // Step 4: BULK INSERT new positions.
+      //
+      // Was a per-item loop (one INSERT round-trip + SAVEPOINT per row). On
+      // db-f1-micro a 145-row sheet held ONE Cloud SQL connection long enough
+      // that the Registry→Portal sync timed out on the client. A single
+      // multi-row INSERT (chunked) cuts that to ~1 round-trip per 500 rows,
+      // collapsing the transaction's duration + connection-hold time.
+      //
+      // Safety: the whole bulk runs under one SAVEPOINT; if ANY chunk throws
+      // (e.g. one row violates a constraint) we roll the bulk back and fall
+      // back to the proven per-item path, so a single bad row still yields
+      // partial success — identical worst-case behaviour to before.
       if (hasPhase8Columns) {
+        const INSERT_HEAD = `INSERT INTO portal_positions (
+          position_instance_id, position_id, object_id, kod, popis, mnozstvi, mj,
+          cena_jednotkova, cena_celkem, tov_labor, tov_machinery, tov_materials,
+          dov_payload, registry_item_id, sheet_name, row_index, skupina,
+          last_sync_from, last_sync_at, created_by, updated_by, created_at, updated_at
+        )`;
+        // 17 bound params + 6 inline literals (last_sync_from/at, created/updated_by, created/updated_at).
+        const ROW_TAIL = `,'registry',NOW(),'registry_import','registry_import',NOW(),NOW()`;
+        const NCOL = 17;
+        const rowParams = (entry) => [
+          entry.positionInstanceId || uuidv4(),                  // position_instance_id
+          entry.positionId || `pos_${uuidv4()}`,                 // position_id
+          entry.dbObjectId,
+          (entry.item.kod || '').toString().slice(0, 100),
+          (entry.item.popis || '').toString(),
+          Number(entry.item.mnozstvi) || 0,
+          (entry.item.mj || '').toString().slice(0, 50),
+          entry.item.cenaJednotkova != null ? Number(entry.item.cenaJednotkova) : null,
+          entry.item.cenaCelkem != null ? Number(entry.item.cenaCelkem) : null,
+          JSON.stringify(entry.itemTov.labor || []),
+          JSON.stringify(entry.itemTov.machinery || []),
+          JSON.stringify(entry.itemTov.materials || []),
+          entry.dovPayload,
+          entry.registryItemId,
+          (entry.sheetName || '').toString().slice(0, 255),
+          Number.isFinite(entry.itemIdx) ? entry.itemIdx : 0,
+          entry.item.skupina ? entry.item.skupina.toString().slice(0, 50) : null,
+        ];
+
+        // Rows missing an object_id can never insert — record + drop them up front.
+        const validInserts = [];
         for (const entry of toInsert) {
-          const { item, itemTov, dovPayload, dbObjectId, sheetName, itemIdx, registryItemId } = entry;
-          if (!dbObjectId) {
-            insertErrors.push({ registry_item_id: registryItemId, kod: item.kod, error: 'Missing object_id' });
-            continue;
+          if (!entry.dbObjectId) {
+            insertErrors.push({ registry_item_id: entry.registryItemId, kod: entry.item.kod, error: 'Missing object_id' });
+          } else {
+            // Pre-generate stable ids so a row keeps the SAME position_instance_id
+            // across the bulk attempt and the per-item fallback. (Defensive: the
+            // bulk is rolled back to its SAVEPOINT on failure so regenerated ids
+            // wouldn't actually collide, but stable ids keep the fallback
+            // obviously correct against future refactors.)
+            entry.positionInstanceId = uuidv4();
+            entry.positionId = `pos_${uuidv4()}`;
+            validInserts.push(entry);
           }
-          await client.query('SAVEPOINT insert_row');
+        }
+
+        let bulkOk = true;
+        if (validInserts.length > 0) {
+          const CHUNK = 500; // 500 × 17 = 8500 params, well under the 65535 limit
+          const bulkMapping = [];
+          let bulkCount = 0;
+          await client.query('SAVEPOINT bulk_insert');
           try {
-            const result = await client.query(
-              `INSERT INTO portal_positions (
-                position_instance_id,
-                position_id, object_id, kod, popis, mnozstvi, mj,
-                cena_jednotkova, cena_celkem,
-                tov_labor, tov_machinery, tov_materials,
-                dov_payload,
-                registry_item_id,
-                sheet_name, row_index, skupina,
-                last_sync_from, last_sync_at,
-                created_by, updated_by,
-                created_at, updated_at
-              ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, 'registry', NOW(), 'registry_import', 'registry_import', NOW(), NOW())
-              RETURNING position_instance_id`,
-              [
-                uuidv4(),                                    // position_instance_id — explicit UUID
-                `pos_${uuidv4()}`,                           // position_id
-                dbObjectId,
-                (item.kod || '').toString().slice(0, 100),   // VARCHAR(100)
-                (item.popis || '').toString(),               // TEXT
-                Number(item.mnozstvi) || 0,
-                (item.mj || '').toString().slice(0, 50),     // VARCHAR(50)
-                item.cenaJednotkova != null ? Number(item.cenaJednotkova) : null,
-                item.cenaCelkem != null ? Number(item.cenaCelkem) : null,
-                JSON.stringify(itemTov.labor || []),
-                JSON.stringify(itemTov.machinery || []),
-                JSON.stringify(itemTov.materials || []),
-                dovPayload,
-                registryItemId,
-                (sheetName || '').toString().slice(0, 255),
-                Number.isFinite(itemIdx) ? itemIdx : 0,
-                item.skupina ? item.skupina.toString().slice(0, 50) : null,
-              ]
-            );
-            await client.query('RELEASE SAVEPOINT insert_row');
-            totalItems++;
-            if (registryItemId && result.rows[0]?.position_instance_id) {
-              instanceMapping.push({
+            for (let c = 0; c < validInserts.length; c += CHUNK) {
+              const chunk = validInserts.slice(c, c + CHUNK);
+              const valuesSql = [];
+              const params = [];
+              chunk.forEach((entry, i) => {
+                const b = i * NCOL;
+                const ph = Array.from({ length: NCOL }, (_, k) => `$${b + k + 1}`).join(',');
+                valuesSql.push(`(${ph}${ROW_TAIL})`);
+                params.push(...rowParams(entry));
+              });
+              const res = await client.query(
+                `${INSERT_HEAD} VALUES ${valuesSql.join(',')} RETURNING position_instance_id, registry_item_id`,
+                params
+              );
+              bulkCount += res.rows.length;
+              for (const row of res.rows) {
+                if (row.registry_item_id) {
+                  bulkMapping.push({ registry_item_id: row.registry_item_id, position_instance_id: row.position_instance_id });
+                }
+              }
+            }
+            await client.query('RELEASE SAVEPOINT bulk_insert');
+            // Commit the bulk results only after ALL chunks succeeded.
+            totalItems += bulkCount;
+            instanceMapping.push(...bulkMapping);
+          } catch (bulkErr) {
+            await client.query('ROLLBACK TO SAVEPOINT bulk_insert').catch(() => {});
+            console.warn(`[Integration] Bulk insert of ${validInserts.length} rows failed (${bulkErr.code || ''} ${bulkErr.message}) — falling back to per-item`);
+            bulkOk = false; // bulkMapping/bulkCount discarded (not merged)
+          }
+        }
+
+        // Per-item fallback — only runs if the bulk statement failed. Preserves
+        // partial success: a single bad row is logged, the rest still land.
+        if (!bulkOk) {
+          for (const entry of validInserts) {
+            const { item, registryItemId } = entry;
+            await client.query('SAVEPOINT insert_row');
+            try {
+              const result = await client.query(
+                `${INSERT_HEAD} VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17${ROW_TAIL}) RETURNING position_instance_id`,
+                rowParams(entry)
+              );
+              await client.query('RELEASE SAVEPOINT insert_row');
+              totalItems++;
+              if (registryItemId && result.rows[0]?.position_instance_id) {
+                instanceMapping.push({ registry_item_id: registryItemId, position_instance_id: result.rows[0].position_instance_id });
+              }
+            } catch (insertErr) {
+              await client.query('ROLLBACK TO SAVEPOINT insert_row').catch(() => {});
+              console.warn(`[Integration] Failed to insert position ${registryItemId || item.kod}: ${insertErr.message}`);
+              insertErrors.push({
                 registry_item_id: registryItemId,
-                position_instance_id: result.rows[0].position_instance_id,
+                kod: item.kod,
+                stage: 'insert',
+                error: insertErr.message,
+                code: insertErr.code,
+                column: insertErr.column,
               });
             }
-          } catch (insertErr) {
-            await client.query('ROLLBACK TO SAVEPOINT insert_row').catch(() => {});
-            console.warn(`[Integration] Failed to insert position ${registryItemId || item.kod}: ${insertErr.message}`);
-            insertErrors.push({
-              registry_item_id: registryItemId,
-              kod: item.kod,
-              stage: 'insert',
-              error: insertErr.message,
-              code: insertErr.code,
-              column: insertErr.column,
-            });
           }
         }
       } else {
