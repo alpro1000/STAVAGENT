@@ -212,6 +212,19 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Invalid portal_project_id format' });
     }
 
+    // Per-project default rate/shift from Nastavení projektu (project_config).
+    // Falls back to the module DEFAULTS when config is unset. Keeps imported
+    // positions on the SAME rate the user set at the top instead of a hardcoded
+    // 398/10 (the top VÝCHOZÍ SAZBA never reached imported positions before).
+    let wageDefault = DEFAULTS.wage_czk_ph;
+    let shiftDefault = DEFAULTS.shift_hours;
+    try {
+      const cfg = await db.prepare('SELECT defaults FROM project_config WHERE id = 1').get();
+      const defs = cfg ? (typeof cfg.defaults === 'string' ? JSON.parse(cfg.defaults) : cfg.defaults) : null;
+      if (defs?.DEFAULT_WAGE_CZK_PH) wageDefault = Number(defs.DEFAULT_WAGE_CZK_PH);
+      if (defs?.DEFAULT_SHIFT_HOURS) shiftDefault = Number(defs.DEFAULT_SHIFT_HOURS);
+    } catch { /* keep module defaults on any read/parse error */ }
+
     logger.info(`[ImportRegistry] Importing project ${portal_project_id} (source=${source || 'portal'})...`);
 
     // Configurable timeouts via env
@@ -397,7 +410,7 @@ router.post('/', async (req, res) => {
             `, [
               id, bridgeId,
               pos.part_name, pos.item_name, pos.subtype, pos.unit, pos.qty,
-              DEFAULTS.crew_size, DEFAULTS.wage_czk_ph, DEFAULTS.shift_hours, DEFAULTS.days,
+              DEFAULTS.crew_size, wageDefault, shiftDefault, DEFAULTS.days,
               pos.otskp_code, pos.concrete_m3,
               pos.total_price || null, pos.unit_price || null,
               pos.position_instance_id,
@@ -427,7 +440,7 @@ router.post('/', async (req, res) => {
             insertStmt.run(
               id, bridgeId,
               pos.part_name, pos.item_name, pos.subtype, pos.unit, pos.qty,
-              DEFAULTS.crew_size, DEFAULTS.wage_czk_ph, DEFAULTS.shift_hours, DEFAULTS.days,
+              DEFAULTS.crew_size, wageDefault, shiftDefault, DEFAULTS.days,
               pos.otskp_code, pos.concrete_m3,
               pos.total_price || null, pos.unit_price || null,
               pos.position_instance_id,
