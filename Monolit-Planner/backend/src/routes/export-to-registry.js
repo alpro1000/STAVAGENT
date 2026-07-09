@@ -101,9 +101,14 @@ router.post('/:bridge_id', requireExportAuth, async (req, res) => {
         const checkData = await checkRes.json();
         portalProjectId = checkData.project?.portal_project_id || null;
       } else {
+        // Forward the caller's Portal JWT — /create-from-kiosk is requireAuth
+        // and derives the owner from it (401 without a token).
         const createRes = await fetch(`${PORTAL_API}/api/portal-projects/create-from-kiosk`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            ...(req.headers.authorization ? { Authorization: req.headers.authorization } : {}),
+          },
           body: JSON.stringify({
             project_name: project.project_name || bridge_id,
             project_type: 'monolit',

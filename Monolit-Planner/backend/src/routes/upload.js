@@ -445,8 +445,14 @@ router.post('/', upload.single('file'), async (req, res) => {
       }
     }
 
-    // Sync created projects to Portal (non-blocking)
+    // Sync created projects to Portal (non-blocking).
+    // Portal's /create-from-kiosk is requireAuth (Sprint A) and decides the
+    // project owner from the JWT — forward the caller's Portal Bearer token so
+    // the sync isn't rejected with 401 and the project lands under the right
+    // user. If the caller has no token (pure kiosk, not opened from Portal) the
+    // sync 401s and is skipped (non-critical — logged, upload still succeeds).
     const PORTAL_API = process.env.PORTAL_API_URL || 'https://stavagent-portal-backend-1086027517695.europe-west3.run.app';
+    const authHeader = req.headers.authorization;
     for (const bridge of createdBridges) {
       try {
         await axios.post(`${PORTAL_API}/api/portal-projects/create-from-kiosk`, {
@@ -455,10 +461,14 @@ router.post('/', upload.single('file'), async (req, res) => {
           kiosk_type: 'monolit',
           kiosk_project_id: bridge.bridge_id,
           description: bridge.object_name
-        }, { timeout: 5000 });
+        }, {
+          timeout: 5000,
+          headers: authHeader ? { Authorization: authHeader } : {},
+        });
         logger.info(`[Upload] Synced to Portal: ${bridge.bridge_id}`);
       } catch (portalErr) {
-        logger.warn(`[Upload] Portal sync failed for ${bridge.bridge_id}: ${portalErr.message}`);
+        const st = portalErr.response?.status;
+        logger.warn(`[Upload] Portal sync failed for ${bridge.bridge_id}: ${portalErr.message}${st === 401 ? ' (chybí Portal JWT — otevřete kiosk z Portálu, sync je nepovinný)' : ''}`);
       }
     }
 
