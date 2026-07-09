@@ -11,6 +11,7 @@ import type { MaterialResource, FormworkRentalRow } from '../../types/unified';
 import { MONOLIT_FRONTEND_URL } from '../../utils/config.js';
 import { v4 as uuidv4 } from 'uuid';
 import { FormworkRentalSection } from './FormworkRentalSection';
+import { TOV_FIELD_TEXT, TOV_FIELD_NUM, TOV_HEADER_CELL } from './fieldStyles';
 
 interface MaterialsTabProps {
   resources: MaterialResource[];
@@ -94,13 +95,13 @@ export function MaterialsTab({
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-border-color">
-                <th className="text-left py-2 px-3 font-medium text-text-secondary">Materiál</th>
-                <th className="text-center py-2 px-3 font-medium text-text-secondary w-24">Množství</th>
-                <th className="text-center py-2 px-3 font-medium text-text-secondary w-20">MJ</th>
-                <th className="text-center py-2 px-3 font-medium text-text-secondary w-28">Cena/MJ</th>
-                <th className="text-right py-2 px-3 font-medium text-text-secondary w-32">Celkem</th>
-                <th className="w-20"></th>
+              <tr>
+                <th className={`${TOV_HEADER_CELL} text-left`}>Materiál</th>
+                <th className={`${TOV_HEADER_CELL} text-center w-24`}>Množství</th>
+                <th className={`${TOV_HEADER_CELL} text-center w-20`}>MJ</th>
+                <th className={`${TOV_HEADER_CELL} text-center w-28`}>Cena/MJ</th>
+                <th className={`${TOV_HEADER_CELL} text-right w-32`}>Celkem</th>
+                <th className={`${TOV_HEADER_CELL} w-20`}></th>
               </tr>
             </thead>
             <tbody>
@@ -111,7 +112,7 @@ export function MaterialsTab({
                       type="text"
                       value={resource.name}
                       onChange={e => updateResource(resource.id, { name: e.target.value })}
-                      className="w-full bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-accent-primary rounded px-1"
+                      className={TOV_FIELD_TEXT}
                     />
                   </td>
                   <td className="py-2 px-3">
@@ -121,7 +122,7 @@ export function MaterialsTab({
                       step="0.01"
                       value={resource.quantity}
                       onChange={e => updateResource(resource.id, { quantity: parseFloat(e.target.value) || 0 })}
-                      className="w-full text-center bg-bg-secondary/50 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-accent-primary"
+                      className={TOV_FIELD_NUM}
                     />
                   </td>
                   <td className="py-2 px-3">
@@ -129,7 +130,7 @@ export function MaterialsTab({
                       type="text"
                       value={resource.unit}
                       onChange={e => updateResource(resource.id, { unit: e.target.value })}
-                      className="w-full text-center bg-bg-secondary/50 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-accent-primary"
+                      className={`${TOV_FIELD_TEXT} text-center`}
                     />
                   </td>
                   <td className="py-2 px-3">
@@ -139,7 +140,7 @@ export function MaterialsTab({
                       step="0.01"
                       value={resource.unitPrice || 0}
                       onChange={e => updateResource(resource.id, { unitPrice: parseFloat(e.target.value) || 0 })}
-                      className="w-full text-center bg-bg-secondary/50 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-accent-primary"
+                      className={TOV_FIELD_NUM}
                     />
                   </td>
                   <td className="py-2 px-3 text-right font-medium tabular-nums text-green-600">
