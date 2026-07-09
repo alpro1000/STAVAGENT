@@ -539,6 +539,7 @@ VITE_DISABLE_AUTH=true  # local dev only
 | Registry modal empty | Debug banner shows Portal/Registry status. Portal 401 → use `/api/integration/list-registry-projects` (public). Registry 0 → startup push-sync in App.tsx |
 | Aplikovat 500 error | Check curing_days Math.round (INTEGER column). Error logging in PUT handler shows exact field/type |
 | Portal sync 0 items | Log misleading — `items_imported = newItems = total - updated`. On re-sync all items are UPDATES, so 0 new. Data IS synced. |
+| TOV pre-fill button missing in Registry | Monolit write-back 500. Check Portal log `Error writing monolith payload`. Root cause 2026-07-09: `position_audit_log` missing `actor` col (schema drift — prod table predates the column, `CREATE TABLE IF NOT EXISTS` no-ops) → audit INSERT rolls back whole txn → payload never written → Monolit log `Batch complete: 0 ok, N failed`. Fixed: Phase 11 safety migration ALTERs the cols + audit INSERT made non-fatal (own try/catch, outside txn). |
 | XLSX overwrites old project | bridge_id prefixed with `stavbaProjectId__sheetBridgeId`. Each upload creates unique project via hash suffix. |
 | Props missing normohodiny | `PropsCalculatorResult.labor_hours` field; check `fwSystem.manufacturer` passed to `calculateProps()` |
 | NKB 429 console spam | fetchAuditStatus returns `'_rate_limited'` sentinel → polling triples delay (max 120s) |
