@@ -27,6 +27,7 @@ import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { getPool } from '../db/postgres.js';
 import { USE_POSTGRES } from '../db/index.js';
+import { monolithPayloadMergeSql } from '../db/monolithPayloadMerge.js';
 
 const router = express.Router();
 
@@ -1089,9 +1090,12 @@ router.post('/:instanceId/monolith', async (req, res) => {
     // needed. Keeping it outside a transaction lets the SECONDARY audit-log
     // write fail independently (see below) instead of aborting the whole
     // transaction and rolling the payload back.
+    // Never downgrade a rich stored payload (costs/resources/tov_entries) to a
+    // thin one: a plain edit or a bulk re-export must not erase an «Aplikovat»
+    // calculation, or Registry's «Předvyplnit TOV» banner vanishes.
     const result = await client.query(
       `UPDATE portal_positions
-       SET monolith_payload = $1,
+       SET monolith_payload = ${monolithPayloadMergeSql('$1')},
            monolit_position_id = $2,
            updated_by = 'monolit',
            updated_at = NOW()

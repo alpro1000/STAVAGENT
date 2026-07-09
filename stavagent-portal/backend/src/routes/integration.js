@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { requireAuth } from '../middleware/auth.js';
 import { getPool } from '../db/postgres.js';
 import { USE_POSTGRES } from '../db/index.js';
+import { monolithPayloadMergeSql } from '../db/monolithPayloadMerge.js';
 
 const router = express.Router();
 const BATCH_SIZE = 200;
@@ -195,7 +196,7 @@ router.post('/import-from-monolit', requireAuth, async (req, res) => {
            SET object_id = $1, kod = $2, popis = $3, mnozstvi = $4, mj = $5,
                cena_jednotkova = $6, cena_celkem = $7,
                tov_labor = $8, tov_machinery = $9, tov_materials = $10,
-               monolith_payload = COALESCE($11, monolith_payload),
+               monolith_payload = ${monolithPayloadMergeSql('$11')},
                sheet_name = $12, row_index = $13,
                last_sync_from = 'monolit', last_sync_at = NOW(),
                updated_by = 'monolit_import', updated_at = NOW()
