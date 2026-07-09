@@ -1531,15 +1531,12 @@ export function ItemsTable({
           tovData={getItemTOV(tovModalItem.id)}
           onSave={(data: TOVData) => setItemTOV(tovModalItem.id, data)}
           onApplyPrice={(itemId, unitPrice, _totalPrice) => {
-            // Apply calculated TOV price to item's cenaJednotkova
+            // Apply calculated TOV price to item's cenaJednotkova.
+            // Confirmation is shown INLINE inside the TOV modal (green banner +
+            // button state) — the old page-level AlertModal rendered BEHIND the
+            // still-open modal (both z-50, modal later in DOM), so the user had
+            // to close the dialog to notice it worked.
             updateItemPrice(projectId, sheetId, itemId, unitPrice);
-            // Show success notification
-            setAlertModal({
-              isOpen: true,
-              title: 'Cena aplikována',
-              message: `Jednotková cena ${unitPrice.toFixed(2)} Kč byla aplikována na pozici.`,
-              variant: 'success',
-            });
           }}
         />
       )}
