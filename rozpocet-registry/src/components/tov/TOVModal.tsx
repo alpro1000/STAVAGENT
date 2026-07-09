@@ -13,7 +13,7 @@
  */
 
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { X, Users, Truck, Package, Calculator, ExternalLink, Check, ArrowRight, Zap , RefreshCw} from 'lucide-react';
+import { X, Users, Truck, Package, Calculator, ExternalLink, Check, ArrowRight, Zap , RefreshCw, Maximize2, Minimize2 } from 'lucide-react';
 import type { ParsedItem } from '../../types';
 import type { TOVData, LaborResource, MachineryResource, MaterialResource, FormworkRentalRow, PumpRentalData, CraneCalcData, DeliveryCalcData } from '../../types/unified';
 import { LaborTab } from './LaborTab';
@@ -48,6 +48,9 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
   const [activeTab, setActiveTab] = useState<TabType>('labor');
   const [localData, setLocalData] = useState<TOVData>(tovData || emptyTOV);
   const [priceApplied, setPriceApplied] = useState(false);
+  // Expand the dialog to (almost) the full viewport. Handy on wide BOQ rows
+  // where the three tabs + summary don't fit the default 4xl width.
+  const [isMaximized, setIsMaximized] = useState(false);
   // Tracks when we triggered a store update ourselves so the resulting
   // tovData prop change doesn't reset localData back from the store.
   const isAutoSaving = useRef(false);
@@ -201,7 +204,13 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
       />
 
       {/* Modal */}
-      <div className="relative bg-bg-secondary border border-border-accent rounded-lg shadow-neuro-up w-full max-w-4xl max-h-[85vh] flex flex-col">
+      <div
+        className={`relative bg-bg-secondary border border-border-accent rounded-lg shadow-neuro-up flex flex-col ${
+          isMaximized
+            ? 'w-[98vw] h-[96vh] max-w-none max-h-none'
+            : 'w-full max-w-4xl max-h-[85vh]'
+        }`}
+      >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-border-color shrink-0">
           <div className="flex-1 min-w-0">
@@ -220,12 +229,25 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
               )}
             </p>
           </div>
-          <button
-            onClick={onClose}
-            className="p-1 hover:bg-bg-tertiary rounded transition-colors shrink-0 ml-4"
-          >
-            <X size={20} className="text-text-secondary" />
-          </button>
+          <div className="flex items-center gap-1 shrink-0 ml-4">
+            <button
+              onClick={() => setIsMaximized(m => !m)}
+              className="p-1 hover:bg-bg-tertiary rounded transition-colors"
+              title={isMaximized ? 'Zmenšit okno' : 'Rozšířit na celou obrazovku'}
+              aria-label={isMaximized ? 'Zmenšit okno' : 'Rozšířit na celou obrazovku'}
+            >
+              {isMaximized
+                ? <Minimize2 size={18} className="w-[18px] h-[18px] text-text-secondary" />
+                : <Maximize2 size={18} className="w-[18px] h-[18px] text-text-secondary" />}
+            </button>
+            <button
+              onClick={onClose}
+              className="p-1 hover:bg-bg-tertiary rounded transition-colors"
+              aria-label="Zavřít"
+            >
+              <X size={20} className="w-[20px] h-[20px] text-text-secondary" />
+            </button>
+          </div>
         </div>
 
         {/* Tabs */}
@@ -425,6 +447,20 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
                   </button>
                 )}
               </div>
+
+              {/* Applied confirmation — inline, inside the modal, so the user
+                  sees it immediately (the old page-level AlertModal rendered
+                  BEHIND this dialog and forced a close to notice it). */}
+              {priceApplied && (
+                <div className="mt-2 flex items-center gap-2 px-3 py-2 bg-green-50 border border-green-200 rounded text-sm text-green-800">
+                  <Check size={16} className="w-[16px] h-[16px] text-green-600 shrink-0" />
+                  <span>
+                    Jednotková cena{' '}
+                    <strong>{calculatedTotals.unitPrice.toFixed(2)} Kč/{item.mj || 'MJ'}</strong>
+                    {' '}byla aplikována na pozici.
+                  </span>
+                </div>
+              )}
 
               {/* Price breakdown */}
               <div className="flex flex-wrap gap-4 mt-2 text-xs text-text-muted">
