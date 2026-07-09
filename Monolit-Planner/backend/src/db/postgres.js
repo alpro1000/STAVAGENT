@@ -94,7 +94,15 @@ export function initPostgres() {
     host: connConfig.host,
     port: connConfig.port,
     ssl: needsSsl ? { rejectUnauthorized: false } : false,
-    max: 20,
+    // Cloud SQL `stavagent-db` has max_connections=25 shared across ALL
+    // services (Portal, Monolit, Registry, CORE) AND across Cloud Run
+    // autoscaled instances. A greedy max=20 here meant a single Monolit
+    // instance could eat 80% of the DB's slots, starving Portal + Monolit's
+    // own cold-start ("Database initialization failed: connection timeout",
+    // rev 00409, 2026-07-09). Keep this small; env-overridable so it can be
+    // tuned from Cloud Run without a redeploy. The durable fix is raising the
+    // instance's max_connections (infra).
+    max: parseInt(process.env.PG_POOL_MAX || '8', 10),
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 10000,
   });

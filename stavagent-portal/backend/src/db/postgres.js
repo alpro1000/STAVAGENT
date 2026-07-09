@@ -91,7 +91,11 @@ export function initPostgres() {
     host: connConfig.host,
     port: connConfig.port,
     ssl: (!process.env.K_SERVICE && process.env.NODE_ENV === 'production') ? { rejectUnauthorized: false } : false,
-    max: 10,
+    // Cloud SQL `stavagent-db` has max_connections=25 shared across ALL
+    // services + Cloud Run autoscaled instances. Env-overridable so pools can
+    // be right-sized from Cloud Run without a redeploy; the durable fix is
+    // raising the instance's max_connections (infra). See Monolit postgres.js.
+    max: parseInt(process.env.PG_POOL_MAX || '8', 10),
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 10000,
     keepAlive: true,
