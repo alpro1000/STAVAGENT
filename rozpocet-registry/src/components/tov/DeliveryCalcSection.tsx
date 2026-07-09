@@ -122,7 +122,7 @@ export function DeliveryCalcSection({ data, onChange, defaultVolume, defaultClas
       >
         <span><Truck size={14} className="inline" /> Doprava betonu: {calc.volume_m3} m³ {calc.concrete_class}</span>
         <div className="flex items-center gap-2">
-          <span className="font-mono">{calc.total_czk.toLocaleString('cs-CZ')} Kč</span>
+          <span className="font-mono">{calc.total_czk.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč</span>
           {expanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
         </div>
       </button>
@@ -208,16 +208,16 @@ export function DeliveryCalcSection({ data, onChange, defaultVolume, defaultClas
           <div className="bg-bg-tertiary/30 rounded p-2 space-y-1 text-xs">
             <div className="flex justify-between">
               <span>Beton: {calc.volume_m3} m³ × {calc.concrete_price_m3} Kč</span>
-              <span className="font-mono">{calc.concrete_czk.toLocaleString('cs-CZ')} Kč</span>
+              <span className="font-mono">{calc.concrete_czk.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč</span>
             </div>
             <div className="flex justify-between">
               <span>Doprava: {calc.num_deliveries}× {mixer.label} ({calc.distance_km} km)</span>
-              <span className="font-mono">{calc.transport_czk.toLocaleString('cs-CZ')} Kč</span>
+              <span className="font-mono">{calc.transport_czk.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč</span>
             </div>
             {calc.surcharges_czk > 0 && (
               <div className="flex justify-between">
                 <span>Příplatky</span>
-                <span className="font-mono">{calc.surcharges_czk.toLocaleString('cs-CZ')} Kč</span>
+                <span className="font-mono">{calc.surcharges_czk.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč</span>
               </div>
             )}
           </div>
@@ -225,7 +225,7 @@ export function DeliveryCalcSection({ data, onChange, defaultVolume, defaultClas
           {/* Total */}
           <div className="flex justify-end pt-2 border-t border-border-color/50">
             <span className="font-mono font-bold text-green-700">
-              Celkem: {calc.total_czk.toLocaleString('cs-CZ')} Kč
+              Celkem: {calc.total_czk.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
             </span>
           </div>
         </div>

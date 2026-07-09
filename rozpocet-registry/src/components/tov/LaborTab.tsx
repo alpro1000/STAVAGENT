@@ -137,7 +137,7 @@ export function LaborTab({ resources, onChange, itemQuantity }: LaborTabProps) {
                     />
                   </td>
                   <td className="py-2 px-3 text-right font-medium tabular-nums">
-                    {(resource.totalCost || 0).toLocaleString('cs-CZ')} Kč
+                    {(resource.totalCost || 0).toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                   </td>
                   <td className="py-2 px-1">
                     <button
@@ -159,7 +159,7 @@ export function LaborTab({ resources, onChange, itemQuantity }: LaborTabProps) {
                 </td>
                 <td></td>
                 <td className="py-2 px-3 text-right font-bold tabular-nums">
-                  {totalCost.toLocaleString('cs-CZ')} Kč
+                  {totalCost.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                 </td>
                 <td></td>
               </tr>

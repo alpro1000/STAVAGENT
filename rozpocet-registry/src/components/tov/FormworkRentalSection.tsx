@@ -268,11 +268,11 @@ export function FormworkRentalSection({
         </h4>
         <div className="flex items-center gap-2">
           <span className="text-xs text-slate-500">
-            Nájem: <strong className="text-blue-700">{totalNajem.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč</strong>
+            Nájem: <strong className="text-blue-700">{totalNajem.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Kč</strong>
             {totalPodilKoupe > 0 && (
-              <> + Ztracené díly: <strong className="text-amber-700">{totalPodilKoupe.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč</strong></>
+              <> + Ztracené díly: <strong className="text-amber-700">{totalPodilKoupe.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Kč</strong></>
             )}
-            {' '}= <strong className="text-blue-800">{totalRental.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč</strong>
+            {' '}= <strong className="text-blue-800">{totalRental.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Kč</strong>
           </span>
           {rows.length > 0 && (
             <button
@@ -497,7 +497,7 @@ export function FormworkRentalSection({
                   <td className={`${tdCell} bg-blue-50`}>
                     <div
                       className="w-full text-right font-semibold text-xs text-blue-700 tabular-nums px-1 py-0.5"
-                      title={`Nájem: ${(row.najem_naklady ?? 0).toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč + Ztracené díly: ${(row.podil_koupe ?? 0).toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč`}
+                      title={`Nájem: ${(row.najem_naklady ?? 0).toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Kč + Ztracené díly: ${(row.podil_koupe ?? 0).toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Kč`}
                     >
                       {row.konecny_najem.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </div>
@@ -564,15 +564,15 @@ export function FormworkRentalSection({
           <tfoot>
             <tr className="bg-blue-50 border-t-2 border-blue-200">
               <td colSpan={15} className="px-2 py-1.5 text-right text-xs font-medium text-blue-700">
-                Nájem: <span className="font-bold">{totalNajem.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč</span>
+                Nájem: <span className="font-bold">{totalNajem.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Kč</span>
                 {totalPodilKoupe > 0 && (
-                  <> + Ztracené díly: <span className="font-bold text-amber-700">{totalPodilKoupe.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč</span></>
+                  <> + Ztracené díly: <span className="font-bold text-amber-700">{totalPodilKoupe.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Kč</span></>
                 )}
                 {' '}= Celkem:
               </td>
               <td className="px-1 py-1.5 text-right text-xs font-semibold text-amber-700 tabular-nums bg-amber-50">
                 {totalPodilKoupe > 0
-                  ? `${totalPodilKoupe.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč`
+                  ? `${totalPodilKoupe.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Kč`
                   : '—'}
               </td>
               <td className="px-1 py-1.5 text-right text-sm font-bold text-blue-800 tabular-nums">

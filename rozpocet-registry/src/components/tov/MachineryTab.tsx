@@ -136,17 +136,17 @@ export function MachineryTab({
                   Doprava ({pumpRental.celkem_pristaveni}× přistavení)
                 </span>
                 <span className="tabular-nums font-medium">
-                  {pumpRental.celkem_doprava.toLocaleString('cs-CZ')} Kč
+                  {pumpRental.celkem_doprava.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                 </span>
               </div>
             )}
             {pumpRental.celkem_manipulace > 0 && (
               <div className="flex justify-between text-xs">
                 <span className="text-text-muted">
-                  Manipulace ({pumpRental.celkem_hodiny.toFixed(2)} h × {pumpRental.manipulace_czk_h.toLocaleString('cs-CZ')} Kč/h)
+                  Manipulace ({pumpRental.celkem_hodiny.toFixed(2)} h × {pumpRental.manipulace_czk_h.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč/h)
                 </span>
                 <span className="tabular-nums font-medium">
-                  {pumpRental.celkem_manipulace.toLocaleString('cs-CZ')} Kč
+                  {pumpRental.celkem_manipulace.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                 </span>
               </div>
             )}
@@ -156,7 +156,7 @@ export function MachineryTab({
                   Příplatek za čerpání ({pumpRental.celkem_m3.toFixed(1)} m³ × {pumpRental.priplatek_czk_m3} Kč/m³)
                 </span>
                 <span className="tabular-nums font-medium">
-                  {pumpRental.celkem_priplatek_m3.toLocaleString('cs-CZ')} Kč
+                  {pumpRental.celkem_priplatek_m3.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                 </span>
               </div>
             )}
@@ -166,17 +166,17 @@ export function MachineryTab({
                   {a.nazev || 'Příslušenství'} ({a.mnozstvi} {a.unit} × {a.czk_per_unit} Kč)
                 </span>
                 <span className="tabular-nums font-medium">
-                  {a.celkem.toLocaleString('cs-CZ')} Kč
+                  {a.celkem.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                 </span>
               </div>
             ))}
             {pumpRental.surcharges.filter(s => s.celkem > 0).map(s => (
               <div key={s.id} className="flex justify-between text-xs">
                 <span className="text-text-muted">
-                  {s.nazev || 'Příplatek'} ({pumpRental.celkem_pristaveni}× × {s.czk_per_pristaveni.toLocaleString('cs-CZ')} Kč)
+                  {s.nazev || 'Příplatek'} ({pumpRental.celkem_pristaveni}× × {s.czk_per_pristaveni.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč)
                 </span>
                 <span className="tabular-nums font-medium">
-                  {s.celkem.toLocaleString('cs-CZ')} Kč
+                  {s.celkem.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                 </span>
               </div>
             ))}
@@ -185,7 +185,7 @@ export function MachineryTab({
                 <Zap size={11} /> Celkem betonočerpadlo
               </span>
               <span className="tabular-nums font-bold text-blue-700">
-                {pumpRental.konecna_cena.toLocaleString('cs-CZ')} Kč
+                {pumpRental.konecna_cena.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
               </span>
             </div>
           </div>
@@ -251,7 +251,7 @@ export function MachineryTab({
                     />
                   </td>
                   <td className="py-2 px-3 text-right font-medium tabular-nums">
-                    {(resource.totalCost || 0).toLocaleString('cs-CZ')} Kč
+                    {(resource.totalCost || 0).toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                   </td>
                   <td className="py-2 px-1">
                     <button
@@ -273,7 +273,7 @@ export function MachineryTab({
                 </td>
                 <td></td>
                 <td className="py-2 px-3 text-right font-bold tabular-nums">
-                  {totalCost.toLocaleString('cs-CZ')} Kč
+                  {totalCost.toLocaleString('cs-CZ', { maximumFractionDigits: 2 })} Kč
                 </td>
                 <td></td>
               </tr>
