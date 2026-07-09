@@ -51,6 +51,14 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
   // Expand the dialog to (almost) the full viewport. Handy on wide BOQ rows
   // where the three tabs + summary don't fit the default 4xl width.
   const [isMaximized, setIsMaximized] = useState(false);
+  // C: unsaved-changes tracking. Lidé/Mechanizmy/Materiály are only persisted
+  // on "Uložit TOV" (formwork/pump/crane/delivery auto-save on change), so a
+  // close with pending edits must prompt. D: visible "saved" indicator.
+  const [dirty, setDirty] = useState(false);
+  const [justSaved, setJustSaved] = useState(false);
+  const [showCloseConfirm, setShowCloseConfirm] = useState(false);
+  const dirtyRef = useRef(false);
+  dirtyRef.current = dirty;
   // Tracks when we triggered a store update ourselves so the resulting
   // tovData prop change doesn't reset localData back from the store.
   const isAutoSaving = useRef(false);
@@ -65,6 +73,9 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
     }
     setLocalData(tovData || emptyTOV);
     setPriceApplied(false);
+    setDirty(false);
+    setJustSaved(false);
+    setShowCloseConfirm(false);
   }, [tovData, item.id]);
 
   // Calculate total cost from all resources (labor + machinery + materials + formwork + pump)
@@ -92,17 +103,16 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
     };
   }, [localData, item.mnozstvi]);
 
-  // ESC key handler
+  // ESC key handler — guards unsaved changes (dirtyRef avoids a stale closure).
   useEffect(() => {
+    if (!isOpen) return;
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key !== 'Escape') return;
+      if (dirtyRef.current) setShowCloseConfirm(true);
+      else onClose();
     };
-
-    if (isOpen) {
-      document.addEventListener('keydown', handleEsc);
-      document.body.style.overflow = 'hidden';
-    }
-
+    document.addEventListener('keydown', handleEsc);
+    document.body.style.overflow = 'hidden';
     return () => {
       document.removeEventListener('keydown', handleEsc);
       document.body.style.overflow = 'unset';
@@ -111,8 +121,13 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
 
   if (!isOpen) return null;
 
+  // Marks Lidé/Mechanizmy/Materiály edits as unsaved (they persist only on
+  // "Uložit TOV"). Auto-saved sections (formwork/pump/crane/delivery) don't.
+  const markDirty = () => { setDirty(true); setJustSaved(false); };
+
   // Update handlers
   const handleLaborChange = (labor: LaborResource[]) => {
+    markDirty();
     const totalNormHours = labor.reduce((sum, r) => sum + r.normHours, 0);
     const totalWorkers = labor.reduce((sum, r) => sum + r.count, 0);
     setLocalData(prev => ({
@@ -123,6 +138,7 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
   };
 
   const handleMachineryChange = (machinery: MachineryResource[]) => {
+    markDirty();
     const totalMachineHours = machinery.reduce((sum, r) => sum + r.machineHours, 0);
     const totalUnits = machinery.reduce((sum, r) => sum + r.count, 0);
     setLocalData(prev => ({
@@ -133,6 +149,7 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
   };
 
   const handleMaterialsChange = (materials: MaterialResource[]) => {
+    markDirty();
     const totalCost = materials.reduce((sum, r) => sum + (r.totalCost || 0), 0);
     const itemCount = materials.length;
     setLocalData(prev => ({
@@ -184,10 +201,21 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
     });
   };
 
+  // D: save keeps the modal OPEN and shows a "✓ Uloženo" indicator, so the save
+  // is visibly confirmed (the previous save+close gave no feedback). The user
+  // closes via Zavřít / X (now a clean, non-dirty close).
   const handleSave = () => {
     onSave(localData);
-    onClose();
+    setDirty(false);
+    setJustSaved(true);
   };
+
+  // C: closing with unsaved Lidé/Mechanizmy/Materiály edits prompts first.
+  const requestClose = () => {
+    if (dirtyRef.current) setShowCloseConfirm(true);
+    else onClose();
+  };
+  const saveAndClose = () => { onSave(localData); onClose(); };
 
   const tabs: { key: TabType; label: string; icon: typeof Users; count: number }[] = [
     { key: 'labor', label: 'Lidé', icon: Users, count: localData.labor.length },
@@ -200,7 +228,7 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={onClose}
+        onClick={requestClose}
       />
 
       {/* Modal */}
@@ -241,7 +269,7 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
                 : <Maximize2 size={18} className="w-[18px] h-[18px] text-text-secondary" />}
             </button>
             <button
-              onClick={onClose}
+              onClick={requestClose}
               className="p-1 hover:bg-bg-tertiary rounded transition-colors"
               aria-label="Zavřít"
             >
@@ -322,6 +350,7 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
                 const prefilled = prefillTOVFromMonolit(item.monolith_payload!);
                 if (prefilled) {
                   setLocalData(prefilled);
+                  markDirty();
                 }
               }}
               className="px-3 py-1.5 text-sm font-medium bg-orange-500 text-white rounded hover:bg-orange-600 transition-colors whitespace-nowrap"
@@ -351,6 +380,7 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
                 const fresh = prefillTOVFromMonolit(item.monolith_payload!);
                 if (fresh) {
                   setLocalData(prev => mergeCalcRefresh(prev, fresh));
+                  markDirty();
                 }
               }}
               className="px-3 py-1 text-xs font-medium text-blue-700 bg-blue-100 rounded hover:bg-blue-200 transition-colors whitespace-nowrap border border-blue-300"
@@ -489,8 +519,16 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
 
           {/* Action buttons */}
           <div className="flex items-center justify-end gap-3 p-4">
+            {/* D: visible save state (green ✓ after save, amber when unsaved). */}
+            {justSaved ? (
+              <span className="flex items-center gap-1.5 text-sm font-medium text-green-600 mr-auto">
+                <Check size={16} className="w-[16px] h-[16px]" /> Uloženo
+              </span>
+            ) : dirty ? (
+              <span className="text-sm text-amber-600 mr-auto">Neuložené změny</span>
+            ) : null}
             <button
-              onClick={onClose}
+              onClick={requestClose}
               className="px-4 py-2 text-sm font-medium text-text-secondary hover:bg-bg-tertiary rounded transition-colors"
             >
               Zavřít
@@ -503,6 +541,38 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
             </button>
           </div>
         </div>
+
+        {/* C: unsaved-changes prompt on close (overlays the modal body). */}
+        {showCloseConfirm && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/40 rounded-lg">
+            <div className="bg-bg-secondary border border-border-accent rounded-lg shadow-neuro-up p-5 max-w-sm w-full mx-4">
+              <p className="text-sm font-medium text-text-primary">Máte neuložené změny</p>
+              <p className="text-sm text-text-secondary mt-1">
+                Chcete je před zavřením uložit?
+              </p>
+              <div className="flex items-center justify-end gap-2 mt-4">
+                <button
+                  onClick={() => setShowCloseConfirm(false)}
+                  className="px-3 py-1.5 text-sm font-medium text-text-secondary hover:bg-bg-tertiary rounded transition-colors"
+                >
+                  Zpět
+                </button>
+                <button
+                  onClick={() => { setShowCloseConfirm(false); onClose(); }}
+                  className="px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded transition-colors"
+                >
+                  Zavřít bez uložení
+                </button>
+                <button
+                  onClick={() => { setShowCloseConfirm(false); saveAndClose(); }}
+                  className="px-3 py-1.5 text-sm font-medium bg-accent-primary text-white hover:bg-accent-primary/90 rounded transition-colors"
+                >
+                  Uložit a zavřít
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
