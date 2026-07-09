@@ -338,7 +338,11 @@ async def _generate_adaptive_summary(
         "format": "adaptive_v2",
         "project_name": project_name,
         "adaptive_summary": result,
-        "classification": classification.model_dump(),
+        # mode='json' for the same reason as the /generate soupis branch: this
+        # dict is handed to JSONResponse (json.dumps), which cannot serialize
+        # datetimes/enums — render them defensively so a future datetime field
+        # on ClassificationInfo can't 500 this path.
+        "classification": classification.model_dump(mode='json'),
         # Minimal passport stub for backward compatibility
         "passport": {
             "passport_id": f"summary_{int(_time.time())}",

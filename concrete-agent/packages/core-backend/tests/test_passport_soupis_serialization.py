@@ -43,3 +43,27 @@ def test_model_dump_json_mode_serializes_with_soupis():
     encoded = json.dumps(resp_dict)  # must NOT raise
     assert '"soupis_praci"' in encoded
     assert isinstance(resp_dict["passport"]["generated_at"], str)
+
+
+def test_generate_soupis_branch_uses_json_mode_dump():
+    """Call-site guard: the /passport/generate soupis-attach branch must use
+    model_dump(mode='json'), not a bare model_dump(). The model-contract tests
+    above prove WHY; this pins the actual fix so a revert fails here (a bare
+    model_dump would keep them green while re-introducing the 500)."""
+    from pathlib import Path
+
+    src = (
+        Path(__file__).resolve().parents[1]
+        / "app" / "api" / "routes_passport.py"
+    ).read_text(encoding="utf-8")
+    # The soupis_praci attach path builds resp_dict for a JSONResponse.
+    assert 'resp_dict = (' in src or 'resp_dict =' in src
+    assert "response.model_dump(mode='json')" in src or \
+           'response.model_dump(mode="json")' in src, (
+        "the /generate soupis branch must dump in JSON mode (datetime → ISO); "
+        "a bare model_dump() re-introduces the 500 on the XLSX path"
+    )
+    # And no bare `.model_dump()` (mode-less) feeding a JSONResponse content on
+    # the two attach paths — both must be json-mode.
+    assert "classification.model_dump(mode='json')" in src or \
+           'classification.model_dump(mode="json")' in src

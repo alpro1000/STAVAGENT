@@ -207,20 +207,39 @@ describe('POST /api/calculate-from-passport — thin delegate to planPassport', 
     expect(res.body.project.aggregate.total_norm_hours).toBeGreaterThan(0);
   });
 
-  test('missing quantities → elements still emitted, engine marks them NEPOČÍTÁNO', async () => {
+  test('missing quantities → 200 (NOT 422): planProject isolates per-element NEPOČÍTÁNO', async () => {
     const passport = loadExample();
     delete passport.quantities;
     const res = await request(app).post('/api/calculate-from-passport').send(passport);
+    // Contract: unlike /api/calculate (which returns 422 on a missing volume),
+    // this route NEVER degrades to 422/500 — planProject isolates each
+    // UncalculatedError into aggregate.elements_uncalculated. If a future engine
+    // change let UncalculatedError escape, this assertion turns red.
     expect(res.status).toBe(200);
+    expect(res.body.error).toBeUndefined();
     expect(res.body.mapping.elements.length).toBeGreaterThan(0);
     expect(res.body.project.aggregate.elements_calculated).toBe(0);
     expect(res.body.project.aggregate.elements_uncalculated)
       .toBe(res.body.project.aggregate.elements_total);
   });
 
-  test('400 when body is not a JSON object', async () => {
+  test('empty object {} → 200, no mappable element (honest-ignore, not a crash)', async () => {
+    const res = await request(app).post('/api/calculate-from-passport').send({});
+    expect(res.status).toBe(200);
+    expect(res.body.error).toBeUndefined();
+    expect(res.body.mapping.elements).toHaveLength(0);
+    expect(res.body.mapping.warnings.length).toBeGreaterThan(0); // "no mappable element"
+  });
+
+  test('400 when body is not a JSON object (array)', async () => {
     const res = await request(app).post('/api/calculate-from-passport')
       .set('Content-Type', 'application/json').send('[1,2,3]');
+    expect(res.status).toBe(400);
+  });
+
+  test('400 when body is a JSON null', async () => {
+    const res = await request(app).post('/api/calculate-from-passport')
+      .set('Content-Type', 'application/json').send('null');
     expect(res.status).toBe(400);
   });
 });
