@@ -106,12 +106,20 @@ export async function writeBackToPortal(positionInstanceId, payload) {
       logger.debug(`[WriteBack] ✅ Portal: ${positionInstanceId}`);
       return { ok: true };
     } else {
-      logger.debug(`[WriteBack] Portal responded ${response.status} for ${positionInstanceId}`);
+      // Rejections are ACTIONABLE (not cold-start noise) — surface at warn with a
+      // concrete hint so a broken TOV pre-fill names its own cause in the logs.
+      const hint =
+        response.status === 401 || response.status === 403
+          ? 'auth odmítnut — zkontrolujte SERVICE_API_KEY na Monolit i Portal (stejný secret)'
+          : response.status === 404
+          ? 'position_instance_id není v portal_positions — rozsynchronizovaná linkovka, znovu «Načíst z Rozpočtu»'
+          : 'Portal odmítl zápis payloadu';
+      logger.warn(`[WriteBack] Portal ${response.status} for ${positionInstanceId} — ${hint} → TOV pre-fill se nezobrazí`);
       return { ok: false, status: response.status };
     }
   } catch (error) {
-    // Demoted to debug — Portal writeback is non-critical, positions are already in Monolit DB.
-    // Timeouts during Cloud Run cold start are expected and will be retried on next PUT.
+    // Timeout / conn stays at debug — expected during Cloud Run cold start and
+    // retried on the next Aplikovat; the batch summary reports the count at info.
     logger.debug(`[WriteBack] Portal unavailable for ${positionInstanceId}: ${error.message}`);
     return { ok: false, error: error.message };
   }
@@ -127,9 +135,20 @@ export async function writeBackToPortal(positionInstanceId, payload) {
  */
 export async function writeBackBatch(positions, bridgeId) {
   const linked = positions.filter(p => p.position_instance_id);
-  if (linked.length === 0) return;
+  if (linked.length === 0) {
+    // The #1 silent cause of "TOV pre-fill button never appears": none of the
+    // positions carry a position_instance_id, so there is nothing to write back.
+    // This happens when the project was NOT loaded through the Portal link
+    // («Načíst z Rozpočtu» from a Registry project synced to Portal) — a project
+    // created directly in the calculator has no Portal positions to update.
+    logger.warn(
+      `[WriteBack] 0/${positions.length} pozic má position_instance_id — projekt není propojen s Portalem. ` +
+      `TOV pre-fill se nespustí. Načtěte projekt přes «Načíst z Rozpočtu» ze synchronizovaného Registry projektu.`
+    );
+    return;
+  }
 
-  logger.info(`[WriteBack] Sending ${linked.length} monolith payloads to Portal (concurrency=${WRITE_BACK_CONCURRENCY})...`);
+  logger.info(`[WriteBack] Sending ${linked.length}/${positions.length} monolith payloads to Portal (concurrency=${WRITE_BACK_CONCURRENCY})...`);
 
   // Chunked parallelism: process in batches of WRITE_BACK_CONCURRENCY
   // Prevents flooding Portal with hundreds of parallel requests which
