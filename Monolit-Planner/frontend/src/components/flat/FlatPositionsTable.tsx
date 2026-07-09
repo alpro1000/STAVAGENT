@@ -98,6 +98,26 @@ import { DEFAULT_WAGE_CZK_PH, DEFAULT_SHIFT_HOURS } from '../../constants/positi
 const PROJECT_DEFAULTS = { wage: DEFAULT_WAGE_CZK_PH, shift: DEFAULT_SHIFT_HOURS };
 const COL_COUNT = 14;
 
+/**
+ * Representative position of a group for classification + catalog display: the
+ * beton row if the group has one, else the first (main) position. Non-monolith
+ * imports get subtype='jiné' with no beton row — keying the header (OTSKP code,
+ * KATALOG price, monolith toggle) off this rather than the beton row is what
+ * lets non-monolith groups still show their code/price and be promoted.
+ */
+function elementRepPos(el: ElementGroup): Position | undefined {
+  return el.positions.find(p => p.subtype === 'beton') || el.positions[0];
+}
+
+/** Whether a group counts as a monolith (respects the manual
+ *  is_monolith_override stored on its representative position). */
+function elementIsMonolith(el: ElementGroup): boolean {
+  const rep = elementRepPos(el);
+  return rep
+    ? isMonolithicElement({ item_name: rep.item_name, otskp_code: rep.otskp_code, metadata: rep.metadata })
+    : false;
+}
+
 /* ── MAIN COMPONENT ──────────────────────────────────────────── */
 
 export default function FlatPositionsTable() {
@@ -184,15 +204,10 @@ export default function FlatPositionsTable() {
   // "Monolit" toggle below sticks across reloads.
   const visibleElements = useMemo(() => {
     if (!showOnlyMonolity) return elements;
-    return elements.filter(el => {
-      const betonPos = el.positions.find(p => p.subtype === 'beton');
-      if (!betonPos) return false;
-      return isMonolithicElement({
-        item_name: betonPos.item_name,
-        otskp_code: betonPos.otskp_code,
-        metadata: betonPos.metadata,
-      });
-    });
+    // Keys off the representative position (not strictly the beton row) so a
+    // group promoted to monolith via the toggle — even one without a beton row —
+    // is included, and a beton group demoted via the toggle is excluded.
+    return elements.filter(el => elementIsMonolith(el));
   }, [elements, showOnlyMonolity]);
 
   // Navigate to calculator
@@ -324,14 +339,16 @@ export default function FlatPositionsTable() {
     element: ElementGroup, override: boolean | null
   ) => {
     if (isLocked) return;
-    const betonPos = element.positions.find(p => p.subtype === 'beton');
-    if (!betonPos?.id) return;
+    // Store on the representative position (beton row if present, else the main
+    // one) so a group WITHOUT a beton row can be promoted too.
+    const rep = elementRepPos(element);
+    if (!rep?.id) return;
     let meta: Record<string, any> = {};
-    if (betonPos.metadata) {
+    if (rep.metadata) {
       try {
-        meta = typeof betonPos.metadata === 'string'
-          ? JSON.parse(betonPos.metadata)
-          : (betonPos.metadata as Record<string, any>);
+        meta = typeof rep.metadata === 'string'
+          ? JSON.parse(rep.metadata)
+          : (rep.metadata as Record<string, any>);
       } catch {
         meta = {};
       }
@@ -341,7 +358,15 @@ export default function FlatPositionsTable() {
     } else {
       meta.is_monolith_override = override;
     }
-    await updatePositions([{ id: betonPos.id, metadata: JSON.stringify(meta) }]);
+    const patch: Record<string, any> = { id: rep.id, metadata: JSON.stringify(meta) };
+    // Promote to monolith: if the group has no beton row yet but the rep is an
+    // m³ concrete line mis-tagged 'jiné' at import, flip it to 'beton' so the
+    // full monolith pipeline (Vypočítat, concrete_m3) activates. Non-m³ rows
+    // keep their subtype — promoting is only meaningful for concrete volumes.
+    if (override === true && rep.subtype !== 'beton' && /m3|m³/i.test(rep.unit || '')) {
+      patch.subtype = 'beton';
+    }
+    await updatePositions([patch]);
   }, [isLocked, updatePositions]);
 
   // Delete all positions of an element
@@ -503,14 +528,18 @@ function ElementBlock({
   const [katalogPrice, setKatalogPrice] = useState<number | null>(null);
 
   const betonPos = element.positions.find(p => p.subtype === 'beton');
+  // Representative position for code/catalog/monolith-toggle — beton row if the
+  // group has one, else the main row. Lets non-monolith groups (subtype='jiné',
+  // no beton row) still surface their OTSKP code + KATALOG price and be promoted.
+  const repPos = betonPos || element.positions[0];
 
   // Fetch catalog price on mount if OTSKP code already set
   useEffect(() => {
-    if (!betonPos?.otskp_code || katalogPrice !== null) return;
-    otskpAPI.getByCode(betonPos.otskp_code)
+    if (!repPos?.otskp_code || katalogPrice !== null) return;
+    otskpAPI.getByCode(repPos.otskp_code)
       .then(data => { if (data?.unit_price) setKatalogPrice(data.unit_price); })
       .catch(() => {}); // Ignore if code not found
-  }, [betonPos?.otskp_code]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [repPos?.otskp_code]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const partM3 = element.positions
     .filter(p => p.subtype === 'beton')
@@ -528,8 +557,8 @@ function ElementBlock({
   const hasDays = totalDays > 0;
 
   const handleOtskp = (code: string, name: string, unitPrice?: number) => {
-    if (betonPos?.id) {
-      onOtskpSelect(betonPos.id, code, name, unitPrice);
+    if (repPos?.id) {
+      onOtskpSelect(repPos.id, code, name, unitPrice);
       if (unitPrice) setKatalogPrice(unitPrice);
     }
   };
@@ -540,12 +569,12 @@ function ElementBlock({
     : 'var(--stone-400)';
 
   // Monolith override state — null = auto, true = forced monolith, false = forced not.
-  const monolithOverride = readMonolithOverride(betonPos?.metadata ?? null);
-  const isMonolith = betonPos
+  const monolithOverride = readMonolithOverride(repPos?.metadata ?? null);
+  const isMonolith = repPos
     ? isMonolithicElement({
-        item_name: betonPos.item_name,
-        otskp_code: betonPos.otskp_code,
-        metadata: betonPos.metadata,
+        item_name: repPos.item_name,
+        otskp_code: repPos.otskp_code,
+        metadata: repPos.metadata,
       })
     : false;
 
@@ -561,14 +590,15 @@ function ElementBlock({
             </button>
 
             {/* Name — flex:1, takes remaining space */}
-            <span className="flat-el-info__name" title={betonPos?.item_name || element.partName}>
-              {betonPos?.item_name || element.partName}
+            <span className="flat-el-info__name" title={repPos?.item_name || element.partName}>
+              {repPos?.item_name || element.partName}
             </span>
 
-            {/* OTSKP input — 82px fixed */}
-            {betonPos?.id && !isLocked ? (
+            {/* OTSKP input — 82px fixed. Rendered for the representative row so
+                non-monolith groups also show + edit their catalog code. */}
+            {repPos?.id && !isLocked ? (
               <InlineOtskpSearch
-                value={betonPos.otskp_code || ''}
+                value={repPos.otskp_code || ''}
                 onSelect={handleOtskp}
                 disabled={isLocked}
               />
@@ -629,14 +659,15 @@ function ElementBlock({
               </span>
             </span>
 
-            {/* Vypočítat / Upřesnit + Monolith override + Delete */}
-            {!isLocked && betonPos && (
+            {/* Vypočítat / Upřesnit + Monolith override + Delete. Rendered for
+                the representative row so non-monolith groups also get the
+                monolith toggle + delete (not just beton groups). */}
+            {!isLocked && repPos && (
               <>
-                {/* Vypočítat only for monoliths. isMonolith already reflects
-                    the manual override (metadata.is_monolith_override): clicking
-                    the "X" (mark NEMONOLIT) flips isMonolith→false and hides the
-                    button, so a non-monolith can no longer open the calculator. */}
-                {isMonolith && (
+                {/* Vypočítat only for monoliths WITH a beton row (the calculator
+                    needs the concrete volume). isMonolith reflects the manual
+                    override, so marking NEMONOLIT hides the button. */}
+                {isMonolith && betonPos && (
                   <button
                     className={`flat-btn flat-btn--sm ${hasDays ? '' : 'flat-btn--primary'}`}
                     onClick={onCalculate}
@@ -647,43 +678,32 @@ function ElementBlock({
                   </button>
                 )}
 
-                {/* Monolith override toggle. Auto state shows the opposite
-                    action; explicit override shows a small badge + "auto"
-                    reset. Sticks via metadata.is_monolith_override. */}
+                {/* Monolith toggle. Auto state offers the opposite action; an
+                    explicit override shows a SILENT small icon (no text label —
+                    the position may later be handled by another calculator, so
+                    "NE-MONOLIT" wording is intentionally omitted) that resets to
+                    auto on click. Sticks via metadata.is_monolith_override. */}
                 {onSetMonolithOverride && (
-                  monolithOverride === null ? (
-                    <button
-                      className="sb__icon-btn"
-                      onClick={() => onSetMonolithOverride(!isMonolith)}
-                      title={isMonolith
+                  <button
+                    className="sb__icon-btn"
+                    onClick={() => onSetMonolithOverride(
+                      monolithOverride === null ? !isMonolith : null
+                    )}
+                    title={monolithOverride !== null
+                      ? `Ručně označeno jako ${monolithOverride ? 'MONOLIT' : 'NEMONOLIT'}. Klikněte pro návrat na automatické určení.`
+                      : (isMonolith
                         ? 'Označit jako NEMONOLIT (skryje při filtru "Jen monolity" a vyloučí z exportu)'
-                        : 'Označit jako MONOLIT (zařadí do filtru "Jen monolity" a do exportu)'}
-                      style={{
-                        flexShrink: 0, opacity: 0.4,
-                        color: isMonolith ? 'var(--red-500)' : 'var(--green-500)',
-                      }}
-                      onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
-                      onMouseLeave={e => (e.currentTarget.style.opacity = '0.4')}
-                    >
-                      {isMonolith ? <XIcon size={13} /> : <Check size={13} />}
-                    </button>
-                  ) : (
-                    <button
-                      className="sb__icon-btn"
-                      onClick={() => onSetMonolithOverride(null)}
-                      title={`Ručně označeno jako ${monolithOverride ? 'MONOLIT' : 'NEMONOLIT'}. Klikněte pro návrat na automatické určení.`}
-                      style={{
-                        flexShrink: 0,
-                        display: 'inline-flex', alignItems: 'center', gap: 4,
-                        color: monolithOverride ? 'var(--green-500)' : 'var(--red-500)',
-                        fontSize: 10, fontWeight: 600, padding: '0 6px',
-                      }}
-                    >
-                      {monolithOverride
-                        ? <><Check size={11} /> MONOLIT</>
-                        : <><XIcon size={11} /> NE-MONOLIT</>}
-                    </button>
-                  )
+                        : 'Označit jako MONOLIT (zařadí do filtru "Jen monolity" a do exportu)')}
+                    style={{
+                      flexShrink: 0,
+                      opacity: monolithOverride !== null ? 0.85 : 0.4,
+                      color: isMonolith ? 'var(--green-500)' : 'var(--red-500)',
+                    }}
+                    onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
+                    onMouseLeave={e => (e.currentTarget.style.opacity = monolithOverride !== null ? '0.85' : '0.4')}
+                  >
+                    {isMonolith ? <Check size={13} /> : <XIcon size={13} />}
+                  </button>
                 )}
 
                 <button
