@@ -95,7 +95,7 @@ export function initPostgres() {
     // services + Cloud Run autoscaled instances. Env-overridable so pools can
     // be right-sized from Cloud Run without a redeploy; the durable fix is
     // raising the instance's max_connections (infra). See Monolit postgres.js.
-    max: parseInt(process.env.PG_POOL_MAX || '8', 10),
+    max: Math.max(1, Math.min(parseInt(process.env.PG_POOL_MAX || '8', 10) || 8, 100)),
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 10000,
     keepAlive: true,

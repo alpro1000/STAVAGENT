@@ -102,7 +102,7 @@ export function initPostgres() {
     // rev 00409, 2026-07-09). Keep this small; env-overridable so it can be
     // tuned from Cloud Run without a redeploy. The durable fix is raising the
     // instance's max_connections (infra).
-    max: parseInt(process.env.PG_POOL_MAX || '8', 10),
+    max: Math.max(1, Math.min(parseInt(process.env.PG_POOL_MAX || '8', 10) || 8, 100)),
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 10000,
   });
