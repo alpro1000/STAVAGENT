@@ -65,7 +65,10 @@ interface RegistryState {
   unlinkFromPortal: (projectId: string) => void;
   updatePortalSyncTime: (projectId: string) => void;
   getLinkedProjects: () => Project[];  // projects with Portal links
-  fetchAndMergeMonolithData: (projectId: string) => Promise<void>;  // non-blocking fetch of Monolit data (resolves after merge)
+  // Non-blocking fetch of Monolit data (resolves after merge). `force` skips
+  // the 15 s recency window (used when the opened item has no payload yet —
+  // the just-calculated case must not wait out the cooldown).
+  fetchAndMergeMonolithData: (projectId: string, opts?: { force?: boolean }) => Promise<void>;
 
   // Действия с листами
   addSheet: (projectId: string, sheet: Sheet) => void;
@@ -165,6 +168,20 @@ function calculateSheetStats(items: ParsedItem[]): SheetStats {
     totalCena,
   };
 }
+
+/**
+ * fetchAndMergeMonolithData guards (module-level, keyed by portalProjectId):
+ * - deadLinks: Portal returned 404 for this link (project deleted /
+ *   inaccessible) — a dead link does not recover by retrying, so stop
+ *   fetching until a re-link provides a fresh id (same discipline as the
+ *   monolith poller's portalMissing handling).
+ * - lastAt: last fetch INITIATION; repeats within the window are skipped so
+ *   rapid TOV-modal opens don't refetch the full project payload set each
+ *   time (and two concurrent opens dedupe to one in-flight fetch).
+ */
+const MONOLITH_FETCH_MIN_INTERVAL_MS = 15_000;
+const monolithFetchDeadLinks = new Set<string>();
+const monolithFetchLastAt = new Map<string, number>();
 
 export const useRegistryStore = create<RegistryState>()(
   persist(
@@ -304,6 +321,12 @@ export const useRegistryStore = create<RegistryState>()(
           ),
         }));
 
+        // A fresh link gets a fresh chance: clear the dead-link mark and the
+        // recency window so the fetch below runs immediately even if this
+        // portalProjectId was recently tried.
+        monolithFetchDeadLinks.delete(portalProjectId);
+        monolithFetchLastAt.delete(portalProjectId);
+
         // Non-blocking: fetch Monolit data when linking to Portal
         get().fetchAndMergeMonolithData(projectId);
       },
@@ -342,21 +365,53 @@ export const useRegistryStore = create<RegistryState>()(
       // clicks «Aplikovat» in the calculator, so without the on-open refetch the
       // Registry never sees the freshly-written payload and the «Předvyplnit
       // TOV» banner stays hidden.
-      fetchAndMergeMonolithData: (projectId) => {
-        const project = get().projects.find(p => p.id === projectId);
-        const portalProjectId = project?.portalLink?.portalProjectId;
+      fetchAndMergeMonolithData: (projectId, opts) => {
+        const portalProjectId = get().projects.find(p => p.id === projectId)?.portalLink?.portalProjectId;
         if (!portalProjectId) return Promise.resolve();
 
-        return fetchMonolithData(portalProjectId).then(({ payloads: monolithMap }) => {
+        // Dead-link + recency guards (module-level state above the store):
+        // a 404'd link stops getting fetched, and repeats within 15 s reuse
+        // the already-merged result instead of refetching the whole payload
+        // set on every TOV-modal open. `force` (item has no payload yet —
+        // the just-«Aplikovat»-ed case) bypasses the recency window but
+        // never the dead-link mark.
+        if (monolithFetchDeadLinks.has(portalProjectId)) return Promise.resolve();
+        if (!opts?.force) {
+          const lastAt = monolithFetchLastAt.get(portalProjectId) ?? 0;
+          if (Date.now() - lastAt < MONOLITH_FETCH_MIN_INTERVAL_MS) return Promise.resolve();
+        }
+        monolithFetchLastAt.set(portalProjectId, Date.now());
+
+        return fetchMonolithData(portalProjectId).then(({ payloads: monolithMap, portalMissing }) => {
+          if (portalMissing) {
+            // 404 = project deleted on Portal — does not recover by retrying.
+            monolithFetchDeadLinks.add(portalProjectId);
+            return;
+          }
           if (monolithMap.size === 0) return;
 
+          // Post-fetch state — the store may have changed during the fetch
+          // (import, reclassify, instance-mapping sync), so both the merge
+          // AND the diagnostics below must read the same fresh snapshot.
           const state = get();
+          const freshProject = state.projects.find(p => p.id === projectId);
           const { nextProjects, anyChanged, updated, matched } =
             mergeMonolithPayloadsIntoProjects(state.projects, projectId, monolithMap);
 
           if (anyChanged) {
-            useRegistryStore.setState({ projects: nextProjects });
-            console.log(`[RegistryStore] Merged ${updated} monolith payloads for project "${project?.projectName}"`);
+            // Server-originated update — suppress the auto-sync subscriber,
+            // mirroring setInstanceMappingCallback below. Without this every
+            // merged payload change pushed a full (and informationless —
+            // the push body carries no monolith_payload) project re-import
+            // back to Portal.
+            const prevSuppress = suppressAutoSync;
+            suppressAutoSync = true;
+            try {
+              useRegistryStore.setState({ projects: nextProjects });
+            } finally {
+              suppressAutoSync = prevSuppress;
+            }
+            console.log(`[RegistryStore] Merged ${updated} monolith payloads for project "${freshProject?.projectName}"`);
           } else if (matched === 0) {
             // Payloads exist on Portal but none matched a local item by
             // position_instance_id. That's a stale link (project re-imported /
@@ -365,7 +420,7 @@ export const useRegistryStore = create<RegistryState>()(
             // "merge never ran" from "ran but 0 matched" — the two need
             // different fixes (trigger vs PortalAutoSync re-link).
             const localIds: string[] = [];
-            for (const sheet of project?.sheets ?? []) {
+            for (const sheet of freshProject?.sheets ?? []) {
               for (const it of sheet.items) {
                 if (it.position_instance_id) localIds.push(it.position_instance_id);
                 if (localIds.length >= 3) break;
@@ -378,8 +433,14 @@ export const useRegistryStore = create<RegistryState>()(
               `local ids: [${localIds.join(', ')}]`,
             );
           }
-          // anyChange=false && matched>0 → already up to date, silent no-op.
-        }).catch(() => {});
+          // anyChanged=false && matched>0 → already up to date, silent no-op.
+        }).catch(err => {
+          // fetchMonolithData handles network errors internally (returns an
+          // empty map), so anything landing here is a real bug in the merge /
+          // setState path — never swallow it silently, or a broken merge is
+          // indistinguishable from "no payloads yet".
+          console.warn('[RegistryStore] Monolith merge failed:', err instanceof Error ? err.message : err);
+        });
       },
 
       // Листы
