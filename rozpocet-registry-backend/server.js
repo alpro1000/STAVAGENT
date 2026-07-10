@@ -453,42 +453,48 @@ app.post('/api/registry/projects/:id/sheets', requireAuth, requireDB, async (req
     const { sheet_name, sheet_order, sheet_id } = req.body;
     const sheetId = sheet_id || `sheet_${uuidv4()}`;
 
-    // Ensure parent project exists AND belongs to the caller. If it
-    // doesn't exist for this user, auto-create it under their owner_id
-    // — was previously auto-creating with `owner_id=1` regardless of
-    // caller (the registry-side root cause of the "58 sirot" symptom
-    // per audit §2.3).
+    // Parent project must exist AND belong to the caller — otherwise 404
+    // (identical response whether the id is absent or another owner's, so
+    // no existence leak). NO auto-create here: the legitimate sync flow
+    // (backendSync.pushProjectToBackend) always POSTs the project before
+    // its sheets, so the only way a sheet arrives for a missing project
+    // is a race — typically the user deleting the project mid-push. The
+    // old auto-create "adopted" that stray sheet into a placeholder
+    // project literally named 'Auto-created' (0 items), which then got
+    // pulled back into the local store on the next load and auto-synced
+    // to Portal as a phantom. Failing honestly stops the phantom at the
+    // source; the frontend reports the sheet as a partial-sync failure.
     const projectCheck = await pool.query(
       'SELECT project_id FROM registry_projects WHERE project_id = $1 AND owner_id = $2',
       [req.params.id, req.user.userId]
     );
     if (projectCheck.rows.length === 0) {
-      // Also check whether the project exists under a different owner —
-      // in that case we refuse rather than overwriting.
-      const otherOwnerCheck = await pool.query(
-        'SELECT 1 FROM registry_projects WHERE project_id = $1',
-        [req.params.id]
-      );
-      if (otherOwnerCheck.rows.length > 0) {
-        return res.status(404).json({ success: false, error: 'Project not found' });
-      }
-      await pool.query(
-        `INSERT INTO registry_projects (project_id, project_name, owner_id, created_at, updated_at)
-         VALUES ($1, $2, $3, NOW(), NOW())`,
-        [req.params.id, 'Auto-created', req.user.userId]
-      );
+      return res.status(404).json({ success: false, error: 'Project not found' });
     }
 
     const result = await pool.query(
+      // sheet_id is client-supplied — scope the conflict-update to THIS
+      // project so a colliding id belonging to another project is a no-op
+      // (0 rows) instead of renaming someone else's sheet. The parent
+      // project's ownership is already verified above, so same-project
+      // conflicts (legitimate retry UPSERTs) still update normally.
       `INSERT INTO registry_sheets (sheet_id, project_id, sheet_name, sheet_order, created_at, updated_at)
        VALUES ($1, $2, $3, $4, NOW(), NOW())
        ON CONFLICT (sheet_id) DO UPDATE SET
          sheet_name = EXCLUDED.sheet_name,
          sheet_order = EXCLUDED.sheet_order,
          updated_at = NOW()
+       WHERE registry_sheets.project_id = EXCLUDED.project_id
        RETURNING *`,
       [sheetId, req.params.id, sheet_name, sheet_order || 0]
     );
+
+    if (result.rows.length === 0) {
+      // Conflict-update skipped by the project guard — the sheet_id exists
+      // under a different project. Ids are UUID-based, so a legitimate
+      // collision is practically impossible.
+      return res.status(409).json({ success: false, error: 'Sheet id belongs to another project' });
+    }
 
     await pool.query('UPDATE registry_projects SET updated_at = NOW() WHERE project_id = $1', [req.params.id]);
 

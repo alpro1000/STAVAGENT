@@ -569,14 +569,42 @@ router.post('/import-from-registry', requireAuth, async (req, res) => {
       }
     }
 
-    // Create or reuse portal project
+    // Create or reuse portal project.
+    //
+    // A caller-provided portal_project_id is only a HINT — it may be stale
+    // (the Portal project was deleted; Registry's localStorage still holds
+    // the old link) or foreign (another owner's id). The old code blind-
+    // UPSERTed with that id, which (a) RESURRECTED deleted projects — the
+    // user deleted a Portal project and every Registry auto-sync re-created
+    // it with the same id, so "Failed to delete"/phantoms kept coming back —
+    // and (b) let a caller rename another owner's project row. Now the hint
+    // is validated owner-scoped; a stale/foreign id falls through to minting
+    // a fresh project, and the response's portal_project_id tells the client
+    // to update its link.
     let projectId = portal_project_id;
 
-    // If no portal_project_id provided, check if registry project already has a portal link
+    if (projectId) {
+      const owned = await client.query(
+        'SELECT 1 FROM portal_projects WHERE portal_project_id = $1 AND owner_id = $2',
+        [projectId, req.user.userId]
+      );
+      if (owned.rows.length === 0) {
+        console.log(`[Integration] portal_project_id ${projectId} is stale or not owned by user ${req.user.userId} — minting a new project`);
+        projectId = null;
+      }
+    }
+
+    // If no valid portal_project_id, check if registry project already has a portal link
     if (!projectId && registry_project_id) {
+      // JOIN validates the linked project still exists AND is the caller's —
+      // a link row pointing at a foreign project must not be adopted.
       const existingLink = await client.query(
-        `SELECT portal_project_id FROM kiosk_links WHERE kiosk_project_id = $1 AND kiosk_type = 'registry' LIMIT 1`,
-        [registry_project_id]
+        `SELECT kl.portal_project_id
+         FROM kiosk_links kl
+         JOIN portal_projects pp ON pp.portal_project_id = kl.portal_project_id
+         WHERE kl.kiosk_project_id = $1 AND kl.kiosk_type = 'registry' AND pp.owner_id = $2
+         LIMIT 1`,
+        [registry_project_id, req.user.userId]
       );
       if (existingLink.rows.length > 0) {
         projectId = existingLink.rows[0].portal_project_id;
@@ -589,29 +617,16 @@ router.post('/import-from-registry', requireAuth, async (req, res) => {
       console.log('[Integration] Creating new portal project for Registry:', projectId);
       await client.query(
         // owner_id pulled from the authenticated user's JWT (req.user.userId).
-        // Was hardcoded to 1 — that left every Registry-imported project
-        // owned by user_id=1, which is invisible to any logged-in user
-        // whose own user_id ≠ 1. ON CONFLICT only updates project_name +
-        // updated_at; owner_id of an existing project is preserved (so a
-        // re-import doesn't change ownership of someone else's project).
         `INSERT INTO portal_projects (portal_project_id, project_name, project_type, owner_id, created_at, updated_at)
-         VALUES ($1, $2, 'registry', $3, NOW(), NOW())
-         ON CONFLICT (portal_project_id) DO UPDATE SET project_name = $2, updated_at = NOW()`,
+         VALUES ($1, $2, 'registry', $3, NOW(), NOW())`,
         [projectId, project_name, req.user.userId]
       );
     } else {
-      // UPSERT — the portal_project_id may be stale (from localStorage after a DB reset).
-      // Using INSERT ... ON CONFLICT ensures the project row exists before kiosk_links FK insert.
+      // Validated above as existing + owned — plain rename/touch, never a
+      // row-recreating UPSERT.
       await client.query(
-        // owner_id pulled from the authenticated user's JWT (req.user.userId).
-        // Was hardcoded to 1 — that left every Registry-imported project
-        // owned by user_id=1, which is invisible to any logged-in user
-        // whose own user_id ≠ 1. ON CONFLICT only updates project_name +
-        // updated_at; owner_id of an existing project is preserved (so a
-        // re-import doesn't change ownership of someone else's project).
-        `INSERT INTO portal_projects (portal_project_id, project_name, project_type, owner_id, created_at, updated_at)
-         VALUES ($1, $2, 'registry', $3, NOW(), NOW())
-         ON CONFLICT (portal_project_id) DO UPDATE SET project_name = $2, updated_at = NOW()`,
+        `UPDATE portal_projects SET project_name = $2, updated_at = NOW()
+         WHERE portal_project_id = $1 AND owner_id = $3`,
         [projectId, project_name, req.user.userId]
       );
     }
@@ -632,31 +647,9 @@ router.post('/import-from-registry', requireAuth, async (req, res) => {
     // 2. UPSERT positions by registry_item_id (preserves position_instance_id)
     // 3. Clean up positions that no longer exist in incoming data
 
-    // Helper: re-ensure portal_project and kiosk_link rows exist after a ROLLBACK+BEGIN.
-    // ROLLBACK discards ALL prior statements in the transaction — including the portal_projects
-    // UPSERT done above — causing FK constraint failures when portal_objects is inserted later.
-    const reEnsureProjectRows = async () => {
-      await client.query(
-        // owner_id pulled from the authenticated user's JWT (req.user.userId).
-        // Was hardcoded to 1 — that left every Registry-imported project
-        // owned by user_id=1, which is invisible to any logged-in user
-        // whose own user_id ≠ 1. ON CONFLICT only updates project_name +
-        // updated_at; owner_id of an existing project is preserved (so a
-        // re-import doesn't change ownership of someone else's project).
-        `INSERT INTO portal_projects (portal_project_id, project_name, project_type, owner_id, created_at, updated_at)
-         VALUES ($1, $2, 'registry', $3, NOW(), NOW())
-         ON CONFLICT (portal_project_id) DO UPDATE SET project_name = $2, updated_at = NOW()`,
-        [projectId, project_name, req.user.userId]
-      );
-      if (registry_project_id) {
-        await client.query(
-          `INSERT INTO kiosk_links (link_id, portal_project_id, kiosk_type, kiosk_project_id, status, created_at, last_sync)
-           VALUES ($1, $2, 'registry', $3, 'active', NOW(), NOW())
-           ON CONFLICT (portal_project_id, kiosk_type) DO UPDATE SET kiosk_project_id = $3, last_sync = NOW(), status = 'active'`,
-          [`link_${uuidv4()}`, projectId, registry_project_id]
-        );
-      }
-    };
+    // (A dead `reEnsureProjectRows` helper used to live here — an UPSERT
+    // without the owner guard, never invoked. Removed 2026-07-10 per
+    // isolation review so the un-scoped pattern can't be re-wired later.)
 
     // Check if Migration 005 columns exist (registry_item_id, tov_labor, etc.)
     // Use information_schema to avoid aborting the transaction on missing columns.
