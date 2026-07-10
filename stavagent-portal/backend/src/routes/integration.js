@@ -647,31 +647,9 @@ router.post('/import-from-registry', requireAuth, async (req, res) => {
     // 2. UPSERT positions by registry_item_id (preserves position_instance_id)
     // 3. Clean up positions that no longer exist in incoming data
 
-    // Helper: re-ensure portal_project and kiosk_link rows exist after a ROLLBACK+BEGIN.
-    // ROLLBACK discards ALL prior statements in the transaction — including the portal_projects
-    // UPSERT done above — causing FK constraint failures when portal_objects is inserted later.
-    const reEnsureProjectRows = async () => {
-      await client.query(
-        // owner_id pulled from the authenticated user's JWT (req.user.userId).
-        // Was hardcoded to 1 — that left every Registry-imported project
-        // owned by user_id=1, which is invisible to any logged-in user
-        // whose own user_id ≠ 1. ON CONFLICT only updates project_name +
-        // updated_at; owner_id of an existing project is preserved (so a
-        // re-import doesn't change ownership of someone else's project).
-        `INSERT INTO portal_projects (portal_project_id, project_name, project_type, owner_id, created_at, updated_at)
-         VALUES ($1, $2, 'registry', $3, NOW(), NOW())
-         ON CONFLICT (portal_project_id) DO UPDATE SET project_name = $2, updated_at = NOW()`,
-        [projectId, project_name, req.user.userId]
-      );
-      if (registry_project_id) {
-        await client.query(
-          `INSERT INTO kiosk_links (link_id, portal_project_id, kiosk_type, kiosk_project_id, status, created_at, last_sync)
-           VALUES ($1, $2, 'registry', $3, 'active', NOW(), NOW())
-           ON CONFLICT (portal_project_id, kiosk_type) DO UPDATE SET kiosk_project_id = $3, last_sync = NOW(), status = 'active'`,
-          [`link_${uuidv4()}`, projectId, registry_project_id]
-        );
-      }
-    };
+    // (A dead `reEnsureProjectRows` helper used to live here — an UPSERT
+    // without the owner guard, never invoked. Removed 2026-07-10 per
+    // isolation review so the un-scoped pattern can't be re-wired later.)
 
     // Check if Migration 005 columns exist (registry_item_id, tov_labor, etc.)
     // Use information_schema to avoid aborting the transaction on missing columns.
