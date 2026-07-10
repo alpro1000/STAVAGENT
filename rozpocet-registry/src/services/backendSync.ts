@@ -93,6 +93,10 @@ export function subscribeBackendSync(cb: Listener): () => void {
 if (typeof window !== 'undefined') {
   window.addEventListener('beforeunload', () => {
     for (const p of _pendingProjects.values()) {
+      // Tombstone outranks the flush — the backend POST is an UPSERT, so
+      // flushing a just-deleted project's header on tab close would
+      // resurrect it (pushProjectToBackend has this guard; mirror it here).
+      if (isTombstoned(p.id)) continue;
       // Fire keepalive POST directly — skip pushProjectToBackend because
       // it's async and won't complete before the tab dies.
       try {

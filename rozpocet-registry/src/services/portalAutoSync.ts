@@ -176,13 +176,23 @@ export async function syncProjectToPortal(
         return data.portal_project_id;
       }
     } else {
-      noteSyncFailure(project.id);
       // Phase 4 (2026-04-15): Portal integration now returns structured
       // error bodies with {error, error_type, error_code, constraint}
       // for PG errors (409 conflict, 400 FK/missing-field, …). Parse
       // that shape first and fall back to raw text for older backends.
       let errorBody: any = null;
       try { errorBody = await response.json(); } catch { /* not JSON */ }
+      // 409 sync_in_progress is BENIGN: another sync of this same project
+      // (second tab, manual push racing the debounce) holds Portal's
+      // advisory lock and will finish the job. Arming the 5-min backoff
+      // here stalled legitimate re-syncs — e.g. a dangling portalLink kept
+      // polling 404 while the sync that would have re-linked it sat in
+      // backoff. Skip quietly and let the next debounce retry.
+      if (response.status === 409 && errorBody?.error_type === 'sync_in_progress') {
+        console.log(`[PortalAutoSync] "${project.projectName}" — sync already in progress elsewhere, skipping (no backoff)`);
+        return null;
+      }
+      noteSyncFailure(project.id);
       if (errorBody && errorBody.error) {
         const parts = [
           `${response.status}`,
@@ -247,15 +257,30 @@ export function debouncedSyncToPortal(
       console.log(`[PortalAutoSync] Skip "${project.projectName}" — backoff after recent sync failure`);
       return;
     }
+    // Empty shells never AUTO-sync: a project with 0 items across all
+    // sheets is either mid-import or a phantom (e.g. the backend's old
+    // 'Auto-created' placeholder pulled back into the store) — pushing it
+    // just mints an empty Portal project. Manual pushes (PortalLinkBadge)
+    // still may sync an empty project deliberately.
+    const totalItems = project.sheets.reduce((s, sh) => s + sh.items.length, 0);
+    if (totalItems === 0) {
+      console.log(`[PortalAutoSync] Skip "${project.projectName}" — 0 items, nothing to sync`);
+      return;
+    }
     // Skip if another sync for this project is already in-flight (parallel timer race)
     if (syncInProgress.has(project.id)) return;
     syncInProgress.add(project.id);
     syncTimers.delete(project.id);
     try {
       const portalId = await syncProjectToPortal(project, tovData);
-      if (portalId && !project.portalLink && onAutoLink) {
+      // Store the link when it's NEW or CHANGED. Portal now mints a fresh
+      // project when the link we sent was stale (deleted project) — the old
+      // `!project.portalLink` condition kept the dangling id forever, so
+      // MonolithFetch polled a 404 while every sync created yet another
+      // orphan Portal project that nothing pointed to.
+      if (portalId && onAutoLink && portalId !== project.portalLink?.portalProjectId) {
         onAutoLink(project.id, portalId);
-        console.log(`[PortalAutoSync] Auto-linked project "${project.projectName}" → Portal ${portalId}`);
+        console.log(`[PortalAutoSync] ${project.portalLink ? 'Re-linked' : 'Auto-linked'} project "${project.projectName}" → Portal ${portalId}`);
       }
     } finally {
       syncInProgress.delete(project.id);
