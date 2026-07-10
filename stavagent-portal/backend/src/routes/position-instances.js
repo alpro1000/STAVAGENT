@@ -1245,9 +1245,12 @@ router.post('/:instanceId/dov', async (req, res) => {
 
     if (!(await assertInstanceAccess(req, res, client, instanceId))) return;
 
-    await client.query('BEGIN');
-
-    // Also sync to legacy columns for backward compatibility
+    // Single atomic UPDATE — no explicit transaction, mirroring the monolith
+    // write above. The old BEGIN/COMMIT wrapped the audit INSERT too, so an
+    // audit failure (schema drift on position_audit_log) rolled back the
+    // ENTIRE dov_payload write and the Registry DOV write-back was silently
+    // lost with a 500 — the same class #1473 fixed for the monolith path.
+    // Also sync to legacy columns for backward compatibility.
     const result = await client.query(
       `UPDATE portal_positions
        SET dov_payload = $1,
@@ -1270,24 +1273,30 @@ router.post('/:instanceId/dov', async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      await client.query('ROLLBACK');
       return res.status(404).json({ success: false, error: 'Position instance not found' });
     }
 
-    // Audit log
-    await client.query(
-      `INSERT INTO position_audit_log (event, actor, project_id, position_instance_id, details)
-       SELECT 'dov_written', 'kiosk:dov', po.portal_project_id, $1, $2
-       FROM portal_positions pp
-       JOIN portal_objects po ON pp.object_id = po.object_id
-       WHERE pp.position_instance_id = $1`,
-      [instanceId, JSON.stringify({
-        grand_total: payload.grand_total,
-        version: payload.version
-      })]
-    );
-
-    await client.query('COMMIT');
+    // Audit log — NON-FATAL, and the audit column comes from the JOINed row
+    // (pp.position_instance_id), NOT the bound $1, so the param is used in
+    // exactly ONE type context. The old shape reused $1 in the SELECT-list
+    // AND the WHERE — on prod's drifted audit table Postgres deduced $1 as
+    // two different types → 42P08 on every DOV write (same bug as the
+    // monolith audit INSERT, fixed in the same way).
+    try {
+      await client.query(
+        `INSERT INTO position_audit_log (event, actor, project_id, position_instance_id, details)
+         SELECT 'dov_written', 'kiosk:dov', po.portal_project_id, pp.position_instance_id, $2
+         FROM portal_positions pp
+         JOIN portal_objects po ON pp.object_id = po.object_id
+         WHERE pp.position_instance_id = $1`,
+        [instanceId, JSON.stringify({
+          grand_total: payload.grand_total,
+          version: payload.version
+        })]
+      );
+    } catch (auditErr) {
+      console.warn(`[PositionInstances] DOV audit-log write skipped (non-fatal) for ${instanceId}: ${auditErr.code || ''} ${auditErr.message}`);
+    }
 
     console.log(`[PositionInstances] DOV payload written: ${instanceId}`);
 
@@ -1298,9 +1307,8 @@ router.post('/:instanceId/dov', async (req, res) => {
     });
 
   } catch (error) {
-    await client.query('ROLLBACK');
-    console.error('[PositionInstances] Error writing DOV payload:', error);
-    res.status(500).json({ success: false, error: 'Failed to write DOV payload' });
+    console.error(`[PositionInstances] Error writing DOV payload: ${error.code || ''} ${error.message}${error.detail ? ' — ' + error.detail : ''}`);
+    res.status(500).json({ success: false, error: 'Failed to write DOV payload', code: error.code || null, detail: error.detail || null });
   } finally {
     client.release();
   }
