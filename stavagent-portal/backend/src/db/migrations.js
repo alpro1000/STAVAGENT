@@ -866,6 +866,45 @@ async function runPhase11SafetyMigrations() {
     `ALTER TABLE position_audit_log ADD COLUMN IF NOT EXISTS template_id UUID`,
     `ALTER TABLE position_audit_log ADD COLUMN IF NOT EXISTS details JSONB`,
     `ALTER TABLE position_audit_log ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT NOW()`,
+    // Type normalization — the ROOT of the 42P08 class fixed reactively twice
+    // (#1473 monolith write, #1475 DOV write): the prod audit table predates
+    // the UUID standardization, so its position_instance_id/template_id stayed
+    // legacy TEXT while portal_positions moved to UUID. Any query binding one
+    // parameter against both columns dies with `inconsistent types deduced for
+    // parameter` (a future JOIN would die with `operator does not exist:
+    // text = uuid`). The ADD COLUMN IF NOT EXISTS above silently no-ops on the
+    // drifted column, so convert in place. Conditional DO block: skips when the
+    // type is already uuid (no table rewrite on every boot); NULLIF guards
+    // legacy empty strings; a row with unparseable garbage fails the whole
+    // ALTER → caught by the per-statement try/catch below and logged, with the
+    // single-bind-context shape in position-instances.js writeAuditLog
+    // remaining the working backstop.
+    `DO $$
+     BEGIN
+       IF EXISTS (
+         SELECT 1 FROM information_schema.columns
+         WHERE table_name = 'position_audit_log'
+           AND column_name = 'position_instance_id'
+           AND data_type <> 'uuid'
+       ) THEN
+         ALTER TABLE position_audit_log
+           ALTER COLUMN position_instance_id TYPE UUID
+           USING NULLIF(position_instance_id::text, '')::uuid;
+       END IF;
+     END $$`,
+    `DO $$
+     BEGIN
+       IF EXISTS (
+         SELECT 1 FROM information_schema.columns
+         WHERE table_name = 'position_audit_log'
+           AND column_name = 'template_id'
+           AND data_type <> 'uuid'
+       ) THEN
+         ALTER TABLE position_audit_log
+           ALTER COLUMN template_id TYPE UUID
+           USING NULLIF(template_id::text, '')::uuid;
+       END IF;
+     END $$`,
   ];
 
   for (const sql of safeAlters) {

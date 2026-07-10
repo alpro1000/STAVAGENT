@@ -11,6 +11,7 @@
 
 import { isBackendAvailable, registryAPI } from './registryAPI';
 import { isPortalLoggedIn, portalAuthHeader } from './portalAuth';
+import { clearMonolithFetchState } from './portalMonolithFetch';
 import { tombstoneProject, isTombstoned, dropTombstoned, forgetTombstone } from './tombstoneStore';
 import {
   serializeClassification,
@@ -248,6 +249,11 @@ export async function loadFromBackend(): Promise<Project[]> {
               }
             : undefined,
         });
+
+        // This installs a portalLink WITHOUT going through store.linkToPortal,
+        // so reset the fetch service's dead-link/TTL marks here too — a
+        // restored project must get an immediate, unguarded fetch chance.
+        if (ap.portal_project_id) clearMonolithFetchState(ap.portal_project_id);
       } catch (err) {
         console.warn(`[BackendSync] Failed to load project ${ap.project_id}:`, err);
       }

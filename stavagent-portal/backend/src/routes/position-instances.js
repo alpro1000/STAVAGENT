@@ -436,18 +436,21 @@ router.post('/templates', async (req, res) => {
       [templateId, source_instance_id]
     );
 
-    // Audit log
-    await client.query(
-      `INSERT INTO position_audit_log (event, actor, project_id, position_instance_id, template_id, details)
-       VALUES ('template_saved', $1, $2, $3, $4, $5)`,
-      [created_by, source.portal_project_id, source_instance_id, templateId, JSON.stringify({
+    await client.query('COMMIT');
+
+    // Audit AFTER commit — non-fatal by contract (see writeAuditLog). Inside
+    // the transaction, an audit failure (schema drift) rolled back the
+    // template write itself.
+    await writeAuditLog(client, 'template_saved', created_by, {
+      projectId: source.portal_project_id,
+      instanceId: source_instance_id,
+      templateId,
+      details: {
         catalog_code: source.kod,
         unit: source.mj,
         scaling_rule
-      })]
-    );
-
-    await client.query('COMMIT');
+      }
+    });
 
     console.log(`[PositionInstances] Template saved: ${templateId} from ${source_instance_id}`);
 
@@ -684,17 +687,17 @@ router.post('/templates/:templateId/apply', async (req, res) => {
       [applied, templateId]
     );
 
-    // Audit log
-    await client.query(
-      `INSERT INTO position_audit_log (event, actor, project_id, template_id, details)
-       VALUES ('template_applied', 'system:template', $1, $2, $3)`,
-      [template.project_id, templateId, JSON.stringify({
+    await client.query('COMMIT');
+
+    // Audit AFTER commit — non-fatal by contract (see writeAuditLog).
+    await writeAuditLog(client, 'template_applied', 'system:template', {
+      projectId: template.project_id,
+      templateId,
+      details: {
         applied, skipped, pending_approval: pendingApproval,
         total_matches: matches.length
-      })]
-    );
-
-    await client.query('COMMIT');
+      }
+    });
 
     console.log(`[PositionInstances] Template ${templateId} applied: ${applied} of ${matches.length}`);
 
@@ -876,17 +879,16 @@ router.post('/project/:projectId/bulk', async (req, res) => {
       });
     }
 
-    // Write audit log
-    await client.query(
-      `INSERT INTO position_audit_log (event, actor, project_id, details)
-       VALUES ('bulk_import', $1, $2, $3)`,
-      [created_by, projectId, JSON.stringify({
+    await client.query('COMMIT');
+
+    // Audit AFTER commit — non-fatal by contract (see writeAuditLog).
+    await writeAuditLog(client, 'bulk_import', created_by, {
+      projectId,
+      details: {
         objects_created: objectsCreated,
         instances_created: instancesCreated
-      })]
-    );
-
-    await client.query('COMMIT');
+      }
+    });
 
     console.log(`[PositionInstances] Bulk import: ${projectId} → ${objectsCreated} objects, ${instancesCreated} instances`);
 
@@ -1075,8 +1077,13 @@ router.post('/:instanceId/monolith', async (req, res) => {
     return res.status(503).json({ success: false, error: 'Database not available' });
   }
 
-  const client = await pool.connect();
+  // connect() INSIDE the try: on pool starvation (the documented db-f1-micro
+  // failure mode) it rejects, and outside the try that rejection escapes the
+  // Express 4 handler — no response is ever sent and the kiosk write-back
+  // hangs until its own timeout.
+  let client;
   try {
+    client = await pool.connect();
     const { instanceId } = req.params;
     const { payload } = req.body;
 
@@ -1108,36 +1115,17 @@ router.post('/:instanceId/monolith', async (req, res) => {
       return res.status(404).json({ success: false, error: 'Position instance not found' });
     }
 
-    // Audit log — NON-FATAL. A failure here (e.g. schema drift on
-    // position_audit_log — a missing `actor` column silently 500'd every
-    // write-back and broke Registry's TOV pre-fill) must never undo the
-    // payload write above, which is the primary deliverable.
-    //
-    // The audit column value comes from the JOINed row (pp.position_instance_id),
-    // NOT from the bound $1, so $1 is used in exactly ONE type context (the
-    // WHERE, deduced as portal_positions.position_instance_id = UUID). Reusing
-    // $1 in the SELECT-list too made Postgres deduce it as BOTH the audit
-    // column's type AND portal_positions' type; on prod those drifted (the
-    // audit table predates the UUID standardization) → 42P08 "inconsistent
-    // types deduced for parameter $1" on every write. Selecting the joined
-    // column assignment-casts uuid → whatever the audit column actually is.
-    try {
-      await client.query(
-        `INSERT INTO position_audit_log (event, actor, project_id, position_instance_id, details)
-         SELECT 'monolith_written', 'kiosk:monolit', po.portal_project_id, pp.position_instance_id, $2
-         FROM portal_positions pp
-         JOIN portal_objects po ON pp.object_id = po.object_id
-         WHERE pp.position_instance_id = $1`,
-        [instanceId, JSON.stringify({
-          monolit_position_id: payload.monolit_position_id,
-          subtype: payload.subtype,
-          cost_czk: payload.cost_czk,
-          kros_total_czk: payload.kros_total_czk
-        })]
-      );
-    } catch (auditErr) {
-      console.warn(`[PositionInstances] Audit-log write skipped (non-fatal) for ${instanceId}: ${auditErr.code || ''} ${auditErr.message}`);
-    }
+    // Audit via the shared non-fatal helper (see writeAuditLog for the 42P08 /
+    // schema-drift history this shape encodes).
+    await writeAuditLog(client, 'monolith_written', 'kiosk:monolit', {
+      instanceId,
+      details: {
+        monolit_position_id: payload.monolit_position_id,
+        subtype: payload.subtype,
+        cost_czk: payload.cost_czk,
+        kros_total_czk: payload.kros_total_czk
+      }
+    });
 
     console.log(`[PositionInstances] Monolith payload written: ${instanceId}`);
 
@@ -1148,12 +1136,13 @@ router.post('/:instanceId/monolith', async (req, res) => {
     });
 
   } catch (error) {
-    // Surface the Postgres code/detail so a future failure names its own cause
-    // in the logs and in the response body (Monolit's WARN prints it).
+    // Full code/detail goes to the SERVER log only — Postgres DETAIL can embed
+    // row values and schema internals, so the response carries just the SQLSTATE
+    // code (enough for the kiosk's WARN to name the failure class).
     console.error(`[PositionInstances] Error writing monolith payload: ${error.code || ''} ${error.message}${error.detail ? ' — ' + error.detail : ''}`);
-    res.status(500).json({ success: false, error: 'Failed to write monolith payload', code: error.code || null, detail: error.detail || null });
+    res.status(500).json({ success: false, error: 'Failed to write monolith payload', code: error.code || null });
   } finally {
-    client.release();
+    if (client) client.release();
   }
 });
 
@@ -1234,8 +1223,11 @@ router.post('/:instanceId/dov', async (req, res) => {
     return res.status(503).json({ success: false, error: 'Database not available' });
   }
 
-  const client = await pool.connect();
+  // connect() INSIDE the try — same pool-starvation hang guard as the
+  // monolith write above.
+  let client;
   try {
+    client = await pool.connect();
     const { instanceId } = req.params;
     const { payload } = req.body;
 
@@ -1276,27 +1268,15 @@ router.post('/:instanceId/dov', async (req, res) => {
       return res.status(404).json({ success: false, error: 'Position instance not found' });
     }
 
-    // Audit log — NON-FATAL, and the audit column comes from the JOINed row
-    // (pp.position_instance_id), NOT the bound $1, so the param is used in
-    // exactly ONE type context. The old shape reused $1 in the SELECT-list
-    // AND the WHERE — on prod's drifted audit table Postgres deduced $1 as
-    // two different types → 42P08 on every DOV write (same bug as the
-    // monolith audit INSERT, fixed in the same way).
-    try {
-      await client.query(
-        `INSERT INTO position_audit_log (event, actor, project_id, position_instance_id, details)
-         SELECT 'dov_written', 'kiosk:dov', po.portal_project_id, pp.position_instance_id, $2
-         FROM portal_positions pp
-         JOIN portal_objects po ON pp.object_id = po.object_id
-         WHERE pp.position_instance_id = $1`,
-        [instanceId, JSON.stringify({
-          grand_total: payload.grand_total,
-          version: payload.version
-        })]
-      );
-    } catch (auditErr) {
-      console.warn(`[PositionInstances] DOV audit-log write skipped (non-fatal) for ${instanceId}: ${auditErr.code || ''} ${auditErr.message}`);
-    }
+    // Audit via the shared non-fatal helper (see writeAuditLog for the 42P08 /
+    // schema-drift history this shape encodes).
+    await writeAuditLog(client, 'dov_written', 'kiosk:dov', {
+      instanceId,
+      details: {
+        grand_total: payload.grand_total,
+        version: payload.version
+      }
+    });
 
     console.log(`[PositionInstances] DOV payload written: ${instanceId}`);
 
@@ -1307,16 +1287,57 @@ router.post('/:instanceId/dov', async (req, res) => {
     });
 
   } catch (error) {
+    // Full code/detail to the SERVER log only — see the monolith catch above.
     console.error(`[PositionInstances] Error writing DOV payload: ${error.code || ''} ${error.message}${error.detail ? ' — ' + error.detail : ''}`);
-    res.status(500).json({ success: false, error: 'Failed to write DOV payload', code: error.code || null, detail: error.detail || null });
+    res.status(500).json({ success: false, error: 'Failed to write DOV payload', code: error.code || null });
   } finally {
-    client.release();
+    if (client) client.release();
   }
 });
 
 // =============================================================================
 // HELPERS
 // =============================================================================
+
+/**
+ * Best-effort audit-log write — NEVER throws and must NEVER run inside the
+ * caller's transaction (call it AFTER COMMIT / after the primary write).
+ * Audit is telemetry: a failure here must not undo or fail the write it
+ * documents. Two prod incidents define this contract: a missing `actor`
+ * column (schema drift) 500'd every monolith write-back for weeks, and the
+ * dual-type-context bind below rolled back DOV payload writes with 42P08.
+ *
+ * When projectId is unknown (kiosk write paths know only the instance id),
+ * it is derived via the JOIN — and the audit column is filled from
+ * pp.position_instance_id, NOT from the bound parameter, so the parameter
+ * binds in exactly ONE type context (the WHERE). Binding it in the
+ * SELECT-list too made Postgres deduce it as BOTH portal_positions' UUID and
+ * the legacy audit table's TEXT → `42P08 inconsistent types deduced for
+ * parameter` on every write (verified live against Postgres 16, 2026-07-10).
+ */
+async function writeAuditLog(client, event, actor, { projectId = null, instanceId = null, templateId = null, details = null } = {}) {
+  const detailsJson = details ? JSON.stringify(details) : null;
+  try {
+    if (projectId === null && instanceId !== null) {
+      await client.query(
+        `INSERT INTO position_audit_log (event, actor, project_id, position_instance_id, template_id, details)
+         SELECT $1, $2, po.portal_project_id, pp.position_instance_id, $3, $4
+         FROM portal_positions pp
+         JOIN portal_objects po ON pp.object_id = po.object_id
+         WHERE pp.position_instance_id = $5`,
+        [event, actor, templateId, detailsJson, instanceId]
+      );
+    } else {
+      await client.query(
+        `INSERT INTO position_audit_log (event, actor, project_id, position_instance_id, template_id, details)
+         VALUES ($1, $2, $3, $4, $5, $6)`,
+        [event, actor, projectId, instanceId, templateId, detailsJson]
+      );
+    }
+  } catch (auditErr) {
+    console.warn(`[PositionInstances] Audit write skipped (non-fatal) for ${event}: ${auditErr.code || ''} ${auditErr.message}`);
+  }
+}
 
 /** Format DB row → API PositionInstance */
 function formatPositionInstance(row) {

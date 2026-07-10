@@ -795,10 +795,10 @@ export function ItemsTable({
                 // project-select fetch happened before «Aplikovat» wrote it, so
                 // this is what makes the «Předvyplnit TOV» banner appear. The
                 // modal renders the LIVE item (looked up by id below), so a
-                // merge lands in the open modal without re-clicking. Items
-                // with no payload yet force past the 15 s recency window —
-                // that's exactly the just-calculated case the banner is for.
-                fetchAndMergeMonolithData(projectId, { force: !item.monolith_payload });
+                // merge lands in the open modal without re-clicking. Rapid
+                // re-opens / dead links are throttled inside the fetch service
+                // (in-flight dedupe + 3 s fresh-TTL + dead-link TTL).
+                fetchAndMergeMonolithData(projectId);
               }}
             />
           );

@@ -1,26 +1,27 @@
 /**
- * Regression guard for the kiosk-write audit-log 42P08.
+ * Regression guard for the audit-log write discipline in position-instances.js.
  *
- * The write-back audit INSERTs in position-instances.js (monolith AND dov)
- * used to bind $1 (the position_instance_id) in TWO places at once:
- *   - the SELECT-list, feeding position_audit_log.position_instance_id, and
- *   - the WHERE, feeding portal_positions.position_instance_id.
- * On prod those two columns had drifted to different types (the audit table
- * predates the UUID standardization, so `CREATE TABLE IF NOT EXISTS` never
- * migrated its position_instance_id from legacy TEXT while portal_positions is
- * UUID). Postgres then deduced $1 as BOTH uuid AND text and raised
- *   ERROR: inconsistent types deduced for parameter $1 / DETAIL: uuid versus text
- * on every write. For the monolith path this was non-fatal (audit rows lost +
- * log spam); for the DOV path the INSERT sat INSIDE the BEGIN/COMMIT, so the
- * 42P08 rolled back the whole dov_payload write. Reproduced + fixed live
- * against Postgres 16 on 2026-07-10 (drift scenario: audit col TEXT,
- * portal_positions UUID).
+ * Two prod incident classes define the contract this file pins:
  *
- * Fix: source the audit column from the JOINed row (pp.position_instance_id)
- * so the bound param appears in exactly ONE type context (the WHERE). This
- * test pins that shape for EVERY audit INSERT that joins portal_positions, so
- * a future edit (or a new kiosk write path copied from an old shape) can't
- * reintroduce the dual-context bind.
+ * 1. 42P08 dual-type-context bind: binding ONE parameter as both the audit
+ *    column value (SELECT-list) and the portal_positions filter (WHERE) made
+ *    Postgres deduce it as two drifted column types (legacy TEXT audit table
+ *    vs UUID portal_positions) → `inconsistent types deduced for parameter` on
+ *    every kiosk write. Reproduced + fixed live against Postgres 16
+ *    (2026-07-10). The safe shape sources the audit column from the JOINed row
+ *    (pp.position_instance_id) so the param binds in exactly ONE context.
+ *
+ * 2. Audit-inside-transaction: an audit INSERT between BEGIN and COMMIT made
+ *    any audit failure (schema drift) roll back the PRIMARY write it was
+ *    documenting (dov_payload lost with a 500; earlier the missing `actor`
+ *    column killed monolith write-backs for weeks).
+ *
+ * Both are now encoded once in the writeAuditLog helper; every event routes
+ * through it, and audit calls run AFTER the transaction commits. These tests
+ * pin the helper's shape, the routing, and the after-commit placement — with
+ * alias-agnostic and quote-agnostic checks, because the previous version of
+ * this test was evadable ('FROM portal_positions pp' literal alias filter,
+ * single-quote-only BEGIN check).
  *
  * Run: node --test stavagent-portal/backend/tests/auditLogInsert.test.js
  */
@@ -38,62 +39,99 @@ const routeSrc = readFileSync(
 );
 
 /**
- * Extract every position_audit_log INSERT that selects FROM portal_positions
- * (the shape vulnerable to the dual-context bind). VALUES-style inserts bind
- * each param once by construction and are not in scope. Each SQL template
- * literal contains no backticks, so `[^\`]*` bounds the match to ONE statement
- * — a lazy [\s\S]*? would run past a VALUES insert into the next SELECT one.
+ * Every position_audit_log INSERT template literal in the file. Each SQL
+ * template contains no backticks, so `[^\`]*` bounds the match to ONE
+ * statement (a lazy [\s\S]*? would run across statements).
  */
-const auditInserts = [...routeSrc.matchAll(
+const allAuditInserts = [...routeSrc.matchAll(
   /INSERT INTO position_audit_log[^`]*/g,
-)].map(m => m[0].trimEnd()).filter(sql => sql.includes('FROM portal_positions pp'));
+)].map(m => m[0].trimEnd());
 
-describe('audit INSERTs joining portal_positions — no dual-type-context param bind', () => {
-  it('covers both kiosk write paths (monolith_written + dov_written)', () => {
-    assert.equal(auditInserts.length, 2, `expected 2 SELECT-style audit INSERTs, found ${auditInserts.length}`);
-    assert.ok(auditInserts.some(sql => sql.includes("'monolith_written'")), 'monolith_written INSERT missing');
-    assert.ok(auditInserts.some(sql => sql.includes("'dov_written'")), 'dov_written INSERT missing');
+describe('audit INSERT shapes — no dual-type-context param bind (42P08)', () => {
+  it('exactly the two helper shapes exist (SELECT-style + VALUES-style), both inside writeAuditLog', () => {
+    assert.equal(
+      allAuditInserts.length, 2,
+      `expected exactly 2 audit INSERT literals (both in writeAuditLog), found ${allAuditInserts.length} — ` +
+      'a new inline audit INSERT outside the helper reintroduces the shape-drift risk; route new events through writeAuditLog',
+    );
+    const helperStart = routeSrc.indexOf('async function writeAuditLog');
+    assert.ok(helperStart >= 0, 'writeAuditLog helper not found');
+    for (const sql of allAuditInserts) {
+      assert.ok(
+        routeSrc.indexOf(sql) > helperStart,
+        `an audit INSERT lives outside the writeAuditLog helper:\n${sql}`,
+      );
+    }
   });
 
-  for (const [i, sql] of auditInserts.entries()) {
-    const label = sql.includes("'monolith_written'") ? 'monolith_written'
-      : sql.includes("'dov_written'") ? 'dov_written'
-      : `#${i}`;
-
-    it(`${label}: sources position_instance_id from the JOINed row, not the bound param`, () => {
-      // The audit column must be filled from pp.position_instance_id so its
-      // value assignment-casts to whatever type the audit column actually is.
-      assert.match(sql, /pp\.position_instance_id,\s*\$2/);
+  // Alias-agnostic: any SELECT-style audit INSERT joining portal_positions
+  // (whatever the alias) must bind its WHERE parameter exactly once.
+  for (const sql of allAuditInserts.filter(s => /FROM\s+portal_positions/i.test(s))) {
+    it('SELECT-style: sources the audit column from the JOINed row, not a bound param', () => {
+      assert.match(sql, /SELECT \$1, \$2, po\.portal_project_id, pp\.position_instance_id, \$3, \$4/);
     });
 
-    it(`${label}: does NOT bind $1 in the SELECT-list (the 42P08 trigger)`, () => {
-      // The buggy shape put $1 as the fourth SELECT column:
-      //   SELECT '<event>', '<actor>', po.portal_project_id, $1, $2
-      // which reused $1 alongside the WHERE — inconsistent-type deduction.
-      assert.doesNotMatch(sql, /portal_project_id,\s*\$1\s*,\s*\$2/);
-    });
-
-    it(`${label}: binds the id exactly once, in the WHERE`, () => {
-      const occurrences = (sql.match(/\$1\b/g) || []).length;
-      assert.equal(occurrences, 1, `expected $1 exactly once, found ${occurrences}:\n${sql}`);
-      assert.match(sql, /WHERE pp\.position_instance_id = \$1$/);
+    it('SELECT-style: binds the instance id exactly once, in the WHERE', () => {
+      const whereParam = sql.match(/WHERE\s+\w+\.position_instance_id\s*=\s*(\$\d+)/)?.[1];
+      assert.ok(whereParam, `no WHERE position_instance_id = $n found:\n${sql}`);
+      const occurrences = (sql.match(new RegExp(`\\${whereParam}\\b`, 'g')) || []).length;
+      assert.equal(
+        occurrences, 1,
+        `expected ${whereParam} exactly once (dual-context bind → 42P08 on drifted schema), found ${occurrences}:\n${sql}`,
+      );
     });
   }
 });
 
-describe('DOV write path — audit failure must not roll back the payload', () => {
-  it('the dov handler no longer wraps the payload UPDATE + audit in one transaction', () => {
-    // The old shape was BEGIN → UPDATE dov_payload → audit INSERT → COMMIT,
-    // so an audit 42P08 rolled the payload back. The fixed shape has no
-    // BEGIN between the dov handler start and its audit INSERT, and the
-    // audit sits in its own try/catch (non-fatal), mirroring the monolith
-    // handler.
-    const dovStart = routeSrc.indexOf("router.post('/:instanceId/dov'");
-    assert.ok(dovStart >= 0, 'dov write handler not found');
-    const dovAudit = routeSrc.indexOf("'dov_written'", dovStart);
-    assert.ok(dovAudit >= 0, 'dov audit INSERT not found');
-    const handlerSlice = routeSrc.slice(dovStart, dovAudit);
-    assert.ok(!handlerSlice.includes("query('BEGIN')"), 'dov handler still opens a transaction around the payload write');
-    assert.match(handlerSlice, /try\s*{\s*[^}]*$/, 'dov audit INSERT is not inside its own try block');
+describe('writeAuditLog helper — non-fatal by construction', () => {
+  const helperSrc = routeSrc.slice(
+    routeSrc.indexOf('async function writeAuditLog'),
+    routeSrc.indexOf('function formatPositionInstance'),
+  );
+
+  it('wraps both INSERT shapes in a catch that only warns', () => {
+    assert.match(helperSrc, /catch \(auditErr\)/);
+    assert.match(helperSrc, /console\.warn/);
+    assert.ok(!/\bthrow\b/.test(helperSrc), 'writeAuditLog must never rethrow — audit is telemetry');
   });
+});
+
+describe('every audit event routes through the helper, AFTER any transaction commits', () => {
+  const EVENTS = ['monolith_written', 'dov_written', 'template_saved', 'template_applied', 'bulk_import'];
+
+  for (const event of EVENTS) {
+    it(`${event}: call site uses writeAuditLog and is not inside a BEGIN…COMMIT window`, () => {
+      const callRe = new RegExp(`writeAuditLog\\(client, '${event}'`);
+      const m = routeSrc.match(callRe);
+      assert.ok(m, `no writeAuditLog call for ${event}`);
+      const callIdx = routeSrc.indexOf(m[0]);
+
+      // Quote-agnostic: the LAST transaction verb textually before the call
+      // must not be BEGIN — i.e. the audit runs after COMMIT/ROLLBACK (or in
+      // a handler with no transaction at all).
+      const verbs = [...routeSrc.slice(0, callIdx).matchAll(/query\(\s*["'`](BEGIN|COMMIT|ROLLBACK)/g)];
+      const lastVerb = verbs.length ? verbs[verbs.length - 1][1] : null;
+      assert.notEqual(
+        lastVerb, 'BEGIN',
+        `${event} audit call sits inside an open transaction — an audit failure would roll back the primary write`,
+      );
+    });
+  }
+});
+
+describe('kiosk write handlers — payload write must not share a transaction with anything', () => {
+  for (const route of ["router.post('/:instanceId/monolith'", "router.post('/:instanceId/dov'"] ) {
+    it(`${route.includes('monolith') ? 'monolith' : 'dov'} handler opens no transaction (quote-agnostic)`, () => {
+      const start = routeSrc.indexOf(route);
+      assert.ok(start >= 0, `handler ${route} not found`);
+      // Handler ends at the next router.<verb>( declaration.
+      const rest = routeSrc.slice(start + route.length);
+      const end = rest.search(/router\.(get|post|put|delete|patch)\(/);
+      const handlerSrc = rest.slice(0, end === -1 ? undefined : end);
+      assert.ok(
+        !/query\(\s*["'`]BEGIN/.test(handlerSrc),
+        'kiosk write handler opens a transaction — the single atomic UPDATE + post-write non-fatal audit contract is broken',
+      );
+    });
+  }
 });
