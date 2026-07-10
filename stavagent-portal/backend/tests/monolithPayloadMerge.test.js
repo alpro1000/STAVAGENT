@@ -115,21 +115,33 @@ describe('richPayloadSql — SQL mirror of the contract', () => {
       /jsonb_array_length\(\s*CASE WHEN jsonb_typeof\([\s\S]*?'labor'\) = 'array'/,
     );
   });
+
+  it('COALESCEs to false so a thin payload yields false, not NULL (guard-poison regression)', () => {
+    // For a thin payload the costs/resources keys are absent →
+    // `jsonb_typeof(x -> costs) = object` is NULL. Without COALESCE(..., false)
+    // the predicate returns NULL, and the merge guard `existing AND NOT NULL`
+    // = NULL → the rich payload gets downgraded anyway. Verified live against
+    // Postgres 2026-07-10.
+    assert.match(sql, /^COALESCE\(/);
+    assert.match(sql, /, false\)$/);
+  });
 });
 
 describe('monolithPayloadMergeSql — never downgrade rich→thin', () => {
   const merge = monolithPayloadMergeSql('$11');
 
-  it('is a CASE expression, not a bare overwrite or COALESCE', () => {
+  it('is a CASE expression, not a bare overwrite or COALESCE-clobber', () => {
     // Regression guard: reverting to `COALESCE($11, monolith_payload)` or `= $11`
-    // reintroduces the clobber.
+    // reintroduces the clobber. (A COALESCE(..., false) inside the boolean
+    // predicate is fine — only a COALESCE with a bare param first arg is the
+    // overwrite pattern.)
     assert.match(merge, /^CASE/);
-    assert.doesNotMatch(merge, /COALESCE/);
+    assert.doesNotMatch(merge, /COALESCE\(\$\d+,/);
   });
 
   it('keeps the stored column when it is rich AND the incoming value is thin', () => {
     // The middle branch: <existing rich> AND NOT <incoming rich> THEN monolith_payload
-    assert.match(merge, /AND NOT \(/);
+    assert.match(merge, /AND NOT COALESCE\(/);
     assert.match(merge, /THEN monolith_payload/);
   });
 
@@ -138,13 +150,29 @@ describe('monolithPayloadMergeSql — never downgrade rich→thin', () => {
     assert.match(merge, /ELSE \(\$11\)::jsonb/);
   });
 
-  it('preserves the existing value when the incoming placeholder is NULL', () => {
-    assert.match(merge, /WHEN \$11 IS NULL THEN monolith_payload/);
+  it('preserves the existing value when the incoming payload is NULL (cast NULL check)', () => {
+    // The NULL check must ALSO cast — a bare `$11 IS NULL` leaves the param
+    // type unknown → Postgres 42P08.
+    assert.match(merge, /WHEN \(\$11\)::jsonb IS NULL THEN monolith_payload/);
+  });
+
+  it('NEVER leaves a bare parameter uncast (42P08 regression guard)', () => {
+    // The 2026-07-10 write-back outage: `$1 IS NULL` was uncast, so Postgres
+    // could not determine the parameter type and EVERY monolith write 500'd.
+    // After removing every `($n)::jsonb`, no bare `$n` may remain anywhere.
+    for (const ph of ['$1', '$11']) {
+      const m = monolithPayloadMergeSql(ph);
+      const stripped = m.split(`(${ph})::jsonb`).join('');
+      assert.ok(
+        !stripped.includes(ph),
+        `bare ${ph} without ::jsonb cast would raise 42P08:\n${m}`,
+      );
+    }
   });
 
   it('works with any placeholder index and a custom column', () => {
     const m = monolithPayloadMergeSql('$1', 'monolith_payload');
-    assert.match(m, /WHEN \$1 IS NULL THEN monolith_payload/);
+    assert.match(m, /WHEN \(\$1\)::jsonb IS NULL THEN monolith_payload/);
     assert.match(m, /ELSE \(\$1\)::jsonb/);
   });
 });

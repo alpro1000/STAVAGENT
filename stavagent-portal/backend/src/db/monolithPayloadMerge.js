@@ -53,13 +53,19 @@ export function isRichMonolithPayload(payload) {
  */
 export function richPayloadSql(jsonbExpr) {
   const labor = `(${jsonbExpr}) -> 'tov_entries' -> 'labor'`;
-  return `(
+  // COALESCE(..., false) is load-bearing: for a THIN payload the 'costs'/'resources'
+  // keys are absent, so `jsonb_typeof(x -> 'costs') = 'object'` is NULL (not false).
+  // Without the COALESCE the predicate returns NULL for thin payloads, and the
+  // merge guard `existing_rich AND NOT incoming_rich` becomes `true AND NOT NULL`
+  // = NULL → the CASE treats it as "not matched" → the rich payload gets
+  // downgraded anyway. (This is why #1466's guard silently never worked.)
+  return `COALESCE((
     (jsonb_typeof((${jsonbExpr}) -> 'costs') = 'object'
       AND jsonb_typeof((${jsonbExpr}) -> 'resources') = 'object')
     OR jsonb_array_length(
       CASE WHEN jsonb_typeof(${labor}) = 'array' THEN ${labor} ELSE '[]'::jsonb END
     ) > 0
-  )`;
+  ), false)`;
 }
 
 /**
@@ -74,8 +80,14 @@ export function richPayloadSql(jsonbExpr) {
  */
 export function monolithPayloadMergeSql(placeholder, column = 'monolith_payload') {
   const incoming = `(${placeholder})::jsonb`;
+  // EVERY occurrence of the parameter must carry the ::jsonb cast — including
+  // the NULL check. A bare `$1 IS NULL` leaves the parameter's type unknown
+  // (IS NULL accepts any type), and if it is the only uncast use Postgres
+  // raises `42P08: could not determine data type of parameter $1` and the
+  // whole UPDATE 500s. The 2026-07-10 write-back outage was exactly this:
+  // every POST /:instanceId/monolith failed, so TOV pre-fill never lit up.
   return `CASE
-    WHEN ${placeholder} IS NULL THEN ${column}
+    WHEN ${incoming} IS NULL THEN ${column}
     WHEN ${richPayloadSql(column)} AND NOT ${richPayloadSql(incoming)} THEN ${column}
     ELSE ${incoming}
   END`;
