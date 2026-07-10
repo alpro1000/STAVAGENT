@@ -154,11 +154,12 @@ export async function loadFromBackend(): Promise<Project[]> {
     // backend list means the original DELETE never landed (Cloud Run
     // timeout). Hiding it locally is not enough — other consumers list the
     // backend directly (Monolit «Načíst z Rozpočtu» showed the user three
-    // 'Auto-created' phantoms that Registry itself had hidden). Retry the
-    // DELETE on every load until the backend confirms; fire-and-forget so
-    // the load itself is never slowed.
-    void sweepTombstonedBackendRows(apiProjectsRaw);
-    if (apiProjects.length === 0) return [];
+    // 'Auto-created' phantoms that Registry itself had hidden). The sweep is
+    // scheduled AFTER the sheet/item loading below completes (see the
+    // returns) so its DELETEs can never race the fetch loop, and
+    // fire-and-forget so the load itself is never slowed.
+    const scheduleSweep = () => { void sweepTombstonedBackendRows(apiProjectsRaw); };
+    if (apiProjects.length === 0) { scheduleSweep(); return []; }
 
     // Convert API projects to local Project format
     const backendProjects: Project[] = [];
@@ -253,6 +254,9 @@ export async function loadFromBackend(): Promise<Project[]> {
     }
 
     console.log(`[BackendSync] Loaded ${backendProjects.length} projects from backend`);
+    // Sheets/items fetching is done — the sweep's DELETEs can no longer race
+    // any in-flight load of a live project.
+    scheduleSweep();
     return backendProjects;
   } catch (err) {
     console.warn('[BackendSync] Failed to load from backend:', err);
@@ -445,8 +449,10 @@ export async function sweepTombstonedBackendRows(
       forgetTombstone(r.project_id);
       deleted++;
       console.log(`[BackendSync] Tombstone enforced — deleted leftover backend project ${r.project_id}`);
-    } catch {
-      // Keep the tombstone; retried on the next load.
+    } catch (err) {
+      // Keep the tombstone; retried on the next load. Log the cause so a
+      // permanently-failing DELETE (vs a transient timeout) is diagnosable.
+      console.warn(`[BackendSync] Failed to sweep tombstoned project ${r.project_id}:`, err instanceof Error ? err.message : err);
     }
   }
   if (leftovers.length > 0) {
