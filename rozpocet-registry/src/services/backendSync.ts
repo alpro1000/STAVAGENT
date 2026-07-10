@@ -150,6 +150,14 @@ export async function loadFromBackend(): Promise<Project[]> {
     // the user's delete. Tombstones are cleared by a successful DELETE
     // round-trip in `deleteProjectFromBackend`.
     const apiProjects = dropTombstoned(apiProjectsRaw);
+    // Enforce the tombstones SERVER-side too: a tombstoned row still in the
+    // backend list means the original DELETE never landed (Cloud Run
+    // timeout). Hiding it locally is not enough — other consumers list the
+    // backend directly (Monolit «Načíst z Rozpočtu» showed the user three
+    // 'Auto-created' phantoms that Registry itself had hidden). Retry the
+    // DELETE on every load until the backend confirms; fire-and-forget so
+    // the load itself is never slowed.
+    void sweepTombstonedBackendRows(apiProjectsRaw);
     if (apiProjects.length === 0) return [];
 
     // Convert API projects to local Project format
@@ -415,6 +423,36 @@ export function debouncedPushToBackend(project: Project): void {
       })
       .catch(() => {});
   }, SYNC_DEBOUNCE_MS));
+}
+
+/**
+ * Server-side tombstone enforcement: retry the backend DELETE for every
+ * fetched row the user already deleted locally. `deleteProjectFromBackend`
+ * keeps the tombstone when its DELETE fails, which protects the LOCAL store
+ * — but the row survives in Postgres and keeps surfacing in every consumer
+ * that lists the backend directly (Monolit import modal). Runs on each
+ * `loadFromBackend`; sequential so a batch of leftovers can't stampede a
+ * cold-starting backend. Returns counts for tests/diagnostics.
+ */
+export async function sweepTombstonedBackendRows(
+  rows: Array<{ project_id: string }>,
+): Promise<{ attempted: number; deleted: number }> {
+  const leftovers = rows.filter((r) => isTombstoned(r.project_id));
+  let deleted = 0;
+  for (const r of leftovers) {
+    try {
+      await registryAPI.deleteProject(r.project_id);
+      forgetTombstone(r.project_id);
+      deleted++;
+      console.log(`[BackendSync] Tombstone enforced — deleted leftover backend project ${r.project_id}`);
+    } catch {
+      // Keep the tombstone; retried on the next load.
+    }
+  }
+  if (leftovers.length > 0) {
+    console.log(`[BackendSync] Tombstone sweep: ${deleted}/${leftovers.length} leftover backend rows deleted`);
+  }
+  return { attempted: leftovers.length, deleted };
 }
 
 /**
