@@ -13,6 +13,7 @@ import type {
   SheetStats,
   PortalLink,
   TOVData,
+  MonolithPayload,
 } from '../types';
 import type { ImportTemplate } from '../types/template';
 import { PREDEFINED_TEMPLATES } from '../config/templates';
@@ -64,7 +65,7 @@ interface RegistryState {
   unlinkFromPortal: (projectId: string) => void;
   updatePortalSyncTime: (projectId: string) => void;
   getLinkedProjects: () => Project[];  // projects with Portal links
-  fetchAndMergeMonolithData: (projectId: string) => void;  // non-blocking fetch of Monolit data
+  fetchAndMergeMonolithData: (projectId: string) => Promise<void>;  // non-blocking fetch of Monolit data (resolves after merge)
 
   // Действия с листами
   addSheet: (projectId: string, sheet: Sheet) => void;
@@ -334,43 +335,50 @@ export const useRegistryStore = create<RegistryState>()(
         return get().projects.filter((p) => p.portalLink !== undefined);
       },
 
-      // Fetch Monolit calculation data from Portal and merge into items (non-blocking)
+      // Fetch Monolit calculation data from Portal and merge into items.
+      // Resolves after the merge so a caller (e.g. opening the TOV modal) can
+      // await fresh data. Called on project select / Portal link AND on demand
+      // when the TOV modal opens — the select-time call runs BEFORE the user
+      // clicks «Aplikovat» in the calculator, so without the on-open refetch the
+      // Registry never sees the freshly-written payload and the «Předvyplnit
+      // TOV» banner stays hidden.
       fetchAndMergeMonolithData: (projectId) => {
         const project = get().projects.find(p => p.id === projectId);
         const portalProjectId = project?.portalLink?.portalProjectId;
-        if (!portalProjectId) return;
+        if (!portalProjectId) return Promise.resolve();
 
-        // Fire-and-forget: fetch monolith data from Portal
-        fetchMonolithData(portalProjectId).then(({ payloads: monolithMap }) => {
+        return fetchMonolithData(portalProjectId).then(({ payloads: monolithMap }) => {
           if (monolithMap.size === 0) return;
 
           const state = get();
-          let updated = 0;
+          const { nextProjects, anyChanged, updated, matched } =
+            mergeMonolithPayloadsIntoProjects(state.projects, projectId, monolithMap);
 
-          useRegistryStore.setState({
-            projects: state.projects.map(p => {
-              if (p.id !== projectId) return p;
-              return {
-                ...p,
-                sheets: p.sheets.map(sheet => ({
-                  ...sheet,
-                  items: sheet.items.map(item => {
-                    if (!item.position_instance_id) return item;
-                    const payload = monolithMap.get(item.position_instance_id);
-                    if (payload) {
-                      updated++;
-                      return { ...item, monolith_payload: payload };
-                    }
-                    return item;
-                  }),
-                })),
-              };
-            }),
-          });
-
-          if (updated > 0) {
+          if (anyChanged) {
+            useRegistryStore.setState({ projects: nextProjects });
             console.log(`[RegistryStore] Merged ${updated} monolith payloads for project "${project?.projectName}"`);
+          } else if (matched === 0) {
+            // Payloads exist on Portal but none matched a local item by
+            // position_instance_id. That's a stale link (project re-imported /
+            // relinked → local ids diverged from the ids the payloads carry),
+            // NOT a write failure. Surface both id sets so a live test can tell
+            // "merge never ran" from "ran but 0 matched" — the two need
+            // different fixes (trigger vs PortalAutoSync re-link).
+            const localIds: string[] = [];
+            for (const sheet of project?.sheets ?? []) {
+              for (const it of sheet.items) {
+                if (it.position_instance_id) localIds.push(it.position_instance_id);
+                if (localIds.length >= 3) break;
+              }
+              if (localIds.length >= 3) break;
+            }
+            console.warn(
+              `[RegistryStore] Fetched ${monolithMap.size} monolith payloads but 0 matched local items by position_instance_id ` +
+              `(stale link — re-sync needed). payload ids: [${[...monolithMap.keys()].slice(0, 3).join(', ')}] · ` +
+              `local ids: [${localIds.join(', ')}]`,
+            );
           }
+          // anyChange=false && matched>0 → already up to date, silent no-op.
         }).catch(() => {});
       },
 
@@ -1245,6 +1253,72 @@ export function applyInstanceMappingsToProjects(
   });
 
   return { nextProjects, anyChanged: anyProjectChanged, monolithCount };
+}
+
+/**
+ * Merge freshly-fetched monolith payloads (keyed by position_instance_id)
+ * into ONE project's items. Ref-preserving + key-order-insensitive the same
+ * way `applyInstanceMappingsToProjects` is (see its doc): only the target
+ * project is walked, and a new project/sheet/item reference is minted only
+ * where a payload actually changed, so repeated calls (e.g. re-opening the
+ * TOV modal) don't churn every row's reference and reset scroll / kill
+ * memoization. Uses `stableStringify` so a payload re-serialized in a
+ * different key order across deploys doesn't read as changed.
+ *
+ * The join key here is `position_instance_id` (not `item.id`), because the
+ * payloads come from Portal's for-registry endpoint keyed by the cross-kiosk
+ * instance id — that's the difference from `applyInstanceMappingsToProjects`.
+ *
+ * Returns:
+ *  - nextProjects: new array only when something changed;
+ *  - anyChanged:   whether any payload was updated (drives setState);
+ *  - updated:      count of items whose payload content changed;
+ *  - matched:      count of items whose instance-id matched a fetched payload.
+ *                  `matched > 0 && !anyChanged` = already up to date (no-op);
+ *                  `matched === 0` with a non-empty map = STALE LINK (local
+ *                  ids diverged from the payload ids — a re-sync is needed,
+ *                  not a re-write). The store logs that case for diagnosis.
+ *
+ * Exported so a regression test can exercise the contract without mocking
+ * Zustand persist / IndexedDB (mirrors applyInstanceMappingsToProjects).
+ */
+export function mergeMonolithPayloadsIntoProjects(
+  projects: Project[],
+  projectId: string,
+  payloads: Map<string, MonolithPayload>,
+): { nextProjects: Project[]; anyChanged: boolean; updated: number; matched: number } {
+  let updated = 0;
+  let matched = 0;
+  let anyProjectChanged = false;
+
+  const nextProjects = projects.map(p => {
+    if (p.id !== projectId) return p;
+
+    let anySheetChanged = false;
+    const nextSheets = p.sheets.map(sheet => {
+      let anyItemChanged = false;
+      const nextItems = sheet.items.map(item => {
+        if (!item.position_instance_id) return item;
+        const payload = payloads.get(item.position_instance_id);
+        if (!payload) return item;
+        matched++;
+        if (item.monolith_payload && stableStringify(item.monolith_payload) === stableStringify(payload)) {
+          return item; // already up to date — keep ref
+        }
+        updated++;
+        anyItemChanged = true;
+        return { ...item, monolith_payload: payload };
+      });
+      if (!anyItemChanged) return sheet;
+      anySheetChanged = true;
+      return { ...sheet, items: nextItems };
+    });
+    if (!anySheetChanged) return p;
+    anyProjectChanged = true;
+    return { ...p, sheets: nextSheets };
+  });
+
+  return { nextProjects, anyChanged: anyProjectChanged, updated, matched };
 }
 
 /**

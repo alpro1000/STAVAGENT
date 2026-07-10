@@ -228,7 +228,7 @@ export function ItemsTable({
   onShowOnlyWorkItemsChange,
   conflictMap,
 }: ItemsTableProps) {
-  const { setItemSkupina, getAllGroups, addCustomGroup, bulkSetSkupina, getProject, updateItemPrice, getItemTOV, setItemTOV, hasItemTOV, recordSkupinaMemory, getMemorySkupiny, reclassifySheet } = useRegistryStore();
+  const { setItemSkupina, getAllGroups, addCustomGroup, bulkSetSkupina, getProject, updateItemPrice, getItemTOV, setItemTOV, hasItemTOV, recordSkupinaMemory, getMemorySkupiny, reclassifySheet, fetchAndMergeMonolithData } = useRegistryStore();
 
   // Re-classify all — gated on items having _rawCells (captured on fresh
   // imports after the v1.1 classifier rewrite). Legacy items in IndexedDB
@@ -789,7 +789,15 @@ export function ItemsTable({
             <TOVButton
               itemId={item.id}
               hasData={hasItemTOV(item.id)}
-              onClick={() => setTovModalItem(item)}
+              onClick={() => {
+                setTovModalItem(item);
+                // Pull the latest calculator payload from Portal on open — the
+                // project-select fetch happened before «Aplikovat» wrote it, so
+                // this is what makes the «Předvyplnit TOV» banner appear. The
+                // modal renders the LIVE item (looked up by id below), so a
+                // merge lands in the open modal without re-clicking.
+                fetchAndMergeMonolithData(projectId);
+              }}
             />
           );
         },
@@ -1522,12 +1530,15 @@ export function ItemsTable({
         onClearSelection={() => onSelectionChange?.(new Set())}
       />
 
-      {/* TOV Modal */}
+      {/* TOV Modal — render the LIVE item (looked up from the current `items`
+          prop by id), not the snapshot captured at click time, so a monolith
+          payload merged after open (fetchAndMergeMonolithData) shows the
+          «Předvyplnit TOV» banner without the user re-opening the modal. */}
       {tovModalItem && (
         <TOVModal
           isOpen={true}
           onClose={() => setTovModalItem(null)}
-          item={tovModalItem}
+          item={items.find(i => i.id === tovModalItem.id) ?? tovModalItem}
           tovData={getItemTOV(tovModalItem.id)}
           onSave={(data: TOVData) => setItemTOV(tovModalItem.id, data)}
           onApplyPrice={(itemId, unitPrice, _totalPrice) => {
