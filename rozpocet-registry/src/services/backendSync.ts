@@ -32,6 +32,46 @@ const SYNC_DEBOUNCE_MS = 2000;
 /** Pending projects to flush on beforeunload (latest snapshot per id). */
 const _pendingProjects = new Map<string, Project>();
 
+// Content fingerprint of the last SUCCESSFULLY pushed state per project.
+// pushProjectToBackend skips the POST when nothing it would send has changed:
+// the App.tsx effect re-fires on every `projects` identity change, including
+// server-originated ones (monolith-payload merges after «Aplikovat», project
+// switches), and suppressAutoSync cannot gate a React effect — it runs after
+// the synchronous suppression window has closed. The fingerprint is
+// trigger-agnostic: identical content never pushes twice, no matter who
+// produced the state change. Recorded ONLY on full success so a failed or
+// partial push always retries.
+const _lastPushedFingerprint = new Map<string, string>();
+
+/**
+ * Serialize exactly what a push sends (project header + the same per-item
+ * projection pushSheetToBackend builds), so any change that would alter a
+ * backend row changes the fingerprint — and nothing else does.
+ */
+function projectPushFingerprint(project: Project): string {
+  return JSON.stringify({
+    name: project.projectName,
+    portal: project.portalLink?.portalProjectId ?? null,
+    sheets: project.sheets.map((sheet, si) => ({
+      id: sheet.id,
+      name: sheet.name,
+      order: si,
+      items: sheet.items.map((item, idx) => [
+        item.id,
+        item.kod || '',
+        item.popis || '',
+        item.mnozstvi || 0,
+        item.mj || '',
+        item.cenaJednotkova ?? null,
+        item.cenaCelkem ?? null,
+        idx,
+        item.skupina || null,
+        serializeClassification(item),
+      ]),
+    })),
+  });
+}
+
 // ─── Phase 3 (2026-04-15): sync status pub/sub ─────────────────────────────
 //
 // Exposes a tiny event-emitter so the UI can render a badge showing:
@@ -234,7 +274,7 @@ export async function loadFromBackend(): Promise<Project[]> {
           });
         }
 
-        backendProjects.push({
+        const hydrated: Project = {
           id: ap.project_id,
           fileName: `${ap.project_name}.xlsx`,
           projectName: ap.project_name,
@@ -248,7 +288,14 @@ export async function loadFromBackend(): Promise<Project[]> {
                 lastSyncedAt: new Date(ap.updated_at),
               }
             : undefined,
-        });
+        };
+        backendProjects.push(hydrated);
+
+        // Seed the push fingerprint with what we just read: if the App.tsx
+        // startup sync then merges to EXACTLY this content, the echo push of
+        // the backend's own data is skipped; any local difference (merge
+        // preferred a newer local copy) changes the fingerprint and pushes.
+        _lastPushedFingerprint.set(hydrated.id, projectPushFingerprint(hydrated));
 
         // This installs a portalLink WITHOUT going through store.linkToPortal,
         // so reset the fetch service's dead-link/TTL marks here too — a
@@ -334,6 +381,21 @@ export async function pushProjectToBackend(project: Project): Promise<void> {
     return;
   }
 
+  // Content dedupe — BEFORE the login/availability probes, so an
+  // informationless push costs zero network AND zero Cloud SQL work
+  // (each full push is a project UPSERT + per-sheet bulk INSERTs against
+  // the connection-starved db-f1-micro).
+  const fingerprint = projectPushFingerprint(project);
+  if (_lastPushedFingerprint.get(project.id) === fingerprint) {
+    console.log(`[BackendSync] Skip push for "${project.projectName}" — content unchanged since last successful sync`);
+    // The debounce already flipped the badge to 'pending'; settle it back
+    // unless someone else's push is armed or running.
+    if (_state.status === 'pending' && _syncTimers.size === 0 && !_syncInProgress) {
+      setState({ status: 'idle', pendingProjectName: null });
+    }
+    return;
+  }
+
   // No Portal JWT → the backend would 401 every request. Honest status
   // instead of a scary error; sync resumes automatically once the user
   // logs in to Portal (cookie appears) and the next change fires.
@@ -386,6 +448,7 @@ export async function pushProjectToBackend(project: Project): Promise<void> {
       return;
     }
 
+    _lastPushedFingerprint.set(project.id, fingerprint);
     console.log(`[BackendSync] Full sync: "${project.projectName}" (${project.sheets.length} sheets, ${project.sheets.reduce((s, sh) => s + sh.items.length, 0)} items)`);
     setState({
       status: 'synced',
@@ -476,6 +539,9 @@ export async function deleteProjectFromBackend(projectId: string): Promise<void>
   // below times out / 5xx / never reaches the backend. Without this
   // the user's delete silently un-deletes on next reload.
   tombstoneProject(projectId);
+  // A re-created project with the same id must push fresh, not be deduped
+  // against the deleted row's content.
+  _lastPushedFingerprint.delete(projectId);
 
   const available = await isBackendAvailable();
   if (!available) return;
@@ -498,6 +564,7 @@ export async function deleteProjectFromBackend(projectId: string): Promise<void>
  * Delete all projects from the backend (fire-and-forget).
  */
 export async function deleteAllProjectsFromBackend(): Promise<void> {
+  _lastPushedFingerprint.clear();
   const available = await isBackendAvailable();
   if (!available) return;
 

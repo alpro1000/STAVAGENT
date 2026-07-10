@@ -41,6 +41,12 @@ const FETCH_TIMEOUT = 10_000;
 const FRESH_TTL_MS = 3_000;
 const DEAD_LINK_TTL_MS = 5 * 60_000;
 
+// Monotonic clock for the TTL stamps. Date.now() is WALL time — an NTP step /
+// manual clock change BACKWARD would make `now - at` negative (cache reads as
+// "fresh" until wall time re-passes the stamp) and stretch a dead-link mark by
+// the skew. performance.now() never goes backwards.
+const now = () => performance.now();
+
 const inFlight = new Map<string, Promise<MonolithFetchResult>>();
 const lastResult = new Map<string, { at: number; result: MonolithFetchResult }>();
 const deadUntil = new Map<string, number>();
@@ -81,14 +87,14 @@ export function fetchMonolithData(
 
   const dead = deadUntil.get(portalProjectId);
   if (dead !== undefined) {
-    if (Date.now() < dead) {
+    if (now() < dead) {
       return Promise.resolve({ payloads: new Map(), portalMissing: true });
     }
     deadUntil.delete(portalProjectId); // TTL expired — allow one probe
   }
 
   const fresh = lastResult.get(portalProjectId);
-  if (fresh && Date.now() - fresh.at < FRESH_TTL_MS) {
+  if (fresh && now() - fresh.at < FRESH_TTL_MS) {
     return Promise.resolve(fresh.result);
   }
 
@@ -98,11 +104,11 @@ export function fetchMonolithData(
   const request = requestMonolithData(portalProjectId)
     .then(({ result, succeeded }) => {
       if (result.portalMissing) {
-        deadUntil.set(portalProjectId, Date.now() + DEAD_LINK_TTL_MS);
+        deadUntil.set(portalProjectId, now() + DEAD_LINK_TTL_MS);
       } else if (succeeded) {
         // Only a real HTTP 200 stamps the fresh window — a swallowed timeout /
         // 5xx returns an empty map that must NOT masquerade as fresh data.
-        lastResult.set(portalProjectId, { at: Date.now(), result });
+        lastResult.set(portalProjectId, { at: now(), result });
       }
       return result;
     })
