@@ -701,9 +701,17 @@ router.delete('/:id', async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({
-        success: false,
-        error: 'Project not found'
+      // Idempotent delete: nothing owned by this user under that id — it is
+      // already gone (stale frontend list, or a phantom cross-kiosk link).
+      // "Delete something absent" == success, so the UI can clear the row
+      // instead of showing a dead-end "Failed to delete project" alert.
+      // Owner scoping above still protects other users' projects (no delete,
+      // no existence leak — the response is identical either way).
+      console.log(`[PortalProjects] Delete no-op (already absent for owner): ${id}`);
+      return res.json({
+        success: true,
+        already_absent: true,
+        message: 'Project already deleted'
       });
     }
 

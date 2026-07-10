@@ -17,16 +17,28 @@ import { PORTAL_API_URL } from '../utils/config.js';
 import { portalAuthHeader } from './portalAuth';
 const FETCH_TIMEOUT = 10_000;
 
+export interface MonolithFetchResult {
+  /** position_instance_id → MonolithPayload for every linked position. */
+  payloads: Map<string, MonolithPayload>;
+  /**
+   * true when Portal has no such project for this user (HTTP 404) — a DEAD
+   * link (project deleted / never existed / owned by someone else). This does
+   * NOT recover by retrying, so pollers must stop hitting it instead of
+   * spamming `/for-registry/:id` 404 every 30 s. A cold-start timeout or 503
+   * is NOT a dead link, so those keep portalMissing=false.
+   */
+  portalMissing: boolean;
+}
+
 /**
  * Fetch monolith_payload data for all positions in a Portal project.
- * Returns a Map: position_instance_id → MonolithPayload
  */
 export async function fetchMonolithData(
   portalProjectId: string
-): Promise<Map<string, MonolithPayload>> {
-  const result = new Map<string, MonolithPayload>();
+): Promise<MonolithFetchResult> {
+  const payloads = new Map<string, MonolithPayload>();
 
-  if (!portalProjectId) return result;
+  if (!portalProjectId) return { payloads, portalMissing: false };
 
   try {
     const controller = new AbortController();
@@ -47,7 +59,7 @@ export async function fetchMonolithData(
 
     if (!response.ok) {
       console.warn(`[MonolithFetch] Portal returned ${response.status}`);
-      return result;
+      return { payloads, portalMissing: response.status === 404 };
     }
 
     const data = await response.json();
@@ -59,13 +71,13 @@ export async function fetchMonolithData(
           const payload = typeof item.monolith_payload === 'string'
             ? JSON.parse(item.monolith_payload)
             : item.monolith_payload;
-          result.set(item.position_instance_id, payload);
+          payloads.set(item.position_instance_id, payload);
         }
       }
     }
 
-    if (result.size > 0) {
-      console.log(`[MonolithFetch] Fetched ${result.size} monolith payloads for project ${portalProjectId}`);
+    if (payloads.size > 0) {
+      console.log(`[MonolithFetch] Fetched ${payloads.size} monolith payloads for project ${portalProjectId}`);
     }
   } catch (error) {
     if (error instanceof DOMException && error.name === 'AbortError') {
@@ -75,5 +87,5 @@ export async function fetchMonolithData(
     }
   }
 
-  return result;
+  return { payloads, portalMissing: false };
 }

@@ -341,7 +341,7 @@ export const useRegistryStore = create<RegistryState>()(
         if (!portalProjectId) return;
 
         // Fire-and-forget: fetch monolith data from Portal
-        fetchMonolithData(portalProjectId).then((monolithMap) => {
+        fetchMonolithData(portalProjectId).then(({ payloads: monolithMap }) => {
           if (monolithMap.size === 0) return;
 
           const state = get();

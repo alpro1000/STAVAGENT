@@ -124,7 +124,16 @@ function handleVisibility(): void {
 
 async function doPoll(portalProjectId: string, items: ParsedItem[]): Promise<void> {
   try {
-    const monolithMap = await fetchMonolithData(portalProjectId);
+    const { payloads: monolithMap, portalMissing } = await fetchMonolithData(portalProjectId);
+    // Dead Portal link (404): the project no longer exists for this user, so
+    // polling it every 30 s only spams the console with 404s and hammers
+    // Portal. Stop entirely — a live link is re-established via startPolling
+    // when the project is re-selected/re-linked.
+    if (portalMissing) {
+      console.warn(`[MonolithPolling] Portal project ${portalProjectId} not found (404) — stopping poll (dead link)`);
+      stopPolling();
+      return;
+    }
     if (monolithMap.size === 0) return;
 
     const comparisons: ComparisonItem[] = [];
