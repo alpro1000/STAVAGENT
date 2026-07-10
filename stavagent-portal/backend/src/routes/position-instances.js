@@ -1112,10 +1112,19 @@ router.post('/:instanceId/monolith', async (req, res) => {
     // position_audit_log — a missing `actor` column silently 500'd every
     // write-back and broke Registry's TOV pre-fill) must never undo the
     // payload write above, which is the primary deliverable.
+    //
+    // The audit column value comes from the JOINed row (pp.position_instance_id),
+    // NOT from the bound $1, so $1 is used in exactly ONE type context (the
+    // WHERE, deduced as portal_positions.position_instance_id = UUID). Reusing
+    // $1 in the SELECT-list too made Postgres deduce it as BOTH the audit
+    // column's type AND portal_positions' type; on prod those drifted (the
+    // audit table predates the UUID standardization) → 42P08 "inconsistent
+    // types deduced for parameter $1" on every write. Selecting the joined
+    // column assignment-casts uuid → whatever the audit column actually is.
     try {
       await client.query(
         `INSERT INTO position_audit_log (event, actor, project_id, position_instance_id, details)
-         SELECT 'monolith_written', 'kiosk:monolit', po.portal_project_id, $1, $2
+         SELECT 'monolith_written', 'kiosk:monolit', po.portal_project_id, pp.position_instance_id, $2
          FROM portal_positions pp
          JOIN portal_objects po ON pp.object_id = po.object_id
          WHERE pp.position_instance_id = $1`,
