@@ -11,7 +11,7 @@
 import express from 'express';
 import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
-import { isMonolithicElement } from '@stavagent/monolit-shared';
+import { classifyMonolithRow, groupMonolithRows } from '@stavagent/monolit-shared';
 import { optionalAuth } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -39,44 +39,13 @@ function forwardedAuthHeaders(req) {
   return headers;
 }
 
-/**
- * Determine Monolit subtype from item fields.
- *
- * Pure unit-based heuristics misclassify aggregate fills ("VÝPLŇ Z KAMENIVA
- * DRCENÉHO", m³) and gravel sub-base ("PODKLADNÍ VRSTVY Z KAMENIVA TĚŽENÉHO",
- * m³) as `beton`. We delegate the monolith decision to the shared classifier
- * so non-monolithic m³ rows fall through to subtype `jiné`.
- */
-function determineSubtype(item) {
-  const desc = (item.popis || '').toLowerCase();
-  const unit = (item.mj || '').toLowerCase();
-
-  // Strong textual signals beat the unit heuristic.
-  if (desc.includes('výztuž') || desc.includes('ocel') || desc.includes('b500')) return 'výztuž';
-  if (desc.includes('bedn') || desc.includes('odbedň')) return 'bednění';
-
-  if (unit === 'm3' || unit === 'm³') {
-    // Aggregate fills / sub-base layers come in as m³ but are NOT concrete.
-    const isMonolith = isMonolithicElement({
-      item_name: item.popis || '',
-      otskp_code: item.kod || null,
-    });
-    return isMonolith ? 'beton' : 'jiné';
-  }
-  if (unit === 'm2' || unit === 'm²') return 'bednění';
-  if (unit === 't' || unit === 'kg') return 'výztuž';
-
-  if (desc.includes('beton') || desc.includes('železobet')) return 'beton';
-
-  return 'jiné';
-}
-
 // Column order for the positions bulk INSERT — shared by the builder and the
 // (implicit) test so the two never drift.
 export const POSITION_INSERT_COLUMNS = [
   'id', 'bridge_id', 'part_name', 'item_name', 'subtype', 'unit',
   'qty', 'crew_size', 'wage_czk_ph', 'shift_hours', 'days', 'otskp_code',
   'concrete_m3', 'cost_czk', 'unit_cost_native', 'position_instance_id',
+  'metadata',
 ];
 
 /**
@@ -85,7 +54,7 @@ export const POSITION_INSERT_COLUMNS = [
  * A per-row awaited INSERT loop over ~9.5k rows on the shared Cloud SQL
  * instance blew the request budget (thousands of sequential round-trips).
  * Batching into ≤`chunkSize`-row multi-VALUES inserts stays well under
- * Postgres' 65535-parameter cap (16 cols × 500 = 8000) and turns thousands
+ * Postgres' 65535-parameter cap (17 cols × 500 = 8500) and turns thousands
  * of round-trips into a handful.
  *
  * Pure + exported so the parameter/placeholder math is unit-tested without a DB.
@@ -112,6 +81,7 @@ export function buildPositionInsertChunks(positions, bridgeId, opts, chunkSize =
         pos.otskp_code, pos.concrete_m3,
         pos.total_price || null, pos.unit_price || null,
         pos.position_instance_id,
+        pos.metadata || null,
       );
     });
     chunks.push({ text: `INSERT INTO positions (${cols}) VALUES ${rows.join(', ')}`, values });
@@ -412,9 +382,21 @@ router.post('/', async (req, res) => {
       // Convert Portal items → Monolit positions
       const positions = [];
       for (const item of items) {
-        const subtype = determineSubtype(item);
+        // Registry marks section headers explicitly — they are structure, not
+        // work rows (Gate 0 audit: Portal returns row_role and the importer
+        // used to ignore it).
+        if (item.row_role === 'section') continue;
         const qty = parseFloat(item.mnozstvi) || 0;
         if (qty <= 0) continue;
+
+        // One shared ladder (ADR-007) instead of the local unit-map copy:
+        // text + catalog code + unit decide together, prefab is vetoed, and
+        // aggregate m³ rows land on 'jiné' directly.
+        const subtype = classifyMonolithRow({
+          item_name: item.popis || '',
+          otskp_code: item.kod || null,
+          unit: item.mj || null,
+        }).sub_role;
 
         // Extract concrete grade
         let concreteGrade = null;
@@ -438,6 +420,43 @@ router.post('/', async (req, res) => {
       }
 
       if (positions.length === 0) continue;
+
+      // Shared grouping (Gate 3): pair výztuž/bednění children to their beton
+      // parents. AUTOMATIC (code_prefix) children adopt the parent's part_name
+      // so the flat table groups them into one element; SUGGESTED
+      // (name_overlap) children keep their own row and are only recorded in
+      // the parent's metadata for the future badge UI. Parents persist the
+      // SAME metadata shape the Excel path writes (linked_positions +
+      // formwork_included/rebar_included) — possible on this path at all only
+      // because the bulk INSERT now carries the metadata column.
+      const { groups } = groupMonolithRows(
+        positions.map((p, i) => ({ id: i, item_name: p.item_name, otskp_code: p.otskp_code, unit: p.unit })),
+      );
+      for (const group of groups) {
+        const parent = positions[group.parent.id];
+        const linked = group.children.map(ch => {
+          const child = positions[ch.row.id];
+          if (ch.pairing === 'code_prefix') child.part_name = parent.part_name;
+          return {
+            code: child.otskp_code || '',
+            name: child.item_name || '',
+            mj: child.unit || '',
+            mnozstvi: child.qty || 0,
+            typ: ch.classification.sub_role,
+            unit_price: child.unit_price || 0,
+            total_price: child.total_price || 0,
+            pairing: ch.pairing,
+            ...(ch.formwork_phase ? { formwork_phase: ch.formwork_phase } : {}),
+          };
+        });
+        if (linked.length > 0 || group.formwork_included || !group.rebar_included) {
+          parent.metadata = JSON.stringify({
+            ...(linked.length > 0 ? { linked_positions: linked } : {}),
+            formwork_included: group.formwork_included,
+            rebar_included: group.rebar_included,
+          });
+        }
+      }
 
       const totalConcreteM3 = positions
         .filter(p => p.subtype === 'beton')

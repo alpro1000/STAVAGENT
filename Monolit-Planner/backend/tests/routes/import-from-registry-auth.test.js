@@ -35,7 +35,8 @@ jest.unstable_mockModule('../../src/utils/logger.js', () => ({
   logger: { info: jest.fn(), error: jest.fn(), warn: jest.fn(), debug: jest.fn() }
 }));
 jest.unstable_mockModule('@stavagent/monolit-shared', () => ({
-  isMonolithicElement: jest.fn(() => true),
+  classifyMonolithRow: jest.fn(() => ({ is_monolith: true, is_prefab: false, sub_role: 'beton', confidence: 0.9, decided_by: 'code_monolithic', signals: [] })),
+  groupMonolithRows: jest.fn(() => ({ groups: [], ungrouped: [] })),
 }));
 
 const { default: importFromRegistryRoutes } = await import('../../src/routes/import-from-registry.js');

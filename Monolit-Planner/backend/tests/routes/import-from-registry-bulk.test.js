@@ -15,12 +15,15 @@ jest.unstable_mockModule('../../src/db/init.js', () => ({ default: mockDb }));
 jest.unstable_mockModule('../../src/utils/logger.js', () => ({
   logger: { info: jest.fn(), error: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
-jest.unstable_mockModule('@stavagent/monolit-shared', () => ({ isMonolithicElement: jest.fn(() => true) }));
+jest.unstable_mockModule('@stavagent/monolit-shared', () => ({
+  classifyMonolithRow: jest.fn(() => ({ is_monolith: true, is_prefab: false, sub_role: 'beton', confidence: 0.9, decided_by: 'code_monolithic', signals: [] })),
+  groupMonolithRows: jest.fn(() => ({ groups: [], ungrouped: [] })),
+}));
 
 const { buildPositionInsertChunks, POSITION_INSERT_COLUMNS } =
   await import('../../src/routes/import-from-registry.js');
 
-const NCOLS = POSITION_INSERT_COLUMNS.length; // 16
+const NCOLS = POSITION_INSERT_COLUMNS.length; // 17 (Gate 4 added metadata)
 
 const makePositions = (n) =>
   Array.from({ length: n }, (_, i) => ({
