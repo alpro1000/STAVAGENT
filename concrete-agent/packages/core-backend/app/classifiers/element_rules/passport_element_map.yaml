@@ -1,0 +1,57 @@
+# tz-bridge-passport element-key map — SINGLE SOURCE (ADR-008 §2, half-B Gate 2).
+#
+# Axis: passport element/use key (EN, quantities.items[].element ∪
+# materials_and_standards.concretes[].use) → canonical engine element_type
+# (CZ, Monolit shared StructuralElementType) + per-SO join metadata.
+#
+# Consumers:
+#   - TS half-A mapper (Monolit-Planner/shared/src/parsers/bridge-passport.ts)
+#     via the GENERATED artifact kb-generated/bridge-passport-element-map.ts
+#     (scripts/gen-knowledge.mjs, drift-guarded by gen:knowledge:check);
+#   - Python half-B assembler (Gate 3+) reads this YAML natively
+#     (app/models/bridge_passport_element_map.py loader).
+#
+# Content is EXACTLY the ratified half-A ELEMENT_RULES (PR #1426 + #1486
+# goldens pin the behavior). The W3-classifier→passport-key roll-up axis is
+# deliberately NOT here yet — it lands in Gate 3 grounded on the classifier's
+# actual vocabulary (no invented names in a single-source file).
+#
+# per_deck: symmetric per-deck element (volume ÷ decks.length, num_bridges =
+# decks.length) vs whole-SO scope. concrete_use: materials concretes[].use key
+# when it differs from the element key.
+
+version: 1
+
+elements:
+  superstructure_deck:
+    engine_type: mostovkova_deska
+    per_deck: true
+  pier_shafts:
+    engine_type: driky_piliru
+    per_deck: true
+  abutments:
+    engine_type: opery_ulozne_prahy
+    per_deck: true
+  foundations_piers:
+    engine_type: zaklady_piliru
+    per_deck: true
+    concrete_use: foundations
+  foundations_abutments:
+    engine_type: zaklady_oper
+    per_deck: true
+    concrete_use: foundations
+  transition_slabs:
+    engine_type: prechodova_deska
+    per_deck: true
+  rims:
+    engine_type: rimsa
+    per_deck: true
+  # Whole-SO scope (blinding layers span both decks' footprints):
+  blinding_concrete:
+    engine_type: podkladni_beton
+    per_deck: false
+  # Prostý beton — computed as podkladni_beton (rebar 0 by design; honest
+  # simplification, noted per element by the mapper).
+  plain_footings:
+    engine_type: podkladni_beton
+    per_deck: false

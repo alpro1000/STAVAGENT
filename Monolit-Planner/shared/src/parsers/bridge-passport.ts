@@ -23,6 +23,7 @@ import type { PlannerInput } from '../calculators/planner-orchestrator.js';
 import { planProject, type ProjectOutput } from '../calculators/project-planner.js';
 import type { StructuralElementType } from '../calculators/pour-decision.js';
 import type { ConstructionTechnology } from '../calculators/bridge-technology.js';
+import { BRIDGE_PASSPORT_ELEMENT_MAP } from '../kb-generated/bridge-passport-element-map.js';
 
 // ─── Result shapes ───────────────────────────────────────────────────────────
 
@@ -50,20 +51,11 @@ interface ElementRule {
   concrete_use?: string;
 }
 
-const ELEMENT_RULES: Record<string, ElementRule> = {
-  superstructure_deck: { engine_type: 'mostovkova_deska', per_deck: true },
-  pier_shafts: { engine_type: 'driky_piliru', per_deck: true },
-  abutments: { engine_type: 'opery_ulozne_prahy', per_deck: true },
-  foundations_piers: { engine_type: 'zaklady_piliru', per_deck: true, concrete_use: 'foundations' },
-  foundations_abutments: { engine_type: 'zaklady_oper', per_deck: true, concrete_use: 'foundations' },
-  transition_slabs: { engine_type: 'prechodova_deska', per_deck: true },
-  rims: { engine_type: 'rimsa', per_deck: true },
-  // Whole-SO scope (blinding layers span both decks' footprints):
-  blinding_concrete: { engine_type: 'podkladni_beton', per_deck: false },
-  // Prostý beton — computed as podkladni_beton (rebar 0 by design; honest
-  // simplification, noted per element).
-  plain_footings: { engine_type: 'podkladni_beton', per_deck: false },
-};
+// Single source = passport_element_map.yaml (concrete-agent KB, ADR-008 §2);
+// this is the generated artifact — the Python half-B assembler reads the same
+// YAML natively, so the two runtimes cannot drift (gen:knowledge:check).
+const ELEMENT_RULES: Record<string, ElementRule> =
+  BRIDGE_PASSPORT_ELEMENT_MAP as Record<string, ElementRule>;
 
 // ─── Concrete class string parsing ───────────────────────────────────────────
 

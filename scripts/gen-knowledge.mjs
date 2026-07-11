@@ -103,6 +103,19 @@ const INTEGRATIONS = [
     validate: validateElementClassification,
     render: renderElementClassification,
   },
+  {
+    // ADR-008 (half-B Gate 2) — tz-bridge-passport element-key map. One axis,
+    // three consumers: TS half-A mapper (this generated artifact), Python
+    // half-B assembler (reads the YAML natively), future frontend manifest.
+    name: 'bridge-passport-element-map',
+    yamlAbs: resolve(
+      REPO_ROOT,
+      'concrete-agent/packages/core-backend/app/classifiers/element_rules/passport_element_map.yaml',
+    ),
+    sourceLabel: 'concrete-agent/packages/core-backend/app/classifiers/element_rules/passport_element_map.yaml',
+    validate: validateBridgePassportElementMap,
+    render: renderBridgePassportElementMap,
+  },
 ];
 
 // ─── Index re-export ──────────────────────────────────────────────────────
@@ -466,6 +479,66 @@ export const SOURCE_CITATION = ${jsonLit(citation)} as const;
 export const ELEMENT_CLASSIFICATION_RULES = ${jsonLit(data)} as const;
 
 export type ElementClassificationRules = typeof ELEMENT_CLASSIFICATION_RULES;
+`;
+}
+
+function validateBridgePassportElementMap(data) {
+  for (const key of ['version', 'elements']) {
+    if (!(key in data)) throw new Error(`passport_element_map.yaml missing top-level key: ${key}`);
+  }
+  const entries = Object.entries(data.elements);
+  if (entries.length === 0) throw new Error('passport_element_map.yaml: elements is empty');
+  for (const [k, rule] of entries) {
+    if (!/^[a-z][a-z0-9_]*$/.test(k)) {
+      throw new Error(`passport element key '${k}' is not snake_case`);
+    }
+    if (typeof rule.engine_type !== 'string' || !rule.engine_type) {
+      throw new Error(`elements.${k}: engine_type must be a non-empty string`);
+    }
+    if (typeof rule.per_deck !== 'boolean') {
+      throw new Error(`elements.${k}: per_deck must be boolean`);
+    }
+    if (rule.concrete_use !== undefined && typeof rule.concrete_use !== 'string') {
+      throw new Error(`elements.${k}: concrete_use must be a string when present`);
+    }
+    const extra = Object.keys(rule).filter(f => !['engine_type', 'per_deck', 'concrete_use'].includes(f));
+    if (extra.length) throw new Error(`elements.${k}: unknown fields ${extra.join(', ')}`);
+  }
+}
+
+function renderBridgePassportElementMap(data) {
+  const citation = {
+    source: 'concrete-agent/packages/core-backend/app/classifiers/element_rules/passport_element_map.yaml',
+    schema_version: data.version,
+    note:
+      'Single source for the tz-bridge-passport element-key map (ADR-008 §2). ' +
+      'The Python half-B assembler reads the YAML directly; this generated ' +
+      'artifact keeps the TS half-A mapper in lockstep (gen:knowledge:check).',
+  };
+  return `/**
+ * AUTO-GENERATED FILE — DO NOT EDIT.
+ * Source: concrete-agent/packages/core-backend/app/classifiers/element_rules/passport_element_map.yaml
+ * Regenerate: npm run gen:knowledge
+ *
+ * tz-bridge-passport element/use key → engine element_type + per-SO join
+ * metadata (per_deck split, concretes[].use alias). Consumed by the half-A
+ * mapper (bridge-passport.ts); the Python half-B assembler reads the YAML
+ * source natively — one map, no drift (ADR-008).
+ */
+
+export const SOURCE_CITATION = ${jsonLit(citation)} as const;
+
+export interface BridgePassportElementRule {
+  /** Canonical engine StructuralElementType (consumer casts). */
+  engine_type: string;
+  /** Symmetric per-deck element (÷ decks, num_bridges = decks) vs whole-SO. */
+  per_deck: boolean;
+  /** materials_and_standards.concretes[].use key when it differs from the element key. */
+  concrete_use?: string;
+}
+
+export const BRIDGE_PASSPORT_ELEMENT_MAP: Record<string, BridgePassportElementRule> =
+  ${jsonLit(data.elements)};
 `;
 }
 

@@ -116,17 +116,23 @@ async def _parse_file(file_path: Path, filename: str, kind: str = "xlsx") -> dic
     diagnostics = {}
 
     try:
+        # Dedicated parsers return a ParsedDocument (nested SO→chapter→position),
+        # NOT an items dict — flatten through _positions_from_parsed_document so
+        # every path converges on the single _normalize_items contract.
+        # (bug `budget-parser-routing`, 2026-07-11: the previous imports named
+        # nonexistent functions, so komplet/rts-named soupisy died on ImportError
+        # and the fallback referenced a nonexistent UniversalParser API too.)
         if detected_format == "komplet":
-            from app.parsers.xlsx_komplet_parser import parse_komplet
-            result = parse_komplet(str(file_path))
-            items = result.get("positions", result.get("items", []))
-            diagnostics = result.get("diagnostics", {})
+            from app.parsers.xlsx_komplet_parser import parse_xlsx_komplet
+            doc = parse_xlsx_komplet(str(file_path))
+            items = _positions_from_parsed_document(doc)
+            diagnostics = {"parser": "xlsx_komplet", "warnings": doc.parser_warnings}
 
         elif detected_format == "rts":
-            from app.parsers.xlsx_rtsrozp_parser import parse_rts_rozpocet
-            result = parse_rts_rozpocet(str(file_path))
-            items = result.get("positions", result.get("items", []))
-            diagnostics = result.get("diagnostics", {})
+            from app.parsers.xlsx_rtsrozp_parser import parse_xlsx_rtsrozp
+            doc = parse_xlsx_rtsrozp(str(file_path))
+            items = _positions_from_parsed_document(doc)
+            diagnostics = {"parser": "xlsx_rtsrozp", "warnings": doc.parser_warnings}
 
         else:
             # Generic Excel parser
@@ -136,14 +142,16 @@ async def _parse_file(file_path: Path, filename: str, kind: str = "xlsx") -> dic
             items = result.get("positions", result.get("items", []))
             diagnostics = result.get("diagnostics", {})
 
-    except ImportError:
-        # Fallback: try universal parser
+    except Exception as exc:  # dedicated parser failed → universal fallback
         try:
-            from app.parsers.universal_parser import UniversalParser
-            parser = UniversalParser()
-            result = await parser.parse_file(file_path, filename)
-            items = result.get("positions", result.get("items", []))
-            diagnostics = result.get("diagnostics", {})
+            from app.parsers.universal_parser import parse_any
+            doc = parse_any(str(file_path))
+            items = _positions_from_parsed_document(doc)
+            diagnostics = {
+                "parser": "universal_fallback",
+                "primary_error": str(exc),
+                "warnings": doc.parser_warnings,
+            }
         except Exception as e2:
             return {
                 "error": f"No suitable parser found: {e2}",
@@ -159,6 +167,25 @@ async def _parse_file(file_path: Path, filename: str, kind: str = "xlsx") -> dic
         "filename": filename,
         "diagnostics": diagnostics,
     }
+
+
+def _positions_from_parsed_document(doc) -> list:
+    """Flatten a ParsedDocument (SO→chapter→position) into plain item dicts.
+
+    Decimal → float so the payload stays JSON-serializable end-to-end (the MCP
+    transport rule); field names match what _normalize_items already reads.
+    """
+    return [
+        {
+            "code": p.code or "",
+            "description": p.description or "",
+            "unit": p.unit or "",
+            "quantity": float(p.quantity) if p.quantity is not None else 0,
+            "unit_price": float(p.unit_price) if p.unit_price is not None else 0,
+            "total_price": float(p.total_price) if p.total_price is not None else 0,
+        }
+        for p in doc.all_positions
+    ]
 
 
 def _normalize_items(items: list) -> list:
