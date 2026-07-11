@@ -2,7 +2,7 @@
 
 > **Spec ID:** `monolith-classification`
 > **Datum:** 2026-07-10
-> **Status:** draft
+> **Status:** ✅ implemented (Gates 0–7 complete, 2026-07-11; PRs #1480–#1483 + Gate 5–7 PR)
 > **Navazuje na:** `requirements.md`, `design.md`
 >
 > **Mantra:** Read entire repo first → derive naming from conventions → then write. Rozšířit existující moduly, NIKDY nevytvářet paralelní strukturu vedle staré.
@@ -11,7 +11,7 @@
 
 ## 1. Task list
 
-### 1.0 Gate 0 — Audit (read-only) + PRE-IMPLEMENTATION INTERVIEW
+### 1.0 Gate 0 — Audit (read-only) + PRE-IMPLEMENTATION INTERVIEW ✅ (PR #1480)
 
 **Audit (read-only, 20-40 min):**
 1. Přečíst existující Excel-extraktor betonu (marka/prefab/párování), sdílený monolith-klasifikátor, frontend seskupení prvků ve flat-tabulce, cestu importu z rozpočtu (Registry→Portal→Monolit), MCP `classify_construction_element`.
@@ -38,37 +38,37 @@ Audit hotov téhož dne — nálezy v `design.md` §2.2 (5 klíčových děr: pr
 
 → commit `AUDIT: monolith-classification Gate 0 (findings + interview answers)`
 
-### 1.1 Gate 1 — Rozhodnutí (ADR, no code)
+### 1.1 Gate 1 — Rozhodnutí (ADR, no code) ✅ (ADR-007, PR #1480)
 
 Zafixovat: signální lestenka (pořadí override → marka+ne-prefab → kód → klíč. slovo → jednotka), definice monolitu, model bednění montáž/demontáž, seznam katalogových rozvržení. Zapsat jako ADR.
 → commit `DESIGN: ADR-NNN monolith classification signal ladder + grouping`
 
-### 1.2 Gate 2 — Sjednocený klasifikátor (foundation + testy)
+### 1.2 Gate 2 — Sjednocený klasifikátor (foundation + testy) ✅ (PR #1481)
 
 Povýšit marku betonu + prefab-vyloučení do sdíleného klasifikátoru; sub-role z jednotky/kódu/klíč. slova; confidence dle žebříčku. Golden + negativní testy (marka→beton, prefab→ne, kamenivo→ne, m³-sám→ne, override wins).
 → commit `FEAT: unified monolith classifier (marka + prefab + sub-role + confidence)`
 
-### 1.3 Gate 3 — Sdílená skupinová vrstva
+### 1.3 Gate 3 — Sdílená skupinová vrstva ✅ (PR #1482)
 
 Párování výztuž/bednění k betonu ze sdílené vrstvy; 4 katalogová rozvržení; flags `formwork_included` / `rebar_included`; montáž/demontáž pár. Golden testy per rozvržení.
 → commit `FEAT: shared element grouping for catalog layouts (OTSKP/ÚRS/…)`
 
-### 1.4 Gate 4 — Obě cesty importu konzumují sjednocenou vrstvu
+### 1.4 Gate 4 — Obě cesty importu konzumují sjednocenou vrstvu ✅ (PR #1483)
 
 Excel-parser i import-z-rozpočtu volají sdílený klasifikátor + seskupení. Parita test (týž řádek → týž výsledek). Odstranit duplicitní klasifikaci z Excel-extraktoru.
 → commit `REFACTOR: both import paths use the shared classifier + grouping`
 
-### 1.5 Gate 5 — Kontrakt výstup kalkulátoru → pozice
+### 1.5 Gate 5 — Kontrakt výstup kalkulátoru → pozice ✅
 
 Explicitně: pracnost sub-práce → odpovídající pozice; při `formwork_included` svinout bednění do betonu; doba prvku = kritická cesta. Testy, že se dny nedvojí a pracnost sedí na správné pozici.
 → commit `FEAT: calculator output → smeta position mapping (critical-path days)`
 
-### 1.6 Gate 6 — MCP parita + full test pass
+### 1.6 Gate 6 — MCP parita + full test pass ✅
 
 `classify_construction_element` v paritě; `test_mcp_compatibility.py` zelený; shared + backend + frontend suity zelené.
 → commit `TEST: MCP parity + full suite for monolith classification`
 
-### 1.7 Gate 7 — Docs
+### 1.7 Gate 7 — Docs ✅
 
 Aktualizovat `domain.md` (signální žebříček, katalog-varianty), root CLAUDE.md changelog, `soul.md §9`.
 → commit `DOCS: monolith classification — domain.md + soul.md §9`

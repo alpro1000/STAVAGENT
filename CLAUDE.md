@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.39.1
-**Last Updated:** 2026-07-09
+**Version:** 4.40.0
+**Last Updated:** 2026-07-11
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -44,6 +44,8 @@ steering vyhrává a skill se znovu distilluje. Viz
 > This is the operational reference for Claude Code sessions working on STAVAGENT. It contains architecture decisions, coding conventions, and business-logic invariants. The document below is written in Russian and Czech for the primary maintainer — if you opened this repo from GitHub, start with [README.md](README.md) instead.
 >
 > **What STAVAGENT is:** an AI-powered construction cost estimation SaaS for Czech and Slovak civil-construction markets, with an MCP Server exposing twenty-one domain-specific tools. Five production backends on Google Cloud Run plus four frontends on Vercel. Architecture is deterministic-first: regex and catalog lookups run before LLM fallback, and higher-confidence results never get overwritten by lower-confidence ones.
+>
+> **Changelog — v4.40.0 (2026-07-11 — monolith-classification spec: Gates 0–7 kompletní, ADR-007):** Alexander schválil 5 interview-odpovědí → celý spec `docs/specs/monolith-classification/` doveden do konce v 5 PR. **Gate 0+1:** audit 5 oblastí (nálezy v design.md §2.2 — prefab-filtr mimo primární grade-cestu; 3 divergentní `determineSubtype` kopie s protichůdnými defaulty; Registry-import INSERT bez `metadata`; Portal `row_role`/`skupina` ignorovány; párování jen v Excelu; MCP bez prefab-osy) + **ADR-007** (žebříček: override → sub-work text → prefab-veto NAD markou → kamenivo → marka 0.95 → kód 0.9/§451x-výjimka 0.75 → m³+keyword 0.6 → fallback 0.3; jednotka nikdy neklasifikuje sama; bednění = jedna sub-role, dvě fáze). **Gate 2:** `classifyMonolithRow()` v `shared/src/monolith-classifier.ts` — strukturovaný výsledek `{is_monolith, is_prefab, sub_role, confidence, decided_by, signals}`, `CONCRETE_GRADE_RE` (C xx/yy+LC+UHPC) a `PREFAB_RE` (`prefa|\bdil\w{0,3}\b`, vědomě nematchuje `dilatacni`) sdílené konstanty, `isMonolithicElement()` = zpětně kompatibilní wrapper (15 původních testů beze změny). **Gate 3:** `monolith-grouping.ts` — `groupMonolithRows` (párování z Excel-only `findPairedRows` povýšeno do shared): `code_prefix`=AUTO / `name_overlap`=NÁVRH (badge, odpojitelné) / sirotek nikdy násilně; ÚRS zřízení/odstranění pár → `formwork_phase` montáž|demontáž; `INCLUSION_MENTION_RE` guard («VČETNĚ BEDNĚNÍ» vč. výčtů nesmí unést beton řádek do bednění). **Gate 4:** VŠECHNY tři `determineSubtype` kopie smazány (concreteExtractor/coreAPI = exportované delegáty, import-from-registry inline); Registry-import bulk INSERT +`metadata` sloupec (16→17) → override/linked_positions poprvé možné na této cestě; grouping na Registry-cestě (AUTO děti přebírají parent part_name → flat tabulka konečně seskupuje; parents dostávají Excel-tvar `metadata.linked_positions`+flagy); `row_role==='section'` skip; parity test `subtype-parity.test.js` BEZ mocku shared (11 fixtur + zero-signal řádek). **Gate 5:** `applyPlanToPositions` — routing extrahován do čistého `routeDraftsToBuckets`; při `formwork_included` se bednění SVINE do beton pozice («v ceně betonové položky») místo auto-vytvoření duplicitního řádku (double-count v KROS); explicitní bednění řádek vyhrává; `rebar_included` vědomě NEsvinuje; dny se nedvojí (trio main-bucketu = betonář, doba prvku = kritická cesta v `schedule_info`). **Gate 6:** MCP parita — `tests/test_monolith_classification_mcp_parity.py` (golden pilíř/římsa unchanged + PINNED GAP: W3 nemá prefab-osu, «PATKY Z DÍLCŮ» je tam dnes beton-typ; budoucí přidání = aditivní). **Gate 7:** `domain.md §4.5` (kanonický žebříček + 4 rozvržení). Testy: **shared 1409** (+43 vs v4.39) · **backend Jest 104** (+12) · **frontend vitest 18** (3 soubory) · MCP golden+parity 21 · tsc+build vše zelené. PRs #1480–#1483 + Gate 5–7.
 >
 > **Changelog — v4.39.1 (2026-07-09 — UWO F3: sjednocení catalog-binding status-enumu):** BACKLOG `tz-to-worklist` krok 2 (UWO F2/F3), část F3. Nový jednotný `CodeStatus(str,Enum)` v `concrete-agent/.../app/models/item_schemas.py` = single source pro pole `code_status` (design universal-work-decomposer §2.2/§5.1). Sjednoceny dosud divergentní literály mezi dvěma binding cestami: `catalog_binding_adapter.py` (`candidate|group_only|not_verified`) vs `breakdown.py` OTSKP path (`bound|no_match`) pro TÉŽ operace. Kanonická čtveřice `exact|candidate|group_only|not_verified` + reálné extra stavy `bundled` (katalog-design rule, conf 1.0 — bednění/ošetřování v OTSKP betonu) a `not_calculated` (work-first frozen, Pattern 15). Collapse: `bound`→`candidate` (OTSKP fulltext top nad floor = kandidát, adapter to tak dělal už dřív), `no_match`→`not_verified`. INVARIANT: `exact` jen deterministický OTSKP DB hit; URS nikdy `exact`. Oba producenti čerpají z enumu. `position_enricher` `match: exact|partial|none` (jiná osa = kvalita shody) VĚDOMĚ neslučováno = follow-up. +6 testů `test_code_status_enum.py` (enum + map_status validita + never-exact + call-site guard proti `bound`/`no_match` + PSV not_calculated), 2 řádky `test_stage_gating_policy.py` opraveny (`bound`→`candidate`). **CORE 102 pass** (code_status_enum + uwo_atomizer + stage_gating + catalog_matching + mcp_compatibility). Žádný MCP counter-file dotčen (CodeStatus není nový tool). F2 (port templates.mjs S2–S10 + izolace/zemní do KB YAMLů) zbývá.
 >
@@ -228,8 +230,8 @@ Design: Brutalist Neumorphism, monochrome + orange #FF9F1C, BEM.
 - **Credit system:** `add-credit-system.sql` seeds 15 operation prices (2–20 credits). 200 free on registration, 1 Kč = 10 credits.
 
 ### 3. Kalkulátor betonáže (Monolit-Planner repo, Kiosk)
-Node.js/Express + React. **132 endpoints**, **1366 shared tests**, **~43K LOC**.
-Structure: `shared/` (1366 tests, 40 files), `backend/` (9 Jest test files — env-isolated, not run via vitest workspace), `frontend/` (2 test files: `ui.numinput.test.tsx` + `helpers.pourcrew.test.ts`). Design: Slate Minimal (`--r0-*`).
+Node.js/Express + React. **132 endpoints**, **1409 shared tests**, **~43K LOC**.
+Structure: `shared/` (1409 tests, 42 files), `backend/` (14 Jest test files, 104 tests), `frontend/` (3 test files, 18 tests). Design: Slate Minimal (`--r0-*`).
 **DB:** 45 tables (incl. `planner_variants`). **Frontend:** PlannerPage (Part B) ~380 lines layout, logic in `useCalculator` hook + 10 files in `components/calculator/` (Sidebar, FormFields, Result, HelpPanel, WizardHints, InlineResourcePanel, applyPlanToPositions, ui, types, helpers, useCalculator).
 
 - **Calculator:** CZK/m³, `unit_cost_on_m3 = cost_czk / concrete_m3`, `kros_unit_czk = Math.ceil(x/50)*50`
@@ -316,7 +318,7 @@ BOQ classification (11 groups), AI Classification (Cache→Rules→Memory→Gemi
 |---------|-----------|-------|-----|
 | concrete-agent | ~187 | 112 files | ~96K |
 | stavagent-portal | ~156 | 4 files | ~26K |
-| Monolit-Planner | 132 | 1366 shared (+9 backend files, +2 frontend files) | ~43K |
+| Monolit-Planner | 132 | 1409 shared (+104 backend Jest, +18 frontend) | ~43K |
 | URS_MATCHER_SERVICE | ~124 | ~232 | ~10K |
 | rozpocet-registry (+backend) | ~24 | ~200 | ~34K |
 | **TOTAL** | **~620** | **~1900 cases** | **~200K** |
