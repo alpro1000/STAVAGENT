@@ -358,6 +358,15 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-07-11 — Session: half-B extraction Gate 0 audit (tz-passport) — ingredience existují, emitor je greenfield
+
+**Rozhodnuto:** Alexander vybral half-B jako další prioritu (half-A živě doказан, paspport se dnes staví ručně). Gate 0 read-only audit hotov → `docs/specs/tz-passport-json/halfB-gate0-audit.md`. Klíčové: všechny INGREDIENCE existují (extract_tz_fields stage-1 vč. geometrie; map_soupis_to_elements m³-join; validate_drawing_element P39/40 host-vision gate; recipe_runner._quantify_from_documents assembly seam), ale **emitor `BridgePassport` neexistuje** — jen konzument. 6 gapů: slovníková mapa CZ classifier ↔ EN passport klíče (dnes jen TS ELEMENT_RULES → povýšit na sdílená DATA vzorem element_types.yaml); use-keyed concretes; quantities nad m³ (rebar t / prestress / height / length_bm); **calculable-critical trio bez extrakční cesty** (poznámka «V 3 TAKTECH NA SKRUŽI» = obraz na výkrese → stage 2 jádro); per-deck geometrie + post_tensioning; vlastní store (passport_store je ProjectPassport-locked). Nálezy mimo plán: 🐛 budget.py rozbité parser-routing (parse_komplet/parse_rts_rozpocet + UniversalParser().parse_file NEEXISTUJÍ → komplet/rts-pojmenované soupisy padají; v kritické cestě stage 3); docs-lež v extract_tz_fields («existing Vertex routing» — _LLM je test-only None); dvě QuantityItem třídy.
+
+**Otevřené otázky:** B-INTERVIEW (Q2 kde běží / Q3 LLM-vs-regex upřesnění + vision režim + governance slovníkové mapy) — otázky položeny Alexandrovi v chatu, čeká odpověď. Fronta beze změny + NOVÉ: season-default (engine `podzim_jaro` 21d skruž hold, passport sezónu nenese → možné nadhodnocení hold) — ne-blokér na potom.
+
+**Co dál:** po interview → Gate 1 ADR → gates dle ratifikace.
+
+
 ## 2026-07-11 — Verify: passport bugfix trio ŽIVĚ POTVRZEN na produkci — height-bug byl +51 % aggregate
 
 **Rozhodnuto:** Alexander po deployi prohnal TENTÝŽ reálný passport prod-MCP → všechny tři fixy zelené, tikety CLOSED (verify.md v každém). **(1) height→skruž:** `height_m: 14.9` + ℹ️ nota doletěly; ⛔ warning pryč; props blok POSAZEN — Staxo 100, 576 stojek/takt, 92,2 t, 42 d → `props_rental 1 814 400` + `props_labor 653 357` = **2 467 757 Kč nově ve smetě; aggregate 6 325 799 → 9 531 702 Kč (+3 205 903, +51 %!), dny 252 → 284**. Impact byl PODhodnocen — ne „15–25 % NK", ale TŘETINA smety celého SO; height-bug byl nejdražší nález celé série. **(2) exposure:** celý set `["XF1","XD1","XC4"]` doletěl, engine flaguje XF1+XD1 per-class (⚠️ zůstal = SPRÁVNĚ — čestný TZ-vs-doporučení signál, ne bug). **(3) typed-error:** křivý passport přes konektor → čistý `invalid_passport` + details s `loc`/`msg` (agent ví, CO opravit), žádná opakní transport hláška. **Passport half-A tímto UZAVŘEN:** mapper, Pattern 53, symetrie, honest-ignore, pour-window signál — vše živě ověřeno na SO-202.
