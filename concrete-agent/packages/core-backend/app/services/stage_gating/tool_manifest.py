@@ -154,14 +154,16 @@ TOOL_MANIFESTS: dict[str, ToolManifest] = {
     ),
 
     # half-B sibling: documents (TZ + soupis + verified note fragment) →
-    # bridge passport. Deterministic extraction + assembly; optional store
-    # write (writes_state) when passport_id is given.
+    # bridge passport. Deterministic extraction + assembly. When passport_id is
+    # given it PERSISTS the passport to the bridge-passport store (durable JSON) —
+    # so the manifest declares that write honestly (writes_state + a reversible
+    # draft-level side effect), not NONE.
     "build_bridge_passport": ToolManifest(
         tool_name="build_bridge_passport",
         category=ToolCategory.DETERMINISTIC_CALCULATION,
-        side_effect_level=SideEffectLevel.NONE,
+        side_effect_level=SideEffectLevel.DRAFT_ONLY,
         requires_session=False,
-        writes_state=False,
+        writes_state=True,
         audit_required=True,
         replayable=True,
         billable=True,

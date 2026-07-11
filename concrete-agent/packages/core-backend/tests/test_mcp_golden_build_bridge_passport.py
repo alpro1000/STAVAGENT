@@ -119,6 +119,58 @@ def test_verified_note_fragment_lands_and_clears_the_gap():
     assert not any(g.startswith("construction_process") for g in out["gaps"])
 
 
+def test_partial_fragment_keeps_the_still_missing_trio_gap():
+    """A falsework-only VERIFIED fragment (a real notes-gate outcome) must NOT
+    clear the deck_pour_stages gap — honest per-field gaps, no wholesale clear."""
+    out = _build(tz_text=TZ_TEXT,
+                 construction_process={"falsework_technology": "fixed_scaffolding"})
+    p = out["passport"]
+    BridgePassport.model_validate(p)
+    assert p["construction_process"]["falsework_technology"] == "fixed_scaffolding"
+    cp_gaps = [g for g in out["gaps"] if g.startswith("construction_process")]
+    assert len(cp_gaps) == 1 and "deck_pour_stages" in cp_gaps[0]
+    assert "falsework_technology" not in cp_gaps[0]
+
+
+def test_malformed_fragment_is_typed_assembly_invalid_not_a_success():
+    """The fragment is validated with the rest of the passport (through the
+    assembler), so a bad value is a typed error, never a 'successful' invalid
+    passport — regardless of whether passport_id is set."""
+    for pid in (None, "SO-bad"):
+        out = _build(tz_text=TZ_TEXT, passport_id=pid,
+                     construction_process={"deck_pour_stages": 0,
+                                           "falsework_technology": "pevná skruž"})
+        assert out.get("error") == "assembly_invalid", pid
+        json.dumps(out)
+
+
+def test_provided_soupis_with_zero_items_is_soupis_parse_failed(monkeypatch):
+    import app.mcp.tools.budget as budget_mod
+
+    async def empty_budget(**kw):
+        return {"items": [], "total_items": 0, "format_detected": "soupis",
+                "diagnostics": {}}
+
+    monkeypatch.setattr(budget_mod, "parse_construction_budget", empty_budget)
+    out = _build(tz_text=TZ_TEXT, soupis_file_base64="ZmFrZQ==",
+                 soupis_filename="soupis.xlsx")
+    assert out["error"] == "soupis_parse_failed"
+    json.dumps(out)
+
+
+def test_unsafe_passport_id_reports_stored_false(tmp_path, monkeypatch):
+    """save() falls back to memory-only for a filesystem-unsafe id — the tool
+    must not claim it was durably stored."""
+    from app.core.config import settings
+    from app.services import bridge_passport_store
+
+    monkeypatch.setattr(settings, "PROJECT_DIR", tmp_path)
+    bridge_passport_store._memory.clear()
+    out = _build(tz_text=TZ_TEXT, passport_id="SO 202/1")  # space + slash
+    assert "error" not in out
+    assert out["stored"] is False
+
+
 def test_typed_errors_are_json_safe():
     out = _build()  # no TZ at all
     assert out["error"] == "tz_extraction_failed"
