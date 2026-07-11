@@ -198,10 +198,11 @@ export function readMonolithOverride(
   return null;
 }
 
-/** Normalize a unit string for tie-breaks: `M3`/`m³` → `m3`, `m²` → `m2`. */
+/** Normalize a unit string for tie-breaks: `M3`/`m³`/`m 3` → `m3`, `m²` → `m2`
+ *  (inner whitespace stripped — the Excel extractor met `m 3` in the wild). */
 function normalizeUnit(unit: MonolithCandidate['unit']): string {
   if (!unit) return '';
-  return String(unit).toLowerCase().replace(/³/g, '3').replace(/²/g, '2').trim();
+  return String(unit).toLowerCase().replace(/³/g, '3').replace(/²/g, '2').replace(/\s+/g, '');
 }
 
 /** Unit-only tie-break for the sub-role — never decides is_monolith. */

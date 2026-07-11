@@ -7,6 +7,7 @@ import FormData from 'form-data';
 import fs from 'fs';
 import axios from 'axios';
 import { logger } from '../utils/logger.js';
+import { classifyMonolithRow } from '@stavagent/monolit-shared';
 
 const CORE_API_URL = process.env.CORE_API_URL || 'https://concrete-agent-1086027517695.europe-west3.run.app';
 const CORE_TIMEOUT = parseInt(process.env.CORE_TIMEOUT) || 30000; // 30 seconds
@@ -377,8 +378,8 @@ export function convertCOREToMonolitPosition(corePosition, bridgeId) {
     }
   }
 
-  // Determine subtype based on unit and description
-  const subtype = determineSubtype(description, unit);
+  // Determine subtype via the shared ADR-007 ladder (Gate 4)
+  const subtype = determineSubtype(description, unit, corePosition.code || corePosition.otskp_code || null);
 
   // Build position with enrichment data from CORE
   const position = {
@@ -414,30 +415,12 @@ export function convertCOREToMonolitPosition(corePosition, bridgeId) {
 }
 
 /**
- * Determine work subtype based on description and unit
+ * Determine work subtype — thin delegate over the shared ADR-007 classifier
+ * (Gate 4: was the weakest of the three local copies — unit-substring match,
+ * beton-by-default, no monolith/prefab check). Exported for the parity test.
  */
-function determineSubtype(description, unit) {
-  const text = description.toLowerCase();
-  const unitLower = unit.toLowerCase();
-
-  // By unit
-  if (unitLower.includes('m3') || unitLower.includes('m³')) return 'beton';
-  if (unitLower.includes('m2') || unitLower.includes('m²')) return 'bednění';
-  if (unitLower.includes('t') || unitLower.includes('kg')) return 'výztuž';
-
-  // By description keywords
-  if (text.includes('beton') || text.includes('betón') || text.includes('žb')) {
-    return 'beton';
-  }
-  if (text.includes('bedn') || text.includes('bednění')) {
-    return 'bednění';
-  }
-  if (text.includes('výztuž') || text.includes('ocel') || text.includes('armatura')) {
-    return 'výztuž';
-  }
-
-  // Default to beton
-  return 'beton';
+export function determineSubtype(description, unit, otskpCode = null) {
+  return classifyMonolithRow({ item_name: description, otskp_code: otskpCode, unit }).sub_role;
 }
 
 /**

@@ -4,7 +4,7 @@
  */
 
 import { logger } from '../utils/logger.js';
-import { isMonolithicElement } from '@stavagent/monolit-shared';
+import { classifyMonolithRow } from '@stavagent/monolit-shared';
 
 /**
  * Extract concrete positions from raw Excel rows for a specific bridge
@@ -136,15 +136,10 @@ function parseConcreteRow(row) {
     concreteMark = concreteMarkMatch[0];
   }
 
-  // Determine work subtype.
-  // The keyword-based isConcreteWork() lets aggregate fills through ("podklad"
-  // matches PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z KAMENIVA TĚŽENÉHO), so route the
-  // resulting m³ subtype through the shared monolith classifier — aggregate
-  // m³ rows fall back to subtype 'jiné'.
-  let subtype = determineSubtype(popis, mj);
-  if (subtype === 'beton' && !isMonolithicElement({ item_name: popis, otskp_code: otskpCode })) {
-    subtype = 'jiné';
-  }
+  // Determine work subtype — one shared ladder (ADR-007) covers text, code
+  // and unit at once, so aggregate m³ rows land on 'jiné' directly and the
+  // old separate isMonolithicElement re-gate is gone.
+  const subtype = determineSubtype(popis, mj, otskpCode);
 
   // Build part name - prefer concrete mark if found
   let partName = extractPartName(popis);
@@ -244,30 +239,13 @@ function isConcreteWork(popis, mj) {
 }
 
 /**
- * Determine work subtype
+ * Determine work subtype — thin delegate over the shared ADR-007 classifier
+ * (Gate 4: the local unit-first ladder with its beton-by-default fallback is
+ * gone; text/code/unit are evaluated by ONE implementation for every import
+ * path). Exported for the cross-path parity test.
  */
-function determineSubtype(popis, mj) {
-  const text = (popis || '').toLowerCase();
-  const unit = (mj || '').toLowerCase();
-
-  if (unit === 'm3' || unit === 'm³' || unit === 'm 3') {
-    return 'beton';
-  }
-  if (unit === 'm2' || unit === 'm²' || unit === 'm 2') {
-    return 'bednění';
-  }
-  if (unit === 't' || unit === 'kg') {
-    return 'výztuž';
-  }
-
-  if (text.includes('výztuž') || text.includes('ocel')) {
-    return 'výztuž';
-  }
-  if (text.includes('bedn')) {
-    return 'bednění';
-  }
-
-  return 'beton';
+export function determineSubtype(popis, mj, otskpCode = null) {
+  return classifyMonolithRow({ item_name: popis, otskp_code: otskpCode, unit: mj }).sub_role;
 }
 
 /**
