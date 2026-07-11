@@ -43,6 +43,7 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_gapa_xml_soupis_routing.py'
       - 'concrete-agent/packages/core-backend/tests/test_live_seal_portal_schema.py'
       - 'concrete-agent/packages/core-backend/tests/test_composite_parts_forward.py'
+      - 'concrete-agent/packages/core-backend/tests/test_monolith_classification_mcp_parity.py'
       # Pin B: the parity guard asserts the Python volume-geometry mirror equals
       # the canonical TS engine. A change to the TS constants/bands must trigger
       # this workflow so the guard runs — otherwise TS drift lands silently.
@@ -88,6 +89,7 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_gapa_xml_soupis_routing.py'
       - 'concrete-agent/packages/core-backend/tests/test_live_seal_portal_schema.py'
       - 'concrete-agent/packages/core-backend/tests/test_composite_parts_forward.py'
+      - 'concrete-agent/packages/core-backend/tests/test_monolith_classification_mcp_parity.py'
       - 'Monolit-Planner/shared/src/classifiers/element-classifier.ts'
 
 jobs:
@@ -207,4 +209,5 @@ jobs:
             tests/test_otskp_ranking_golden.py \
             tests/test_urs_carrier_t5.py \
             tests/test_composite_parts_forward.py \
+            tests/test_monolith_classification_mcp_parity.py \
             -v --tb=short
