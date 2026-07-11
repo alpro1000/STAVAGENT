@@ -67,8 +67,12 @@ const ELEMENT_RULES: Record<string, ElementRule> = {
 
 // ─── Concrete class string parsing ───────────────────────────────────────────
 
-/** Parse a full TZ class string «C30/37-XF4+XD3+XC4» → strength + primary
- *  exposure (first listed token — Czech practice orders by relevance). */
+/** Parse a full TZ class string «C30/37-XF4+XD3+XC4» → strength + ALL exposure
+ *  classes. The concrete must satisfy every listed class simultaneously, so the
+ *  mapper forwards the whole list (engine `exposure_classes` — preferred API,
+ *  curing = max across all; bug `passport-exposure-single`, 2026-07-11).
+ *  `exposure_class` (first token) is kept for callers that want a display
+ *  label — the mapper itself no longer forwards it. */
 export function parseConcreteClassString(full: string): {
   concrete_class?: string;
   exposure_class?: string;
@@ -81,6 +85,31 @@ export function parseConcreteClassString(full: string): {
     exposure_class: exposures[0]?.toUpperCase(),
     exposure_all: exposures.map(e => e.toUpperCase()),
   };
+}
+
+// ─── Falsework height from geometry ──────────────────────────────────────────
+
+/**
+ * Governing falsework height for the deck: max of geometry.decks[].
+ * `deck_height_over_terrain_m` — a number OR an object per crossing
+ * ({road: 8.1, stream: 14.9, …}). The tallest crossing governs the falsework
+ * system family (towers are not swapped mid-bridge); we deliberately do NOT
+ * subtract the NK construction depth (the field may already measure to the
+ * soffit — clearance convention), so the estimate errs on the expensive side.
+ * (bug `passport-height-skruz`, 2026-07-11)
+ */
+export function maxDeckHeightOverTerrain(decks: any[]): number | undefined {
+  let max: number | undefined;
+  for (const d of decks ?? []) {
+    const v = d?.deck_height_over_terrain_m;
+    const vals: number[] =
+      typeof v === 'number' ? [v]
+      : v && typeof v === 'object' ? Object.values(v).map(Number) : [];
+    for (const n of vals) {
+      if (Number.isFinite(n) && n > 0 && (max === undefined || n > max)) max = n;
+    }
+  }
+  return max;
 }
 
 // ─── Deck subtype from passport wording ──────────────────────────────────────
@@ -181,7 +210,9 @@ export function mapPassportToPlannerInputs(passport: any): PassportMapResult {
       volume_m3: volumeWhole > 0 ? round2(volumeWhole / perDeckDiv) : 0,
       has_dilatacni_spary: false,
       ...(parsed?.concrete_class ? { concrete_class: parsed.concrete_class as any } : {}),
-      ...(parsed?.exposure_class ? { exposure_class: parsed.exposure_class } : {}),
+      // ALL exposure classes (engine computes curing from the most demanding
+      // one and flags rogue classes per element — single source of truth).
+      ...(parsed && parsed.exposure_all.length > 0 ? { exposure_classes: parsed.exposure_all } : {}),
       ...(rule.per_deck && decksCount > 1 ? { num_bridges: decksCount } : {}),
       ...(qty?.height_m ? { height_m: Number(qty.height_m) } : {}),
       ...(qty?.rebar_mass_kg ? { rebar_mass_kg: round2(Number(qty.rebar_mass_kg) / perDeckDiv) } : {}),
@@ -193,6 +224,24 @@ export function mapPassportToPlannerInputs(passport: any): PassportMapResult {
         (input as any).num_spans = spans.length;
       }
       if (nkWidth) (input as any).nk_width_m = nkWidth;
+      // Falsework height (skruž + stojky = typically 15-25 % of deck costs):
+      // explicit qty.height_m wins; otherwise derive from geometry heights.
+      if ((input as any).height_m === undefined) {
+        const h = maxDeckHeightOverTerrain(decks);
+        if (h !== undefined) {
+          (input as any).height_m = h;
+          notes.push(
+            `ℹ️ Výška skruže odvozena z geometry.decks deck_height_over_terrain_m: ` +
+            `max = ${h} m (nejvyšší křížení řídí volbu systému; bez odpočtu stavební výšky NK — konzervativně).`
+          );
+        }
+      }
+      // NK construction depth → deck cross-section thickness (volume plausibility).
+      const nkDepth = Number(
+        passport?.superstructure?.deck?.constant_depth_m
+        ?? passport?.structural_system?.constant_depth_m ?? NaN,
+      );
+      if (Number.isFinite(nkDepth) && nkDepth > 0) (input as any).deck_thickness_m = nkDepth;
       const subtype = deckSubtype(passport);
       if (subtype) (input as any).bridge_deck_subtype = subtype;
       if (isPrestressed) (input as any).is_prestressed = true;
