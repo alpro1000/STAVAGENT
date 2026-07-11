@@ -74,6 +74,32 @@ const NON_MONOLITHIC_OTSKP_PREFIXES = [
 /** OTSKP prefixes that ARE monolithic concrete works. */
 const MONOLITHIC_OTSKP_PREFIXES = ['2', '3', '4'];
 
+/**
+ * Concrete grade (marka betonu) — the STRONG positive signal (ADR-007).
+ * Covers C30/37, C 30 / 37, LC25/28 (lightweight) and UHPC single-number
+ * grades C110–C170. Applied to normalized (lowercased, accent-free) text.
+ * Ported from the Excel extractor's grade-search so both import paths read
+ * the same marka.
+ */
+export const CONCRETE_GRADE_RE = /[lc]?\s*c\s*\d{1,3}\s*\/\s*\d{1,3}|\bc\s*1[1-7]0\b/;
+
+/**
+ * Prefabricated-element veto — beats EVERYTHING except the user override,
+ * including a present marka: «PATKY Z DÍLCŮ C25/30» quotes the precast
+ * part's material but is NOT poured on site (ADR-007 §1).
+ * `prefa` covers prefab/prefabrikát/prefy; `\bdil\w{0,3}\b` covers the
+ * standalone díl forms (díl/dílu/díly/dílec/dílce/dílců) while deliberately
+ * NOT matching `dilatacni`/`dilatace` (word longer than dil+3) — dilatation
+ * joints are everywhere in bridge BOQs and must never be prefab-vetoed.
+ */
+export const PREFAB_RE = /prefa|\bdil\w{0,3}\b/;
+
+/** Sub-work text signals (normalized text) — a row that names výztuž or
+ *  bednění work is that SUB-WORK, never the concrete row itself, even when
+ *  it quotes the parent's grade («ZÁKLADY … C25/30 — VÝZTUŽ B500B»). */
+const REBAR_TEXT_RE = /vyztuz|\bocel\b|ocelov|b\s*500|bst\s*500|armatur|armokos/;
+const FORMWORK_TEXT_RE = /bedn|odbedn|obednov/;
+
 // Combining diacritical marks U+0300 – U+036F (e.g. č → c + ̌).
 const DIACRITIC_RE = /[̀-ͯ]/g;
 
@@ -111,6 +137,36 @@ export interface MonolithCandidate {
   /** Optional metadata blob (parsed object or JSON string). May contain
    *  `is_monolith_override: boolean`. */
   metadata?: string | Record<string, unknown> | null;
+  /** Optional unit (m3/m2/t/kg/…) — TIE-BREAK ONLY, never classifies alone
+   *  (ADR-007; m³ proved a weak signal live — #1470). Additive field, all
+   *  pre-existing callers keep working without it. */
+  unit?: string | null;
+}
+
+export type MonolithSubRole = 'beton' | 'bednění' | 'výztuž' | 'jiné';
+
+export type MonolithSignal =
+  | 'override'
+  | 'rebar_text'
+  | 'formwork_text'
+  | 'prefab_veto'
+  | 'aggregate'
+  | 'marka'
+  | 'code_monolithic'
+  | 'code_non_monolithic'
+  | 'podkladni_beton_451'
+  | 'm3_concrete_keyword'
+  | 'fallback';
+
+/** Structured classification result (ADR-007). `signals` lists everything
+ *  detected in ladder order; `decided_by` names the one that decided. */
+export interface MonolithClassification {
+  is_monolith: boolean;
+  is_prefab: boolean;
+  sub_role: MonolithSubRole;
+  confidence: number;
+  decided_by: MonolithSignal;
+  signals: MonolithSignal[];
 }
 
 /** Read the manual override from metadata, if any. */
@@ -130,34 +186,127 @@ export function readMonolithOverride(
   return null;
 }
 
-/**
- * Decide whether a single position (or element-level beton position) is a
- * monolithic concrete work.
- */
-export function isMonolithicElement(pos: MonolithCandidate): boolean {
-  // 1. Manual override always wins.
-  const override = readMonolithOverride(pos.metadata);
-  if (override !== null) return override;
+/** Normalize a unit string for tie-breaks: `M3`/`m³` → `m3`, `m²` → `m2`. */
+function normalizeUnit(unit: MonolithCandidate['unit']): string {
+  if (!unit) return '';
+  return String(unit).toLowerCase().replace(/³/g, '3').replace(/²/g, '2').trim();
+}
 
+/** Unit-only tie-break for the sub-role — never decides is_monolith. */
+function subRoleFromUnit(unitNorm: string, isMonolith: boolean): MonolithSubRole {
+  if (unitNorm === 'm3') return isMonolith ? 'beton' : 'jiné';
+  if (unitNorm === 'm2') return 'bednění';
+  if (unitNorm === 't' || unitNorm === 'kg') return 'výztuž';
+  return isMonolith ? 'beton' : 'jiné';
+}
+
+/**
+ * Classify a single budget row per the ADR-007 signal ladder:
+ *
+ *   override → sub-work text (výztuž/bednění) → prefab veto (beats marka!)
+ *   → aggregate-without-concrete-signal → marka betonu (~0.95)
+ *   → OTSKP code (mono ~0.9 / non-mono hard, with the §451x prostý-beton
+ *     exception ~0.75) → m³+concrete-keyword weak signal (~0.6)
+ *   → fallback true (~0.3 — no signal at all must not hide WIP rows).
+ *
+ * The unit NEVER classifies on its own — it only tie-breaks the sub-role.
+ * One implementation for both import paths (Excel and Registry) — the three
+ * divergent `determineSubtype` copies delegate here (Gate 4).
+ */
+export function classifyMonolithRow(pos: MonolithCandidate): MonolithClassification {
+  const signals: MonolithSignal[] = [];
   const text = normalize(pos.item_name);
   const code = cleanCode(pos.otskp_code);
+  const unitNorm = normalizeUnit(pos.unit);
 
-  // 2. Aggregate-only text → not monolithic.
-  if (text) {
-    const hasConcreteSignal = CONCRETE_KEYWORDS.some(k => text.includes(k));
-    const hasAggregateSignal = AGGREGATE_KEYWORDS.some(k => text.includes(k));
-    if (hasAggregateSignal && !hasConcreteSignal) return false;
+  const isPrefab = text ? PREFAB_RE.test(text) : false;
+  if (isPrefab) signals.push('prefab_veto');
+  const hasConcreteSignal = text ? CONCRETE_KEYWORDS.some(k => text.includes(k)) : false;
+  const hasAggregateSignal = text ? AGGREGATE_KEYWORDS.some(k => text.includes(k)) : false;
+  const hasMarka = text ? CONCRETE_GRADE_RE.test(text) : false;
+  if (hasMarka) signals.push('marka');
+
+  const done = (
+    is_monolith: boolean,
+    sub_role: MonolithSubRole,
+    confidence: number,
+    decided_by: MonolithSignal,
+  ): MonolithClassification => {
+    if (!signals.includes(decided_by)) signals.push(decided_by);
+    return { is_monolith, is_prefab: isPrefab, sub_role, confidence, decided_by, signals };
+  };
+
+  // 1. Manual override always wins — both directions, absolute.
+  const override = readMonolithOverride(pos.metadata);
+  if (override !== null) {
+    return done(override, override ? 'beton' : subRoleFromUnit(unitNorm, false), 1.0, 'override');
   }
 
-  // 3. OTSKP code check.
+  // 2. Sub-work text: a row NAMING výztuž/bednění work is that sub-work,
+  //    never the concrete row — even when it quotes the parent's marka
+  //    («ZÁKLADY … C25/30 — VÝZTUŽ B500B» must not become beton via marka).
+  if (text && REBAR_TEXT_RE.test(text)) {
+    return done(false, 'výztuž', 0.9, 'rebar_text');
+  }
+  if (text && FORMWORK_TEXT_RE.test(text)) {
+    return done(false, 'bednění', 0.9, 'formwork_text');
+  }
+
+  // 3. Prefab veto — beats a present marka (the grade describes the precast
+  //    part's material, the element is not poured on site).
+  if (isPrefab) {
+    return done(false, 'jiné', 0.95, 'prefab_veto');
+  }
+
+  // 4. Aggregate-only text → not monolithic (kamenivo/štěrk/… even in m³).
+  if (hasAggregateSignal && !hasConcreteSignal) {
+    return done(false, subRoleFromUnit(unitNorm, false), 0.9, 'aggregate');
+  }
+
+  // 5. Marka betonu — strong positive.
+  if (hasMarka) {
+    return done(true, 'beton', 0.95, 'marka');
+  }
+
+  // 6. OTSKP code — when a code is present it DECIDES (pre-ADR-007
+  //    contract preserved: a 6xxxx/9xxxx code never falls through to the
+  //    weak signal or the fallback).
   if (code) {
-    if (isNonMonolithicCode(code)) return false;
-    return isMonolithicCodePrefix(code);
+    if (isNonMonolithicCode(code)) {
+      // §451x exception (interview answer 2): «podkladní/prostý beton» rows
+      // live under the podsypy prefix but ARE computable plain concrete —
+      // only when the text actually says beton. Asphalt (564–569) and earth
+      // works stay hard rejects even though «asfaltový beton» contains the
+      // keyword.
+      if (code.startsWith('45') && hasConcreteSignal) {
+        return done(true, 'beton', 0.75, 'podkladni_beton_451');
+      }
+      return done(false, subRoleFromUnit(unitNorm, false), 0.9, 'code_non_monolithic');
+    }
+    return isMonolithicCodePrefix(code)
+      ? done(true, 'beton', 0.9, 'code_monolithic')
+      : done(false, subRoleFromUnit(unitNorm, false), 0.9, 'code_non_monolithic');
   }
 
-  // 4. No code, no clear signal → treat as monolithic so work-in-progress
-  //    rows aren't hidden from the user.
-  return true;
+  // 7. Weak signal: m³ + concrete keyword (no code, no marka) — catches
+  //    «betonáž stěn … m³». m³ alone deliberately does NOT fire.
+  if (unitNorm === 'm3' && hasConcreteSignal) {
+    return done(true, 'beton', 0.6, 'm3_concrete_keyword');
+  }
+
+  // 8. No code, no clear signal → treat as monolithic so work-in-progress
+  //    rows aren't hidden from the user (pre-existing contract; the frontend
+  //    computable-gate #1470 handles visibility).
+  return done(true, subRoleFromUnit(unitNorm, true), 0.3, 'fallback');
+}
+
+/**
+ * Decide whether a single position (or element-level beton position) is a
+ * monolithic concrete work. Backward-compatible boolean wrapper over
+ * `classifyMonolithRow` — pre-ADR-007 callers keep working unchanged.
+ */
+export function isMonolithicElement(pos: MonolithCandidate): boolean {
+  return classifyMonolithRow(pos).is_monolith;
 }
 
 /** Re-export prefix sets so backend parsers can share the keyword lists
