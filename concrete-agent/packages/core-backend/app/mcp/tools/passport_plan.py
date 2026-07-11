@@ -100,10 +100,18 @@ async def calculate_from_passport(passport: dict) -> dict:
 
             BridgePassport.model_validate(passport)
         except ValidationError as ve:
+            # JSON-safe details: bare ve.errors() carries live exception objects
+            # in `ctx` (pydantic v2) — FastMCP's structured-output serialization
+            # chokes on them and the client sees an opaque «outputSchema defined
+            # but no structured output» instead of this typed error
+            # (bug `passport-mcp-error-transport`, 2026-07-11). `msg` keeps the
+            # full human-readable detail; the caller has its own input.
             return {
                 "error": "invalid_passport",
                 "message": "Passport nevyhovuje schématu tz-bridge-passport.",
-                "details": ve.errors(),
+                "details": ve.errors(
+                    include_url=False, include_context=False, include_input=False
+                ),
                 "source": "monolit_planner_api",
             }
 
