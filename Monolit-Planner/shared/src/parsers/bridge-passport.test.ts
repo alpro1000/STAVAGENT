@@ -9,7 +9,12 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { mapPassportToPlannerInputs, planPassport, parseConcreteClassString } from './bridge-passport.js';
+import {
+  mapPassportToPlannerInputs,
+  planPassport,
+  parseConcreteClassString,
+  maxDeckHeightOverTerrain,
+} from './bridge-passport.js';
 import { planElement } from '../calculators/planner-orchestrator.js';
 
 const EXAMPLE_PATH = join(
@@ -41,7 +46,9 @@ describe('mapPassportToPlannerInputs — SO 202 Žalmanov golden', () => {
     expect(i.element_type).toBe('mostovkova_deska');
     expect(i.volume_m3).toBeCloseTo(1348.97, 1);          // 2697.941 / 2 decks
     expect(i.concrete_class).toBe('C35/45');               // TZ, NOT soupis «DO C40/50»
-    expect(i.exposure_class).toBe('XF2');
+    // bug passport-exposure-single: ALL classes forwarded, not just the first
+    expect(i.exposure_classes).toEqual(['XF2', 'XD1', 'XC4']);
+    expect(i.exposure_class).toBeUndefined();
     expect(i.bridge_deck_subtype).toBe('dvoutramovy');
     expect(i.span_m).toBe(44.5);
     expect(i.num_spans).toBe(3);
@@ -63,14 +70,14 @@ describe('mapPassportToPlannerInputs — SO 202 Žalmanov golden', () => {
     const piers: any = byKey['pier_shafts'].input;
     expect(piers.element_type).toBe('driky_piliru');
     expect(piers.concrete_class).toBe('C35/45');           // TZ — soupis band C40/50 is informative
-    expect(piers.exposure_class).toBe('XF1');
+    expect(piers.exposure_classes).toEqual(['XF1', 'XD1', 'XC4']); // all TZ classes, not just XF1
     expect(piers.height_m).toBe(13.1);
     expect(piers.volume_m3).toBeCloseTo(180.69, 1);
 
     const ab: any = byKey['abutments'].input;
     expect(ab.element_type).toBe('opery_ulozne_prahy');
     expect(ab.concrete_class).toBe('C30/37');
-    expect(ab.exposure_class).toBe('XF4');
+    expect(ab.exposure_classes).toEqual(['XF4', 'XD3', 'XC4']);
     expect(ab.rebar_mass_kg).toBeCloseTo(32082, 0);
 
     expect((byKey['foundations_piers'].input as any).element_type).toBe('zaklady_piliru');
@@ -85,6 +92,69 @@ describe('mapPassportToPlannerInputs — SO 202 Žalmanov golden', () => {
     expect(blind.volume_m3).toBeCloseTo(403.09, 1);
     expect(blind.num_bridges).toBeUndefined();
     expect(blind.rebar_mass_kg).toBeUndefined();
+  });
+
+  // bug passport-height-skruz (2026-07-11): deck height lives in geometry,
+  // not in quantities — the mapper must forward it or the engine skips the
+  // falsework (15-25 % of deck costs) with a ⛔ warning.
+  it('deck: falsework height derived from geometry crossings (max governs) + NK depth', () => {
+    const d = byKey['superstructure_deck'];
+    const i: any = d.input;
+    expect(i.height_m).toBe(14.9);               // max(8.1, 14.9, 9.9) — stream crossing
+    expect(i.deck_thickness_m).toBe(2.4);        // superstructure.deck.constant_depth_m
+    expect(d.notes.some(n => n.includes('Výška skruže odvozena z geometry'))).toBe(true);
+  });
+
+  it('explicit qty.height_m wins over geometry-derived height', () => {
+    const passport = loadExample();
+    const deckQty = passport.quantities.items.find((x: any) => x.element === 'superstructure_deck');
+    deckQty.height_m = 12.0;
+    const { elements } = mapPassportToPlannerInputs(passport);
+    const i: any = elements.find(e => e.key === 'superstructure_deck')!.input;
+    expect(i.height_m).toBe(12.0);
+  });
+
+  it('maxDeckHeightOverTerrain: object per crossing, plain number, garbage-safe', () => {
+    expect(maxDeckHeightOverTerrain([
+      { deck_height_over_terrain_m: { road: 8.1, stream: 14.9, field: 9.9 } },
+      { deck_height_over_terrain_m: { road: 8.1, stream: 14.9, field: 9.9 } },
+    ])).toBe(14.9);
+    expect(maxDeckHeightOverTerrain([{ deck_height_over_terrain_m: 7.5 }])).toBe(7.5);
+    expect(maxDeckHeightOverTerrain([{ deck_height_over_terrain_m: { a: 'x', b: -1 } }, {}])).toBeUndefined();
+    expect(maxDeckHeightOverTerrain([])).toBeUndefined();
+  });
+
+  // bug passport-exposure-single (2026-07-11): first-token selection dropped
+  // the demanding classes. Pin the DANGEROUS ordering: XC4 first, XF4 second —
+  // curing must still honor XF4 (7 d TKP18 min), and the engine must SEE XF4.
+  it('exposure order-independence: «C30/37-XC4+XF4» → curing governed by XF4, not XC4', () => {
+    const passport = loadExample();
+    const c = passport.materials_and_standards.concretes
+      .find((x: any) => x.use === 'pier_shafts');
+    c.class = 'C35/45-XC4+XF4';
+    const { elements } = mapPassportToPlannerInputs(passport);
+    const piers: any = elements.find(e => e.key === 'pier_shafts')!.input;
+    expect(piers.exposure_classes).toEqual(['XC4', 'XF4']);
+    const plan = planElement(piers);
+    expect(plan.formwork.curing_days).toBeGreaterThanOrEqual(7); // XF4 min, TKP18
+  });
+
+  it('pier plan: rogue TZ classes stay VISIBLE as warnings (flag, never silently dropped)', () => {
+    const plan = planElement(byKey['pier_shafts'].input); // XF1+XD1+XC4 from TZ
+    // XF1 and XD1 are outside the driky allow-list (XC4/XD3/XF2/XF4) — the
+    // engine must say so; TZ value is still honored (no gate).
+    expect(plan.warnings.some(w => w.includes('XF1'))).toBe(true);
+  });
+
+  it('end-to-end: deck plan carries falsework — NO ⛔ missing-height warning, props/skruž computed', () => {
+    const plan = planElement(byKey['superstructure_deck'].input);
+    expect(plan.warnings.some(w => w.includes('není zadána výška'))).toBe(false);
+    // Falsework/props cost present (skruž + stojky no longer silently missing)
+    const costs: any = plan.costs;
+    const falseworkCzk =
+      (costs.formwork_rental_czk ?? 0) + (costs.props_rental_czk ?? 0) +
+      (costs.mss_rental_czk ?? 0) + (costs.props_labor_czk ?? 0);
+    expect(falseworkCzk).toBeGreaterThan(0);
   });
 
   it('mapped deck computes 3 takty × 449.66 m³ with NO tz-consistency flag (input honors TZ)', () => {

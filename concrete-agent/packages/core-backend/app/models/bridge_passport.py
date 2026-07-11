@@ -15,7 +15,7 @@ contract (AC), tolerance is the schema's.
 """
 from __future__ import annotations
 
-from typing import List, Optional
+from typing import Dict, List, Optional, Union
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
@@ -77,6 +77,11 @@ class Quantities(_Tolerant):
 class DeckGeometry(_Tolerant):
     id: Optional[str] = None
     deck_width_m: Optional[float] = Field(default=None, gt=0)
+    # Height of the deck over terrain — a single number OR a dict per crossing
+    # ({"road": 8.1, "stream": 14.9}). Consumed by half A since the
+    # passport-height-skruz fix (2026-07-11): max value → PlannerInput.height_m
+    # (falsework height for the deck).
+    deck_height_over_terrain_m: Optional[Union[float, Dict[str, float]]] = None
 
 
 class Geometry(_Tolerant):
@@ -101,6 +106,9 @@ class Deck(_Tolerant):
     type: Optional[str] = None
     spans_m: List[float] = Field(default_factory=list)
     width_per_deck_m: Optional[float] = Field(default=None, gt=0)
+    # NK construction depth — half A forwards it as deck_thickness_m
+    # (volume-plausibility check) since the passport-height-skruz fix.
+    constant_depth_m: Optional[float] = Field(default=None, gt=0)
     material: Optional[DeckMaterial] = None
 
 
