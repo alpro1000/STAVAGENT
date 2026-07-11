@@ -152,6 +152,23 @@ TOOL_MANIFESTS: dict[str, ToolManifest] = {
         requires_confirmation=False,
         version="1.0.0",
     ),
+
+    # half-B sibling: documents (TZ + soupis + verified note fragment) →
+    # bridge passport. Deterministic extraction + assembly; optional store
+    # write (writes_state) when passport_id is given.
+    "build_bridge_passport": ToolManifest(
+        tool_name="build_bridge_passport",
+        category=ToolCategory.DETERMINISTIC_CALCULATION,
+        side_effect_level=SideEffectLevel.NONE,
+        requires_session=False,
+        writes_state=False,
+        audit_required=True,
+        replayable=True,
+        billable=True,
+        credits=15,
+        requires_confirmation=False,
+        version="1.0.0",
+    ),
     "find_urs_code": ToolManifest(
         tool_name="find_urs_code",
         category=ToolCategory.CATALOG_BINDING,

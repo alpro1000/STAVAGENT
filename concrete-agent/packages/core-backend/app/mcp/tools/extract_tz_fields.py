@@ -19,9 +19,11 @@ section (SO-250: „mostní objekt" / „lávka SO 222"); a full-text "most" wou
 poison the name/charakteristika and flip the object type. We scan the structure.
 
 Determinism-first (§3): the existing pdfplumber extractor + concrete-class regex
-from `app.mcp.tools.document` are REUSED (not duplicated). The LLM (existing Vertex
-routing) is a fallback ONLY for a materials section that won't parse
-deterministically — and it sees that ONE section, never the full text.
+from `app.mcp.tools.document` are REUSED (not duplicated). The LLM fallback fires
+ONLY for a materials section that won't parse deterministically — and it sees
+that ONE section, never the full text. Wiring (ADR-008, 2026-07-11): a real
+Vertex callable when TZ_LLM_FALLBACK=1 or on Cloud Run (K_SERVICE); None —
+deterministic-only — in hermetic/dev environments (tests monkeypatch `_LLM`).
 
 Output shape == the orchestrator recipe input (`{object, elements}`), so it is a
 drop-in replacement for `request.options` (criterion #100).
@@ -49,10 +51,50 @@ _CONCRETE_RE = PATTERNS["concrete_class"]  # C(\d{2,3})/(\d{2,3})
 # schema from the registered tool's signature, and a Callable can't be expressed
 # in JSON schema (PydanticInvalidForJsonSchema: CallableSchema). Keeping these as
 # module globals (tests monkeypatch them) keeps extract_tz_fields' schema clean.
-# `_TEXT_EXTRACTOR` defaults to the shared pdfplumber extractor; `_LLM` is the
-# murky-materials fallback hook (default None → deterministic-only).
+# `_TEXT_EXTRACTOR` defaults to the shared pdfplumber extractor.
 _TEXT_EXTRACTOR: Callable[[Path], str] = _extract_pdf_text
-_LLM: Optional[Callable[[str], list[dict]]] = None
+
+
+def _make_vertex_llm() -> Optional[Callable[[str], list[dict]]]:
+    """Real Vertex fallback for a MURKY materials section (ADR-008 §3, Q3a
+    ratified 2026-07-11 — the seam used to be test-only despite the docstring).
+
+    Gated: enabled when TZ_LLM_FALLBACK=1 OR running on Cloud Run (K_SERVICE
+    set); hermetic/dev environments keep the deterministic-only default so the
+    golden suites never touch a network. The single-section rule holds — the
+    callable receives ONLY the materials section, never the full text; the
+    caller stamps confidence 0.7 (repo ladder) on every returned pair.
+    """
+    import os
+
+    if os.getenv("TZ_LLM_FALLBACK", "").strip().lower() not in {"1", "true"} \
+            and not os.getenv("K_SERVICE"):
+        return None
+
+    def _call(mat_text: str) -> list[dict]:
+        from app.core.gemini_client import VertexGeminiClient
+
+        prompt = (
+            "Z následující sekce MATERIÁLY technické zprávy vytáhni betonové "
+            "prvky a jejich třídy betonu. ODPOVĚZ POUZE VALIDNÍM JSON polem "
+            '[{"name": "...", "concrete_class": "C30/37" | null}] — jen prvky, '
+            "které v textu skutečně jsou, žádná fabrikace.\n\nSEKCE:\n" + mat_text[:4000]
+        )
+        data = VertexGeminiClient().call(prompt, temperature=0.1)
+        if isinstance(data, list):
+            return [p for p in data if isinstance(p, dict)]
+        if isinstance(data, dict):
+            for v in data.values():  # tolerate {"elements": [...]} wrapping
+                if isinstance(v, list):
+                    return [p for p in v if isinstance(p, dict)]
+        return []
+
+    return _call
+
+
+# Murky-materials fallback hook: None in hermetic/dev (deterministic-only,
+# tests monkeypatch this), a real Vertex callable on Cloud Run / opt-in.
+_LLM: Optional[Callable[[str], list[dict]]] = _make_vertex_llm()
 _PAGE_RE = re.compile(r"^---\s*PAGE\s+(\d+)\s*---\s*$", re.I)
 
 # Signed-section headers (matched on heading-like lines only — see _is_heading).

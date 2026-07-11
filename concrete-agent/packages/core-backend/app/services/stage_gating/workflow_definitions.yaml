@@ -38,6 +38,7 @@ states:
       - classify_construction_element
       - calculate_concrete_works
       - calculate_from_passport  # passport (JSON) → whole-SO plan (tz-passport Gate 2)
+      - build_bridge_passport  # documents → passport (tz-passport half-B, ADR-008)
       - create_work_breakdown   # only mode=work_first; mode enforcement is PR2
   DECOMPOSITION:
     optional: true              # not all workflows enter this state

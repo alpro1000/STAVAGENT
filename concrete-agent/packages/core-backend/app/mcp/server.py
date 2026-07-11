@@ -73,6 +73,13 @@ from app.mcp.tools.passport_plan import calculate_from_passport  # noqa: E402
 mcp.tool()(calculate_from_passport)
 
 
+# ── Tool 4d: Documents → bridge passport (tz-passport half-B, ADR-008) ───────
+
+from app.mcp.tools.passport_build import build_bridge_passport  # noqa: E402
+
+mcp.tool()(build_bridge_passport)
+
+
 # ── Tool 5: Budget Parser ────────────────────────────────────────────────────
 
 from app.mcp.tools.budget import parse_construction_budget  # noqa: E402
@@ -195,6 +202,7 @@ _REGISTERED_TOOL_NAMES = {
     "calculate_concrete_works",
     "calculate_pump",
     "calculate_from_passport",
+    "build_bridge_passport",
     "parse_construction_budget",
     "analyze_construction_document",
     "create_work_breakdown",
