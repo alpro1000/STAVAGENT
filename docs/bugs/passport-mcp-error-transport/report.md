@@ -4,7 +4,7 @@
 > **Datum reportu:** 2026-07-11
 > **Reporter:** Claude Code session (nalezeno code-review), potvrzeno Alexander (živý konektor)
 > **Severity:** P2 (DX/robustness — funkce vrací typed error správně, transport ho maskuje)
-> **Status:** analyzed → fixing
+> **Status:** **closed** (verified in production 2026-07-11 — viz verify.md)
 >
 > **Affected:** MCP tool `calculate_from_passport` přes FastMCP transport (Claude.ai konektor, ChatGPT)
 > **Version:** v4.39.0

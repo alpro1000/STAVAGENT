@@ -4,7 +4,7 @@
 > **Datum reportu:** 2026-07-11
 > **Reporter:** Alexander Prokopov (živý prod-MCP prohon reálného passport fixture)
 > **Severity:** P0 (peníze ve smetě — aggregate podhodnocen o typicky 15–25 % nákladů mostovky)
-> **Status:** analyzed → fixing
+> **Status:** **closed** (verified in production 2026-07-11 — viz verify.md)
 >
 > **Affected:** shared mapper `bridge-passport.ts` (planPassport) → Monolit backend `/api/calculate-from-passport` → MCP `calculate_from_passport`
 > **Version:** v4.39.0 (tz-passport Gate 2)

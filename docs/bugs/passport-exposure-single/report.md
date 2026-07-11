@@ -4,7 +4,7 @@
 > **Datum reportu:** 2026-07-11
 > **Reporter:** Alexander Prokopov (živý prod-MCP prohon)
 > **Severity:** P1 (korektnost — curing/ошетřování může být poddimenzované, viditelnost tříd ztracena)
-> **Status:** analyzed → fixing
+> **Status:** **closed** (verified in production 2026-07-11 — viz verify.md)
 >
 > **Affected:** shared mapper `bridge-passport.ts` (`parseConcreteClassString` → PlannerInput)
 > **Version:** v4.39.0 (tz-passport Gate 2)
