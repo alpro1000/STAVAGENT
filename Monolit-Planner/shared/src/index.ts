@@ -23,6 +23,7 @@ export * from './parsers/bridge-passport.js';
 
 // Monolith vs. non-monolith classifier (shared by FE filter, BE export, BE parser)
 export * from './monolith-classifier.js';
+export * from './monolith-grouping.js';
 
 // Positions — composite part grouping (Fáze 5 #7 Phase 2, Gate 4 foundation)
 export * from './positions/position-part-grouping.js';

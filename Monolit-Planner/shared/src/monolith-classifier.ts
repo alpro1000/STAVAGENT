@@ -100,6 +100,18 @@ export const PREFAB_RE = /prefa|\bdil\w{0,3}\b/;
 const REBAR_TEXT_RE = /vyztuz|\bocel\b|ocelov|b\s*500|bst\s*500|armatur|armokos/;
 const FORMWORK_TEXT_RE = /bedn|odbedn|obednov/;
 
+/**
+ * Inclusion mentions — «… VČETNĚ BEDNĚNÍ», «vč. výztuže», «zahrnuje bednění»,
+ * «s bedněním» — describe what the row's PRICE includes; they must NOT
+ * reclassify a beton row as its own sub-work (OTSKP beton rows carry these
+ * literally). Stripped before the sub-work text check; the grouping layer
+ * reads the same mentions to set formwork_included / rebar_included.
+ * Applied to normalized text; allows up to two words between the preposition
+ * and the noun («se ztraceným bedněním»).
+ */
+export const INCLUSION_MENTION_RE =
+  /(?:vcetne|vc\.?|zahrnuje|s|se)\s+(?:\w+\s+){0,2}?(?:bednenim?\w*|vyztuz\w*)(?:\s*(?:a|,|\+)\s*(?:bednenim?\w*|vyztuz\w*))*/g;
+
 // Combining diacritical marks U+0300 – U+036F (e.g. č → c + ̌).
 const DIACRITIC_RE = /[̀-ͯ]/g;
 
@@ -245,10 +257,13 @@ export function classifyMonolithRow(pos: MonolithCandidate): MonolithClassificat
   // 2. Sub-work text: a row NAMING výztuž/bednění work is that sub-work,
   //    never the concrete row — even when it quotes the parent's marka
   //    («ZÁKLADY … C25/30 — VÝZTUŽ B500B» must not become beton via marka).
-  if (text && REBAR_TEXT_RE.test(text)) {
+  //    Inclusion mentions are stripped first: «ZÁKLADY … VČETNĚ BEDNĚNÍ» is
+  //    a beton row whose price includes formwork, not a formwork row.
+  const subworkText = text.replace(INCLUSION_MENTION_RE, ' ');
+  if (subworkText && REBAR_TEXT_RE.test(subworkText)) {
     return done(false, 'výztuž', 0.9, 'rebar_text');
   }
-  if (text && FORMWORK_TEXT_RE.test(text)) {
+  if (subworkText && FORMWORK_TEXT_RE.test(subworkText)) {
     return done(false, 'bednění', 0.9, 'formwork_text');
   }
 
@@ -308,6 +323,10 @@ export function classifyMonolithRow(pos: MonolithCandidate): MonolithClassificat
 export function isMonolithicElement(pos: MonolithCandidate): boolean {
   return classifyMonolithRow(pos).is_monolith;
 }
+
+/** Shared text/code helpers for sibling modules (grouping layer) — one
+ *  normalization, not per-module copies. */
+export { normalize as normalizeCzechText, cleanCode as cleanOtskpCode };
 
 /** Re-export prefix sets so backend parsers can share the keyword lists
  *  without duplicating them. */
