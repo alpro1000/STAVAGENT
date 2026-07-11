@@ -482,20 +482,25 @@ export function TzTextInput({
           {charCount.toLocaleString('cs-CZ')} / {TZ_MAX_CHARS.toLocaleString('cs-CZ')} znaků
           {overCap && ' — překračuje limit, zkraťte prosím text'}
         </span>
+        {/* Deliberately SECONDARY (outline) styling: the big gradient AI
+            button below (AI doporučení) is the advisory step on the FILLED
+            form; this one extracts FIELDS from the pasted text — two stages
+            of one pipeline, two distinct visual weights. */}
         {combinedText.trim().length > 0 && !overCap && (
           <button
             onClick={fetchAiParams}
             disabled={aiLoading}
-            title="AI doplní jen pole, která regex nenašel — každý návrh s citací z TZ, spolehlivost 70 %. Nikdy nepřepisuje již nalezené hodnoty."
+            title="Doplní jen pole, která regex nenašel — každý návrh s citací z TZ, spolehlivost 70 %. Nikdy nepřepisuje již nalezené hodnoty. (AI doporučení níže je jiný krok: radí nad vyplněnou formou.)"
             style={{
               padding: '3px 10px', fontSize: 10, fontWeight: 600,
-              background: aiLoading ? 'var(--r0-slate-200)' : 'var(--r0-violet, #7c3aed)',
-              color: aiLoading ? 'var(--r0-slate-400)' : 'white',
-              border: 'none', borderRadius: 4,
+              background: 'transparent',
+              color: aiLoading ? 'var(--r0-slate-400)' : 'var(--r0-violet, #7c3aed)',
+              border: `1px solid ${aiLoading ? 'var(--r0-slate-300)' : 'var(--r0-violet, #7c3aed)'}`,
+              borderRadius: 4,
               cursor: aiLoading ? 'wait' : 'pointer', fontFamily: 'inherit',
             }}
           >
-            {aiLoading ? 'AI hledá…' : '✨ Doplnit pomocí AI'}
+            {aiLoading ? 'AI hledá v textu…' : 'AI: doplnit pole z textu'}
           </button>
         )}
       </div>
