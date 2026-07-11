@@ -1166,6 +1166,14 @@ TOOL_DESCRIPTIONS = {
         "per-prvek plán + agregát s poctivými dílčími součty (chybějící "
         "množství = NEPOČÍTÁNO, ne fabrikace)."
     ),
+    "build_bridge_passport": (
+        "Sestaví pasport mostního SO (tz-bridge-passport JSON) přímo z "
+        "dokumentů: TZ text/PDF (stage 1) + soupis XLSX/XML (stage 3) + "
+        "volitelný VERIFIED fragment z výkresové poznámky (stage 2, "
+        "validate_drawing_element notes-mode). Výstup konzumuje "
+        "calculate_from_passport; _meta.gaps poctivě vyjmenovává vše, co "
+        "zdroje nenesly (žádná fabrikace)."
+    ),
     "calculate_pump": (
         "Spočítá náklady na betonpumpu (TOV multi-supplier) podle objemu: "
         "čerpadlo, přistavení, doprava, vibrátor, příplatek + volitelně "
@@ -1251,6 +1259,7 @@ TOOL_ORDER = [
     "calculate_concrete_works",
     "calculate_pump",
     "calculate_from_passport",
+    "build_bridge_passport",
     "parse_construction_budget",
     "analyze_construction_document",
     "create_work_breakdown",
@@ -1404,6 +1413,31 @@ async def rest_calculate_from_passport(
 
     from app.mcp.tools.passport_plan import calculate_from_passport
     return await calculate_from_passport(body.passport)
+
+
+class PassportBuildRequest(BaseModel):
+    tz_text: Optional[str] = None
+    tz_file_base64: Optional[str] = None
+    tz_filename: str = ""
+    soupis_file_base64: Optional[str] = None
+    soupis_filename: str = ""
+    construction_process: Optional[dict] = None
+    passport_id: Optional[str] = None
+
+
+@router.post("/tools/build-bridge-passport")
+async def rest_build_bridge_passport(
+    body: PassportBuildRequest,
+    authorization: Optional[str] = Header(None),
+):
+    """Assemble a bridge passport from documents (15 credits)."""
+    api_key = _extract_bearer(authorization)
+    credit_check = mcp_auth.check_credits(api_key or "", "build_bridge_passport")
+    if not credit_check["ok"]:
+        raise HTTPException(status_code=402, detail=credit_check["error"])
+
+    from app.mcp.tools.passport_build import build_bridge_passport
+    return await build_bridge_passport(**body.model_dump())
 
 
 class PumpRequest(BaseModel):

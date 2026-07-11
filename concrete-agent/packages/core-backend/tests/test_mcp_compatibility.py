@@ -64,6 +64,7 @@ EXPECTED_TOOLS = [
     "calculate_pump",
     # tz-passport-json Gate 2 — passport (JSON) → whole-SO plan (planPassport).
     "calculate_from_passport",
+    "build_bridge_passport",
     "parse_construction_budget",
     "analyze_construction_document",
     "create_work_breakdown",

@@ -47,6 +47,7 @@ TOOL_COSTS = {
     "calculate_concrete_works": 5,
     "calculate_pump": 5,
     "calculate_from_passport": 10,  # whole-SO plan from a passport (N elements, 1 call)
+    "build_bridge_passport": 15,  # documents (TZ + soupis) -> passport (half-B emit)
     "parse_construction_budget": 5,
     "analyze_construction_document": 10,
     "uep_run_extraction": 15,  # PR2 §3.5 — UEP universal extraction pipeline

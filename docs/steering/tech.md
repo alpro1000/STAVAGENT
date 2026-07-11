@@ -178,10 +178,7 @@
 
 - **URL:** `https://concrete-agent-3uxelthc4q-ey.a.run.app/mcp/` (trailing slash; gcloud `status.url` host, **verified live** 2026-06-06: `/mcp` 307→`/mcp/`, `/mcp/`→401 auth-gated). Project-number forma `…-1086027517695.europe-west3.run.app` je možný alias, ale gcloud-verified canonical je tato `.a.run.app` forma (`gcloud run services list --region europe-west3`).
 - **Verze:** v1.0 live
-- **Tools:** 9 (2 free + 7 paid 1-20 credits)
-  - `find_otskp_code` (free)
-  - `classify_construction_element` (free)
-  - + 7 paid tools
+- **Tools:** 22 (per `EXPECTED_TOOLS` v `tests/test_mcp_compatibility.py`; plný seznam + mapping na moduly → root `CLAUDE.md`). Free: `find_otskp_code`, `classify_construction_element`; zbytek paid 1–20 credits. Passport pipeline: `build_bridge_passport` (dokumenty → pasport, 15 cr) → `calculate_from_passport` (pasport → plán celého SO, 10 cr).
 - **Auth:** `sk-stavagent-{hex48}` API keys + OAuth 2.0 (ChatGPT)
 - **Billing:** Lemon Squeezy, webhook secret `stavagent_lmsq_wh_2026`
 - **Tiery:** 100 / 500 / 2000 credit balíčky
