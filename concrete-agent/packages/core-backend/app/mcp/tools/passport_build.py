@@ -46,15 +46,18 @@ async def build_bridge_passport(
     Args:
         tz_text: TZ text (page-marked like analyze_construction_document), OR
         tz_file_base64: TZ PDF as base64 (pdfplumber extraction runs here).
-        tz_filename: original TZ filename (diagnostics only).
+        tz_filename: original TZ filename — used for SO-code detection
+            (`extract_so_code` → `_meta.object.code`); pass the real name.
         soupis_file_base64: soupis XLSX/XML as base64 (optional — without it
             every element emits without quantities, honestly marked).
         soupis_filename: original soupis filename (format detection).
         construction_process: OPTIONAL verified trio fragment
             ({deck_pour_stages, deck_pour_stages_source, falsework_technology})
             — pass EXACTLY what a VERIFIED `validate_drawing_element` notes-mode
-            call returned. An unverified/hand-typed trio defeats the P40 gate;
-            the field is copied verbatim into the passport with its source.
+            call returned. An unverified/hand-typed trio defeats the P40 gate.
+            It is validated with the rest of the passport (a malformed fragment
+            → typed `assembly_invalid`, never a "successful" invalid passport),
+            and clears ONLY the trio gaps it actually fills.
         passport_id: when set, the passport is persisted to the bridge-passport
             store under this id (path-safe charset) and survives cold starts.
 
@@ -87,33 +90,36 @@ async def build_bridge_passport(
                 # never silently assembled without quantities.
                 return {"error": "soupis_parse_failed",
                         "message": str(parsed_budget["error"])}
+            if not (parsed_budget.get("items") or []):
+                # Recognized-but-empty (0 rows extracted) is also a provided-but-
+                # failing soupis — same invariant: never a silent quantity-less
+                # passport when the caller DID hand over a soupis.
+                return {"error": "soupis_parse_failed",
+                        "message": "soupis parsed to zero items — wrong sheet or format?"}
 
         # ── assemble (single emit point) with the LIVE classifier ──────────
         from app.mcp.tools.classifier import _classify
         from app.services.bridge_passport_assembler import assemble_bridge_passport
 
+        # The stage-2 fragment is injected THROUGH the assembler (the single emit
+        # point) so it passes the same model_validate as the rest of the passport
+        # and clears only the gap it actually fills — never spliced in afterwards.
         try:
             passport = assemble_bridge_passport(
                 tz_fields, parsed_budget, classify=_classify,
+                construction_process=construction_process,
             )
         except Exception as exc:  # pydantic ValidationError et al — typed, JSON-safe
             logger.error("[MCP/BuildPassport] assembly invalid: %s", exc)
             return {"error": "assembly_invalid", "message": str(exc)}
 
-        # ── stage 2 fragment: verbatim copy of a VERIFIED notes-gate result ─
-        if construction_process:
-            passport["construction_process"] = dict(construction_process)
-            passport["_meta"]["gaps"] = [
-                g for g in passport["_meta"].get("gaps", [])
-                if not g.startswith("construction_process")
-            ]
-
         stored = False
         if passport_id:
             from app.services import bridge_passport_store
 
-            bridge_passport_store.save(passport_id, passport)
-            stored = True
+            # save() reports durability honestly: False when it fell back to
+            # memory-only (unsafe id / disk error) — those do NOT survive cold start.
+            stored = bridge_passport_store.save(passport_id, passport)
 
         return {
             "passport": passport,

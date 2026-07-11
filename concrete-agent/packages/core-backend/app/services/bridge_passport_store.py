@@ -10,6 +10,7 @@ against `BridgePassport` on both write and read).
 """
 from __future__ import annotations
 
+import copy
 import json
 import logging
 import re
@@ -39,29 +40,40 @@ def _path_for(passport_id: str) -> Optional[Path]:
     return _store_dir() / f"{passport_id}.json"
 
 
-def save(passport_id: str, passport: dict) -> None:
+def save(passport_id: str, passport: dict) -> bool:
     """Validate + write-through (memory + durable JSON).
 
-    We store the ORIGINAL dict, not a re-dump of the model — the half-A
+    We store the ORIGINAL dict shape, not a re-dump of the model — the half-A
     mapper reads the exact aliased shape (`_meta`, `class`, `use`), same
-    forwarding rule as the MCP tool (v4.39 lesson).
+    forwarding rule as the MCP tool (v4.39 lesson) — but a DEEP COPY, so a
+    caller mutating the returned/passed dict cannot corrupt the memory cache.
+
+    Returns True only when the passport is DURABLY persisted (survives a cold
+    start). A memory-only fallback (unsafe id or disk error) returns False —
+    the caller must not report the passport as durably stored.
     """
     BridgePassport.model_validate(passport)  # storing an invalid passport is a defect
-    _memory[passport_id] = passport
+    _memory[passport_id] = copy.deepcopy(passport)
     path = _path_for(passport_id)
     if path is None:
         logger.warning("Bridge passport id %r not filesystem-safe — memory only", passport_id)
-        return
+        return False
     try:
         path.write_text(json.dumps(passport, ensure_ascii=False, indent=2), encoding="utf-8")
+        return True
     except OSError as exc:
         logger.error("Bridge passport %s: disk persist failed (%s) — memory only", passport_id, exc)
+        return False
 
 
 def get(passport_id: str) -> Optional[dict]:
-    """Memory first, then disk rehydrate (cold-start recovery); re-validated."""
+    """Memory first, then disk rehydrate (cold-start recovery); re-validated.
+
+    Hands back a DEEP COPY so a consumer mutating the result cannot corrupt the
+    cached dict (which would then diverge from the durable JSON on disk).
+    """
     if passport_id in _memory:
-        return _memory[passport_id]
+        return copy.deepcopy(_memory[passport_id])
     path = _path_for(passport_id)
     if path is None or not path.exists():
         return None
@@ -69,7 +81,7 @@ def get(passport_id: str) -> Optional[dict]:
         data = json.loads(path.read_text(encoding="utf-8"))
         BridgePassport.model_validate(data)
         _memory[passport_id] = data
-        return data
+        return copy.deepcopy(data)
     except Exception as exc:  # noqa: BLE001 — corrupt file must not crash callers
         logger.error("Bridge passport %s: rehydrate failed (%s)", passport_id, exc)
         return None

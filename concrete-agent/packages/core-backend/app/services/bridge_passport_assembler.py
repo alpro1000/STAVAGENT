@@ -54,6 +54,7 @@ def assemble_bridge_passport(
     *,
     classify: Callable,
     object_type: str = "bridge",
+    construction_process: Optional[dict] = None,
 ) -> dict:
     """Compose + validate a per-SO BridgePassport from stage-1/3 outputs.
 
@@ -63,6 +64,12 @@ def assemble_bridge_passport(
         classify: deterministic element-type classifier (injected — the live
             caller passes the core of `app.mcp.tools.classifier`, tests a stub).
         object_type: authoritative object type for the classifier bridge-upgrade.
+        construction_process: OPTIONAL verified stage-2 trio fragment
+            ({deck_pour_stages?, deck_pour_stages_source?, falsework_technology?}).
+            Injected HERE (not spliced by the caller after the fact) so it passes
+            the same emit-side `model_validate` as the rest of the passport, and
+            so the honest gap is emitted PER MISSING trio member — a falsework-only
+            fragment still declares the missing `deck_pour_stages`.
 
     Returns the passport as a plain dict (already `model_validate`d).
     Raises pydantic.ValidationError if the assembly violates the schema —
@@ -138,7 +145,18 @@ def assemble_bridge_passport(
         superstructure["deck"] = deck
 
     # ── construction_process: the calculable-critical trio is Gate 4 ─────────
-    gaps.append("construction_process (deck_pour_stages, falsework_technology): stage 2 vision — not extracted")
+    # A VERIFIED fragment (host vision → notes gate) may be injected; anything it
+    # does NOT carry stays an honest, PER-FIELD gap (a falsework-only fragment
+    # still declares the missing pour-stage count — no wholesale gap clearing).
+    cp = dict(construction_process) if construction_process else None
+    missing_cp = []
+    if not cp or cp.get("deck_pour_stages") is None:
+        missing_cp.append("deck_pour_stages")
+    if not cp or not cp.get("falsework_technology"):
+        missing_cp.append("falsework_technology")
+    if missing_cp:
+        gaps.append(
+            f"construction_process ({', '.join(missing_cp)}): stage 2 vision — not extracted")
 
     passport: dict[str, Any] = {
         "_meta": {
@@ -151,6 +169,7 @@ def assemble_bridge_passport(
         **({"structural_system": structural} if structural else {}),
         **({"superstructure": superstructure} if superstructure else {}),
         **({"materials_and_standards": {"concretes": concretes}} if concretes else {}),
+        **({"construction_process": cp} if cp else {}),
         "quantities": {"source": "soupis join" if parsed_budget else "none", "items": items},
     }
     if obj.get("object_code") or obj.get("object_name"):

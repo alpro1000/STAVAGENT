@@ -183,15 +183,18 @@ async def extract_tz_elements_chunked(
     pages_processed, chars_processed} (honest-coverage marker; no truncation).
     """
     if extract_fn is None:
-        from app.mcp.tools.extract_tz_fields import extract_tz_fields as extract_fn  # noqa: E501
         from app.mcp.tools import extract_tz_fields as _ex_mod
+        from app.mcp.tools.extract_tz_fields import extract_tz_fields as extract_fn
 
-        prev_llm = _ex_mod._LLM
-        _ex_mod._LLM = llm
+        # Task-local override (ContextVar) — never mutate the shared module-level
+        # `_LLM`: that swap spans an await and races concurrent requests on the
+        # same event loop, silently gaining/losing the fallback. A ContextVar is
+        # per-task, so a concurrent request keeps its own default and is unaffected.
+        token = _ex_mod._llm_override.set(llm)
         try:
             return await _run(text, total_pages, doc_type, extract_fn)
         finally:
-            _ex_mod._LLM = prev_llm
+            _ex_mod._llm_override.reset(token)
     return await _run(text, total_pages, doc_type, extract_fn)
 
 

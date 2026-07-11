@@ -32,7 +32,9 @@ Reference: docs/tasks/TASK_Extract_Stage1_TZFields.md §1–§5.
 """
 from __future__ import annotations
 
+import asyncio
 import base64
+import contextvars
 import logging
 import re
 import tempfile
@@ -60,33 +62,57 @@ def _make_vertex_llm() -> Optional[Callable[[str], list[dict]]]:
     ratified 2026-07-11 — the seam used to be test-only despite the docstring).
 
     Gated: enabled when TZ_LLM_FALLBACK=1 OR running on Cloud Run (K_SERVICE
-    set); hermetic/dev environments keep the deterministic-only default so the
-    golden suites never touch a network. The single-section rule holds — the
-    callable receives ONLY the materials section, never the full text; the
-    caller stamps confidence 0.7 (repo ladder) on every returned pair.
+    set); an EXPLICIT TZ_LLM_FALLBACK=0/false/off wins even on Cloud Run (a
+    kill switch for the nondeterministic path — a redeploy re-imports the
+    module and re-reads the flag). Also requires Vertex to actually be importable
+    (`VERTEX_AVAILABLE`) — no dead callable that raises on every call. Hermetic/dev
+    environments keep the deterministic-only default so the golden suites never
+    touch a network. The single-section rule holds — the callable receives ONLY
+    the materials section, never the full text; the caller stamps confidence 0.7
+    (repo ladder) on every returned pair.
     """
     import os
 
-    if os.getenv("TZ_LLM_FALLBACK", "").strip().lower() not in {"1", "true"} \
-            and not os.getenv("K_SERVICE"):
+    flag = os.getenv("TZ_LLM_FALLBACK", "").strip().lower()
+    if flag in {"0", "false", "off"}:  # explicit off wins, even on Cloud Run
         return None
+    if flag not in {"1", "true"} and not os.getenv("K_SERVICE"):
+        return None
+    # Only now (fallback actually wanted) touch gemini_client — the deterministic-
+    # only path never imports it, so hermetic tests/dev stay light.
+    from app.core.gemini_client import VERTEX_AVAILABLE
+    if not VERTEX_AVAILABLE:  # broken/absent vertexai → deterministic-only, not a dead callable
+        return None
+
+    _MAT_CAP = 4000
 
     def _call(mat_text: str) -> list[dict]:
         from app.core.gemini_client import VertexGeminiClient
 
+        if len(mat_text) > _MAT_CAP:
+            logger.warning(
+                "[MCP/ExtractTZ] materials section %d chars > %d cap — LLM sees the "
+                "head only; tail elements may be missed", len(mat_text), _MAT_CAP)
         prompt = (
             "Z následující sekce MATERIÁLY technické zprávy vytáhni betonové "
             "prvky a jejich třídy betonu. ODPOVĚZ POUZE VALIDNÍM JSON polem "
             '[{"name": "...", "concrete_class": "C30/37" | null}] — jen prvky, '
-            "které v textu skutečně jsou, žádná fabrikace.\n\nSEKCE:\n" + mat_text[:4000]
+            "které v textu skutečně jsou, žádná fabrikace.\n\nSEKCE:\n" + mat_text[:_MAT_CAP]
         )
         data = VertexGeminiClient().call(prompt, temperature=0.1)
         if isinstance(data, list):
             return [p for p in data if isinstance(p, dict)]
         if isinstance(data, dict):
-            for v in data.values():  # tolerate {"elements": [...]} wrapping
+            # Prefer the canonical key; only then fall back to the first NON-EMPTY
+            # list value (a leading "poznamky": [...] must not shadow "elements").
+            named = data.get("elements")
+            if isinstance(named, list):
+                return [p for p in named if isinstance(p, dict)]
+            for v in data.values():
                 if isinstance(v, list):
-                    return [p for p in v if isinstance(p, dict)]
+                    dicts = [p for p in v if isinstance(p, dict)]
+                    if dicts:
+                        return dicts
         return []
 
     return _call
@@ -95,6 +121,14 @@ def _make_vertex_llm() -> Optional[Callable[[str], list[dict]]]:
 # Murky-materials fallback hook: None in hermetic/dev (deterministic-only,
 # tests monkeypatch this), a real Vertex callable on Cloud Run / opt-in.
 _LLM: Optional[Callable[[str], list[dict]]] = _make_vertex_llm()
+
+# Per-request override of the murky-materials fallback, ASYNC-SAFE: a ContextVar
+# is task-local, so the chunked pipeline sets its own hook without a module-global
+# swap that would race concurrent requests on the event loop (and it keeps `_LLM`
+# out of the public tool signature — repo MCP authoring rule).
+_LLM_UNSET = object()
+_llm_override: "contextvars.ContextVar" = contextvars.ContextVar(
+    "_tz_llm_override", default=_LLM_UNSET)
 _PAGE_RE = re.compile(r"^---\s*PAGE\s+(\d+)\s*---\s*$", re.I)
 
 # Signed-section headers (matched on heading-like lines only — see _is_heading).
@@ -645,7 +679,12 @@ async def extract_tz_fields(
         file_base64: PDF bytes as base64 — decoded and run through the pdfplumber
             extractor (shared with analyze_construction_document) when `text` is
             not given.
-        filename: Original filename (diagnostics only).
+        filename: Original filename — used for SO-code detection
+            (`extract_so_code` → object code); pass the real name.
+
+    The murky-materials LLM fallback is the module-level `_LLM`; a caller (e.g.
+    the chunked pipeline) can override it per-request via the task-local
+    `_llm_override` ContextVar without racing concurrent requests.
 
     Returns a dict with:
         object: {object_code, object_name, charakteristika, needs_verify, _source}
@@ -669,8 +708,13 @@ async def extract_tz_fields(
     sections = _segment_sections(text)
     obj = _extract_object(sections, text, filename)
     obj["geometry"] = _extract_geometry(text)  # Gate 3 — NK geometry from prose
-    elements, unbound = _extract_elements(
-        sections, obj.get("object_code"), None, _LLM)
+    _override = _llm_override.get()
+    active_llm = _LLM if _override is _LLM_UNSET else _override
+    # Offload to a thread: the fallback hook (VertexGeminiClient.call) is a BLOCKING
+    # call with future.result timeout + sleep backoff — running it inline would
+    # stall the whole event loop on Cloud Run. The regex pass is cheap either way.
+    elements, unbound = await asyncio.to_thread(
+        _extract_elements, sections, obj.get("object_code"), None, active_llm)
 
     return {
         "object": obj,
