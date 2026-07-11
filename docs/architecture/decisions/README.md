@@ -7,6 +7,7 @@ immutable once accepted — supersede with a new ADR rather than edit history.
 | ID | Title | Status | Date |
 |---|---|---|---|
 | [ADR-005](ADR-005_phase_E_dropped.md) | Drop Phase E (engineering drawings) from STAVAGENT scope | Accepted | 2026-05-07 |
+| [ADR-007](ADR-007_monolith_classification_signal_ladder.md) | Monolith classification — signal ladder, grouping, single shared classifier | Accepted | 2026-07-11 |
 
 > ADR-001..004 + 006 are queued in `docs/STAVAGENT_PATTERNS.md` Priority 2 backlog
 > (audit-trail-mandatory, triangulation-no-winner, calculator-deterministic-default,
