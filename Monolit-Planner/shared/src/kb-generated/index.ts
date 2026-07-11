@@ -11,3 +11,4 @@ export * as FORMWORK_CATALOG_NON_DOKA from './formwork-catalog-non-doka.js';
 export * as LATERAL_PRESSURE_FORMULAS from './lateral-pressure-formulas.js';
 export * as UCEBNICE_MOSTU_POUR from './ucebnice-mostu-pour.js';
 export * as ELEMENT_CLASSIFICATION_RULES from './element-classification-rules.js';
+export * as BRIDGE_PASSPORT_ELEMENT_MAP from './bridge-passport-element-map.js';
