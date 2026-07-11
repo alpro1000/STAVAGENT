@@ -158,6 +158,48 @@ concrete-agent/packages/core-backend/app/knowledge_base/
 - **Digity 1-4:** Element prefix (typ konstrukce)
 - **Digit 5:** Work type (provedení)
 
+### 4.5 Klasifikace monolitů — signální žebříček (ADR-007, kanonicky)
+
+Jediný zdroj: `Monolit-Planner/shared/src/monolith-classifier.ts`
+(`classifyMonolithRow`) + `monolith-grouping.ts` (`groupMonolithRows`).
+Obě cesty importu (Excel i rozpočet) i frontend konzumují TENTO modul —
+žádné lokální kopie (tři historické `determineSubtype` smazány, Gate 4).
+
+**Žebříček (first match wins):**
+
+| # | Signál | Výsledek | Confidence |
+|---|---|---|---|
+| 1 | `is_monolith_override` (user) | absolutní, obě strany | 1.0 |
+| 2 | sub-work text (výztuž/bednění) | sub-role, NE beton — i s markou rodiče | 0.9 |
+| 3 | **prefab veto** (`prefa`, `díl`-formy) | NE-monolit — **poráží i marku** («PATKY Z DÍLCŮ C25/30») | 0.95 |
+| 4 | kamenivo bez beton-signálu | NE-monolit | 0.9 |
+| 5 | **marka betonu** (C xx/yy, LC, UHPC) | monolit beton | 0.95 |
+| 6 | OTSKP kód (mono 2/3/4 vs non-mono) | rozhoduje; §451x + beton-text = prostý beton | 0.9 / 0.75 |
+| 7 | m³ + betonové klíčové slovo | monolit beton (slabý) | 0.6 |
+| 8 | fallback (žádný signál) | monolit (neskrývat WIP) | 0.3 |
+
+- **Jednotka NIKDY neklasifikuje sama** — jen tie-break sub-role (m³ bylo
+  živě chycený slabý signál, #1470).
+- Inclusion-zmínky («VČETNĚ BEDNĚNÍ», «vč. výztuže», i výčty «bednění a
+  výztuže») se před sub-work testem stripují — OTSKP beton řádek zůstává
+  beton; `dil`-regex vědomě NEmatchuje `dilatační`.
+
+**4 katalogová rozvržení** (grouping je zvládá bez řečení, které vidí):
+OTSKP (beton vč. bednění + výztuž zvlášť) · ÚRS (vše zvlášť; bednění
+zřízení+odstranění pár = JEDNA sub-role, dvě fáze montáž/demontáž) ·
+vše-v-jednom · vše-zvlášť. Párování: **prefix kódu (4 znaky) = AUTO**;
+**shoda názvu (≥2 významná slova) = NÁVRH** (badge, odpojitelné); sirotek se
+nikdy nepřilepí. Flagy `formwork_included`/`rebar_included` v `metadata`
+rodiče; při `formwork_included` «Aplikovat» SVINE bednění do beton pozice
+(«v ceně betonové položky») místo auto-vytvoření duplicitního řádku —
+explicitní bednění řádek smetáře vždy vyhrává. `rebar_included` NIKDY
+nesvinuje (jeho true je default i při samostatné výztuži). Dny prvku = vždy
+kritická cesta (`schedule_info`), nikdy součet operací.
+
+MCP `classify_construction_element` = jiná osa (TYP prvku); monolith/prefab
+osa tam zatím NENÍ (gap pinned v
+`tests/test_monolith_classification_mcp_parity.py`) — přidání bude aditivní.
+
 ---
 
 ## 5. Construction terminology (Czech canonical)
