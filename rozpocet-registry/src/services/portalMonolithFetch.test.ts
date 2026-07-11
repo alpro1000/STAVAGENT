@@ -19,8 +19,19 @@ import { fetchMonolithData, clearMonolithFetchState } from './portalMonolithFetc
 
 afterEach(() => {
   vi.unstubAllGlobals();
-  vi.useRealTimers();
+  vi.restoreAllMocks();
 });
+
+/**
+ * The guards read performance.now() (monotonic — wall-clock steps must not
+ * bend the TTLs), so TTL tests drive a controllable monotonic clock instead
+ * of vi.setSystemTime (which only moves Date).
+ */
+function mockMonotonicClock(start = 100_000) {
+  let t = start;
+  vi.spyOn(performance, 'now').mockImplementation(() => t);
+  return { advance: (ms: number) => { t += ms; } };
+}
 
 // Module-level guard state persists across tests — every test uses its OWN
 // portalProjectId so tests stay order-independent.
@@ -103,14 +114,14 @@ describe('fetchMonolithData — dead-link TTL', () => {
   });
 
   it('the mark EXPIRES (wrong-account 404 must not kill the link for the session) — one probe is allowed again', async () => {
-    vi.useFakeTimers({ now: 1_000_000 });
+    const clock = mockMonotonicClock();
     const id = uid();
     const f = vi.fn().mockResolvedValue({ ok: false, status: 404 });
     vi.stubGlobal('fetch', f);
     await fetchMonolithData(id);
     expect(f).toHaveBeenCalledTimes(1);
 
-    vi.setSystemTime(1_000_000 + 5 * 60_000 + 1); // past DEAD_LINK_TTL_MS
+    clock.advance(5 * 60_000 + 1); // past DEAD_LINK_TTL_MS
     f.mockResolvedValue(okBody());
     const recovered = await fetchMonolithData(id);
     expect(f).toHaveBeenCalledTimes(2); // probe happened
@@ -133,24 +144,24 @@ describe('fetchMonolithData — dead-link TTL', () => {
 
 describe('fetchMonolithData — fresh-TTL and in-flight dedupe', () => {
   it('a second call within the TTL reuses the last result without a request (poller restart after merge)', async () => {
-    vi.useFakeTimers({ now: 2_000_000 });
+    const clock = mockMonotonicClock();
     const id = uid();
     const f = vi.fn().mockResolvedValue(okBody());
     vi.stubGlobal('fetch', f);
     const first = await fetchMonolithData(id);
-    vi.setSystemTime(2_000_000 + 1_000); // within FRESH_TTL_MS
+    clock.advance(1_000); // within FRESH_TTL_MS
     const second = await fetchMonolithData(id);
     expect(f).toHaveBeenCalledTimes(1);
     expect(second).toBe(first); // same cached result object
   });
 
   it('after the TTL a call fetches again (freshness for the recalculate → reopen-TOV loop)', async () => {
-    vi.useFakeTimers({ now: 3_000_000 });
+    const clock = mockMonotonicClock();
     const id = uid();
     const f = vi.fn().mockResolvedValue(okBody());
     vi.stubGlobal('fetch', f);
     await fetchMonolithData(id);
-    vi.setSystemTime(3_000_000 + 3_001); // past FRESH_TTL_MS
+    clock.advance(3_001); // past FRESH_TTL_MS
     await fetchMonolithData(id);
     expect(f).toHaveBeenCalledTimes(2);
   });
