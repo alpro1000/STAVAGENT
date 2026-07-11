@@ -312,6 +312,101 @@ export function addDraftToBucket(
   });
 }
 
+// ─── Gate 5 (ADR-007): formwork_included collapse ───────────────────────────
+
+const FORMWORK_WORK_TYPES: ReadonlySet<WorkType> = new Set([
+  'bednění', 'bednění_zřízení', 'bednění_odstranění',
+]);
+
+/**
+ * Read the catalog-layout inclusion flag from a position's metadata blob
+ * (written by BOTH import paths since Gate 4: Excel pairing and the
+ * Registry-import grouping).
+ *
+ * `rebar_included` is deliberately NOT consulted for collapsing: its false
+ * state means «explicitly excluded» while true is the default even when
+ * výztuž is a separate smeta row — collapsing on it would be wrong for the
+ * common OTSKP layout (beton includes formwork only, výztuž separate).
+ */
+export function readFormworkIncluded(metadata: unknown): boolean {
+  if (!metadata) return false;
+  let meta: Record<string, unknown> | null = null;
+  if (typeof metadata === 'string') {
+    try { meta = JSON.parse(metadata); } catch { return false; }
+  } else if (typeof metadata === 'object') {
+    meta = metadata as Record<string, unknown>;
+  }
+  return meta?.formwork_included === true;
+}
+
+export interface RoutedDrafts {
+  buckets: Map<string, Bucket>;
+  newSpecs: Map<string, NewPositionSpec>;
+}
+
+/**
+ * Pure routing core of applyPlanToPositions (extracted for tests).
+ *
+ * Priority per draft: URL/linked sibling → formwork-included collapse →
+ * AUTO-CREATE sibling → last-resort merge into main.
+ *
+ * The collapse (Gate 5, ADR-007 §4): an OTSKP-layout beton row prices the
+ * formwork INSIDE the item («VČETNĚ BEDNĚNÍ» → metadata.formwork_included).
+ * Auto-creating a separate bednění position would then DOUBLE-COUNT work the
+ * smeta already pays for in the beton unit price, so the tesař entries land
+ * on the MAIN beton position labeled «v ceně betonové položky». An EXPLICIT
+ * bednění row (URL id / linked sibling) still wins — the smeta author's
+ * structure beats the flag. Days never double: the projection emits beton
+ * before bednění, so the main bucket's dominant trio (days/crew/wage) is the
+ * betonář's and addDraftToBucket never overwrites it; the element-level
+ * duration stays the critical-path schedule in metadata.schedule_info.
+ */
+export function routeDraftsToBuckets(
+  drafts: WorkDraft[],
+  mainId: string,
+  positionContext: ApplyContext['positionContext'],
+  linked: ReturnType<typeof findLinkedPositions>,
+  opts: {
+    formworkIncluded: boolean;
+    templateFor: (workType: WorkType) => NewPositionSpec | null;
+    genId: () => string;
+  },
+): RoutedDrafts {
+  const buckets = new Map<string, Bucket>();
+  const newSpecs = new Map<string, NewPositionSpec>();
+
+  for (const draft of drafts) {
+    if (draft.workType === 'beton') {
+      addDraftToBucket(buckets, mainId, draft, true);
+      continue;
+    }
+    const target = findTargetPosition(draft.workType, positionContext, linked);
+    if (target && target !== mainId) {
+      addDraftToBucket(buckets, target, draft, false);
+      continue;
+    }
+    if (opts.formworkIncluded && FORMWORK_WORK_TYPES.has(draft.workType)) {
+      const note = draft.entry.note
+        ? `${draft.entry.note} — v ceně betonové položky`
+        : 'v ceně betonové položky';
+      addDraftToBucket(buckets, mainId, { ...draft, entry: { ...draft.entry, note } }, true);
+      continue;
+    }
+    // No linked sibling → create a new Position record
+    const tpl = opts.templateFor(draft.workType);
+    if (!tpl) {
+      // Unknown template → merge into main as last resort
+      addDraftToBucket(buckets, mainId, draft, true);
+      continue;
+    }
+    const newId = opts.genId();
+    newSpecs.set(newId, tpl);
+    addDraftToBucket(buckets, newId, draft, false);
+  }
+
+  return { buckets, newSpecs };
+}
+
 // ─── applyPlanToPositions ───────────────────────────────────────────────────
 
 /**
@@ -437,7 +532,7 @@ export async function applyPlanToPositions(ctx: ApplyContext): Promise<ApplyResu
   const drafts = buildWorkDrafts(plan, form);
 
   // 2. Fetch all positions to enable linked-search + name fallback
-  let allPositions: Array<{ id: string; otskp_code?: string; item_name?: string; part_name?: string; subtype: string; unit: string; qty: number; bridge_id?: string }> = [];
+  let allPositions: Array<{ id: string; otskp_code?: string; item_name?: string; part_name?: string; subtype: string; unit: string; qty: number; bridge_id?: string; metadata?: unknown }> = [];
   try {
     const posRes = await fetch(`${apiUrl}/api/positions?bridge_id=${bridgeId}`, {
       headers: { ...authHeader() },
@@ -451,35 +546,16 @@ export async function applyPlanToPositions(ctx: ApplyContext): Promise<ApplyResu
     { currentPartName: positionContext.part_name, currentBridgeId: bridgeId },
   );
 
-  // 3. Route every draft into a destination bucket.
-  //    Priority: URL ID → linked sibling → AUTO-CREATE new sibling Position.
-  //    'beton' always lands on the main position; other work types create a
-  //    new sibling row if no existing one matches.
-  const buckets = new Map<string, Bucket>();
-  const newSpecs = new Map<string, NewPositionSpec>();  // newId → POST template
+  // 3. Route every draft into a destination bucket (pure core — see
+  //    routeDraftsToBuckets for the priority ladder and the Gate 5
+  //    formwork-included collapse).
   const baseItemName = positionContext.part_name || plan.element.label_cs;
-
-  for (const draft of drafts) {
-    if (draft.workType === 'beton') {
-      addDraftToBucket(buckets, mainId, draft, true);
-      continue;
-    }
-    const target = findTargetPosition(draft.workType, positionContext, linked);
-    if (target && target !== mainId) {
-      addDraftToBucket(buckets, target, draft, false);
-      continue;
-    }
-    // No linked sibling → create a new Position record
-    const tpl = templateForWorkType(draft.workType, plan, form, baseItemName);
-    if (!tpl) {
-      // Unknown template → merge into main as last resort
-      addDraftToBucket(buckets, mainId, draft, true);
-      continue;
-    }
-    const newId = genPositionId();
-    newSpecs.set(newId, tpl);
-    addDraftToBucket(buckets, newId, draft, false);
-  }
+  const mainPosition = allPositions.find(p => p.id === mainId);
+  const { buckets, newSpecs } = routeDraftsToBuckets(drafts, mainId, positionContext, linked, {
+    formworkIncluded: readFormworkIncluded(mainPosition?.metadata),
+    templateFor: workType => templateForWorkType(workType, plan, form, baseItemName),
+    genId: genPositionId,
+  });
 
   // 4. Materials always live on main beton (rentals)
   const mainBucket = buckets.get(mainId);
