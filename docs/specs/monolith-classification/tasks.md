@@ -26,6 +26,16 @@
 4. **Import z rozpočtu:** nechat celotabulkový výklad (dnešek) + líp klasifikovat, nebo přidat volitelný «jen beton» režim jako u Excelu?
 5. **Bednění montáž/demontáž (ÚRS):** modelovat jako dvě sub-role, nebo jednu sub-role se dvěma fázemi?
 
+**✅ ZODPOVĚZENO 2026-07-11 (Alexander: «Согласен с рекомендациями»):**
+
+1. **Hranice:** marka NEBO betonový kód, a ne prefab — ANO; PLUS «m³ + betonové klíčové slovo» jako SLABÝ třetí signál s nižší confidence (chytá řádky bez kódu i marky typu „betonáž stěn … m³", netahá smetí). m³ sám o sobě = NE-signál (jen tie-break).
+2. **Podkladní prostý beton = počítaný MONOLIT** — typ `podkladni_beton` v enginu existuje (rebar=0, bez bednění), výpočet je poctivý.
+3. **Párování:** automaticky při SILNÉM signálu (prefix kódu), jen NÁVRH s viditelným badge při slabém (jen shoda názvu) + možnost odpojit.
+4. **Import z rozpočtu:** zůstává celotabulkový (per #1454) — jen lepší klasifikace + filtr «Jen monolity». Režim «jen beton» se NEstaví.
+5. **Bednění montáž/demontáž = JEDNA sub-role se dvěma fázemi** — kalendářně to už dnes jsou dvě fáze jednoho zdroje v enginu (montáž před betonáží, demontáž po zrání); ÚRS-pár se mapuje na fáze. Dvě samostatné sub-role by nafoukly TOV-rozklad.
+
+Audit hotov téhož dne — nálezy v `design.md` §2.2 (5 klíčových děr: prefab-filtr mimo primární grade-cestu; 3 divergentní `determineSubtype` kopie; Registry-import bulk-INSERT bez `metadata` sloupce; Portal `row_role`/`skupina` ignorovány; párování jen v Excel-cestě).
+
 → commit `AUDIT: monolith-classification Gate 0 (findings + interview answers)`
 
 ### 1.1 Gate 1 — Rozhodnutí (ADR, no code)
