@@ -43,3 +43,24 @@ def engine_type_for(passport_key: str) -> Optional[str]:
     """Canonical engine StructuralElementType for a passport element key."""
     rule = load_passport_element_map().get(passport_key)
     return rule.get("engine_type") if rule else None
+
+
+@lru_cache(maxsize=1)
+def _inverse_map() -> dict[str, str]:
+    """engine_type → passport key, computed from the SAME YAML (still one
+    source). Where one engine type serves several passport keys
+    (podkladni_beton → blinding_concrete AND plain_footings), the FIRST
+    declaration in the YAML wins — blinding_concrete is the general case;
+    plain_footings is a passport-side distinction the classifier cannot see
+    (prostý vs podkladní is a material signal, not an element-type one)."""
+    inv: dict[str, str] = {}
+    for key, rule in load_passport_element_map().items():
+        inv.setdefault(str(rule.get("engine_type")), key)
+    return inv
+
+
+def passport_key_for_engine_type(engine_type: str) -> Optional[str]:
+    """Passport element key for a classifier/engine element_type — the half-B
+    assembler direction. None = honest gap (e.g. kridla_opery, pilota have no
+    passport key yet; the assembler notes them in _meta.gaps, never guesses)."""
+    return _inverse_map().get(engine_type)
