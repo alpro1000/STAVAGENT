@@ -357,6 +357,18 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ## 9. Session log
 
+## 2026-07-11 — Session: AI-кнопка TZ-парсера kalkulátoru («Я за кнопку ии») + height_m compat bug
+
+**Rozhodnuto:** Extraction ladder pro TZ smart input (Determinism > AI): regex pass beze změny (conf 1.0/0.9); nové tlačítko «✨ Doplnit pomocí AI» → Monolit backend `POST /api/tz-ai-extract` → CORE Vertex (multi-role seam, klíče nikdy ve frontendu) → robust JSON extraction (fence/prose/bare, null = typed error, nikdy fabrikace). **Jeden zdroj «co vytahovat»:** `shared/parsers/tz-ai-extraction.ts` — `buildExtractionManifest(element_type)` derivuje pole z REQUIRED_FIELDS (element-specific labels) + SANITY_RANGES (rozsahy) + `explainIncompatibility` (aplikovatelnost); prompt se staví server-side z TÉHOŽ manifestu; budoucí MCP konzument čte tentýž (ADR-008 nota). **Merge-guard `mergeAiParams`:** AI vyplňuje JEN díry po regexu (nikdy nepřepisuje), citace povinná (bez quote se návrh nezobrazí), sanity-range validace PŘED zobrazením, typová koerce (čárka→tečka, exposure string→UPPER pole, bool), duplicity first-wins, **conf cap 0.70** (lestenka repa). UI: AI párametры tečou existujícím triage/apply (checkbox + human confirm), badge [AI] s citací v tooltipu, honest counts «X návrhů · Y odmítnuto», error state neblokuje deterministickou cestu. `ExtractedParam.source` += 'ai' (aditivní).
+
+**Bonus nález (třetí výskyt třídy passport-height-skruz):** `ELEMENT_TZ_COMPATIBILITY.mostovkova_deska` NEOBSAHOVALA `height_m` — kritické pole (REQUIRED_FIELDS!) z TZ-textu se pro mostovku triažilo «jiný typ» a tiše zahazovalo. Opraveno (+ rigel), klasifikátorová suita bez regrese.
+
+**Testy:** shared **1425** (+10: manifest 3 / prompt 2 / merge-guard 5) · backend **110** (+6 extractJsonArray) · frontend 18 · tsc + vite + shared build čisté.
+
+**Otevřené otázky:** živá verifikace po deployi (tlačítko na kalkulator.stavagent.cz proti prod CORE — force-JSON na Gemini stále není, robust parse to kryje); GitHub konektor odpojen → PR #1491 (Gate 3 part 1 + tato féča) čeká merge po re-auth.
+
+**Co dál:** merge #1491 → half-B Gate 3 part 2 (assembler skeleton + use-keyed stage 1 + store + LLM seam).
+
 
 ## 2026-07-11 — Session: half-B extraction Gate 0 audit (tz-passport) — ingredience existují, emitor je greenfield
 

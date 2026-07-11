@@ -27,9 +27,12 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
   extractFromText,
   explainIncompatibility,
+  mergeAiParams,
+  type AiRejectedParam,
   type ExtractedParam,
   type StructuralElementType,
 } from '@stavagent/monolit-shared';
+import { API_URL } from '../../services/api';
 import type { FormState } from './types';
 import {
   isFieldEmpty,
@@ -165,6 +168,14 @@ export function TzTextInput({
   // Task 3: collapsible history panel.
   const [historyOpen, setHistoryOpen] = useState(false);
 
+  // AI layer («Doplnit pomocí AI» button, 2026-07-11): fills ONLY the gaps
+  // after the deterministic pass — validated by shared mergeAiParams (quote
+  // required, sanity range, conf ≤ 0.70, never overwrites regex hits).
+  const [aiParams, setAiParams] = useState<ExtractedParam[]>([]);
+  const [aiRejected, setAiRejected] = useState<AiRejectedParam[]>([]);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
+
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
   // The effective text the extractor reads = main + optional appended fragment.
@@ -174,8 +185,13 @@ export function TzTextInput({
     return `${tzText}\n${secondaryText}`;
   }, [tzText, secondaryText]);
 
-  // Debounced extraction on text change.
+  // Debounced extraction on text change. AI suggestions are tied to the
+  // exact (text, element_type) they were fetched for — any change makes
+  // them stale, so they reset together with the deterministic pass.
   useEffect(() => {
+    setAiParams([]);
+    setAiRejected([]);
+    setAiError(null);
     if (!combinedText.trim()) {
       setExtracted([]);
       setChecked(new Set());
@@ -192,6 +208,45 @@ export function TzTextInput({
     }, 500);
     return () => clearTimeout(debounceRef.current);
   }, [combinedText, form.element_type]);
+
+  // Deterministic + validated-AI params feed ONE triage/apply flow.
+  const effectiveExtracted = useMemo(
+    () => [...extracted, ...aiParams],
+    [extracted, aiParams],
+  );
+
+  const fetchAiParams = async () => {
+    setAiLoading(true);
+    setAiError(null);
+    try {
+      const res = await fetch(`${API_URL}/api/tz-ai-extract`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ element_type: form.element_type, tz_text: combinedText }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setAiError(data?.message || `AI služba vrátila ${res.status}.`);
+        return;
+      }
+      const { accepted, rejected } = mergeAiParams(
+        extracted, data.params, form.element_type as StructuralElementType,
+      );
+      setAiParams(accepted);
+      setAiRejected(rejected);
+      if (accepted.length > 0) {
+        setChecked(prev => {
+          const next = new Set(prev);
+          for (const p of accepted) next.add(p.name);
+          return next;
+        });
+      }
+    } catch {
+      setAiError('AI služba není dostupná — deterministická extrakce funguje dál.');
+    } finally {
+      setAiLoading(false);
+    }
+  };
 
   /**
    * Triage each extracted param into one of four buckets. The ordering of
@@ -211,7 +266,7 @@ export function TzTextInput({
     const lockSet = lockedFieldSet ?? new Set<string>();
     const elemType = form.element_type as StructuralElementType;
 
-    for (const p of extracted) {
+    for (const p of effectiveExtracted) {
       if (lockSet.has(p.name)) {
         ignored.push({
           param: p, reason: 'locked',
@@ -245,7 +300,7 @@ export function TzTextInput({
       applicable.push(p);
     }
     return { applicable, ignored, conflicts };
-  }, [extracted, form, lockedFieldSet, positionCode, overwrite, conflictChoice]);
+  }, [effectiveExtracted, form, lockedFieldSet, positionCode, overwrite, conflictChoice]);
 
   const applyParams = () => {
     const method: 'doplnit' | 'prepsat' = overwrite ? 'prepsat' : 'doplnit';
@@ -301,6 +356,9 @@ export function TzTextInput({
     if (!window.confirm('Smazat uložený TZ text a historii pro tuto pozici?')) return;
     setSecondaryText('');
     setExtracted([]);
+    setAiParams([]);
+    setAiRejected([]);
+    setAiError(null);
     setChecked(new Set());
     setLastApplied(null);
     setConflictChoice({});
@@ -414,7 +472,7 @@ export function TzTextInput({
         />
       )}
 
-      {/* Char counter + 50k warning */}
+      {/* Char counter + 50k warning + AI button */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 4 }}>
         <span style={{
           fontSize: 10,
@@ -424,19 +482,52 @@ export function TzTextInput({
           {charCount.toLocaleString('cs-CZ')} / {TZ_MAX_CHARS.toLocaleString('cs-CZ')} znaků
           {overCap && ' — překračuje limit, zkraťte prosím text'}
         </span>
+        {combinedText.trim().length > 0 && !overCap && (
+          <button
+            onClick={fetchAiParams}
+            disabled={aiLoading}
+            title="AI doplní jen pole, která regex nenašel — každý návrh s citací z TZ, spolehlivost 70 %. Nikdy nepřepisuje již nalezené hodnoty."
+            style={{
+              padding: '3px 10px', fontSize: 10, fontWeight: 600,
+              background: aiLoading ? 'var(--r0-slate-200)' : 'var(--r0-violet, #7c3aed)',
+              color: aiLoading ? 'var(--r0-slate-400)' : 'white',
+              border: 'none', borderRadius: 4,
+              cursor: aiLoading ? 'wait' : 'pointer', fontFamily: 'inherit',
+            }}
+          >
+            {aiLoading ? 'AI hledá…' : '✨ Doplnit pomocí AI'}
+          </button>
+        )}
       </div>
 
-      {extracted.length > 0 && (
+      {/* AI status lines — honest counts, no silent drops */}
+      {aiError && (
+        <div style={{
+          marginTop: 4, padding: '3px 6px', fontSize: 10,
+          background: 'var(--r0-red-bg, #fef2f2)', border: '1px solid var(--r0-red-border, #fecaca)',
+          borderRadius: 3, color: 'var(--r0-red-text, #991b1b)',
+        }}>
+          {aiError}
+        </div>
+      )}
+      {(aiParams.length > 0 || aiRejected.length > 0) && !aiError && (
+        <div style={{ marginTop: 4, fontSize: 10, color: 'var(--r0-slate-500)' }}>
+          ✨ AI: {aiParams.length} návrhů (spolehlivost 70 %, ověřte citace)
+          {aiRejected.length > 0 && ` · ${aiRejected.length} odmítnuto (bez citace / mimo rozsah / už nalezeno)`}
+        </div>
+      )}
+
+      {effectiveExtracted.length > 0 && (
         <div style={{ marginTop: 6 }}>
           <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--r0-slate-600)', marginBottom: 4 }}>
-            Nalezeno ({extracted.length} parametrů):
+            Nalezeno ({effectiveExtracted.length} parametrů):
             {(triage.ignored.length + triage.conflicts.length) > 0 && (
               <span style={{ marginLeft: 6, fontWeight: 400, color: 'var(--r0-slate-400)' }}>
                 {triage.applicable.length} použitelných · {triage.conflicts.length} konflikt · {triage.ignored.length} přeskočeno
               </span>
             )}
           </div>
-          {extracted.map((p, i) => {
+          {effectiveExtracted.map((p, i) => {
             const isApplicable = applicableNames.has(p.name);
             const ignoredEntry = triage.ignored.find(x => x.param.name === p.name);
             const conflictEntry = triage.conflicts.find(x => x.param.name === p.name);
@@ -450,9 +541,26 @@ export function TzTextInput({
                 <input type="checkbox" checked={checked.has(p.name) && isApplicable}
                   disabled={!isApplicable && !conflictEntry}
                   onChange={() => toggleParam(p.name)} style={{ margin: 0 }} />
-                <span style={{ opacity: p.confidence >= 1 ? 1 : 0.7 }}>
+                <span
+                  style={{ opacity: p.confidence >= 1 ? 1 : 0.7 }}
+                  title={p.source === 'ai' ? `Citace z TZ: „${p.matched_text}"` : undefined}
+                >
                   {p.label_cs}
                 </span>
+                {p.source === 'ai' && (
+                  <span
+                    title={`Citace z TZ: „${p.matched_text}"`}
+                    style={{
+                      fontSize: 8, fontWeight: 700, padding: '0 4px',
+                      background: 'var(--r0-violet-bg, #f5f3ff)',
+                      border: '1px solid var(--r0-violet-border, #ddd6fe)',
+                      borderRadius: 3, color: 'var(--r0-violet, #7c3aed)',
+                      cursor: 'help',
+                    }}
+                  >
+                    AI
+                  </span>
+                )}
                 {conflictEntry && (
                   <select
                     value={String(conflictChoice[p.name] ?? '')}
