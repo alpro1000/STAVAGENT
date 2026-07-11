@@ -1,7 +1,10 @@
 # tz-passport-json — requirements
 
-**Status:** polovina A RATIFIKOVÁNA (interview 2026-07-07); polovina B čeká na
-vlastní B-interview (otázky 2+3 níže explicitně deferred).
+**Status:** polovina A RATIFIKOVÁNA (interview 2026-07-07) a živě ověřena na
+produkci (2026-07-11, +51 % aggregate catch); polovina B RATIFIKOVÁNA
+(B-interview 2026-07-11 — Q2 sibling-assembler v Core, Q3 LLM-seam zapojit +
+host-vision notes-gate; plné rozhodnutí = **ADR-008**, Gate 0 audit =
+`halfB-gate0-audit.md`).
 **Vznik:** 2026-07-07, z živého MCP E2E testu SO 202 Žalmanov (výkres 202/17
 Tvar NK + soupis E_Soupis_skupiny_MOSTY_PHS.xlsx). Alexander ručně sestavil
 passport-JSON z TZ — uložen jako kanonický příklad

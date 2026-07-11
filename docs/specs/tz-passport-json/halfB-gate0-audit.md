@@ -1,6 +1,8 @@
 # tz-passport half-B — Gate 0 audit (extraction infra, read-only)
 
-> **Datum:** 2026-07-11 · **Status:** audit hotov, čeká B-INTERVIEW (Q2/Q3 + upřesnění)
+> **Datum:** 2026-07-11 · **Status:** audit hotov; **B-INTERVIEW RATIFIKOVÁNO
+> 2026-07-11 (Alexander: «Согласен со всем») — všech 5 doporučení přijato,
+> rozhodnutí zafixována v ADR-008** (`docs/architecture/decisions/`)
 > **Cíl half-B:** dokumenty (TZ PDF + výkresy + soupis XLSX) → `BridgePassport` JSON
 > (single-source `app/models/bridge_passport.py`), který half-A už konzumuje
 > (živě ověřeno 2026-07-11: +51 % aggregate catch na SO-202).
