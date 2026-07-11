@@ -34,6 +34,7 @@ import kbResearchRoutes from './src/routes/kb-research.js';
 import registryRoutes from './src/routes/registry.js';
 import relinkRoutes from './src/routes/relink.js';
 import plannerAdvisorRoutes from './src/routes/planner-advisor.js';
+import tzAiExtractRoutes from './src/routes/tz-ai-extract.js';
 import plannerVariantsRoutes from './src/routes/planner-variants.js';
 import engineRoutes from './src/routes/engine.js';
 // soupisRoutes removed — Soupis prací moved to Portal
@@ -194,6 +195,7 @@ app.use('/api/kb/research', kbResearchRoutes);
 app.use('/api/v1/registry', registryRoutes);
 app.use('/api/relink', relinkRoutes);
 app.use('/api/planner-advisor', plannerAdvisorRoutes);
+app.use('/api/tz-ai-extract', tzAiExtractRoutes);
 app.use('/api/planner-variants', plannerVariantsRoutes);
 // Canonical engine delegate (SSOT): POST /api/calculate + /api/classify.
 // Thin wrappers over @stavagent/monolit-shared (planElement / classifyElement)

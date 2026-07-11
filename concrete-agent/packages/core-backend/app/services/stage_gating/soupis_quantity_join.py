@@ -26,6 +26,8 @@ Design + decisions: ``docs/specs/doc_to_quantified_elements/design.md``.
 
 from __future__ import annotations
 
+import re
+import unicodedata
 from typing import Callable, Optional
 
 from .volume_geometry import check_volume_geometry
@@ -50,6 +52,40 @@ _KEYWORD_CONF_CAP = 0.9
 
 def _is_m3(unit: Optional[str]) -> bool:
     return (unit or "").strip().lower().replace(" ", "") in {"m3", "m³", "m^3"}
+
+
+def _is_tonne(unit: Optional[str]) -> bool:
+    return (unit or "").strip().lower() in {"t", "tuna", "tun"}
+
+
+def _is_kg(unit: Optional[str]) -> bool:
+    return (unit or "").strip().lower() == "kg"
+
+
+def _is_bm(unit: Optional[str]) -> bool:
+    return (unit or "").strip().lower() in {"m", "bm", "mb"}
+
+
+def _norm(text: Optional[str]) -> str:
+    """Lowercase + strip diacritics — mirrors classifier._normalize so the
+    keyword regexes below match real soupis wording (VÝZTUŽ, PŘEDPÍNACÍ, …)."""
+    decomposed = unicodedata.normalize("NFD", (text or "").lower())
+    return "".join(ch for ch in decomposed if unicodedata.category(ch) != "Mn")
+
+
+# Mass-line kind detection (half-B Gate 3 増: quantities beyond m³). PRESTRESS is
+# checked FIRST — «výztuž předpínací» matches both stems and the strands must
+# never be double-counted into the passive rebar mass.
+_PRESTRESS_RE = re.compile(r"predpin|predpjat|kabel|lana|strand|y\s*1860")
+_REBAR_RE = re.compile(r"vyztuz|armatur|betonarsk|b\s*500")
+
+
+def _mass_kind(desc_norm: str) -> Optional[str]:
+    if _PRESTRESS_RE.search(desc_norm):
+        return "prestress"
+    if _REBAR_RE.search(desc_norm):
+        return "rebar"
+    return None
 
 
 def _classify_etype(classify: Callable, name: str, object_code, object_type) -> dict:
@@ -128,39 +164,66 @@ def map_soupis_to_elements(
     """
     items = (parsed_budget or {}).get("items", []) or []
 
-    # 1. Soupis beton-m3 buckets keyed by element_type.
+    # 1. Soupis buckets keyed by element_type. Volume (m³) is the original P1
+    #    field; rebar/prestress masses (t/kg) + rimsa length (bm) are the
+    #    half-B Gate 3 additive increment — same discipline, separate fields.
     buckets: dict = {}
+    mass_buckets: dict = {}
     for it in items:
-        if not _is_m3(it.get("unit")):
-            continue  # bednění (m2) / výztuž (t) are other fields — later increment
+        unit = it.get("unit")
         desc = (it.get("description") or "").strip()
         if not desc:
             continue
+        is_m3 = _is_m3(unit)
+        kind: Optional[str] = None
+        if not is_m3:
+            if _is_tonne(unit) or _is_kg(unit):
+                kind = _mass_kind(_norm(desc))
+            elif _is_bm(unit):
+                kind = "length_bm"
+            if kind is None:
+                continue  # bednění m² etc. — other fields, later increment
         # NB: a soupis line code is an OTSKP/URS code, NOT an SO-xxx object code —
         # pass object_code=None so the classifier's bridge upgrade keys only on
         # the authoritative object_type.
         cls = _classify_etype(classify, desc, None, object_type)
         etype = cls.get("element_type", "jine")
         if etype == "jine":
-            continue  # unmatched m3 line (výkop / zásyp / …) — not element beton
+            continue  # unmatched line (výkop / zásyp / …) — not element-bound
         try:
             qty = float(it.get("quantity") or 0)
         except (TypeError, ValueError):
             qty = 0.0
         if qty <= 0:
             continue
-        b = buckets.setdefault(etype, {"quantity": 0.0, "lines": [], "confidence": 1.0})
-        b["quantity"] += qty
         conf = float(cls.get("confidence") or 0.0)
-        b["confidence"] = min(b["confidence"], conf)
-        b["lines"].append({
+        line = {
             "code": (it.get("code") or "").strip(),
             "description": desc,
             "quantity": qty,
             "unit": (it.get("unit") or "").strip(),
             "classification_source": cls.get("classification_source"),
             "confidence": conf,
-        })
+        }
+        if is_m3:
+            b = buckets.setdefault(etype, {"quantity": 0.0, "lines": [], "confidence": 1.0})
+            b["quantity"] += qty
+            b["confidence"] = min(b["confidence"], conf)
+            b["lines"].append(line)
+            continue
+        if kind == "length_bm" and etype != "rimsa":
+            continue  # bm lines are only meaningful for římsy (svodidla etc. skip)
+        field = {
+            "rebar": "rebar_mass_kg",
+            "prestress": "prestress_strand_mass_kg",
+            "length_bm": "length_bm",
+        }[kind]
+        value = qty * 1000.0 if (kind in ("rebar", "prestress") and _is_tonne(unit)) else qty
+        mb = mass_buckets.setdefault(etype, {})
+        fb = mb.setdefault(field, {"value": 0.0, "lines": [], "confidence": 1.0})
+        fb["value"] += value
+        fb["confidence"] = min(fb["confidence"], conf)
+        fb["lines"].append(line)
 
     # 2. Classify the TZ elements + index by element_type (ambiguity detection).
     el_types: list = []
@@ -178,6 +241,22 @@ def map_soupis_to_elements(
         new_el["_source"] = dict(el.get("_source") or {})
         etype = el_types[idx]
         bucket = buckets.get(etype)
+
+        # Additive mass/length fields (rebar t→kg, prestress, rimsa bm) — only
+        # on an unambiguous single element of the type; same never-split rule.
+        if mass_buckets.get(etype) and len(by_type.get(etype, [])) == 1:
+            for field, fb in mass_buckets[etype].items():
+                new_el[field] = round(fb["value"], 3)
+                new_el["_source"][field] = {
+                    "source": "soupis",
+                    "evidence": "; ".join(
+                        f"{ln['code']} {ln['description']} qty={ln['quantity']} {ln['unit']}".strip()
+                        for ln in fb["lines"]
+                    ),
+                    "matched_by": f"element_type:{etype}",
+                    "confidence": min(_KEYWORD_CONF_CAP, fb["confidence"]),
+                    "n_lines": len(fb["lines"]),
+                }
 
         if bucket is None:
             # honest-blank — no soupis volume for this element_type

@@ -1921,8 +1921,12 @@ export const ELEMENT_TZ_COMPATIBILITY: Record<
   pruvlak: ['height_m', 'total_length_m', 'thickness_mm'],
 
   // ── Bridge deck / rigels (full bridge geometry relevant) ─────────────────
-  mostovkova_deska: [...BRIDGE_DECK_TZ_PARAMS],
-  rigel: [...BRIDGE_DECK_TZ_PARAMS],
+  // height_m added 2026-07-11: for mostovka it is the falsework height —
+  // CRITICAL per REQUIRED_FIELDS (skruž = 15-25 % of deck costs; the same
+  // gap class as bug passport-height-skruz, third occurrence). Without it
+  // the TZ-extracted height was triaged INCOMPATIBLE and silently dropped.
+  mostovkova_deska: [...BRIDGE_DECK_TZ_PARAMS, 'height_m'],
+  rigel: [...BRIDGE_DECK_TZ_PARAMS, 'height_m'],
 
   // ── Slab-like ceilings ───────────────────────────────────────────────────
   stropni_deska: ['height_m', 'thickness_mm', 'total_length_m'],

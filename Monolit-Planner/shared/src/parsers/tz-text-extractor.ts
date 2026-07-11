@@ -49,7 +49,7 @@ export interface ExtractedParam {
    *                    §5.5 says "drawing wins on conflict but confidence
    *                    drops to 0.85 from the regex 1.0".
    */
-  source: 'regex' | 'keyword' | 'heuristic' | 'smeta_line' | 'drawing';
+  source: 'regex' | 'keyword' | 'heuristic' | 'smeta_line' | 'drawing' | 'ai';
   /** Original matched text snippet */
   matched_text: string;
   /**
