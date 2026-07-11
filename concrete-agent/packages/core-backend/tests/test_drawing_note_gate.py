@@ -88,3 +88,23 @@ def test_element_mode_unchanged_by_the_new_params():
     out = _call(source="řez A-A", area_m2=100.0,
                 dxf_rooms=[{"cislo": "101", "nazev": "sklad", "area_m2": 100.0}])
     assert out["verdict"] == "VISION_ONLY_OVERIT"       # area matches but no label link...
+
+def test_single_claim_fully_confirmed_is_verified_not_downgraded():
+    """Amazon Q catch on #1494 (observation real, its fix wasn't): a
+    falsework-only submission with a confirmed keyword is a fully-grounded
+    claim set — 0.90 VERIFIED with a partial fragment, never 0.60."""
+    out = _call(source=_SRC, note_text=_NOTE, falsework_technology="fixed_scaffolding")
+    assert out["verdict"] == "VERIFIED"
+    assert out["confidence"] == 0.90
+    assert out["construction_process"] == {
+        "deck_pour_stages_source": _SRC,
+        "falsework_technology": "fixed_scaffolding",
+    }
+    out2 = _call(source=_SRC, note_text=_NOTE, pour_stages=3)
+    assert out2["verdict"] == "VERIFIED"
+    assert out2["construction_process"]["deck_pour_stages"] == 3
+
+
+def test_note_with_no_claims_at_all_is_rejected():
+    out = _call(source=_SRC, note_text=_NOTE)
+    assert out["verdict"] == "REJECTED_UNGROUNDED"   # nothing claimed = nothing verified

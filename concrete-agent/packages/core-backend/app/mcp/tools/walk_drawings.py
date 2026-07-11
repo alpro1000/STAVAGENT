@@ -162,7 +162,12 @@ def _validate_construction_note(
                 "overit": True, "_source": source, "problems": problems,
                 "note": "host claim contradicts the verbatim note text"}
 
-    both_confirmed = bool(stages_ok) and bool(fw_ok)
+    # «Confirmed» = every claim the host actually SUBMITTED checks out against
+    # the note text (None = not claimed, not a failure). A falsework-only
+    # submission with a confirmed keyword is a fully-grounded claim set — it
+    # must not be downgraded for not also claiming a stage count.
+    provided = [ok for ok in (stages_ok, fw_ok) if ok is not None]
+    both_confirmed = bool(provided) and all(provided)
     tz_corroborates = bool(tz_text) and (
         (pour_stages is not None and _note_confirms_stages(tz_text, int(pour_stages)))
         or (falsework_technology and _note_falsework(tz_text) == falsework_technology)
