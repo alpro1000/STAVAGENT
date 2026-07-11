@@ -26,6 +26,8 @@ def fake_classify(name, object_code=None, object_type=None):
         etype = "pilota"
     elif "oper" in n or "opěr" in n:
         etype = "operne_zdi"
+    elif "rims" in n or "říms" in n:
+        etype = "rimsa"
     elif "výkop" in n or "vykop" in n or "zásyp" in n or "zasyp" in n:
         etype = "jine"
     else:
@@ -170,3 +172,84 @@ def test_inputs_are_not_mutated():
 def test_empty_inputs_return_empty():
     assert map_soupis_to_elements(None, None, classify=fake_classify) == []
     assert map_soupis_to_elements({"items": []}, [], classify=fake_classify) == []
+
+
+# ── half-B Gate 3 増: masses (rebar/prestress) + rimsa length ─────────────────
+def test_rebar_tonnage_line_fills_rebar_mass_kg():
+    budget = _budget([
+        {"code": "27 33", "description": "Mostovka železobeton C35/45",
+         "unit": "m3", "quantity": 605},
+        {"code": "421 36", "description": "VÝZTUŽ MOSTOVKY Z OCELI B500B",
+         "unit": "t", "quantity": 468.886},
+    ])
+    elements = [{"name": "NK mostovka", "object_code": "SO-202",
+                 "volume_m3": None, "_source": _src_stub()}]
+    out = map_soupis_to_elements(budget, elements, classify=fake_classify)
+    el = out[0]
+    assert el["volume_m3"] == 605                      # volume path untouched
+    assert el["rebar_mass_kg"] == 468886.0             # t → kg
+    prov = el["_source"]["rebar_mass_kg"]
+    assert prov["source"] == "soupis"
+    assert "B500B" in prov["evidence"]
+    assert prov["confidence"] <= 0.9                   # keyword-tier cap
+
+
+def test_prestress_line_never_double_counts_into_rebar():
+    """«VÝZTUŽ PŘEDPÍNACÍ» matches both stems — prestress must win."""
+    budget = _budget([
+        {"code": "421 37", "description": "VÝZTUŽ MOSTOVKY PŘEDPÍNACÍ Y1860 KABELY",
+         "unit": "t", "quantity": 41.42},
+    ])
+    elements = [{"name": "NK mostovka", "object_code": "SO-202",
+                 "volume_m3": None, "_source": _src_stub()}]
+    out = map_soupis_to_elements(budget, elements, classify=fake_classify)
+    el = out[0]
+    assert el["prestress_strand_mass_kg"] == 41420.0
+    assert "rebar_mass_kg" not in el
+
+
+def test_plain_tonnage_line_without_keywords_is_skipped():
+    budget = _budget([
+        {"code": "x", "description": "Mostovka ocelové zábradlí",
+         "unit": "t", "quantity": 3.2},
+    ])
+    elements = [{"name": "NK mostovka", "object_code": "SO-202",
+                 "volume_m3": None, "_source": _src_stub()}]
+    out = map_soupis_to_elements(budget, elements, classify=fake_classify)
+    assert "rebar_mass_kg" not in out[0]
+    assert "prestress_strand_mass_kg" not in out[0]
+
+
+def test_masses_not_assigned_on_same_type_ambiguity():
+    budget = _budget([
+        {"code": "421 36", "description": "VÝZTUŽ MOSTOVKY B500B",
+         "unit": "t", "quantity": 100},
+    ])
+    elements = [
+        {"name": "NK mostovka levá", "object_code": "SO-202",
+         "volume_m3": None, "_source": _src_stub()},
+        {"name": "NK mostovka pravá", "object_code": "SO-202",
+         "volume_m3": None, "_source": _src_stub()},
+    ]
+    out = map_soupis_to_elements(budget, elements, classify=fake_classify)
+    assert all("rebar_mass_kg" not in el for el in out)  # never a silent split
+
+
+def test_bm_line_fills_length_only_for_rimsa():
+    budget = _budget([
+        {"code": "465 12", "description": "ŘÍMSA MONOLITICKÁ C30/37",
+         "unit": "bm", "quantity": 213},
+        {"code": "x", "description": "Mostovka odvodnění žlab",
+         "unit": "bm", "quantity": 213},
+    ])
+    elements = [
+        {"name": "Římsy", "object_code": "SO-202",
+         "volume_m3": None, "_source": _src_stub()},
+        {"name": "NK mostovka", "object_code": "SO-202",
+         "volume_m3": None, "_source": _src_stub()},
+    ]
+    out = map_soupis_to_elements(budget, elements, classify=fake_classify)
+    rimsa = next(e for e in out if e["name"] == "Římsy")
+    deck = next(e for e in out if e["name"] == "NK mostovka")
+    assert rimsa["length_bm"] == 213
+    assert "length_bm" not in deck  # bm lines only meaningful for římsy
