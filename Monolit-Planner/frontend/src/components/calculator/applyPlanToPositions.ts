@@ -699,8 +699,8 @@ export interface CompositeApplyContext {
  * Apply a COMPOSITE plan (parent + parts) to positions.
  *
  * Each structural part becomes its OWN set of work rows (beton / bednění /
- * výztuž / zrání / předpětí / podpěry) under the SAME `part_name` (the opěra =
- * one smeta line), tagged with `metadata.structural_part = part.label` so the
+ * výztuž / zrání / předpětí / podpěry) under the SAME `part_name` (the composite
+ * element = one smeta line), tagged with `metadata.structural_part = part.label` so the
  * Gate-4 `groupByStructuralPart` renders the part sub-level. The FIRST part's
  * beton REUSES the parent's existing beton row (retagged + re-qty'd to the
  * part volume); every other work row is a NEW sibling. Result: the parent is a
@@ -719,7 +719,7 @@ export async function applyCompositeToPositions(ctx: CompositeApplyContext): Pro
     return { ok: false, error: 'Composite plan has no parts' };
   }
 
-  const baseItemName = positionContext.part_name || composite.parent_label || 'Opěra';
+  const baseItemName = positionContext.part_name || composite.parent_label || 'Složený prvek';
   const calculatedAt = (monolitDataMeta.calculated_at as string) || new Date().toISOString();
 
   const createPayloads: Array<Record<string, unknown>> = [];

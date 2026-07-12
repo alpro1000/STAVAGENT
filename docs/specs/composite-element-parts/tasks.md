@@ -158,7 +158,8 @@ Fáze 1 (Gate 2+3) může jít na main před Fází 2 (Gate 4+5) — parita drž
 ## 7. Out of scope (pro tasks.md)
 
 - ❌ Plný obecný multiplicity-redesign (N různých prvků) — následek, ne cíl.
-- ❌ Pilíř jako druhý composite-typ (kalibrace částí pilíře) — follow-up spec.
+- ✅ ~~Pilíř jako druhý composite-typ~~ — **HOTOVO aditivně 2026-07-12** (design.md §5.7): 2 části dřík+hlavice, explicitní `volume_ratio` v šabloně, výběr po typu rodiče. Engine netknutý. Kalibrace podílů = data-swap follow-up (níže).
+- ⏳ Kalibrace `PIER_PART_TEMPLATE` + `PLACEHOLDER_PART_VOLUME_RATIOS` z reálných dat (VP4/SO-250/Žihle) — data-swap, neblokuje.
 - ❌ Automatická extrakce složení z výkresů/PDF.
 
 ---

@@ -287,6 +287,12 @@ export interface PartFormState {
   height_m: string;
   /** Optional formwork system override; empty = engine recommendation. */
   formwork_system_name: string;
+  /** Optional explicit relative volume share for ODHAD split (template-seeded).
+   *  When set it overrides the element_type-keyed placeholder map in
+   *  planComposite — used by templates whose part types are shared across
+   *  families (e.g. driky_piliru = opěra dřík AND pilíř tělo) to keep their
+   *  shares decoupled. Ignored once the part carries an explicit volume. */
+  volume_ratio?: number;
 }
 
 // ─── Scenario Snapshot ──────────────────────────────────────────────────────

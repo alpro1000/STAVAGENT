@@ -16,19 +16,33 @@ import { getSuitableSystemsForElement } from '@stavagent/monolit-shared';
 import type { CompositeOutput, CompositePartResult, StructuralElementType } from '@stavagent/monolit-shared';
 import type { PartFormState } from './types';
 import { ELEMENT_TYPES } from './types';
+import type { CompositeTemplateFamily } from './compositeParts';
 import { formatCZK, formatNum } from './helpers';
 
 interface Props {
   parts: PartFormState[];
   compositeResult: CompositeOutput | null;
+  /** Which template the parent element_type maps to (design.md §5.7). Drives the
+   *  seed button + the composite noun; null = manual-only (no template offered). */
+  templateFamily: CompositeTemplateFamily | null;
   addPart: (et: StructuralElementType, label?: string) => void;
   removePart: (id: string) => void;
   updatePart: (id: string, patch: Partial<PartFormState>) => void;
   seedAbutmentParts: () => void;
+  seedPierParts: () => void;
   clearParts: () => void;
   /** Present only when the calculator is bound to a position (linked mode). */
   onApplyComposite?: () => void;
   applyStatus?: 'idle' | 'saving' | 'saved' | 'error';
+}
+
+/** Copy that varies by parent type — opěra vs pilíř vs generic. */
+function familyCopy(family: CompositeTemplateFamily | null): {
+  noun: string; partsHint: string;
+} {
+  if (family === 'pier') return { noun: 'pilíř', partsHint: 'dřík · hlavice' };
+  if (family === 'abutment') return { noun: 'opěra', partsHint: 'dřík · úložný práh · závěrná zídka · křídla' };
+  return { noun: 'prvek', partsHint: 'strukturní části' };
 }
 
 /** Total money for a part = direct labor + every rental kept outside labor. */
@@ -46,9 +60,10 @@ const inputStyle: React.CSSProperties = {
 const numStyle: React.CSSProperties = { ...inputStyle, fontFamily: 'var(--r0-font-mono)', textAlign: 'right' };
 
 export default function CompositePartsPanel({
-  parts, compositeResult, addPart, removePart, updatePart,
-  seedAbutmentParts, clearParts, onApplyComposite, applyStatus,
+  parts, compositeResult, templateFamily, addPart, removePart, updatePart,
+  seedAbutmentParts, seedPierParts, clearParts, onApplyComposite, applyStatus,
 }: Props) {
+  const { noun, partsHint } = familyCopy(templateFamily);
   return (
     <div style={{
       marginBottom: 16, padding: 16, background: 'white',
@@ -69,17 +84,17 @@ export default function CompositePartsPanel({
       {parts.length === 0 ? (
         <div>
           <p style={{ fontSize: 12, color: 'var(--r0-slate-500)', lineHeight: 1.6, marginTop: 0 }}>
-            Rozložte opěru na strukturní části (dřík · úložný práh · závěrná zídka · křídla). Každá část má
+            Rozložte {noun} na strukturní části ({partsHint}). Každá část má
             vlastní bednění, takty a beton. Bez objemu části se rozdělí podle typových podílů (ODHAD), součet
             vždy odpovídá celkovému objemu.
           </p>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <button onClick={seedAbutmentParts} style={{
+            <button onClick={templateFamily === 'pier' ? seedPierParts : seedAbutmentParts} style={{
               fontSize: 12, padding: '6px 12px', borderRadius: 4, cursor: 'pointer', fontWeight: 600,
               border: '1px solid var(--r0-orange)', background: 'var(--r0-orange)', color: 'white',
               display: 'inline-flex', alignItems: 'center', gap: 4,
             }}>
-              <Layers size={14} /> Šablona opěry (4 části)
+              <Layers size={14} /> {templateFamily === 'pier' ? 'Šablona pilíře (2 části)' : 'Šablona opěry (4 části)'}
             </button>
             <button onClick={() => addPart('driky_piliru')} style={{
               fontSize: 12, padding: '6px 12px', borderRadius: 4, cursor: 'pointer',
@@ -197,7 +212,7 @@ export default function CompositePartsPanel({
                     );
                   })}
                   <tr style={{ borderTop: '2px solid var(--r0-slate-200)', fontWeight: 700 }}>
-                    <td style={{ padding: '6px 6px' }}>Σ opěra</td>
+                    <td style={{ padding: '6px 6px' }}>Σ {noun}</td>
                     <td style={{ padding: '6px 6px', textAlign: 'right', fontFamily: 'var(--r0-font-mono)' }}>{formatNum(compositeResult.total_volume_m3, 1)}</td>
                     <td />
                     <td />
@@ -241,7 +256,7 @@ export default function CompositePartsPanel({
                       : 'Aplikovat části do pozice'}
                   </button>
                   <div style={{ marginTop: 4, fontSize: 10, color: 'var(--r0-slate-400)' }}>
-                    Každá část se zapíše jako řádky práce pod opěrou (jedna smětní položka).
+                    Každá část se zapíše jako řádky práce; celý prvek zůstává jednou smětní položkou.
                   </div>
                 </div>
               )}

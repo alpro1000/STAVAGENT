@@ -130,6 +130,16 @@ Vstup (rodič + seznam částí: typ + [rozměry | nic]; + celkový objem)
 
 > **Gate 5 vstup (ratifikováno „po doporučení", revisit na Gate 5 pre-impl interview):** části se v kalkulátoru zadávají **ručním seznamem „přidat část"** (typ + opc. objem) — univerzální, bez nové data-závislosti, mirror principu „engine = generic aggregator". yaml-šablona opěry = pozdější convenience (pre-fill), NE blokuje Gate 5.
 
+### 5.7 Pilíř = druhý composite-typ (aditivní, engine netknutý) — ratifikováno 2026-07-12
+
+Mechanismus `planComposite` je **plně generický** (rodič + `parts[]`, žádná znalost „opěry"). Pilíř se přidává jako **druhá šablona**, čistě aditivně, bez zásahu do sdílené výpočetní vrstvy. Interview 2026-07-12 (Gate 0 recon → AskUserQuestion):
+
+- **Složení šablony pilíře = 2 části: dřík (`driky_piliru`) + hlavice (`rigel`).** Základ (`zaklady_piliru`) je **samostatná smětní položka**, NE část composite-prvku — symetricky s opěrou, jejíž šablona také vynechává základ (interview §0: „základ = samostatná položka"). Podložiskový blok pod ložiska taktéž mimo šablonu (samostatná položka).
+- **Typové podíly = placeholder, nesené EXPLICITNÍM `volume_ratio` v šabloně** (ne přes sdílenou `PLACEHOLDER_PART_VOLUME_RATIOS` mapu). Důvod: `driky_piliru` je **sdílený** mezi opěrou (dřík) a pilířem (tělo) — kdyby pilíř bral podíl z mapy, jeho relativní váha by se svázala s opěrovým `driky_piliru: 0.45` a budoucí kalibrace jednoho by tiše hnula druhým. Explicitní `volume_ratio` v šabloně (pole `CompositePartInput.volume_ratio` už existuje, `planComposite.ratioFor` ho preferuje) **dekopluje** obě šablony. Placeholder: dřík ~0.75 / hlavice ~0.25 (dominantní vysoký dřík) — kalibrace VP4/SO-250/Žihle = data-swap follow-up, NEblokuje.
+- **Výběr šablony „po typu rodiče":** nabízená šablona i panel se řídí `element_type` rodiče (aktuální formulář) — `opery_ulozne_prahy` → šablona opěry (4 části), `driky_piliru` → šablona pilíře (2 části). Copy panelu **zneutralizována** z „opěra"-specifické na „složený prvek" (Σ prvek, „pod prvkem", „Rozložte prvek"). Panel se auto-otevře pro obě rodičovské rodiny; jednou existující seznam částí ho drží otevřený (dnešní gate `compositeActive`).
+- **Domov šablony = frontend const** (`compositeParts.ts`, mirror `ABUTMENT_PART_TEMPLATE`), NE `element_rules` yaml. ⚠️ **Poznámka k §5.6/§11:** ratifikovaná věta „single-source sady částí = aditivní blok v element_rules yaml + gen pipeline" se ve Fázi 2 **nakonec neimplementovala** — opěrová šablona shippla jako frontend const. Pilíř drží **konzistenci se shipnutou realitou** (const vedle opěry), ne s aspirační poznámkou; yaml-single-source zůstává otevřený follow-up pro OBĚ šablony, pokud přibude třetí konzument (MCP composite šablony).
+- **Engine/parita:** `composite-planner.ts`, `planProject`, `PlannerInput` **netknuté** → všechny goldeny byte-identické; opěrová šablona beze změny chování (nové pole `volume_ratio` je optional, opěrové části ho nenesou → mapa-cesta jako dnes).
+
 ---
 
 ## 6. Failure modes
@@ -205,3 +215,4 @@ Vstup (rodič + seznam částí: typ + [rozměry | nic]; + celkový objem)
 | Date | Version | Changes |
 |---|---|---|
 | 2026-06-23 | 0.1 | Initial design — varianta „b" + ODHAD ochrany + inkrementální rollout |
+| 2026-07-12 | 0.2 | §5.7 přidán — pilíř jako druhý composite-typ (2 části dřík+hlavice, základ samostatně, explicitní `volume_ratio` v šabloně dekopluje sdílený `driky_piliru`, výběr šablony po typu rodiče). Engine netknutý, aditivní. |

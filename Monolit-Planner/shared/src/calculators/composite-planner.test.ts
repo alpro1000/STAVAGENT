@@ -177,6 +177,51 @@ describe('planComposite — opěra template (Gate 5: dřík + práh + zídka + k
   });
 });
 
+describe('planComposite — pilíř template (design.md §5.7: dřík + hlavice, explicit ratios)', () => {
+  // Mirrors the frontend PIER_PART_TEMPLATE: 2 ODHAD parts whose split is driven
+  // by EXPLICIT volume_ratio (0.75 / 0.25), NOT the shared element_type map —
+  // that decouples the shared driky_piliru type from the opěra template.
+  const pierParent = (volume_m3: number): PlannerInput => ({ element_type: 'driky_piliru', volume_m3, ...base });
+  const pierTemplate = (): CompositePartInput[] => [
+    { element_type: 'driky_piliru', part_label: 'Dřík', volume_ratio: 0.75, ...base },
+    { element_type: 'rigel', part_label: 'Hlavice', volume_ratio: 0.25, ...base },
+  ];
+
+  it('all-ODHAD → split by EXPLICIT ratio 0.75/0.25 (not the shared map), Σ == total', () => {
+    const total = 100;
+    const out = planComposite({ parent: pierParent(total), parts: pierTemplate(), parent_label: 'PILÍŘ P2' });
+    expect(out.is_detailed).toBe(true);
+    expect(out.parts).toHaveLength(2);
+    expect(out.parts.map((p) => p.label)).toEqual(['Dřík', 'Hlavice']);
+    expect(out.parts.map((p) => p.volume_source)).toEqual(['odhad_family_ratio', 'odhad_family_ratio']);
+    // Explicit ratio wins: dřík 75 / hlavice 25. If the shared map leaked in
+    // (driky_piliru 0.45, rigel absent→1) the split would be ≈31/69, not 75/25.
+    expect(out.parts[0].volume_m3).toBeCloseTo(75, 6);
+    expect(out.parts[1].volume_m3).toBeCloseTo(25, 6);
+    for (const p of out.parts) {
+      expect(p.plan).toBeDefined();
+      expect(p.plan!.formwork.system.name).toBeTruthy();
+      expect(p.plan!.pour_decision.num_tacts).toBeGreaterThanOrEqual(1);
+    }
+    const sum = out.parts.reduce((s, p) => s + p.volume_m3, 0);
+    expect(Math.abs(sum - total)).toBeLessThan(1e-9);
+    expect(out.volume_closed).toBe(true);
+  });
+
+  it('exact dřík ignores its volume_ratio; hlavice absorbs the remainder', () => {
+    const total = 200;
+    const parts = pierTemplate();
+    parts[0].volume_m3 = 150; // dřík exact — ratio must be ignored
+    const out = planComposite({ parent: pierParent(total), parts });
+    expect(out.parts[0].volume_source).toBe('exact');
+    expect(out.parts[0].volume_m3).toBe(150);
+    expect(out.parts[1].volume_source).toBe('odhad_family_ratio');
+    expect(out.parts[1].volume_m3).toBeCloseTo(50, 6);
+    const sum = out.parts.reduce((s, p) => s + p.volume_m3, 0);
+    expect(Math.abs(sum - total)).toBeLessThan(1e-9);
+  });
+});
+
 describe('planComposite — one-element parity (AC 3.10)', () => {
   it('parent-only composite ≡ planProject([parent]) (zero delta)', () => {
     const p = parent(45);

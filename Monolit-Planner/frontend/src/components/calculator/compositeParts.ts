@@ -19,8 +19,17 @@ import type { PartFormState } from './types';
 
 let partSeq = 0;
 
-/** Build a fresh empty part row of the given type. */
-export function makePart(element_type: StructuralElementType, part_label: string): PartFormState {
+/** Which composite template applies to a given parent element_type (Gate 5 UI
+ *  is "parent-type driven", design.md §5.7). null = no template auto-offered. */
+export type CompositeTemplateFamily = 'abutment' | 'pier';
+
+/** Build a fresh empty part row of the given type. `volume_ratio` (optional) is
+ *  a template-seeded explicit ODHAD share — see PartFormState.volume_ratio. */
+export function makePart(
+  element_type: StructuralElementType,
+  part_label: string,
+  volume_ratio?: number,
+): PartFormState {
   return {
     id: `part-${Date.now().toString(36)}-${partSeq++}`,
     element_type,
@@ -30,6 +39,7 @@ export function makePart(element_type: StructuralElementType, part_label: string
     width_m: '',
     height_m: '',
     formwork_system_name: '',
+    ...(volume_ratio != null ? { volume_ratio } : {}),
   };
 }
 
@@ -45,9 +55,40 @@ export const ABUTMENT_PART_TEMPLATE: Array<{ element_type: StructuralElementType
   { element_type: 'kridla_opery', part_label: 'Křídla' },
 ];
 
+/**
+ * The pilíř template (design.md §5.7, ratified 2026-07-12): dřík (tělo) + hlavice.
+ * Základ (zaklady_piliru) is a SEPARATE smeta position, not a part — symmetric
+ * with the opěra template that also omits the foundation.
+ *
+ * Ratios are carried as EXPLICIT volume_ratio (not the shared element_type map)
+ * because driky_piliru is shared with the opěra template — an explicit share
+ * keeps the two decoupled so calibrating one never silently moves the other.
+ * ⚠️ PLACEHOLDER shares (dominant tall dřík), calibration = VP4/SO-250/Žihle data-swap.
+ */
+export const PIER_PART_TEMPLATE: Array<{ element_type: StructuralElementType; part_label: string; volume_ratio: number }> = [
+  { element_type: 'driky_piliru', part_label: 'Dřík', volume_ratio: 0.75 },  // PLACEHOLDER
+  { element_type: 'rigel', part_label: 'Hlavice', volume_ratio: 0.25 },      // PLACEHOLDER
+];
+
 /** Seed the 4-part opěra template (each part = ODHAD until the user fills it). */
 export function makeAbutmentTemplate(): PartFormState[] {
   return ABUTMENT_PART_TEMPLATE.map((t) => makePart(t.element_type, t.part_label));
+}
+
+/** Seed the 2-part pilíř template (dřík + hlavice; explicit placeholder shares). */
+export function makePierTemplate(): PartFormState[] {
+  return PIER_PART_TEMPLATE.map((t) => makePart(t.element_type, t.part_label, t.volume_ratio));
+}
+
+/**
+ * Map a parent element_type to the composite template family it belongs to
+ * (design.md §5.7 — the panel is offered/seeded by parent type). The classifier
+ * maps bridge "opěra" → opery_ulozne_prahy and bridge "pilíř" → driky_piliru.
+ */
+export function compositeTemplateFor(element_type: StructuralElementType): CompositeTemplateFamily | null {
+  if (element_type === 'opery_ulozne_prahy') return 'abutment';
+  if (element_type === 'driky_piliru') return 'pier';
+  return null;
 }
 
 /**
@@ -103,5 +144,8 @@ export function buildPartInput(part: PartFormState, parent: PlannerInput): Compo
   }
 
   if (part.formwork_system_name) input.formwork_system_name = part.formwork_system_name;
+  // Explicit template share (decouples shared part types); ignored by
+  // planComposite once the part carries an explicit volume.
+  if (part.volume_ratio != null) input.volume_ratio = part.volume_ratio;
   return input as unknown as CompositePartInput;
 }
