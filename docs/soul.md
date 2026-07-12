@@ -357,6 +357,25 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ## 9. Session log
 
+## 2026-07-12 — Session: composite #7 — pilíř jako druhý composite-typ (aditivní, engine netknutý)
+
+**Kontext:** Fronta-poznámka „composite-parts Gate 3+ (přerušeno na design-gate)" byla ZASTARALÁ — celá composite-element-parts (Gates 0–5) je smerged na main (PR #1412 Fáze 1 + PR #1422 Fáze 2, live-tested 2026-07-07). Jediné reálně zbývající = follow-upy z out-of-scope. Alexander vybral **pilíř jako 2. composite-typ**.
+
+**Rozhodnuto (Gate 0 recon → interview → aditivní implementace, engine `planComposite` netknutý):**
+- **Šablona pilíře = 2 části: dřík (`driky_piliru`) + hlavice (`rigel`).** Základ (`zaklady_piliru`) = samostatná smětní položka, NE část — symetricky s opěrovou šablonou (interview §0 „základ = samostatná položka"). Podložiskový blok taktéž mimo.
+- **Typové podíly = placeholder nesené EXPLICITNÍM `volume_ratio` v šabloně** (dřík 0.75 / hlavice 0.25), NE přes sdílenou `PLACEHOLDER_PART_VOLUME_RATIOS` mapu — protože `driky_piliru` je sdílený s opěrou; explicitní ratio dekopluje obě šablony (budoucí kalibrace jedné nehne druhou). Nové optional pole `PartFormState.volume_ratio` + `buildPartInput` ho forwarduje; `planComposite.ratioFor` ho už preferuje (engine beze změny). Kalibrace VP4/SO-250/Žihle = data-swap follow-up.
+- **Výběr šablony „po typu rodiče":** `compositeTemplateFor(element_type)` → `opery_ulozne_prahy`=abutment / `driky_piliru`=pier / else null. `showCompositePanel` + seed-tlačítko + copy panelu se řídí rodičem; copy zneutralizována z „opěra"-specifické na „složený prvek / pilíř" (Σ {noun}, „Rozložte {noun}", apply-note bez deklinace). `applyPlanToPositions` fallback item-name 'Opěra'→'Složený prvek'.
+- **Domov šablony = frontend const** (`PIER_PART_TEMPLATE` vedle `ABUTMENT_PART_TEMPLATE` v `compositeParts.ts`) — konzistence se SHIPNUTOU realitou. ⚠️ design.md §5.6/§11 ratifikovaly „single-source v element_rules yaml", ale opěrová šablona shippla jako frontend const → pilíř drží tuto realitu, yaml-single-source = otevřený follow-up pro OBĚ šablony (až přibude 3. konzument, např. MCP composite).
+
+**Odmítnuto:** foundation jako část pilíře (interview: samostatná položka, symetrie s opěrou); ratios přes sdílenou mapu (coupling driky_piliru mezi šablonami); zvláštní „Šablona pilíře" tlačítko VEDLE opěrového bez ohledu na typ (interview: po typu rodiče, míň tlačítek).
+
+**Testy:** shared **1427** (+2: pilíř all-ODHAD explicit-ratio 75/25 + exact-dřík-hlavice-residual — discriminační: kdyby leakla mapa, split by byl ≈31/69) · frontend `compositeParts.test.ts` **+7** (compositeTemplateFor mapa · makePierTemplate · abutment ratio-free parita · buildPartInput ratio-forward/omit) · gate5 9 bez regrese · tsc + vite build čisté. Engine/goldeny byte-identické (composite-planner.ts netknutý).
+
+**Otevřené otázky / fronta:** live-verifikace na kalkulator.stavagent.cz po deployi (šablona pilíře na reálné pozici → dřík+hlavice, ODHAD 75/25, Aplikovat → řádky pod jednou položkou); kalibrace `PIER_PART_TEMPLATE` + `PLACEHOLDER_PART_VOLUME_RATIOS` z reálných dat (data-swap); yaml-single-source obou šablon (až 3. konzument). Zbytek fronty beze změny: most pasport→pozice+TOV, half-B live-verify, monolith #1472, rate 30-vs-42.5 (čeká domain GO).
+
+**Co dál:** commit (design / kód+testy / soul) na `claude/stavagent-session-init-udi5oc`; PR až na pokyn Alexandra.
+
+
 ## 2026-07-11 — Session: xhigh code-review vlastního #1495 → 11 fixů (#1496 merged)
 
 **Rozhodnuto:** Po mergi #1495 spuštěn xhigh self-review (10 finder-úhlů → ~55 kandidátů → dedup → verifikace čtením kódu; verifier-subagenti spadli na Fable-5 limitech, dokončeno ručně na opus-4-8). 15 nálezů, **11 opraveno v #1496** (correctness-first, každý s regresním testem). **Klíčové fixy:** (1) `construction_process` injektován SKRZ `assemble_bridge_passport` (single emit-point) místo post-validate splice → malformed fragment = typed `assembly_invalid`, ne «úspěch» s nevalidním pasportem; gaps se čistí PER-FIELD (falsework-only fragment nechá gap na `deck_pour_stages`). (2) blokující Vertex fallback → `asyncio.to_thread` (jinak murky-TZ zablokuje event loop na Cloud Run). (3) chunked `_LLM` swap přes await → task-local `ContextVar` (async-safe, žádná race; VEŘEJNÁ signatura tulu čistá — parametr-seam rozbil JSON-schema tulu, porušení MCP authoring rule). (4) LLM gate: explicitní `TZ_LLM_FALLBACK=0` vypne i na Cloud Run (kill-switch), gate na `VERTEX_AVAILABLE`, dict-tolerance preferuje `elements` klíč. (5) soupis s 0 items → typed `soupis_parse_failed`. (6) `bridge_passport_store.save()` vrací durability bool → `stored=False` při memory-only fallbacku; deepcopy proti aliasingu. (7) manifest `writes_state=True`+`DRAFT_ONLY`. (8) docs: `tz_filename` = SO-code detection, CLAUDE.md TL;DR 21→22. Testy: +5 golden regresí + nový `test_extract_tz_llm_seam.py` (5); lokálně 126 passed (jen bcrypt-only fail, CI-covered). Amazon Q na #1496: čistý review, «ready for merge».
