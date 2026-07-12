@@ -32,7 +32,7 @@ import type { AIAdvisorResult, DocSuggestion, DocSuggestionsResponse, FormState,
 import { DEFAULT_FORM } from './types';
 import { plannerVariantsAPI } from '../../services/api';
 import { applyPlanToPositions, applyCompositeToPositions } from './applyPlanToPositions';
-import { buildPartInput, makePart, makeAbutmentTemplate } from './compositeParts';
+import { buildPartInput, makePart, makeAbutmentTemplate, makePierTemplate } from './compositeParts';
 
 const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
 
@@ -254,6 +254,7 @@ export default function useCalculator() {
     setParts(prev => prev.map(p => (p.id === id ? { ...p, ...patch } : p)));
   }, []);
   const seedAbutmentParts = useCallback(() => { setParts(makeAbutmentTemplate()); }, []);
+  const seedPierParts = useCallback(() => { setParts(makePierTemplate()); }, []);
   const clearParts = useCallback(() => { setParts([]); }, []);
 
   // BUG #11 fix (2026-05-14, audit Top-10 #8): wire getSmartDefaults() into
@@ -1681,7 +1682,7 @@ export default function useCalculator() {
 
     // Composite parts (Fáze 2 #7 Gate 5)
     parts, compositeActive, compositeResult,
-    addPart, removePart, updatePart, seedAbutmentParts, clearParts,
+    addPart, removePart, updatePart, seedAbutmentParts, seedPierParts, clearParts,
     handleApplyComposite,
 
     // Misc

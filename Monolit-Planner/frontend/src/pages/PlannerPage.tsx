@@ -13,6 +13,7 @@ import PortalBreadcrumb from '../components/PortalBreadcrumb';
 import CalculatorResult from '../components/calculator/CalculatorResult';
 import CalculatorSidebar from '../components/calculator/CalculatorSidebar';
 import CompositePartsPanel from '../components/calculator/CompositePartsPanel';
+import { compositeTemplateFor } from '../components/calculator/compositeParts';
 import HelpPanel from '../components/calculator/HelpPanel';
 import useCalculator from '../components/calculator/useCalculator';
 import { formatCZK, formatNum } from '../components/calculator/helpers';
@@ -173,13 +174,15 @@ export default function PlannerPage() {
     handleCalculate, handleCompare, handleApplyToPosition,
     autoClassification, update,
     parts, compositeActive, compositeResult,
-    addPart, removePart, updatePart, seedAbutmentParts, clearParts,
+    addPart, removePart, updatePart, seedAbutmentParts, seedPierParts, clearParts,
     handleApplyComposite,
   } = calc;
 
-  // Composite panel is offered for the opěra family (its template) or once the
-  // user has already started a parts list. Existence of the list = the gate.
-  const showCompositePanel = form.element_type === 'opery_ulozne_prahy' || compositeActive;
+  // Composite panel is offered by PARENT type (opěra → 4-part, pilíř → 2-part;
+  // design.md §5.7) or once the user has already started a parts list. Existence
+  // of the list = the gate.
+  const templateFamily = compositeTemplateFor(form.element_type);
+  const showCompositePanel = templateFamily !== null || compositeActive;
 
   return (
     <div className="r0-app">
@@ -425,10 +428,12 @@ export default function PlannerPage() {
             <CompositePartsPanel
               parts={parts}
               compositeResult={compositeResult}
+              templateFamily={templateFamily}
               addPart={addPart}
               removePart={removePart}
               updatePart={updatePart}
               seedAbutmentParts={seedAbutmentParts}
+              seedPierParts={seedPierParts}
               clearParts={clearParts}
               onApplyComposite={handleApplyComposite}
               applyStatus={applyStatus}
