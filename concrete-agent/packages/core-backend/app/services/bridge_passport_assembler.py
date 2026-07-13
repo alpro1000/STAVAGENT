@@ -87,11 +87,17 @@ def assemble_bridge_passport(
     # ── quantities (stage 3): soupis join on the classifier axis ─────────────
     # A BridgePassport is PER-SO; pass the object's SO code so a whole-stavba
     # soupis is filtered to THIS construction object, never summed across every SO
-    # (bug passport-soupis-join-whole-stavba).
+    # (bug passport-soupis-join-whole-stavba). Passport-path join semantics:
+    # same-type TZ elements collapse into one key here anyway, so the bucket is
+    # assigned once (collapse_same_type — live: Opěry+Prahy+Křídla ambiguity lost
+    # abutments 557.851); and soupis buckets with no TZ element still become items
+    # (emit_soupis_only — live: přechodové desky + podkladní beton, ~20 % of the
+    # object's concrete, silently dropped).
     quantified = map_soupis_to_elements(
         parsed_budget, tz_elements, geometry_tz,
         classify=classify, object_type=object_type,
         so_code=obj.get("object_code"),
+        collapse_same_type=True, emit_soupis_only=True,
     ) if parsed_budget else list(tz_elements)
     if not parsed_budget:
         gaps.append("quantities: no soupis provided — all elements NEPOČÍTÁNO downstream")
