@@ -712,11 +712,12 @@ def _extract_geometry(full_text: str) -> dict:
     else:
         needs_verify.append("cross_section_type")
 
+    # Additive OPTIONAL field — its absence is carried by the empty list (and the
+    # assembler's honest gap), NOT by needs_verify, so the core-geometry confidence
+    # signal («nothing needs verify») stays meaningful.
     deck_heights = _deck_heights_over_terrain(full_text)
     if deck_heights:
         src["deck_heights_over_terrain_m"] = _geo_src(full_text, _HEIGHT_OVER_TERRAIN_RE.search(full_text), 0.9)
-    else:
-        needs_verify.append("deck_heights_over_terrain_m")
 
     continuity, cmA = _first_keyword(full_text, _SYS_CONTINUITY)
     casting, cmB = _first_keyword(full_text, _SYS_CASTING)
