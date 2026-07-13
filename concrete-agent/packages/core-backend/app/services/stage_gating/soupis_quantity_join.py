@@ -73,6 +73,13 @@ def _norm(text: Optional[str]) -> str:
     return "".join(ch for ch in decomposed if unicodedata.category(ch) != "Mn")
 
 
+def _norm_so(code: Optional[str]) -> str:
+    """Canonicalize an SO / object code for equality — «SO 202», «SO-202»,
+    «SO202» all compare equal. Used to filter a whole-stavba soupis to the
+    passport's construction object."""
+    return re.sub(r"[\s\-]+", "", (code or "").strip().upper())
+
+
 # Mass-line kind detection (half-B Gate 3 増: quantities beyond m³). PRESTRESS is
 # checked FIRST — «výztuž předpínací» matches both stems and the strands must
 # never be double-counted into the passive rebar mass.
@@ -146,23 +153,41 @@ def map_soupis_to_elements(
     *,
     classify: Callable,
     object_type: Optional[str] = None,
+    so_code: Optional[str] = None,
 ) -> list:
     """Return a NEW element list with ``volume_m3`` filled from the soupis.
 
     Args:
         parsed_budget: ``parse_construction_budget`` output — ``{"items": [...]}``
-            where each item is ``{code, description, unit, quantity, ...}``.
+            where each item is ``{code, description, unit, quantity, object_code?}``.
         tz_elements: ``extract_tz_fields`` element list — each
             ``{name, object_code, concrete_class, volume_m3=None, _source}``.
         geometry: ``extract_tz_fields`` ``object["geometry"]`` block, or None.
         classify: deterministic ``element_type`` classifier (injected).
         object_type: authoritative object type threaded by the orchestrator
             ('bridge' | 'retaining_wall' | 'building'), or None.
+        so_code: the passport's SO / construction-object code (e.g. "SO 202"). A
+            BridgePassport is PER-SO, but a real soupis is the WHOLE stavba (many
+            ``<objekt>`` sections). When given, the join is restricted to soupis
+            lines whose ``object_code`` matches — otherwise quantities sum across
+            every SO (bug `passport-soupis-join-whole-stavba`: deck ×3.2, piers
+            ×20). No-op when the soupis carries no SO tags (untagged format).
 
     The input dicts are never mutated — each element is shallow-copied and its
     ``_source`` extended with a ``volume_m3`` provenance leaf.
     """
     items = (parsed_budget or {}).get("items", []) or []
+
+    # Per-SO restriction (bug passport-soupis-join-whole-stavba). Only filter when
+    # the target SO is known AND the soupis actually tags lines with an object_code
+    # — a soupis format without SO tags degrades to the old whole-list behaviour
+    # (better than dropping every line to a false NEPOČÍTÁNO). Untagged lines in an
+    # otherwise-tagged soupis have an unknown SO → excluded from a per-SO join.
+    if so_code:
+        target = _norm_so(so_code)
+        tagged = [it for it in items if it.get("object_code")]
+        if tagged:
+            items = [it for it in tagged if _norm_so(it.get("object_code")) == target]
 
     # 1. Soupis buckets keyed by element_type. Volume (m³) is the original P1
     #    field; rebar/prestress masses (t/kg) + rimsa length (bm) are the

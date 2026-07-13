@@ -428,6 +428,14 @@ class OTSKPEstimateNormalizer:
             canonical_payload["source_ref"] = source_ref
         if sheet_name:
             canonical_payload["sheet_name"] = sheet_name
+        # object_code = the SO / construction-object of this line (XC4 <objekt>).
+        # Carried through verbatim (like source_ref/sheet_name — not a
+        # header-resolved column) so a per-SO consumer (the bridge-passport soupis
+        # join) can filter a whole-stavba soupis to one object
+        # (bug passport-soupis-join-whole-stavba). Absent on formats without it.
+        object_code = row.get("object_code")
+        if object_code:
+            canonical_payload["object_code"] = object_code
 
         description_text = canonical_payload.get("description", "")
         if self._is_section_row(description_text, first_value, canonical_payload):

@@ -205,6 +205,10 @@ def _normalize_items(items: list) -> list:
                 "quantity": item.get("quantity", item.get("mnozstvi", 0)),
                 "unit_price": item.get("unit_price", item.get("jc", item.get("jednotkova_cena", 0))),
                 "total_price": item.get("total_price", item.get("celkem", 0)),
+                # SO section of this line (XC4 <objekt><znacka>), when the parser
+                # captured it — lets a per-SO consumer filter a whole-stavba soupis
+                # (bug passport-soupis-join-whole-stavba). None on formats without it.
+                "object_code": item.get("object_code"),
             })
     return normalized
 

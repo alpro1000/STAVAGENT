@@ -85,9 +85,13 @@ def assemble_bridge_passport(
     gaps: list[str] = []
 
     # ── quantities (stage 3): soupis join on the classifier axis ─────────────
+    # A BridgePassport is PER-SO; pass the object's SO code so a whole-stavba
+    # soupis is filtered to THIS construction object, never summed across every SO
+    # (bug passport-soupis-join-whole-stavba).
     quantified = map_soupis_to_elements(
         parsed_budget, tz_elements, geometry_tz,
         classify=classify, object_type=object_type,
+        so_code=obj.get("object_code"),
     ) if parsed_budget else list(tz_elements)
     if not parsed_budget:
         gaps.append("quantities: no soupis provided — all elements NEPOČÍTÁNO downstream")
