@@ -104,6 +104,63 @@ def test_no_budget_means_elements_emitted_without_quantities():
     assert all("volume_m3" not in it for it in p["quantities"]["items"])
 
 
+def test_duplicate_elements_collapse_to_one_item_per_key():
+    """live SO-202 regress: 3 deck-name spans became 3 superstructure_deck items
+    (deck ×3 in the calc). The assembler must emit ONE item per passport key."""
+    tz = _tz_fields()
+    tz["elements"] = [
+        {"name": "Nosná konstrukce", "object_code": "SO-202", "concrete_class": "C35/45"},
+        {"name": "mostovka", "object_code": "SO-202", "concrete_class": "C35/45"},
+        {"name": "NK", "object_code": "SO-202", "concrete_class": "C35/45"},
+    ]
+    p = assemble_bridge_passport(tz, None, classify=fake_classify)
+    keys = [it["element"] for it in p["quantities"]["items"]]
+    assert keys.count("superstructure_deck") == 1
+    assert len(keys) == len(set(keys))                 # no duplicate keys at all
+    # concretes deduped too
+    assert sum(1 for c in p["materials_and_standards"]["concretes"]
+               if c["use"] == "superstructure_deck") == 1
+
+
+def test_split_soupis_quantities_merge_additively_on_one_key():
+    """Two soupis lines for the deck (e.g. trámy + příčníky) sum into one item's
+    volume — additive merge, not overwrite, not duplicate."""
+    tz = _tz_fields()
+    tz["elements"] = [
+        {"name": "Nosná konstrukce — trámy", "object_code": "SO-202",
+         "concrete_class": "C35/45", "volume_m3": 2535.668},
+        {"name": "Nosná konstrukce — příčníky", "object_code": "SO-202",
+         "concrete_class": "C35/45", "volume_m3": 162.273},
+    ]
+    p = assemble_bridge_passport(tz, None, classify=fake_classify)
+    decks = [it for it in p["quantities"]["items"] if it["element"] == "superstructure_deck"]
+    assert len(decks) == 1
+    assert decks[0]["volume_m3"] == pytest.approx(2697.941)
+
+
+def test_deck_heights_from_tz_text_build_geometry_decks():
+    """live SO-202 bug #4: «výška nad terénem» is in the TZ text — the assembler
+    builds geometry.decks with the MAX height (half-A's falsework height)."""
+    tz = _tz_fields()
+    tz["object"]["geometry"]["deck_heights_over_terrain_m"] = [8.1, 14.9, 9.9]
+    p = assemble_bridge_passport(tz, None, classify=fake_classify)
+    assert p["geometry"]["decks"][0]["deck_height_over_terrain_m"] == 14.9
+    # the full drawing-side decks gap is downgraded to widths-only
+    assert not any("deck_height_over_terrain_m): stage 2" in g for g in p["_meta"]["gaps"])
+
+
+def test_construction_process_from_tz_text_clears_its_gap():
+    """live SO-202 bug #3: «na pevné skruži ve třech etapách» is in the TZ text —
+    when stage 1 extracts it, the assembler emits it and clears the trio gap."""
+    tz = _tz_fields()
+    tz["construction_process"] = {"deck_pour_stages": 3,
+                                  "falsework_technology": "fixed_scaffolding"}
+    p = assemble_bridge_passport(tz, None, classify=fake_classify)
+    assert p["construction_process"]["deck_pour_stages"] == 3
+    assert p["construction_process"]["falsework_technology"] == "fixed_scaffolding"
+    assert not any(g.startswith("construction_process") for g in p["_meta"]["gaps"])
+
+
 def test_inverse_map_direction():
     assert passport_key_for_engine_type("mostovkova_deska") == "superstructure_deck"
     assert passport_key_for_engine_type("podkladni_beton") == "blinding_concrete"  # first-declared wins

@@ -171,9 +171,14 @@ def test_98_concrete_class_bound_per_element():
     nk = next(e for e in elements if "nk" in e["name"].lower() or "nosná" in e["name"].lower())
     drik = next(e for e in elements if "dřík" in e["name"].lower())
     opera = next(e for e in elements if "opěr" in e["name"].lower())
-    assert nk["concrete_class"] == "C35/45", nk
-    assert drik["concrete_class"] == "C35/45", drik
-    assert opera["concrete_class"] == "C30/37", opera
+    # Full grade+exposure string — the suffix drives curing/durability (XF4 ⇒ min
+    # 7 d, TKP18 §7.8.3), live SO-202 regress was grade-only.
+    assert nk["concrete_class"] == "C35/45-XF2", nk
+    assert drik["concrete_class"] == "C35/45-XF4", drik
+    assert opera["concrete_class"] == "C30/37-XF4", opera
+    # Multi-token exposure (comma-separated in the TZ) is preserved and `+`-joined.
+    rimsa = next(e for e in elements if "řím" in e["name"].lower())
+    assert rimsa["concrete_class"] == "C30/37-XF4+XD3", rimsa
 
     # No dangling class assigned to a random element: every class came from the
     # same line as its element (audit trail records unbound classes separately).

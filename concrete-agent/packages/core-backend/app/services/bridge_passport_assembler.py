@@ -89,8 +89,12 @@ def assemble_bridge_passport(
         gaps.append("quantities: no soupis provided — all elements NEPOČÍTÁNO downstream")
 
     # ── per-element: classifier etype → passport key (shared map) ────────────
+    # Dedup by passport key: several TZ text spans (or soupis lines) can map to the
+    # SAME element — emit ONE item per key, merging quantities ADDITIVELY (a soupis
+    # element split across positions sums; text-only dups just collapse). Never
+    # repeat a key — a duplicated deck would triple the volume downstream.
     concretes: list[dict] = []
-    items: list[dict] = []
+    items_by_key: "dict[str, dict[str, Any]]" = {}  # insertion-ordered
     seen_uses: set[str] = set()
     for el in quantified:
         name = el.get("name", "")
@@ -109,20 +113,26 @@ def assemble_bridge_passport(
                 "source": _source_str(el, "concrete_class") or "tz_stage1",
             })
 
-        item: dict[str, Any] = {"element": pkey}
-        carried = False
+        item = items_by_key.get(pkey)
+        if item is None:
+            item = {"element": pkey}
+            items_by_key[pkey] = item
         for f in _QUANTITY_FIELDS:
             v = el.get(f)
             if isinstance(v, (int, float)) and v > 0:
-                item[f] = float(v)
-                carried = True
-        if carried:
-            item["source"] = _source_str(el, "volume_m3") or "soupis_join"
-            items.append(item)
+                item[f] = float(item.get(f, 0.0)) + float(v)  # additive merge
+                item.setdefault("source", _source_str(el, "volume_m3") or "soupis_join")
+
+    items: list[dict] = []
+    for pkey, item in items_by_key.items():
+        if any(f in item for f in _QUANTITY_FIELDS):
+            item.setdefault("source", "soupis_join")
         else:
-            # Emit the element key anyway — half-A marks it NEPOČÍTÁNO (AC 3).
-            items.append({"element": pkey, "source": "tz_stage1_no_quantities"})
+            # No quantities joined — emit the key anyway (half-A marks it NEPOČÍTÁNO,
+            # AC 3), honest gap once per key.
+            item["source"] = "tz_stage1_no_quantities"
             gaps.append(f"quantities for '{pkey}': none joined from soupis")
+        items.append(item)
 
     # ── geometry / structural system (stage 1 prose) ─────────────────────────
     geometry: dict[str, Any] = {}
@@ -132,8 +142,15 @@ def assemble_bridge_passport(
     structural: dict[str, Any] = {}
     if geometry_tz.get("num_spans"):
         structural["spans_count"] = int(geometry_tz["num_spans"])
-    # Per-deck geometry + deck heights are DRAWING-side (stage 2) — honest gap.
-    gaps.append("geometry.decks (widths, deck_height_over_terrain_m): stage 2 drawings — not extracted")
+    # Deck height over terrain: primary source is the TZ text «výška nad terénem»
+    # (live SO-202 bug #4 — it feeds height_m → skruž). half-A takes the max as the
+    # falsework height; per-crossing widths stay a drawing-side gap.
+    deck_heights = geometry_tz.get("deck_heights_over_terrain_m") or []
+    if deck_heights:
+        geometry["decks"] = [{"deck_height_over_terrain_m": max(float(h) for h in deck_heights)}]
+        gaps.append("geometry.decks widths: stage 2 drawings — not extracted (heights from TZ text)")
+    else:
+        gaps.append("geometry.decks (widths, deck_height_over_terrain_m): stage 2 drawings — not extracted")
 
     superstructure: dict[str, Any] = {}
     deck: dict[str, Any] = {}
@@ -148,7 +165,10 @@ def assemble_bridge_passport(
     # A VERIFIED fragment (host vision → notes gate) may be injected; anything it
     # does NOT carry stays an honest, PER-FIELD gap (a falsework-only fragment
     # still declares the missing pour-stage count — no wholesale gap clearing).
-    cp = dict(construction_process) if construction_process else None
+    # Primary source = deterministic TZ-text extraction (stage 1); a VERIFIED
+    # drawing note (passed as `construction_process`) overrides/corroborates it.
+    cp_text = (tz_fields or {}).get("construction_process") or {}
+    cp = {**cp_text, **(construction_process or {})} or None
     missing_cp = []
     if not cp or cp.get("deck_pour_stages") is None:
         missing_cp.append("deck_pour_stages")

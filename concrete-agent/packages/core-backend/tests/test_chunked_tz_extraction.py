@@ -80,13 +80,15 @@ def test_chunked_reassembles_elements_and_classes():
     assert meta["n_chunks"] >= 2, "must genuinely span multiple chunks"
 
     by_name = {e["name"]: e for e in out["elements"]}
-    # the deck — its class C35/45 survives the chunk boundaries, ONE element
+    # the deck — its full class (grade+exposure) survives the chunk boundaries
     deck = next(e for e in out["elements"] if "mostovka" in e["name"].lower())
-    assert deck["concrete_class"] == "C35/45"
-    # the two distinct C30/37 elements stay SEPARATE (not value-deduped into one)
-    c3037 = [e for e in out["elements"] if e["concrete_class"] == "C30/37"]
-    assert len(c3037) == 2, "two distinct elements sharing a class must NOT collapse"
+    assert deck["concrete_class"] == "C35/45-XF2+XC4"
+    # the two distinct C30/37-grade elements stay SEPARATE (not value-deduped)
+    c3037 = [e for e in out["elements"] if (e["concrete_class"] or "").startswith("C30/37")]
+    assert len(c3037) == 2, "two distinct elements sharing a grade must NOT collapse"
     assert {e["name"] for e in c3037} == {"Dřík pilíře", "Římsa monolitická"}
+    # each carries its own distinct exposure suffix
+    assert {e["concrete_class"] for e in c3037} == {"C30/37-XF4+XC4", "C30/37-XF4+XD3"}
     # object name survived from the metadata chunk
     assert out["object"]["object_name"] == "Most na sil. I/6 přes Lomnický potok"
 
