@@ -5,6 +5,11 @@ real SO-202 D6 Olšová Vrata–Žalmanov TZ, no soupis).
 **Severity:** ⛔⛔⚠️⚠️⚠️ — invariant (honesty) holds, extraction incomplete; two
 defects hit the exact money-path fields the exposure- and height-skruž fixes just
 repaired (+51 % aggregate).
+**Status:** #1–#4 FIXED (2026-07-13, extraction-layer, content-asserting tests);
+#5 (prahy roll-up) is architectural — deferred to the classifier→passport-key
+roll-up axis (Gate-3 follow-up). Live re-verification on the real TZ still pending
+(regex written against standard Czech notation + the verbatim quotes below, since
+the TZ text is read-denied under `test-data/**`).
 
 ## What works (invariant holds — no fabrication)
 - `_meta.gaps` honest + detailed («no soupis provided — all elements NEPOČÍTÁNO»). No

@@ -138,6 +138,29 @@ def test_split_soupis_quantities_merge_additively_on_one_key():
     assert decks[0]["volume_m3"] == pytest.approx(2697.941)
 
 
+def test_deck_heights_from_tz_text_build_geometry_decks():
+    """live SO-202 bug #4: «výška nad terénem» is in the TZ text — the assembler
+    builds geometry.decks with the MAX height (half-A's falsework height)."""
+    tz = _tz_fields()
+    tz["object"]["geometry"]["deck_heights_over_terrain_m"] = [8.1, 14.9, 9.9]
+    p = assemble_bridge_passport(tz, None, classify=fake_classify)
+    assert p["geometry"]["decks"][0]["deck_height_over_terrain_m"] == 14.9
+    # the full drawing-side decks gap is downgraded to widths-only
+    assert not any("deck_height_over_terrain_m): stage 2" in g for g in p["_meta"]["gaps"])
+
+
+def test_construction_process_from_tz_text_clears_its_gap():
+    """live SO-202 bug #3: «na pevné skruži ve třech etapách» is in the TZ text —
+    when stage 1 extracts it, the assembler emits it and clears the trio gap."""
+    tz = _tz_fields()
+    tz["construction_process"] = {"deck_pour_stages": 3,
+                                  "falsework_technology": "fixed_scaffolding"}
+    p = assemble_bridge_passport(tz, None, classify=fake_classify)
+    assert p["construction_process"]["deck_pour_stages"] == 3
+    assert p["construction_process"]["falsework_technology"] == "fixed_scaffolding"
+    assert not any(g.startswith("construction_process") for g in p["_meta"]["gaps"])
+
+
 def test_inverse_map_direction():
     assert passport_key_for_engine_type("mostovkova_deska") == "superstructure_deck"
     assert passport_key_for_engine_type("podkladni_beton") == "blinding_concrete"  # first-declared wins

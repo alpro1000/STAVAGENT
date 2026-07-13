@@ -142,8 +142,15 @@ def assemble_bridge_passport(
     structural: dict[str, Any] = {}
     if geometry_tz.get("num_spans"):
         structural["spans_count"] = int(geometry_tz["num_spans"])
-    # Per-deck geometry + deck heights are DRAWING-side (stage 2) — honest gap.
-    gaps.append("geometry.decks (widths, deck_height_over_terrain_m): stage 2 drawings — not extracted")
+    # Deck height over terrain: primary source is the TZ text «výška nad terénem»
+    # (live SO-202 bug #4 — it feeds height_m → skruž). half-A takes the max as the
+    # falsework height; per-crossing widths stay a drawing-side gap.
+    deck_heights = geometry_tz.get("deck_heights_over_terrain_m") or []
+    if deck_heights:
+        geometry["decks"] = [{"deck_height_over_terrain_m": max(float(h) for h in deck_heights)}]
+        gaps.append("geometry.decks widths: stage 2 drawings — not extracted (heights from TZ text)")
+    else:
+        gaps.append("geometry.decks (widths, deck_height_over_terrain_m): stage 2 drawings — not extracted")
 
     superstructure: dict[str, Any] = {}
     deck: dict[str, Any] = {}
@@ -158,7 +165,10 @@ def assemble_bridge_passport(
     # A VERIFIED fragment (host vision → notes gate) may be injected; anything it
     # does NOT carry stays an honest, PER-FIELD gap (a falsework-only fragment
     # still declares the missing pour-stage count — no wholesale gap clearing).
-    cp = dict(construction_process) if construction_process else None
+    # Primary source = deterministic TZ-text extraction (stage 1); a VERIFIED
+    # drawing note (passed as `construction_process`) overrides/corroborates it.
+    cp_text = (tz_fields or {}).get("construction_process") or {}
+    cp = {**cp_text, **(construction_process or {})} or None
     missing_cp = []
     if not cp or cp.get("deck_pour_stages") is None:
         missing_cp.append("deck_pour_stages")
