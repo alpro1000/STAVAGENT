@@ -208,10 +208,18 @@ def map_soupis_to_elements(
                 kind = "length_bm"
             if kind is None:
                 continue  # bednění m² etc. — other fields, later increment
+        # Element classification keys on the OTSKP standard name (<nazev>,
+        # `catalog_name`) when the parser captured it — `description` (popis) can be
+        # a project sub-note («vč. nátěru…») that shadows the element noun, so on
+        # those lines the note-only description misclassifies (bug
+        # passport-soupis-join-whole-stavba increment 2: 334326/333325 recovered,
+        # 451314 «…pod základy pilířů» no longer trapped into driky). Falls back to
+        # description for formats without a separate catalog name.
         # NB: a soupis line code is an OTSKP/URS code, NOT an SO-xxx object code —
         # pass object_code=None so the classifier's bridge upgrade keys only on
         # the authoritative object_type.
-        cls = _classify_etype(classify, desc, None, object_type)
+        name_for_class = (it.get("catalog_name") or "").strip() or desc
+        cls = _classify_etype(classify, name_for_class, None, object_type)
         etype = cls.get("element_type", "jine")
         if etype == "jine":
             continue  # unmatched line (výkop / zásyp / …) — not element-bound

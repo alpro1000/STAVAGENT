@@ -87,3 +87,35 @@ deck **2 697.941** · rims **266.328** · abutments **557.851** · pier_shafts
 **361.384** — no cross-SO bleed, no garbage-code joins.
 
 Live `soupis_ref` (24 h TTL): `soupis-501b05bbf789bff64eea0791dc973c88`.
+
+---
+
+## Increment 1 — SHIPPED (PR #1503, merged, live-confirmed on prod)
+
+SO filter. deck 2697.941 + rims 266.328 exact on prod; ×3–20 inflation gone.
+
+## Increment 2 — resolved as `<nazev>`, NOT a code→type map
+
+Investigation (all proven on the real XML) reframed «bug 2 = code-based matching»:
+- Monolit `OTSKP_RULES` (element-classifier.ts:605) match the item **name**, not the
+  numeric code. Rule `/mostní pilíře.*stativ/ → driky_piliru` already exists.
+- The real OTSKP name is in the XML — `<nazev>` («MOSTNÍ PILÍŘE A STATIVA…»). The
+  failing lines carry `<popis>`=«vč. nátěru ALP+2x ALN…» — a project sub-note with
+  NO element noun. The parser preferred `<popis>` over `<nazev>`.
+
+So the fix is NOT a code→type map (no parallel structure with the classifier): the
+parser exposes `catalog_name` = `<nazev>`, and the join classifies on
+`catalog_name or description`. The name-based classifier (Python + Monolit already
+agree) then types 334326/333325 correctly and stops trapping 451314 («…pod základy
+pilířů») into driky. Verified on the real file: **all four exact** (deck 2697.941,
+rims 266.328, pier_shafts 361.384, abutments 557.851).
+
+## Increment 2.5 — STALE HANDLE (found live during #1503 re-run, not a blocker)
+
+A `soupis_ref` stores `parsed_budget` (parser OUTPUT), not the raw XML. A handle
+created BEFORE a parser deploy therefore silently serves old-parser data (no
+`object_code`/`catalog_name`) for 24 h → old (wrong) numbers with no signal.
+Proven: same ref after #1503 → deck 8561; fresh upload of the same file → 2697.941.
+Fix: stamp a parse-version on the handle at save; on resolve, a version mismatch →
+typed `soupis_ref_stale: re-upload required` (never a silent old result). Its own
+change (handle lifecycle), tracked separately.

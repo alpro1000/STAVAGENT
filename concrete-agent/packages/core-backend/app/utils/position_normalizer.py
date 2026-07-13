@@ -436,6 +436,12 @@ class OTSKPEstimateNormalizer:
         object_code = row.get("object_code")
         if object_code:
             canonical_payload["object_code"] = object_code
+        # catalog_name = OTSKP standard item name (<nazev>); carried verbatim so
+        # element classification can key on it instead of the free-text description
+        # (bug passport-soupis-join-whole-stavba increment 2).
+        catalog_name = row.get("catalog_name")
+        if catalog_name:
+            canonical_payload["catalog_name"] = catalog_name
 
         description_text = canonical_payload.get("description", "")
         if self._is_section_row(description_text, first_value, canonical_payload):

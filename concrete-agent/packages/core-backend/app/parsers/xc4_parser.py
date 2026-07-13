@@ -85,6 +85,14 @@ def parse_polozka(element: ET.Element, object_code: Optional[str] = None) -> Par
             break
     position["description"] = description_value
 
+    # catalog_name = the OTSKP standard item name (<nazev>), kept SEPARATE from
+    # description. `<popis>` is a project sub-note ("vč. nátěru…") that on some
+    # lines shadows the real element name, so element classification must key on
+    # <nazev> — where the OTSKP name («MOSTNÍ PILÍŘE A STATIVA…») actually lives
+    # (bug `passport-soupis-join-whole-stavba` increment 2). Display/provenance
+    # keeps `description` (popis-first) untouched.
+    position["catalog_name"] = _text_or_none(element.find("nazev"))
+
     # Validation rules
     if not position.get("id"):
         return ParseResult(None, "missing id")
