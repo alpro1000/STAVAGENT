@@ -215,3 +215,28 @@ describe('W3 parity — GREEN at Gate 4 (dřík/opěra genitive suppression)', (
     expect(classifyElement('Tělo pilíře', { is_bridge: true }).element_type).toBe('driky_piliru');
   });
 });
+
+// ── increment 4 (passport-soupis-join-whole-stavba): VÝZTUŽ-line vocab ────────
+// Mirrors the W3 goldens in test_monolith_classification_mcp_parity.py — the fix
+// is SHARED YAML DATA (kb-generated artifact), so both runtimes must agree:
+// «MOSTNÍ TRÁMOVÁ KONSTRUKCE» (no «NOSNÉ») is the 422-family NK, not a příčník;
+// genitive «MOSTNÍCH OPĚR A KŘÍDEL» is the abutment family. Both directions:
+// a real příčník stays rigel, a building průvlak stays pruvlak.
+describe('increment 4 — VÝZTUŽ-line vocabulary (shared DATA parity)', () => {
+  it('deck rebar line types as the deck, not a příčník', () => {
+    expect(classifyElement('VÝZTUŽ MOSTNÍ TRÁMOVÉ KONSTRUKCE Z OCELI 10505, B500B',
+      { is_bridge: true }).element_type).toBe('mostovkova_deska');
+  });
+  it('genitive abutment rebar line types as opěry', () => {
+    expect(classifyElement('VÝZTUŽ MOSTNÍCH OPĚR A KŘÍDEL Z OCELI 10505, B500B',
+      { is_bridge: true }).element_type).toBe('opery_ulozne_prahy');
+  });
+  it('a REAL příčník stays rigel (not pulled into the deck)', () => {
+    expect(classifyElement('PŘÍČNÍKY MOSTNÍ ZE ŽELEZOBETONU DO C30/37',
+      { is_bridge: true }).element_type).toBe('rigel');
+  });
+  it('a building průvlak is unaffected (no global trám broadening)', () => {
+    expect(classifyElement('Průvlak trámový železobetonový C25/30').element_type)
+      .toBe('pruvlak');
+  });
+});

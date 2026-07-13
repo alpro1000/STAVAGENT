@@ -150,6 +150,7 @@ dictionaries:
           mostni svrsek, mostní svršek, superstructure,
           hlavni nosnik, hlavní nosník, komorovy nosnik, komorový nosník,
           deska nosne, deska nosné, nosna deska, nosná deska,
+          mostni tramov, mostní trámov,
           мостов, мостовая плита, пролетное строение]
       rimsa:
         priority: 10
@@ -208,6 +209,7 @@ dictionaries:
         priority: 7
         include: [opera, opěra, opery, opěry, ulozn, úložn, ulozne prah, úložné prah,
           prah, sedlo, mostni oper, mostní opěr, mostni opery, mostní opěry,
+          mostnich oper, mostních opěr, oper a kridel, opěr a křídel,
           abutment, bearing seat]
       stropni_deska:
         priority: 7

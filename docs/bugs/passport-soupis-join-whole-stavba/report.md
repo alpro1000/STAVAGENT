@@ -246,3 +246,32 @@ IZOLACÍ» protection is double (kind-gate doesn't match; `izolac` added to the
 blacklist). Golden: «GEOTEXTILIE VÝZTUŽNÁ» in tonnes (rebar kind-gate matches
 `vyztuz` as a substring!) is killed by the material guard even under a greedy
 classifier.
+
+## Increment 4 — VÝZTUŽ-line classifier vocabulary (SHARED DATA, parity by construction)
+
+Both live-confirmed misclassifications turned out to be MISSING VOCAB, not the
+suspected suppression logic:
+- 422365 «VÝZTUŽ MOSTNÍ TRÁMOVÉ KONSTRUKCE» → pricinik 0.9: pruvlak's bare
+  `tram` keyword matched «trámové» as a substring; mostovkova_deska had no key
+  for the 422-family name without «NOSNÉ». Fix: `mostni tramov` added to
+  mostovkova_deska (contiguous phrase = OTSKP-bound per the watch-point; a
+  building trám/průvlak and «PŘÍČNÍKY MOSTNÍ» don't contain it; priority 10
+  beats pruvlak's 6).
+- 333365 «VÝZTUŽ MOSTNÍCH OPĚR A KŘÍDEL» → jine 0.3: genitive-plural forms
+  absent — «mostních» breaks the `mostni oper` substring (the -ích suffix),
+  vkladné -e- in «křídel» breaks `kridl`. The v4.34 genitive suppression was
+  NOT the cause. Fix: targeted multi-word forms `mostnich oper` + `oper a
+  kridel` (bare `oper` would false-match opěrné zdi — not added).
+
+Both fixes are YAML DATA in the shared `element_types.yaml` → regenerated
+`kb-generated/element-classification-rules.ts` (drift-guard green) → Python and
+the Monolit engine agree BY CONSTRUCTION. Parity pinned with mirrored goldens:
+4 Python (test_monolith_classification_mcp_parity.py) ↔ 4 engine
+(element-classifier.golden-w3-parity.test.ts), both directions (real příčník
+stays rigel/pricinik; building průvlak unaffected). «ZÁKLADY OPĚR» →
+zaklady_piliru is PRE-EXISTING (stash-verified; the accepted v4.34
+family-preserving flip), not touched.
+
+Final real-file state: **7/7 volumes AND 7/7 masses exact** — incl. deck rebar
+468 886 kg + abutment rebar 64 164 kg. Σ rebar 767 926 kg + prestress 82 840 kg.
+The full SO-202 passport now matches the manual etalon on every quantity.
