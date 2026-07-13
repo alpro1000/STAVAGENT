@@ -201,3 +201,19 @@ def test_store_roundtrip_and_schema_lock(tmp_path, monkeypatch):
     # unsafe id never touches the filesystem
     bridge_passport_store.save("../evil", p)
     assert not (tmp_path / "bridge_passports" / ".." ).joinpath("evil.json").exists()
+
+
+def test_assembler_filters_soupis_to_passport_so_not_whole_stavba():
+    """Regression bug `passport-soupis-join-whole-stavba`: a real soupis is the
+    WHOLE stavba (many <objekt>). The assembler must thread the passport's SO
+    code into the join so an identical deck code in another SO is NOT summed in."""
+    tz = _tz_fields()                       # object_code = "SO-202"
+    budget = {"items": [
+        {"code": "421321109", "description": "Nosná konstrukce železobeton",
+         "unit": "m3", "quantity": 2697.941, "object_code": "SO 202"},
+        {"code": "421321109", "description": "Nosná konstrukce železobeton",
+         "unit": "m3", "quantity": 9999.0, "object_code": "SO 201"},  # other SO — must be excluded
+    ]}
+    p = assemble_bridge_passport(tz, budget, classify=fake_classify)
+    deck = next(it for it in p["quantities"]["items"] if it["element"] == "superstructure_deck")
+    assert deck["volume_m3"] == pytest.approx(2697.941)  # SO-201's 9999 never bleeds in

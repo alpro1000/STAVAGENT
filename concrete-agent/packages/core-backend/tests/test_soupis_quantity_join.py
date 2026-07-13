@@ -253,3 +253,55 @@ def test_bm_line_fills_length_only_for_rimsa():
     deck = next(e for e in out if e["name"] == "NK mostovka")
     assert rimsa["length_bm"] == 213
     assert "length_bm" not in deck  # bm lines only meaningful for římsy
+
+
+# ── SO filter: whole-stavba soupis must be restricted to the passport's object ─
+# Regression for bug `passport-soupis-join-whole-stavba` (live: deck ×3.2, piers
+# ×20 because the join summed the same code across all 125 SO sections).
+def _multi_so_budget():
+    return _budget([
+        {"code": "422336", "description": "Nosná konstrukce mostovka železobeton",
+         "unit": "m3", "quantity": 2697.941, "object_code": "SO 202"},
+        {"code": "422336", "description": "Nosná konstrukce mostovka železobeton",
+         "unit": "m3", "quantity": 3321.904, "object_code": "SO 201"},
+    ])
+
+
+def test_so_filter_restricts_join_to_target_object():
+    elements = [{"name": "NK mostovka", "object_code": "SO 202",
+                 "volume_m3": None, "_source": _src_stub()}]
+    out = map_soupis_to_elements(_multi_so_budget(), elements,
+                                 classify=fake_classify, so_code="SO 202")
+    # ONLY SO 202's line — never summed with SO 201's identical code.
+    assert out[0]["volume_m3"] == 2697.941
+
+
+def test_so_filter_normalizes_spacing_and_dashes():
+    elements = [{"name": "NK mostovka", "object_code": "SO-202",
+                 "volume_m3": None, "_source": _src_stub()}]
+    # passport says "SO-202", soupis tags "SO 202" — must compare equal.
+    out = map_soupis_to_elements(_multi_so_budget(), elements,
+                                 classify=fake_classify, so_code="SO-202")
+    assert out[0]["volume_m3"] == 2697.941
+
+
+def test_no_so_code_keeps_legacy_whole_list_behaviour():
+    elements = [{"name": "NK mostovka", "object_code": "SO 202",
+                 "volume_m3": None, "_source": _src_stub()}]
+    # No so_code passed (single-SO callers) → both lines summed, as before.
+    out = map_soupis_to_elements(_multi_so_budget(), elements, classify=fake_classify)
+    assert out[0]["volume_m3"] == round(2697.941 + 3321.904, 6)
+
+
+def test_so_filter_is_noop_when_soupis_has_no_object_tags():
+    # An untagged soupis (format without <objekt>) must NOT be filtered to empty —
+    # degrade to whole-list rather than drop every line to a false NEPOČÍTÁNO.
+    budget = _budget([
+        {"code": "422336", "description": "Nosná konstrukce mostovka",
+         "unit": "m3", "quantity": 605.0},  # no object_code
+    ])
+    elements = [{"name": "NK mostovka", "object_code": "SO 202",
+                 "volume_m3": None, "_source": _src_stub()}]
+    out = map_soupis_to_elements(budget, elements, classify=fake_classify,
+                                 so_code="SO 202")
+    assert out[0]["volume_m3"] == 605.0
