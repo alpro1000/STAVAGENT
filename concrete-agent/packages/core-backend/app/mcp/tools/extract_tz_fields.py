@@ -47,7 +47,38 @@ from app.mcp.tools.document import PATTERNS, _extract_pdf_text
 
 logger = logging.getLogger(__name__)
 
-_CONCRETE_RE = PATTERNS["concrete_class"]  # C(\d{2,3})/(\d{2,3})
+_CONCRETE_RE = PATTERNS["concrete_class"]  # C(\d{2,3})/(\d{2,3}) — grade only
+
+# Exposure-aware capture: the grade ALONE is not enough — curing/durability depend
+# on the exposure suffix (XF4 ⇒ min 7 d curing, TKP18 §7.8.3). Live SO-202 regress:
+# `C35/45-XF2+XD1+XC4` was truncated to `C35/45`. Exposure tokens: X0, XC/XD/XF/
+# XA/XS/XM 1–4. Separator between grade and suffix is optional; the chain is `+`-
+# joined and attaches ONLY when adjacent (no word in between) — conservative.
+_EXPO_TOKEN = r"X[0CDFASM]\d?"
+# Grade→suffix separator is spaces/dash only (a comma after the grade means the
+# exposure belongs to prose, not this class); WITHIN the chain both `+` and `,`
+# join tokens (real TZs write «XF4+XD3+XC4» and «XF4, XD3»).
+_CONCRETE_FULL_RE = re.compile(
+    r"(?P<grade>C\d{2,3}/\d{2,3})"
+    r"(?:[\s\-–]*(?P<expo>" + _EXPO_TOKEN + r"(?:\s*[+,]\s*" + _EXPO_TOKEN + r")*))?",
+    re.I,
+)
+
+
+def _concrete_classes(line: str) -> list[str]:
+    """Full grade+exposure strings on the line (`C35/45-XF2+XD1+XC4`), normalized:
+    exposure suffix preserved, tokens upper-cased, `+`-joined, grade-suffix `-`.
+    Grade-only when no adjacent exposure chain (honest — never fabricated)."""
+    out: list[str] = []
+    for m in _CONCRETE_FULL_RE.finditer(line):
+        grade = m.group("grade")
+        expo = m.group("expo")
+        if expo:
+            toks = [t.upper() for t in re.split(r"\s*[+,]\s*", expo.strip())]
+            out.append(f"{grade}-{'+'.join(toks)}")
+        else:
+            out.append(grade)
+    return out
 
 # Injectable seams — module-level, NOT public-tool params. FastMCP builds a JSON
 # schema from the registered tool's signature, and a Callable can't be expressed
@@ -95,9 +126,11 @@ def _make_vertex_llm() -> Optional[Callable[[str], list[dict]]]:
                 "head only; tail elements may be missed", len(mat_text), _MAT_CAP)
         prompt = (
             "Z následující sekce MATERIÁLY technické zprávy vytáhni betonové "
-            "prvky a jejich třídy betonu. ODPOVĚZ POUZE VALIDNÍM JSON polem "
-            '[{"name": "...", "concrete_class": "C30/37" | null}] — jen prvky, '
-            "které v textu skutečně jsou, žádná fabrikace.\n\nSEKCE:\n" + mat_text[:_MAT_CAP]
+            "prvky a jejich třídy betonu VČETNĚ stupňů vlivu prostředí (expozice). "
+            "ODPOVĚZ POUZE VALIDNÍM JSON polem "
+            '[{"name": "...", "concrete_class": "C30/37-XF4+XD3+XC4" | null}] — '
+            "celý řetězec třídy i s expozicí (XF/XD/XC/XA…), jen prvky které v "
+            "textu skutečně jsou, žádná fabrikace.\n\nSEKCE:\n" + mat_text[:_MAT_CAP]
         )
         data = VertexGeminiClient().call(prompt, temperature=0.1)
         if isinstance(data, list):
@@ -372,13 +405,16 @@ def _extract_elements(
     for line, ln_page in (sections.get("materialy") or []):
         if _is_heading(line, _SECTION_HEADERS["materialy"]):
             continue
-        classes = [m.group(0).replace(" ", "") for m in _CONCRETE_RE.finditer(line)]
+        classes = _concrete_classes(line)  # FULL grade+exposure strings
         has_element = any(stem.search(line) for stem in _ELEMENT_STEMS)
         if not has_element:
             unbound.extend(classes)  # e.g. "Výztuž B500B" has no concrete class → []
             continue
         first_class = classes[0] if classes else None
-        name = _strip_class_tail(line, first_class)
+        # Cut the name at the GRADE token (verbatim on the line), not the normalized
+        # full class — the exposure suffix normalization would defeat a literal find.
+        gm = _CONCRETE_RE.search(line)
+        name = _strip_class_tail(line, gm.group(0) if gm else None)
         if not name or name.lower() in seen:
             continue
         seen.add(name.lower())

@@ -51,6 +51,7 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_drawing_note_gate.py'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_build_bridge_passport.py'
       - 'concrete-agent/packages/core-backend/tests/test_extract_tz_llm_seam.py'
+      - 'concrete-agent/packages/core-backend/tests/test_extract_tz_content.py'
       # Pin B: the parity guard asserts the Python volume-geometry mirror equals
       # the canonical TS engine. A change to the TS constants/bands must trigger
       # this workflow so the guard runs — otherwise TS drift lands silently.
@@ -104,6 +105,7 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_drawing_note_gate.py'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_build_bridge_passport.py'
       - 'concrete-agent/packages/core-backend/tests/test_extract_tz_llm_seam.py'
+      - 'concrete-agent/packages/core-backend/tests/test_extract_tz_content.py'
       - 'Monolit-Planner/shared/src/classifiers/element-classifier.ts'
 
 jobs:
@@ -231,4 +233,5 @@ jobs:
             tests/test_drawing_note_gate.py \
             tests/test_mcp_golden_build_bridge_passport.py \
             tests/test_extract_tz_llm_seam.py \
+            tests/test_extract_tz_content.py \
             -v --tb=short

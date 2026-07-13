@@ -89,8 +89,12 @@ def assemble_bridge_passport(
         gaps.append("quantities: no soupis provided — all elements NEPOČÍTÁNO downstream")
 
     # ── per-element: classifier etype → passport key (shared map) ────────────
+    # Dedup by passport key: several TZ text spans (or soupis lines) can map to the
+    # SAME element — emit ONE item per key, merging quantities ADDITIVELY (a soupis
+    # element split across positions sums; text-only dups just collapse). Never
+    # repeat a key — a duplicated deck would triple the volume downstream.
     concretes: list[dict] = []
-    items: list[dict] = []
+    items_by_key: "dict[str, dict[str, Any]]" = {}  # insertion-ordered
     seen_uses: set[str] = set()
     for el in quantified:
         name = el.get("name", "")
@@ -109,20 +113,26 @@ def assemble_bridge_passport(
                 "source": _source_str(el, "concrete_class") or "tz_stage1",
             })
 
-        item: dict[str, Any] = {"element": pkey}
-        carried = False
+        item = items_by_key.get(pkey)
+        if item is None:
+            item = {"element": pkey}
+            items_by_key[pkey] = item
         for f in _QUANTITY_FIELDS:
             v = el.get(f)
             if isinstance(v, (int, float)) and v > 0:
-                item[f] = float(v)
-                carried = True
-        if carried:
-            item["source"] = _source_str(el, "volume_m3") or "soupis_join"
-            items.append(item)
+                item[f] = float(item.get(f, 0.0)) + float(v)  # additive merge
+                item.setdefault("source", _source_str(el, "volume_m3") or "soupis_join")
+
+    items: list[dict] = []
+    for pkey, item in items_by_key.items():
+        if any(f in item for f in _QUANTITY_FIELDS):
+            item.setdefault("source", "soupis_join")
         else:
-            # Emit the element key anyway — half-A marks it NEPOČÍTÁNO (AC 3).
-            items.append({"element": pkey, "source": "tz_stage1_no_quantities"})
+            # No quantities joined — emit the key anyway (half-A marks it NEPOČÍTÁNO,
+            # AC 3), honest gap once per key.
+            item["source"] = "tz_stage1_no_quantities"
             gaps.append(f"quantities for '{pkey}': none joined from soupis")
+        items.append(item)
 
     # ── geometry / structural system (stage 1 prose) ─────────────────────────
     geometry: dict[str, Any] = {}
