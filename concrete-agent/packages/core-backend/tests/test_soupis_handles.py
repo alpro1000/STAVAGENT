@@ -34,6 +34,7 @@ def _apply(sql_file: str) -> None:
 def two_owners():
     _apply("007_mcp_api_keys.sql")
     _apply("014_mcp_soupis_handles.sql")
+    _apply("015_soupis_handle_parse_version.sql")
     conn = mcp_auth._get_db()
     ids = []
     with conn.cursor() as cur:
@@ -99,3 +100,34 @@ def test_new_ref_per_save_no_dedup(two_owners):
     r1 = soupis_handles.save(a, body)
     r2 = soupis_handles.save(a, body)
     assert r1 != r2 and r1.startswith("soupis-") and len(r1) == len("soupis-") + 32
+
+
+def test_parse_version_mismatch_reads_as_typed_stale(two_owners):
+    """STALE HANDLE (increment 2.5, found live): a handle stores the PARSED
+    result, so one saved before a parser deploy must resolve as {'stale': True}
+    — never the old payload — while a fresh save resolves normally."""
+    a, b = two_owners
+    ref = soupis_handles.save(a, {"items": [{"code": "422336", "quantity": 1}]},
+                              filename="old.xml")
+    # fresh save → healthy resolve, current version
+    got = soupis_handles.resolve(ref, a)
+    assert got and got["stale"] is False and got["parsed_budget"]["items"]
+
+    # simulate "parser deployed since upload": stored version is older
+    conn = mcp_auth._get_db()
+    with conn.cursor() as cur:
+        cur.execute("UPDATE mcp_soupis_handles SET parse_version = parse_version - 1 "
+                    "WHERE soupis_ref = %s", (ref,))
+    conn.commit()
+    assert soupis_handles.resolve(ref, a) == {"stale": True}
+
+    # pre-versioning rows (NULL) are stale by definition
+    with conn.cursor() as cur:
+        cur.execute("UPDATE mcp_soupis_handles SET parse_version = NULL "
+                    "WHERE soupis_ref = %s", (ref,))
+    conn.commit()
+    assert soupis_handles.resolve(ref, a) == {"stale": True}
+
+    # isolation unchanged: owner B still sees NOT-FOUND for A's stale ref,
+    # never a 'stale' that would confirm existence
+    assert soupis_handles.resolve(ref, b) is None

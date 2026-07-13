@@ -107,14 +107,14 @@ def save(
             cur.execute(
                 "INSERT INTO mcp_soupis_handles "
                 "(soupis_ref, owner_id, parsed_budget, filename, format_detected, "
-                " total_items, size_bytes, expires_at) "
-                "VALUES (%s, %s, %s::jsonb, %s, %s, %s, %s, "
+                " total_items, size_bytes, parse_version, expires_at) "
+                "VALUES (%s, %s, %s::jsonb, %s, %s, %s, %s, %s, "
                 "        NOW() + (%s * INTERVAL '1 hour'))",
                 (
                     ref, owner_id,
                     json.dumps(parsed_budget, ensure_ascii=False),
                     filename or None, format_detected, total_items, size_bytes,
-                    ttl_hours,
+                    _current_parse_version(), ttl_hours,
                 ),
             )
         conn.commit()
@@ -124,15 +124,30 @@ def save(
     return ref
 
 
-def resolve(soupis_ref: str, owner_id: Optional[int]) -> Optional[dict]:
-    """Owner-scoped, expiry-guarded resolve.
+def _current_parse_version() -> int:
+    """The parser item-contract version (single source: app.mcp.tools.budget).
+    Lazy import — this module must stay importable without the tools package."""
+    from app.mcp.tools.budget import PARSE_VERSION
+    return int(PARSE_VERSION)
 
-    Returns `{parsed_budget, filename, format_detected, total_items}` when the
-    handle exists, belongs to `owner_id`, and is unexpired. Returns None for
+
+def resolve(soupis_ref: str, owner_id: Optional[int]) -> Optional[dict]:
+    """Owner-scoped, expiry-guarded, version-guarded resolve.
+
+    Returns `{parsed_budget, filename, format_detected, total_items, stale}` when
+    the handle exists, belongs to `owner_id`, and is unexpired. Returns None for
     ANY miss (unknown ref / cross-owner / expired / anonymous owner_id) — all the
     same not-found shape, so a caller can't distinguish "someone else's ref" from
     "no such ref". Expired rows read as None (lazy GC); the periodic sweep deletes
     them.
+
+    `stale=True` means the stored parsed_budget was produced by an OLDER parser
+    contract (`parse_version` mismatch, incl. NULL pre-versioning rows) — the
+    caller MUST surface a typed re-upload error instead of consuming the payload
+    (bug increment 2.5: a pre-fix handle silently served old-parser numbers for
+    its whole 24 h TTL). Stale is only ever reported to the verified OWNER — the
+    SQL owner-scope runs first, so a cross-owner stale handle still reads as
+    not-found (no existence leak).
     """
     if not soupis_ref or owner_id is None:
         return None
@@ -140,7 +155,8 @@ def resolve(soupis_ref: str, owner_id: Optional[int]) -> Optional[dict]:
     try:
         with conn.cursor() as cur:
             cur.execute(
-                "SELECT parsed_budget, filename, format_detected, total_items "
+                "SELECT parsed_budget, filename, format_detected, total_items, "
+                "       parse_version "
                 "FROM mcp_soupis_handles "
                 "WHERE soupis_ref = %s AND owner_id = %s AND expires_at > NOW()",
                 (soupis_ref, owner_id),
@@ -152,6 +168,10 @@ def resolve(soupis_ref: str, owner_id: Optional[int]) -> Optional[dict]:
         raise
     if not row:
         return None
+    if row["parse_version"] != _current_parse_version():
+        # Parsed by an older contract (or pre-versioning NULL) — typed stale,
+        # never the old payload. Payload deliberately NOT returned.
+        return {"stale": True}
     pb = row["parsed_budget"]
     if isinstance(pb, str):  # tolerate a driver that returns JSONB as text
         pb = json.loads(pb)
@@ -160,6 +180,7 @@ def resolve(soupis_ref: str, owner_id: Optional[int]) -> Optional[dict]:
         "filename": row["filename"],
         "format_detected": row["format_detected"],
         "total_items": row["total_items"],
+        "stale": False,
     }
 
 
