@@ -209,6 +209,10 @@ def _normalize_items(items: list) -> list:
                 # captured it — lets a per-SO consumer filter a whole-stavba soupis
                 # (bug passport-soupis-join-whole-stavba). None on formats without it.
                 "object_code": item.get("object_code"),
+                # OTSKP standard item name (XC4 <nazev>) — the element-classification
+                # signal, kept apart from the free-text description (popis). None on
+                # formats that don't distinguish the two.
+                "catalog_name": item.get("catalog_name"),
             })
     return normalized
 

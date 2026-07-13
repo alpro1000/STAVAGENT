@@ -305,3 +305,34 @@ def test_so_filter_is_noop_when_soupis_has_no_object_tags():
     out = map_soupis_to_elements(budget, elements, classify=fake_classify,
                                  so_code="SO 202")
     assert out[0]["volume_m3"] == 605.0
+
+
+# ── catalog_name (OTSKP <nazev>) is the classification signal, not popis ──────
+# Regression bug `passport-soupis-join-whole-stavba` increment 2: live XC4 lines
+# 334326/333325 carry <popis>="vč. nátěru ALP+2x ALN…" (a project sub-note with
+# NO element noun) while the real OTSKP name lives in <nazev>. Classifying on the
+# note drops or misfiles them; classifying on catalog_name recovers them.
+def test_classification_prefers_catalog_name_over_note_description():
+    budget = _budget([
+        {"code": "333325", "unit": "m3", "quantity": 557.851,
+         "description": "vč. nátěru ALP+2x ALN všech součástí v kontaktu se zeminou",
+         "catalog_name": "MOSTNÍ OPĚRY ZE ŽELEZOBETONU"},  # <nazev> → opěry
+    ])
+    elements = [{"name": "Opěry", "object_code": "SO-202",
+                 "volume_m3": None, "_source": _src_stub()}]
+    out = map_soupis_to_elements(budget, elements, classify=fake_classify)
+    # note-only description would classify 'jine' (dropped); catalog_name saves it
+    assert out[0]["volume_m3"] == 557.851
+    assert out[0]["quantity_status"] == "extracted"
+
+
+def test_classification_falls_back_to_description_without_catalog_name():
+    # Formats that don't split name/note (xlsx) have no catalog_name → description.
+    budget = _budget([
+        {"code": "333325", "unit": "m3", "quantity": 557.851,
+         "description": "Mostní opěry ze železobetonu"},  # no catalog_name
+    ])
+    elements = [{"name": "Opěry", "object_code": "SO-202",
+                 "volume_m3": None, "_source": _src_stub()}]
+    out = map_soupis_to_elements(budget, elements, classify=fake_classify)
+    assert out[0]["volume_m3"] == 557.851
