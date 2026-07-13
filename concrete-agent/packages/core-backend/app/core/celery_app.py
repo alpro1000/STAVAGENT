@@ -156,6 +156,13 @@ celery_app.conf.beat_schedule = {
         "task": "app.tasks.maintenance.update_kb_cache",
         "schedule": 21600.0,  # 6 hours
     },
+
+    # Reclaim expired MCP soupis handles (TTL 24 h) — mandatory periodic sweep so
+    # unread-but-expired parsed soupis blobs don't pile up.
+    "purge-expired-soupis-handles": {
+        "task": "app.tasks.maintenance.purge_expired_soupis_handles",
+        "schedule": 3600.0,  # hourly
+    },
 }
 
 

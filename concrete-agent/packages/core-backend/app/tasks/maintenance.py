@@ -322,9 +322,31 @@ def health_check(self: Task) -> dict:
         }
 
 
+@celery_app.task(
+    bind=True,
+    name="app.tasks.maintenance.purge_expired_soupis_handles",
+)
+def purge_expired_soupis_handles(self: Task) -> dict:
+    """Delete expired MCP soupis handles (mcp_soupis_handles).
+
+    MANDATORY periodic sweep, not only lazy-on-read: a handle that is uploaded
+    and never resolved would otherwise sit past its TTL forever. `resolve()`
+    only filters expired rows (never deletes), so this is the sole guaranteed
+    reclaimer of unread-but-expired parsed soupis blobs.
+    """
+    try:
+        from app.mcp import soupis_handles
+        deleted = soupis_handles.purge_expired()
+        return {"success": True, "deleted": deleted}
+    except Exception as exc:  # noqa: BLE001 — a maintenance task must not crash the beat
+        logger.error(f"purge_expired_soupis_handles failed: {exc}")
+        return {"success": False, "error": str(exc), "deleted": 0}
+
+
 __all__ = [
     "cleanup_old_results",
     "update_kb_cache",
     "cleanup_old_projects",
     "health_check",
+    "purge_expired_soupis_handles",
 ]

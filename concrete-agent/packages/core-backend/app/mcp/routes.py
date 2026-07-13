@@ -24,7 +24,9 @@ import os
 from typing import Optional
 from urllib.parse import urlencode, urlparse
 
-from fastapi import APIRouter, Form, Header, HTTPException, Query, Request
+from fastapi import (
+    APIRouter, File, Form, Header, HTTPException, Query, Request, UploadFile,
+)
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from pydantic import BaseModel, EmailStr, Field
 
@@ -1421,6 +1423,9 @@ class PassportBuildRequest(BaseModel):
     tz_filename: str = ""
     soupis_file_base64: Optional[str] = None
     soupis_filename: str = ""
+    # Owner-scoped handle from POST /api/v1/mcp/soupis/upload — the way to feed a
+    # real (multi-MB) soupis, since base64 can't ride an LLM-mediated MCP call.
+    soupis_ref: Optional[str] = None
     construction_process: Optional[dict] = None
     passport_id: Optional[str] = None
 
@@ -1436,8 +1441,101 @@ async def rest_build_bridge_passport(
     if not credit_check["ok"]:
         raise HTTPException(status_code=402, detail=credit_check["error"])
 
+    from app.mcp.identity import reset_rest_owner, set_rest_owner
     from app.mcp.tools.passport_build import build_bridge_passport
-    return await build_bridge_passport(**body.model_dump())
+
+    # Bind the verified caller so an owner-scoped soupis_ref resolves to THIS
+    # user's handle (the tool itself stays auth-param-free).
+    token = set_rest_owner(api_key)
+    try:
+        return await build_bridge_passport(**body.model_dump())
+    finally:
+        reset_rest_owner(token)
+
+
+@router.post("/soupis/upload")
+async def rest_soupis_upload(
+    file: UploadFile = File(...),
+    authorization: Optional[str] = Header(None),
+    content_length: Optional[str] = Header(None),
+):
+    """Upload a soupis (výkaz výměr) XLSX/XML → owner-scoped `soupis_ref`.
+
+    The file is parsed ONCE server-side (out of the model context) and only the
+    compact parsed result is stored under a 24 h handle bound to the caller; feed
+    the returned `soupis_ref` to `build_bridge_passport`. A soupis that fails to
+    parse (or parses to zero items) is a typed 422 `soupis_parse_failed` — no
+    handle is created (never a silent quantity-less passport downstream).
+    """
+    import base64
+
+    from app.mcp import soupis_handles
+    from app.mcp.tools.budget import parse_construction_budget
+
+    api_key = _extract_bearer(authorization)
+    owner_id = soupis_handles.owner_id_for_api_key(api_key)
+    if owner_id is None:
+        raise HTTPException(
+            status_code=401,
+            detail="A valid API key is required to upload a soupis. "
+                   "Register at stavagent.cz/api-access.",
+        )
+    if soupis_handles.upload_rate_limited(owner_id):
+        raise HTTPException(
+            status_code=429,
+            detail=f"Soupis upload rate limit exceeded "
+                   f"({soupis_handles.UPLOAD_RATE_LIMIT_PER_HOUR}/hour). Try again later.",
+        )
+
+    max_bytes = soupis_handles.MAX_UPLOAD_BYTES
+    # Reject on the declared size first (cheap), then bound the in-memory copy:
+    # read at most max+1 bytes so a spoofed/absent Content-Length still can't
+    # force an unbounded raw+base64 materialisation. (Starlette already spooled
+    # the multipart part to disk; this caps the RAM blow-up, not that disk spool.)
+    if content_length and content_length.isdigit() and int(content_length) > max_bytes:
+        raise HTTPException(
+            status_code=413,
+            detail=f"Soupis too large ({content_length} bytes > {max_bytes}). "
+                   f"Split it or contact support.",
+        )
+    raw = await file.read(max_bytes + 1)
+    if len(raw) > max_bytes:
+        raise HTTPException(
+            status_code=413,
+            detail=f"Soupis too large (> {max_bytes} bytes). "
+                   f"Split it or contact support.",
+        )
+    filename = file.filename or "soupis.xlsx"
+    parsed = await parse_construction_budget(
+        file_base64=base64.b64encode(raw).decode(), filename=filename,
+    )
+    if parsed.get("error") or not (parsed.get("items") or []):
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "error": "soupis_parse_failed",
+                "message": parsed.get("error") or "soupis parsed to zero items — "
+                           "wrong sheet or format?",
+                "format_detected": parsed.get("format_detected"),
+            },
+        )
+    ref = soupis_handles.save(
+        owner_id, parsed, filename=filename,
+        format_detected=parsed.get("format_detected"), size_bytes=len(raw),
+    )
+    # Best-effort opportunistic GC (belt-and-braces for the Celery beat sweep on
+    # min-instances=0 where a persistent beat worker may not run) — never fatal.
+    try:
+        soupis_handles.purge_expired()
+    except Exception:  # noqa: BLE001
+        pass
+    return {
+        "soupis_ref": ref,
+        "total_items": parsed.get("total_items") or len(parsed["items"]),
+        "format_detected": parsed.get("format_detected"),
+        "filename": filename,
+        "expires_in_hours": soupis_handles.DEFAULT_TTL_HOURS,
+    }
 
 
 class PumpRequest(BaseModel):

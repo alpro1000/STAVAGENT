@@ -32,6 +32,7 @@ async def build_bridge_passport(
     tz_filename: str = "",
     soupis_file_base64: Optional[str] = None,
     soupis_filename: str = "",
+    soupis_ref: Optional[str] = None,
     construction_process: Optional[dict] = None,
     passport_id: Optional[str] = None,
 ) -> dict:
@@ -48,9 +49,16 @@ async def build_bridge_passport(
         tz_file_base64: TZ PDF as base64 (pdfplumber extraction runs here).
         tz_filename: original TZ filename — used for SO-code detection
             (`extract_so_code` → `_meta.object.code`); pass the real name.
-        soupis_file_base64: soupis XLSX/XML as base64 (optional — without it
-            every element emits without quantities, honestly marked).
+        soupis_file_base64: soupis XLSX/XML as base64 — ONLY for small files.
+            A real soupis is multiple MB and cannot ride an LLM-mediated MCP call
+            (megabytes through the model context); use `soupis_ref` for those.
+            Without any soupis, every element emits without quantities, honestly
+            marked.
         soupis_filename: original soupis filename (format detection).
+        soupis_ref: owner-scoped handle from POST /api/v1/mcp/soupis/upload — the
+            way to feed a real (multi-MB) soupis. Takes precedence over
+            soupis_file_base64. Resolved to THIS caller's parsed soupis; a ref that
+            is unknown / expired / not yours → typed `soupis_ref_invalid`.
         construction_process: OPTIONAL verified trio fragment
             ({deck_pour_stages, deck_pour_stages_source, falsework_technology})
             — pass EXACTLY what a VERIFIED `validate_drawing_element` notes-mode
@@ -64,7 +72,8 @@ async def build_bridge_passport(
     Returns:
         {"passport": {...}, "gaps": [...], "stored": bool} on success;
         typed errors otherwise: {"error": "tz_extraction_failed" |
-        "soupis_parse_failed" | "assembly_invalid", "message": ...}.
+        "soupis_parse_failed" | "soupis_ref_invalid" | "assembly_invalid",
+        "message": ...}.
     """
     try:
         # ── stage 1: TZ text ────────────────────────────────────────────────
@@ -77,9 +86,29 @@ async def build_bridge_passport(
             return {"error": "tz_extraction_failed",
                     "message": str(tz_fields["error"])}
 
-        # ── stage 3: soupis (optional) ──────────────────────────────────────
+        # ── stage 3: soupis (optional) — owner-scoped handle OR inline base64 ──
         parsed_budget: Optional[dict] = None
-        if soupis_file_base64:
+        soupis_provenance: Optional[dict] = None
+        if soupis_ref:
+            # Real (multi-MB) soupis: uploaded + parsed once server-side. Resolve
+            # the handle OWNER-SCOPED — cross-owner / expired / unknown all read as
+            # not-found (no existence leak), mapped to one typed error.
+            from app.mcp import soupis_handles
+            from app.mcp.identity import current_owner_api_key
+
+            owner_id = soupis_handles.owner_id_for_api_key(current_owner_api_key())
+            resolved = (soupis_handles.resolve(soupis_ref, owner_id)
+                        if owner_id is not None else None)
+            if resolved is None:
+                return {"error": "soupis_ref_invalid",
+                        "message": "soupis_ref not found, expired, or not yours — "
+                                   "re-upload via POST /api/v1/mcp/soupis/upload."}
+            parsed_budget = resolved["parsed_budget"]
+            soupis_provenance = {
+                "ref": soupis_ref, "filename": resolved.get("filename"),
+                "total_items": resolved.get("total_items"),
+            }
+        elif soupis_file_base64:
             from app.mcp.tools.budget import parse_construction_budget
 
             parsed_budget = await parse_construction_budget(
@@ -96,6 +125,11 @@ async def build_bridge_passport(
                 # passport when the caller DID hand over a soupis.
                 return {"error": "soupis_parse_failed",
                         "message": "soupis parsed to zero items — wrong sheet or format?"}
+            soupis_provenance = {
+                "filename": soupis_filename or None,
+                "total_items": (parsed_budget.get("total_items")
+                                or len(parsed_budget.get("items") or [])),
+            }
 
         # ── assemble (single emit point) with the LIVE classifier ──────────
         from app.mcp.tools.classifier import _classify
@@ -108,6 +142,7 @@ async def build_bridge_passport(
             passport = assemble_bridge_passport(
                 tz_fields, parsed_budget, classify=_classify,
                 construction_process=construction_process,
+                soupis_provenance=soupis_provenance,
             )
         except Exception as exc:  # pydantic ValidationError et al — typed, JSON-safe
             logger.error("[MCP/BuildPassport] assembly invalid: %s", exc)

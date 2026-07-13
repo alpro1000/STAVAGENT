@@ -55,6 +55,7 @@ def assemble_bridge_passport(
     classify: Callable,
     object_type: str = "bridge",
     construction_process: Optional[dict] = None,
+    soupis_provenance: Optional[dict] = None,
 ) -> dict:
     """Compose + validate a per-SO BridgePassport from stage-1/3 outputs.
 
@@ -64,6 +65,9 @@ def assemble_bridge_passport(
         classify: deterministic element-type classifier (injected — the live
             caller passes the core of `app.mcp.tools.classifier`, tests a stub).
         object_type: authoritative object type for the classifier bridge-upgrade.
+        soupis_provenance: OPTIONAL {ref?, filename, total_items} — the soupis the
+            quantities came from. Cited in `quantities.source` and `_meta.soupis`
+            (Pattern 2/29: quantities must name their source, not just say "join").
         construction_process: OPTIONAL verified stage-2 trio fragment
             ({deck_pour_stages?, deck_pour_stages_source?, falsework_technology?}).
             Injected HERE (not spliced by the caller after the fact) so it passes
@@ -178,6 +182,19 @@ def assemble_bridge_passport(
         gaps.append(
             f"construction_process ({', '.join(missing_cp)}): stage 2 vision — not extracted")
 
+    # quantities provenance — cite the soupis, not just "join" (Pattern 2/29:
+    # a quantity must name its source). `_meta.soupis` carries the handle so the
+    # passport is traceable back to the exact upload.
+    if parsed_budget:
+        _fn = (soupis_provenance or {}).get("filename")
+        _n = (soupis_provenance or {}).get("total_items")
+        quantities_source = (
+            f"soupis join: {_fn}" + (f" ({_n} items)" if _n else "")
+            if _fn else "soupis join"
+        )
+    else:
+        quantities_source = "none"
+
     passport: dict[str, Any] = {
         "_meta": {
             "schema": SCHEMA_NAME,
@@ -190,11 +207,15 @@ def assemble_bridge_passport(
         **({"superstructure": superstructure} if superstructure else {}),
         **({"materials_and_standards": {"concretes": concretes}} if concretes else {}),
         **({"construction_process": cp} if cp else {}),
-        "quantities": {"source": "soupis join" if parsed_budget else "none", "items": items},
+        "quantities": {"source": quantities_source, "items": items},
     }
     if obj.get("object_code") or obj.get("object_name"):
         passport["_meta"]["object"] = {
             "code": obj.get("object_code"), "name": obj.get("object_name"),
+        }
+    if soupis_provenance:
+        passport["_meta"]["soupis"] = {
+            k: v for k, v in soupis_provenance.items() if v is not None
         }
 
     BridgePassport.model_validate(passport)  # emit-side drift-guard (loud)

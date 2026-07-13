@@ -161,6 +161,21 @@ def test_construction_process_from_tz_text_clears_its_gap():
     assert not any(g.startswith("construction_process") for g in p["_meta"]["gaps"])
 
 
+def test_soupis_provenance_cites_source_in_quantities_and_meta():
+    """Quantities must name their source (Pattern 2/29), not just say 'join'."""
+    prov = {"ref": "soupis-abc", "filename": "E_Soupis.xlsx", "total_items": 99}
+    p = assemble_bridge_passport(_tz_fields(), _budget(), classify=fake_classify,
+                                 soupis_provenance=prov)
+    assert p["quantities"]["source"] == "soupis join: E_Soupis.xlsx (99 items)"
+    assert p["_meta"]["soupis"] == prov
+
+
+def test_no_soupis_source_stays_none_and_no_meta_soupis():
+    p = assemble_bridge_passport(_tz_fields(), None, classify=fake_classify)
+    assert p["quantities"]["source"] == "none"
+    assert "soupis" not in p["_meta"]
+
+
 def test_inverse_map_direction():
     assert passport_key_for_engine_type("mostovkova_deska") == "superstructure_deck"
     assert passport_key_for_engine_type("podkladni_beton") == "blinding_concrete"  # first-declared wins
