@@ -357,6 +357,19 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ## 9. Session log
 
+## 2026-07-13 — Session: half-B live-run na reálném SO-202 → 5 extraction-багů, 4 opraveny (#1499)
+
+**Rozhodnuto:** Alexander pustil `build_bridge_passport` živě na reálném SO-202 TZ (bez soupisu) — invariant DRŽÍ (gaps poctivé, nic nefabrikováno), ale extrakce NEÚPLNÁ: 5 багů, dva ⛔ přímo do money-path. SDD-tiket `docs/bugs/passport-extraction-incomplete/report.md` (cílové tvary z ratifikovaného `example_SO202_zalmanov.json`). **Opraveno #1–#4, každý s content-asserting testem (ne jen struktura — to byla díra, kterou golden propustil):** (1) ⛔ DEDUP — assembler emitoval item per klasifikovaný prvek → 3 textové deck-spany = superstructure_deck ×3 (ztrojený deck v kalkulaci); teď akumulace po passport-klíči s ADITIVNÍM slučováním množství. (2) ⛔ EXPOZICE — `_CONCRETE_RE` bral jen marku (C35/45), zahodil `-XF2+XD1+XC4` (curing/durabilita, XF4 ⇒ min 7 d); nový `_concrete_classes()` bere plný řetězec (tolerantní k mezerám i `+`/`,` separátorům, konzervativní). (3) ⚠️ TAKTY+SKRUŽ Z TEXTU — «na pevné skruži ve třech etapách» → `deck_pour_stages=3` + `falsework_technology=fixed_scaffolding` deterministicky ve stage 1 (CZ číslovky, posuvná→mss před bare skruž, letmá→cantilever); assembler merguje s volitelnou VERIFIED výkres-notou. (4) ⚠️ VÝŠKY Z TEXTU — «Výška mostu nad terénem» 8,10/14,90/9,90 → `geometry.decks[].deck_height_over_terrain_m` = max (14.9, skruž +3,2 M); plausibilita 1–60 m, honest-blank. **#5 prahy** (Úložné prahy/záv.zdi/křídla → dubl abutments) = architektonický (classifier→passport-key roll-up axis, mapa sama říká «NOT here yet») → Gate-3 follow-up, odloženo v tiketu.
+
+**Odmítnuto:** Amazon Q dvě blokující (🛑) находки na #1499 — obě FALSE (`_parse_cz_num` je module-level fn resolvovaná v čase VOLÁNÍ, ne definice — přímý call vrací [8.1,14.9,9.9]; `max()` je gated `if deck_heights:` empty→else). Faktická rebuttal v PR, kód nezměněn.
+
+**Otevřené otázky:** ŽIVÁ re-verifikace #1–#4 na reálném TZ (regex psán proti standardní CZ notaci + verbatim citacím, protože TZ text je read-denied pod `test-data/**` — to je i důvod, proč live-run chytil to, co golden ne). Poučení: golden testoval STRUKTURU (klíče ⊆ example), ne OBSAH → nové testy asertují CO se vytáhlo.
+
+**Chyba session (poctivě):** nepustil jsem geometry-golden lokálně před pushem → 4 pre-existing goldeny (2 geometry needs_verify + 2 SO202 object-code grade-only) spadly na CI; opraveno hned (deck_heights = aditivní opt pole mimo needs_verify; object-code asserty na plnou expozici). Pre-push discipline: příště `pytest tests/test_tz_*` celé.
+
+**Co dál:** fronta — most «plán z pasportu → pozice + TOV jedním krokem», #5 prahy roll-up, composite-parts (#1498 pilíř přistál paralelně na main), rate 30-vs-42.5 (čeká domain GO), season-default podzim_jaro.
+
+
 ## 2026-07-12 — Session: composite #7 — pilíř jako druhý composite-typ (aditivní, engine netknutý)
 
 **Kontext:** Fronta-poznámka „composite-parts Gate 3+ (přerušeno na design-gate)" byla ZASTARALÁ — celá composite-element-parts (Gates 0–5) je smerged na main (PR #1412 Fáze 1 + PR #1422 Fáze 2, live-tested 2026-07-07). Jediné reálně zbývající = follow-upy z out-of-scope. Alexander vybral **pilíř jako 2. composite-typ**.
