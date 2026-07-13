@@ -79,6 +79,21 @@ def test_anonymous_caller_ref_rejected(monkeypatch):
     assert out["error"] == "soupis_ref_invalid"
 
 
+def test_stale_ref_is_typed_reupload_error_not_old_data(monkeypatch):
+    """A handle parsed by an OLDER parser contract must be a typed
+    `soupis_ref_stale`, never the old payload (live increment-2.5 finding: a
+    pre-#1503 ref silently served whole-stavba numbers after the fix deployed)."""
+    from app.mcp import identity, soupis_handles
+    monkeypatch.setattr(identity, "current_owner_api_key", lambda: "sk-owner-A")
+    monkeypatch.setattr(soupis_handles, "owner_id_for_api_key", lambda k: 42)
+    monkeypatch.setattr(soupis_handles, "resolve", lambda ref, oid: {"stale": True})
+
+    out = _build(tz_text=TZ_TEXT, soupis_ref="soupis-pre-deploy")
+    assert out["error"] == "soupis_ref_stale"
+    assert "re-upload" in out["message"].lower()
+    json.dumps(out)
+
+
 def test_owner_id_routes_bound_oauth_token_through_resolver(monkeypatch):
     """A user-bound sat-* OAuth bearer must resolve to its underlying sk-* owner
     on the REST surface too (parity with the /mcp tool path), via the canonical

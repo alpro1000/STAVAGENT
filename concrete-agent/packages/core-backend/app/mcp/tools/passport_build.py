@@ -58,7 +58,9 @@ async def build_bridge_passport(
         soupis_ref: owner-scoped handle from POST /api/v1/mcp/soupis/upload — the
             way to feed a real (multi-MB) soupis. Takes precedence over
             soupis_file_base64. Resolved to THIS caller's parsed soupis; a ref that
-            is unknown / expired / not yours → typed `soupis_ref_invalid`.
+            is unknown / expired / not yours → typed `soupis_ref_invalid`; a ref
+            parsed by an older parser version (deployed since the upload) → typed
+            `soupis_ref_stale` (re-upload for a fresh parse, never silent old data).
         construction_process: OPTIONAL verified trio fragment
             ({deck_pour_stages, deck_pour_stages_source, falsework_technology})
             — pass EXACTLY what a VERIFIED `validate_drawing_element` notes-mode
@@ -72,8 +74,8 @@ async def build_bridge_passport(
     Returns:
         {"passport": {...}, "gaps": [...], "stored": bool} on success;
         typed errors otherwise: {"error": "tz_extraction_failed" |
-        "soupis_parse_failed" | "soupis_ref_invalid" | "assembly_invalid",
-        "message": ...}.
+        "soupis_parse_failed" | "soupis_ref_invalid" | "soupis_ref_stale" |
+        "assembly_invalid", "message": ...}.
     """
     try:
         # ── stage 1: TZ text ────────────────────────────────────────────────
@@ -103,6 +105,16 @@ async def build_bridge_passport(
                 return {"error": "soupis_ref_invalid",
                         "message": "soupis_ref not found, expired, or not yours — "
                                    "re-upload via POST /api/v1/mcp/soupis/upload."}
+            if resolved.get("stale"):
+                # The handle stores a PARSED result; this one was parsed by an
+                # OLDER parser contract (deployed since the upload). Serving it
+                # would silently reproduce pre-fix numbers for the whole TTL —
+                # typed error instead (bug increment 2.5, found live).
+                return {"error": "soupis_ref_stale",
+                        "message": "This soupis_ref was parsed by an older parser "
+                                   "version — its stored data lacks current fields. "
+                                   "Re-upload the file via POST "
+                                   "/api/v1/mcp/soupis/upload to get a fresh ref."}
             parsed_budget = resolved["parsed_budget"]
             soupis_provenance = {
                 "ref": soupis_ref, "filename": resolved.get("filename"),

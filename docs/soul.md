@@ -365,7 +365,7 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 **Otevřené otázky / chyba session:** ⚠️ **STALE HANDLE** (chyceno živě při re-runu #1503): handle ukládá `parsed_budget` (výstup parseru), ne surové XML → ref vytvořený PŘED deployem parseru tiše vrací stará čísla 24 h (deck 8561), fresh upload → 2697.941. Reálný operační bag. Inkrement 2.5 (ne blokér, do release): stamp parse-version na handle při save, mismatch při resolve → typed `soupis_ref_stale: re-upload required`. Moje chyba prvního běhu: fixoval jsem nejdřív špatnou parse-path (`_parse_aspe_xc4`) — soubor jde přes `_parse_xc4_price_lists`/ASPE_XC4 a `object_code` dropoval AŽ normalizer; přiznáno, dohledáno empiricky (`parse_xml_tree` OK, `normalize_positions` dropoval).
 
-**Co dál:** inkrement 2.5 stale-handle (separátní PR, migrace-free version stamp); po deployi inkrementu 2 živý re-run s NOVÝM uploadem (lekce usvojena) → čekám všechny 4 na prode.
+**Co dál:** inkrement 2.5 stale-handle HOTOV (stejná session, separátní PR): `PARSE_VERSION=3` v budget.py (single source, historie 1=base/2=+object_code/3=+catalog_name) → stamp na handle při save (migrace 015, NULL=pre-versioning=stale) → `resolve()` porovná PO owner-scoped SQL (cross-owner stale = not-found, žádný existence-leak) → `{"stale": True}` BEZ payloadu → tool typed `soupis_ref_stale: re-upload required`. Po deployi živý re-run s NOVÝM uploadem → čekám všechny 4 na prode + stale-error na starém ref.
 
 ## 2026-07-13 — Session: soupis upload→handle ingestion pro build_bridge_passport (Variant B, #1502 — NEMERGOVÁNO, merge-gate Alexandra)
 
