@@ -61,3 +61,39 @@ def test_documented_gap_no_prefab_axis_yet():
     assert data.get("is_concrete_element", True) is True  # no prefab veto yet
     assert "is_prefab" not in data                        # axis not added yet
     assert data["element_type"].startswith("zaklady")     # typed as foundations
+
+
+# ── increment 4 (bug passport-soupis-join-whole-stavba): VÝZTUŽ-line vocab ─────
+# Live SO-202: two real tonne lines misclassified — 422365 «VÝZTUŽ MOSTNÍ TRÁMOVÉ
+# KONSTRUKCE» → pricinik (bare 'tram' keyword; deck rebar 468 886 kg orphaned) and
+# 333365 «VÝZTUŽ MOSTNÍCH OPĚR A KŘÍDEL» → jine (genitive-plural forms missing:
+# «mostních» breaks the 'mostni oper' substring, vkladné -e- in «křídel» breaks
+# 'kridl'). Fixed as SHARED YAML DATA (mostni tramov → deck; genitive forms →
+# opěry) — engine parity by construction via the regenerated kb artifact; the
+# mirrored engine goldens live in element-classifier.golden-w3-parity.test.ts.
+
+def test_increment4_deck_rebar_line_types_as_deck_not_pricinik():
+    data = _classify("VÝZTUŽ MOSTNÍ TRÁMOVÉ KONSTRUKCE Z OCELI 10505, B500B",
+                     object_code="SO 202")
+    assert data["element_type"] == "mostovkova_deska"
+    assert data["confidence"] >= 0.9
+
+
+def test_increment4_abutment_rebar_genitive_types_as_opery():
+    data = _classify("VÝZTUŽ MOSTNÍCH OPĚR A KŘÍDEL Z OCELI 10505, B500B",
+                     object_code="SO 202")
+    assert data["element_type"] == "opery_ulozne_prahy"
+
+
+def test_increment4_real_pricnik_stays_pricinik():
+    """Both directions: a REAL příčník must not be pulled into the deck."""
+    data = _classify("PŘÍČNÍKY MOSTNÍ ZE ŽELEZOBETONU DO C30/37",
+                     object_code="SO 202")
+    assert data["element_type"] == "pricinik"
+
+
+def test_increment4_building_pruvlak_unaffected():
+    """The trám fix is bound to «MOSTNÍ TRÁMOVÁ KONSTRUKCE» — a building beam
+    keeps its type (no global trám broadening)."""
+    data = _classify("Průvlak trámový železobetonový C25/30")
+    assert data["element_type"] == "pruvlak"

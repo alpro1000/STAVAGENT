@@ -57,8 +57,15 @@ def _parse_quantity(raw_quantity: Optional[str]) -> Optional[float]:
         return None
 
 
-def parse_polozka(element: ET.Element) -> ParseResult:
-    """Parse a single ``<polozka>`` element into a normalized dictionary."""
+def parse_polozka(element: ET.Element, object_code: Optional[str] = None) -> ParseResult:
+    """Parse a single ``<polozka>`` element into a normalized dictionary.
+
+    ``object_code`` is the ``<znacka>`` of the nearest enclosing ``<objekt>`` (the
+    SO section, e.g. "SO 202"), threaded down by ``_iter_polozky``. It is carried
+    on every position so a per-SO consumer (the bridge-passport soupis join) can
+    filter a whole-stavba soupis to a single construction object — without it the
+    join sums quantities across every SO (bug `passport-soupis-join-whole-stavba`).
+    """
 
     position: Dict[str, object] = {}
 
@@ -78,6 +85,14 @@ def parse_polozka(element: ET.Element) -> ParseResult:
             break
     position["description"] = description_value
 
+    # catalog_name = the OTSKP standard item name (<nazev>), kept SEPARATE from
+    # description. `<popis>` is a project sub-note ("vč. nátěru…") that on some
+    # lines shadows the real element name, so element classification must key on
+    # <nazev> — where the OTSKP name («MOSTNÍ PILÍŘE A STATIVA…») actually lives
+    # (bug `passport-soupis-join-whole-stavba` increment 2). Display/provenance
+    # keeps `description` (popis-first) untouched.
+    position["catalog_name"] = _text_or_none(element.find("nazev"))
+
     # Validation rules
     if not position.get("id"):
         return ParseResult(None, "missing id")
@@ -95,26 +110,42 @@ def parse_polozka(element: ET.Element) -> ParseResult:
         return ParseResult(None, "missing quantity")
 
     position.setdefault("specification", None)
+    position["object_code"] = object_code
 
     return ParseResult(position, None)
 
 
-def _iter_polozky(element: ET.Element) -> Iterator[Tuple[int, ET.Element]]:
-    """Yield ``(row_index, element)`` for every ``<polozka>`` in the subtree."""
+def _objekt_znacka(node: ET.Element) -> Optional[str]:
+    """The SO code of an ``<objekt>`` = its DIRECT ``<znacka>`` child (a ``<polozka>``
+    also has a ``<znacka>``, but ``.find`` searches direct children only, so this
+    never picks up a nested position's code)."""
+    z = node.find("znacka")
+    text = (z.text or "").strip() if z is not None else ""
+    return text or None
+
+
+def _iter_polozky(element: ET.Element) -> Iterator[Tuple[int, ET.Element, Optional[str]]]:
+    """Yield ``(row_index, element, object_code)`` for every ``<polozka>``.
+
+    ``object_code`` is the ``<znacka>`` of the nearest enclosing ``<objekt>``,
+    threaded down the recursion (ElementTree has no parent pointers). A nested
+    ``<objekt>`` overrides its ancestor's code for its own subtree.
+    """
 
     row_index = 0
 
-    def _traverse(node: ET.Element) -> Iterator[ET.Element]:
+    def _traverse(node: ET.Element, object_code: Optional[str]) -> Iterator[Tuple[ET.Element, Optional[str]]]:
         if node.tag == "polozka":
-            yield node
+            yield node, object_code
             return
-
+        if node.tag == "objekt":
+            object_code = _objekt_znacka(node) or object_code
         for child in list(node):
-            yield from _traverse(child)
+            yield from _traverse(child, object_code)
 
-    for polozka in _traverse(element):
+    for polozka, object_code in _traverse(element, None):
         row_index += 1
-        yield row_index, polozka
+        yield row_index, polozka, object_code
 
 
 def parse_xml_tree(root: ET.Element) -> Tuple[List[Dict[str, object]], Dict[str, object]]:
@@ -123,8 +154,8 @@ def parse_xml_tree(root: ET.Element) -> Tuple[List[Dict[str, object]], Dict[str,
     positions: List[Dict[str, object]] = []
     diagnostics: Dict[str, object] = {"parsed": 0, "skipped": []}
 
-    for row_index, polozka_element in _iter_polozky(root):
-        result = parse_polozka(polozka_element)
+    for row_index, polozka_element, object_code in _iter_polozky(root):
+        result = parse_polozka(polozka_element, object_code)
         if result.position is not None:
             positions.append(result.position)
         else:

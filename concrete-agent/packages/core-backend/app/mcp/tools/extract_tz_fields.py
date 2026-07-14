@@ -47,7 +47,100 @@ from app.mcp.tools.document import PATTERNS, _extract_pdf_text
 
 logger = logging.getLogger(__name__)
 
-_CONCRETE_RE = PATTERNS["concrete_class"]  # C(\d{2,3})/(\d{2,3})
+_CONCRETE_RE = PATTERNS["concrete_class"]  # C(\d{2,3})/(\d{2,3}) — grade only
+
+# Exposure-aware capture: the grade ALONE is not enough — curing/durability depend
+# on the exposure suffix (XF4 ⇒ min 7 d curing, TKP18 §7.8.3). Live SO-202 regress:
+# `C35/45-XF2+XD1+XC4` was truncated to `C35/45`. Exposure tokens: X0, XC/XD/XF/
+# XA/XS/XM 1–4. Separator between grade and suffix is optional; the chain is `+`-
+# joined and attaches ONLY when adjacent (no word in between) — conservative.
+_EXPO_TOKEN = r"X[0CDFASM]\d?"
+# Grade→suffix separator is spaces/dash only (a comma after the grade means the
+# exposure belongs to prose, not this class); WITHIN the chain both `+` and `,`
+# join tokens (real TZs write «XF4+XD3+XC4» and «XF4, XD3»).
+_CONCRETE_FULL_RE = re.compile(
+    r"(?P<grade>C\d{2,3}/\d{2,3})"
+    r"(?:[\s\-–]*(?P<expo>" + _EXPO_TOKEN + r"(?:\s*[+,]\s*" + _EXPO_TOKEN + r")*))?",
+    re.I,
+)
+
+
+def _concrete_classes(line: str) -> list[str]:
+    """Full grade+exposure strings on the line (`C35/45-XF2+XD1+XC4`), normalized:
+    exposure suffix preserved, tokens upper-cased, `+`-joined, grade-suffix `-`.
+    Grade-only when no adjacent exposure chain (honest — never fabricated)."""
+    out: list[str] = []
+    for m in _CONCRETE_FULL_RE.finditer(line):
+        grade = m.group("grade")
+        expo = m.group("expo")
+        if expo:
+            toks = [t.upper() for t in re.split(r"\s*[+,]\s*", expo.strip())]
+            out.append(f"{grade}-{'+'.join(toks)}")
+        else:
+            out.append(grade)
+    return out
+
+
+# ── construction_process from TZ TEXT (live SO-202 bug #3) ────────────────────
+# The calc-critical pour-staging + falsework facts are often IN the TZ prose
+# («na pevné skruži ve třech etapách»), not only on the drawing — extract them
+# deterministically at stage 1. A VERIFIED drawing note (walk_drawings notes-gate)
+# still overrides/corroborates downstream; here the text is the primary source.
+_CP_STAGE_WORDS = {
+    "jednom": 1, "jedné": 1, "dvou": 2, "dvě": 2, "třech": 3, "tří": 3,
+    "čtyřech": 4, "čtyř": 4, "pěti": 5, "šesti": 6,
+}
+_CP_STAGE_RE = re.compile(
+    r"\bve?\s+(\d+|jednom|jedné|dvou|dvě|třech|tří|čtyřech|čtyř|pěti|šesti)\s+"
+    r"(?:etap\w*|takt\w*|fáz\w*)",
+    re.I,
+)
+
+
+def _extract_construction_process(full_text: str) -> dict:
+    """deck_pour_stages + falsework_technology from TZ prose (honest-blank: a fact
+    not cleanly in the text is simply absent, never guessed)."""
+    cp: dict = {}
+    m = _CP_STAGE_RE.search(full_text)
+    if m:
+        tok = m.group(1).lower()
+        n = int(tok) if tok.isdigit() else _CP_STAGE_WORDS.get(tok)
+        if n:
+            cp["deck_pour_stages"] = n
+            snip = full_text[max(0, m.start() - 24): m.end() + 12]
+            cp["deck_pour_stages_source"] = f"TZ text: …{' '.join(snip.split())}…"
+    low = full_text.lower()
+    if re.search(r"\bletmo\b|letm\w*\s+(?:beton|montáž|výsun)\w*", low):
+        cp["falsework_technology"] = "cantilever"
+    elif re.search(r"posuvn\w*\s+skruž", low):          # check MSS before bare skruž
+        cp["falsework_technology"] = "mss"
+    elif re.search(r"pevn\w*\s+skruž|na\s+skruž", low):
+        cp["falsework_technology"] = "fixed_scaffolding"
+    return cp
+
+
+# ── deck height over terrain from TZ TEXT (live SO-202 bug #4) ────────────────
+# «Výška mostu nad terénem» + the per-crossing values (8,10 / 14,90 / 9,90 m)
+# feed height_m=14.9 → skruž (+3,2 M Kč). They are in the prose, not only the
+# drawing — extract the clean Czech-decimal values in a short window after the
+# phrase; half-A takes the max as the falsework height.
+_HEIGHT_OVER_TERRAIN_RE = re.compile(r"výšk\w*\s+(?:mostu\s+)?nad\s+terén\w*", re.I)
+_CZ_HEIGHT_NUM_RE = re.compile(r"\d{1,2},\d{1,2}")   # Czech decimal, height-shaped
+
+
+def _deck_heights_over_terrain(full_text: str) -> list[float]:
+    """All clean deck-height-over-terrain values (m). Honest-blank when the phrase
+    is absent; plausibility-banded (1–60 m) so an unrelated decimal can't leak."""
+    m = _HEIGHT_OVER_TERRAIN_RE.search(full_text)
+    if not m:
+        return []
+    window = full_text[m.end(): m.end() + 120]
+    vals: list[float] = []
+    for nm in _CZ_HEIGHT_NUM_RE.finditer(window):
+        v = _parse_cz_num(nm.group(0))
+        if v is not None and 1.0 <= v <= 60.0:
+            vals.append(v)
+    return vals
 
 # Injectable seams — module-level, NOT public-tool params. FastMCP builds a JSON
 # schema from the registered tool's signature, and a Callable can't be expressed
@@ -95,9 +188,11 @@ def _make_vertex_llm() -> Optional[Callable[[str], list[dict]]]:
                 "head only; tail elements may be missed", len(mat_text), _MAT_CAP)
         prompt = (
             "Z následující sekce MATERIÁLY technické zprávy vytáhni betonové "
-            "prvky a jejich třídy betonu. ODPOVĚZ POUZE VALIDNÍM JSON polem "
-            '[{"name": "...", "concrete_class": "C30/37" | null}] — jen prvky, '
-            "které v textu skutečně jsou, žádná fabrikace.\n\nSEKCE:\n" + mat_text[:_MAT_CAP]
+            "prvky a jejich třídy betonu VČETNĚ stupňů vlivu prostředí (expozice). "
+            "ODPOVĚZ POUZE VALIDNÍM JSON polem "
+            '[{"name": "...", "concrete_class": "C30/37-XF4+XD3+XC4" | null}] — '
+            "celý řetězec třídy i s expozicí (XF/XD/XC/XA…), jen prvky které v "
+            "textu skutečně jsou, žádná fabrikace.\n\nSEKCE:\n" + mat_text[:_MAT_CAP]
         )
         data = VertexGeminiClient().call(prompt, temperature=0.1)
         if isinstance(data, list):
@@ -372,13 +467,16 @@ def _extract_elements(
     for line, ln_page in (sections.get("materialy") or []):
         if _is_heading(line, _SECTION_HEADERS["materialy"]):
             continue
-        classes = [m.group(0).replace(" ", "") for m in _CONCRETE_RE.finditer(line)]
+        classes = _concrete_classes(line)  # FULL grade+exposure strings
         has_element = any(stem.search(line) for stem in _ELEMENT_STEMS)
         if not has_element:
             unbound.extend(classes)  # e.g. "Výztuž B500B" has no concrete class → []
             continue
         first_class = classes[0] if classes else None
-        name = _strip_class_tail(line, first_class)
+        # Cut the name at the GRADE token (verbatim on the line), not the normalized
+        # full class — the exposure suffix normalization would defeat a literal find.
+        gm = _CONCRETE_RE.search(line)
+        name = _strip_class_tail(line, gm.group(0) if gm else None)
         if not name or name.lower() in seen:
             continue
         seen.add(name.lower())
@@ -614,6 +712,13 @@ def _extract_geometry(full_text: str) -> dict:
     else:
         needs_verify.append("cross_section_type")
 
+    # Additive OPTIONAL field — its absence is carried by the empty list (and the
+    # assembler's honest gap), NOT by needs_verify, so the core-geometry confidence
+    # signal («nothing needs verify») stays meaningful.
+    deck_heights = _deck_heights_over_terrain(full_text)
+    if deck_heights:
+        src["deck_heights_over_terrain_m"] = _geo_src(full_text, _HEIGHT_OVER_TERRAIN_RE.search(full_text), 0.9)
+
     continuity, cmA = _first_keyword(full_text, _SYS_CONTINUITY)
     casting, cmB = _first_keyword(full_text, _SYS_CASTING)
     prestress, cmC = _first_keyword(full_text, _SYS_PRESTRESS)
@@ -632,6 +737,7 @@ def _extract_geometry(full_text: str) -> dict:
         "total_span_length_m": total,
         "nk_height_m": nk_height,
         "nk_width_m": nk_width,
+        "deck_heights_over_terrain_m": deck_heights,
         "cross_section_type": cross_section,
         "structural_system": structural_system,
         "needs_verify": needs_verify,
@@ -716,7 +822,7 @@ async def extract_tz_fields(
     elements, unbound = await asyncio.to_thread(
         _extract_elements, sections, obj.get("object_code"), None, active_llm)
 
-    return {
+    result: dict[str, Any] = {
         "object": obj,
         "elements": elements,
         "_extraction_meta": {
@@ -727,3 +833,7 @@ async def extract_tz_fields(
             "elements_needs_verify": [e["name"] for e in elements if e["needs_verify"]],
         },
     }
+    cp = _extract_construction_process(text)
+    if cp:
+        result["construction_process"] = cp   # stage 2 vision still overrides/corroborates
+    return result

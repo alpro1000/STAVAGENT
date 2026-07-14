@@ -13,6 +13,16 @@ from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
+# Version of the parsed-item CONTRACT this module emits. BUMP whenever the item
+# shape/semantics change (a new field the consumers depend on, a changed meaning).
+# Stored on every soupis handle at upload; a handle parsed by an older version
+# resolves as typed `soupis_ref_stale` instead of silently serving old-parser data
+# for its whole TTL (bug passport-soupis-join-whole-stavba increment 2.5 — a
+# pre-#1503 handle kept returning the whole-stavba numbers after the fix deployed).
+# History: 1 = code/description/unit/quantity/prices · 2 = +object_code (#1503)
+#          · 3 = +catalog_name (#1504).
+PARSE_VERSION = 3
+
 
 async def parse_construction_budget(
     file_base64: str,
@@ -205,6 +215,14 @@ def _normalize_items(items: list) -> list:
                 "quantity": item.get("quantity", item.get("mnozstvi", 0)),
                 "unit_price": item.get("unit_price", item.get("jc", item.get("jednotkova_cena", 0))),
                 "total_price": item.get("total_price", item.get("celkem", 0)),
+                # SO section of this line (XC4 <objekt><znacka>), when the parser
+                # captured it — lets a per-SO consumer filter a whole-stavba soupis
+                # (bug passport-soupis-join-whole-stavba). None on formats without it.
+                "object_code": item.get("object_code"),
+                # OTSKP standard item name (XC4 <nazev>) — the element-classification
+                # signal, kept apart from the free-text description (popis). None on
+                # formats that don't distinguish the two.
+                "catalog_name": item.get("catalog_name"),
             })
     return normalized
 
