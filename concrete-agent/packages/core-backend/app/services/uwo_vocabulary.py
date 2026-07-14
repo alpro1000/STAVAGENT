@@ -60,6 +60,18 @@ def validate_vocabulary(data: Dict[str, Any]) -> List[str]:
     v: List[str] = []
     codes = data.get("codes") or []
     domains = data.get("domains") or []
+
+    # Shape guard: a malformed entry (not a mapping) must become a VIOLATION,
+    # not an AttributeError — the honest-empty contract says a broken file is
+    # reported and refused, never crashes the caller.
+    bad_codes = sum(1 for c in codes if not isinstance(c, dict))
+    bad_domains = sum(1 for d in domains if not isinstance(d, dict))
+    if bad_codes or bad_domains:
+        return [
+            f"malformed entries (not mappings): {bad_codes} in codes[], "
+            f"{bad_domains} in domains[]"
+        ]
+
     domain_keys = {d.get("key") for d in domains}
 
     seen: set = set()
@@ -108,7 +120,13 @@ def load_vocabulary() -> Dict[str, Any]:
         logger.warning("[UWO/vocab] unreadable %s: %s", path.name, e)
         return empty
 
-    violations = validate_vocabulary(data)
+    # Belt-and-braces: the validator is written to RETURN violations, but if a
+    # future edit lets it raise, the honest-empty promise must still hold.
+    try:
+        violations = validate_vocabulary(data)
+    except Exception as e:  # pragma: no cover - defensive
+        logger.warning("[UWO/vocab] validator crashed on %s: %s", path.name, e)
+        return empty
     if violations:
         for msg in violations:
             logger.warning("[UWO/vocab] invariant violation: %s", msg)

@@ -197,3 +197,21 @@ def test_fixture_corpus_spans_both_coverage_states():
     # and honestly-declared gaps — otherwise the honest path is untested.
     states = {get_code(code)["coverage"] for _, _, code in FIXTURE_WORKS}
     assert states == {"covered", "declared"}
+
+# ── Shape guard: malformed entries → violation, never AttributeError ─────────
+# (Amazon Q review on PR #1509 — the honest-empty contract must hold even for
+# structurally-broken YAML, e.g. a bare string where a mapping is expected.)
+
+def test_non_dict_code_entry_is_violation_not_exception():
+    violations = validate_vocabulary({
+        "codes": ["not-a-mapping"],
+        "domains": [{"key": "X", "label": {"cs": "x", "de": "", "es": ""}}],
+    })
+    assert violations, "malformed codes[] entry must be reported"
+    assert any("malformed entries" in m for m in violations)
+
+
+def test_non_dict_domain_entry_is_violation_not_exception():
+    violations = validate_vocabulary({"codes": [], "domains": ["oops"]})
+    assert violations
+    assert any("malformed entries" in m for m in violations)
