@@ -49,10 +49,21 @@ class WorkflowConfig:
     optional_states: frozenset[WorkflowState]
     terminal_states: frozenset[WorkflowState]
     workflows: dict[str, WorkflowDefinition] = field(default_factory=dict)
+    # Per-state, per-tool parameter constraints (SPEC document-to-worklist §9.1 /
+    # invariant §6.4.1). Shape: state → tool → param → allowed values.
+    param_constraints: dict[
+        WorkflowState, dict[str, dict[str, frozenset[str]]]
+    ] = field(default_factory=dict)
 
     def tools_allowed_in(self, state: WorkflowState) -> frozenset[str]:
         """Return the set of tool names allowed in `state` (gateway queries this)."""
         return self.tools_by_state.get(state, frozenset())
+
+    def param_constraints_for(
+        self, state: WorkflowState, tool_name: str
+    ) -> dict[str, frozenset[str]]:
+        """Return {param: allowed values} for `tool_name` in `state` ({} = none)."""
+        return self.param_constraints.get(state, {}).get(tool_name, {})
 
 
 def _coerce_state(raw: str) -> WorkflowState:
@@ -87,6 +98,9 @@ def load_workflow_config(path: Path | None = None) -> WorkflowConfig:
     tools_by_state: dict[WorkflowState, frozenset[str]] = {}
     optional_states: set[WorkflowState] = set()
     terminal_states: set[WorkflowState] = set()
+    param_constraints: dict[
+        WorkflowState, dict[str, dict[str, frozenset[str]]]
+    ] = {}
 
     for state_name, body in states_raw.items():
         state = _coerce_state(state_name)
@@ -97,6 +111,33 @@ def load_workflow_config(path: Path | None = None) -> WorkflowConfig:
             optional_states.add(state)
         if body.get("terminal"):
             terminal_states.add(state)
+
+        # Per-tool param constraints (SPEC §9.1 / §6.4.1). Strictly validated:
+        # a constrained tool must be allowed in this state, and every constraint
+        # must be a non-empty list of strings — a typo here must fail loading,
+        # not silently disable an invariant.
+        constraints_raw = body.get("param_constraints") or {}
+        state_constraints: dict[str, dict[str, frozenset[str]]] = {}
+        for tool_name, params in constraints_raw.items():
+            if tool_name not in tools_by_state[state]:
+                raise WorkflowDefinitionError(
+                    f"param_constraints in {state.value} reference tool "
+                    f"'{tool_name}' which is not in that state's allow-list."
+                )
+            tool_constraints: dict[str, frozenset[str]] = {}
+            for param, allowed in (params or {}).items():
+                if not isinstance(allowed, list) or not allowed or not all(
+                    isinstance(v, str) for v in allowed
+                ):
+                    raise WorkflowDefinitionError(
+                        f"param_constraints.{tool_name}.{param} in {state.value} "
+                        "must be a non-empty list of strings."
+                    )
+                tool_constraints[str(param)] = frozenset(allowed)
+            if tool_constraints:
+                state_constraints[tool_name] = tool_constraints
+        if state_constraints:
+            param_constraints[state] = state_constraints
 
     # Every WorkflowState must appear in the YAML — no silent gaps.
     missing = [s.value for s in WorkflowState if s not in tools_by_state]
@@ -138,4 +179,5 @@ def load_workflow_config(path: Path | None = None) -> WorkflowConfig:
         optional_states=frozenset(optional_states),
         terminal_states=frozenset(terminal_states),
         workflows=workflows,
+        param_constraints=param_constraints,
     )

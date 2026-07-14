@@ -1,0 +1,297 @@
+# HK212 → UWO vocabulary verdict map (Gate 3 calibration, 2026-07-14).
+#
+# HAND-CURATED expected-code assignment per corpus item — this IS the
+# calibration (Alexander, Gate-3 GO): the harness must NOT judge coverage by
+# keyword match (seed keywords are uncalibrated; token overlap gives false
+# gaps AND false hits — the {patek} case). Mechanics: item → curated verdict
+# → harness validates «code exists + domain declared» and emits the table.
+#
+# Corpus: test-data/hk212_hala/outputs/sequential_list/hk212_sequential_list.json
+# (244 items — NOT 138: that was the early po-splitting slice; we count reality).
+#
+# Verdicts:
+#   exact_code          — maps to an existing vocabulary code
+#   needs_keyword       — existing code fits, but seed keywords would not find
+#                         this phrasing (matcher-calibration note, NOT a gap)
+#   needs_new_code      — work type absent → v1.3 candidate (code = PROPOSED,
+#                         must NOT exist yet; harness enforces)
+#   needs_decomposition — consolidated pack (SPEC Stage-2 split), not a vocab gap
+#   not_work            — VRN/ZS cost article, fee, %-allowance, service/deliverable
+#                         (dokumentace, posouzení), or catch-all «ostatní práce»
+#   not_covered_ok      — declared-empty domain answers not_covered_branch honestly
+#
+# vocabulary_version_expected: v1.3-2026-07-14 (verdicts flipped after the v1.3
+# data-fix: 28 codes + SPATIAL trio added, SUPPLY absorbed by scope, 7 keyword
+# fixes — per the stale-map guard every former needs_new_code/needs_keyword is
+# now exact_code; needs_decomposition rows = SPEC document-to-worklist Stage 2)
+
+verdicts:
+  # ── VRN (22) — ZS/VRN cost articles per ČSN 73 0212, except real works ──────
+  VRN-014: { verdict: not_work, note: "geodézie/vytýčení — VRN" }
+  VRN-017: { verdict: not_work, note: "vytýčení sítí — VRN" }
+  VRN-016: { verdict: not_work, note: "vyjádření správců — inženýrská činnost" }
+  VRN-004: { verdict: not_work, note: "oplocení ZS" }
+  VRN-001: { verdict: not_work, note: "buňky ZS" }
+  VRN-002: { verdict: not_work }
+  VRN-003: { verdict: not_work }
+  VRN-007: { verdict: not_work }
+  VRN-005: { verdict: not_work, note: "staveništní přípojka" }
+  VRN-006: { verdict: not_work }
+  VRN-009: { verdict: not_work, note: "BOZP dokumentace" }
+  VRN-008: { verdict: not_work, note: "koordinátor BOZP" }
+  VRN-010: { verdict: not_work, note: "pojištění" }
+  VRN-011: { verdict: not_work, note: "likvidace odpadů kat. O v korpusu jako ZS služba; fyzický tok existuje → kandidát TRANSPORT.DEBRIS.REMOVE při vyjmutí z VRN" }
+  VRN-012: { verdict: not_work, note: "kat. N (nebezpečný) — jiný tok; případný TRANSPORT.HAZARDOUS.REMOVE" }
+  VRN-013: { verdict: not_work, note: "doprava paušál t·km — kandidát TRANSPORT.DELIVERY.MATERIAL" }
+  VRN-015: { verdict: not_work, note: "DSPS zaměření" }
+  VRN-018: { verdict: not_work, note: "protokoly/DSPS" }
+  VRN-019: { verdict: not_work, note: "kolaudace" }
+  VRN-020: { verdict: exact_code, code: ELECTRICAL.INSPECTION.STATUTORY, note: "revize = práce, ne %-článek (kapitola VRN je věc korpusu)" }
+  VRN-021: { verdict: exact_code, code: PLUMBING.INSPECTION.STATUTORY, note: "revize hydrantů + tlaková zkouška — 2. výskyt M-ZTI-046" }
+  VRN-022: { verdict: exact_code, code: ELECTRICAL.LIGHTNING.INSPECT, note: "revize LPS/hromosvod" }
+
+  # ── HSV-1 (33) — příprava území + zemní ─────────────────────────────────────
+  HSV-1-020: { verdict: exact_code, code: LANDSCAPING.CLEARING.TREES, note: "kácení — nová doména LANDSCAPING (vegetace)" }
+  HSV-1-021: { verdict: exact_code, code: LANDSCAPING.CLEARING.TREES }
+  HSV-1-022: { verdict: exact_code, code: LANDSCAPING.CLEARING.TREES, note: "frézování pařezů — táž rodina" }
+  HSV-1-023: { verdict: exact_code, code: TRANSPORT.DEBRIS.REMOVE, note: "dřevní hmota — keywords jen suť" }
+  HSV-1-025: { verdict: exact_code, code: DEMOLITION.SURFACES.REMOVE, note: "asfaltová vrstva — keywords interiérové (obklady/dlažby)" }
+  HSV-1-026: { verdict: exact_code, code: TRANSPORT.DEBRIS.REMOVE, note: "nakládání = krok téhož toku" }
+  HSV-1-027: { verdict: exact_code, code: TRANSPORT.DEBRIS.REMOVE }
+  HSV-1-001: { verdict: exact_code, code: EARTHWORK.EXCAVATION.PIT }
+  HSV-1-006: { verdict: exact_code, code: EARTHWORK.EXCAVATION.TRENCH, note: "ruční/strojní = chybějící param method (v1.3)" }
+  HSV-1-007: { verdict: not_work, note: "příplatek za ztížení = cenový konstrukt katalogu" }
+  HSV-1-009: { verdict: exact_code, code: CONCRETE.POUR.STRUCTURE, note: "obetonování potrubí — keyword chybí" }
+  HSV-1-010: { verdict: exact_code, code: CONCRETE.POUR.STRUCTURE }
+  HSV-1-002: { verdict: exact_code, code: EARTHWORK.EXCAVATION.PIT, note: "«dohloubky patek» — diskriminační případ SPEC §5.1" }
+  HSV-1-003: { verdict: exact_code, code: EARTHWORK.EXCAVATION.PIT }
+  HSV-1-005: { verdict: exact_code, code: EARTHWORK.EXCAVATION.TRENCH }
+  HSV-1-004: { verdict: exact_code, code: EARTHWORK.EXCAVATION.PIT, note: "atypický základ jako pilota — výkopová varianta" }
+  HSV-1-008: { verdict: exact_code, code: EARTHWORK.SHORING.INSTALL, note: "pažení výkopů — 2. výskyt M-ZTI-035/050" }
+  HSV-1-011: { verdict: exact_code, code: EARTHWORK.EXCAVATION.TRENCH }
+  HSV-1-012: { verdict: exact_code, code: EARTHWORK.EXCAVATION.TRENCH }
+  HSV-1-016: { verdict: exact_code, code: TRANSPORT.SPOIL.REMOVE, note: "nakládání zeminy = krok toku" }
+  HSV-1-017: { verdict: exact_code, code: TRANSPORT.SPOIL.REMOVE, note: "vodorovné přemístění — přesun zeminy, ne odvoz na skládku" }
+  HSV-1-018: { verdict: exact_code, code: TRANSPORT.SPOIL.REMOVE }
+  HSV-1-019: { verdict: not_work, note: "skládkovné samostatně = poplatek (v SPOIL.REMOVE jako složka)" }
+  HSV-1-028a: { verdict: exact_code, code: EARTHWORK.EXCAVATION.PIT }
+  HSV-1-028b: { verdict: exact_code, code: TRANSPORT.SPOIL.REMOVE }
+  HSV-1-028c: { verdict: exact_code, code: TRANSPORT.DELIVERY.MATERIAL, note: "dovoz štěrku — weak_seed kód" }
+  HSV-1-028d: { verdict: exact_code, code: EARTHWORK.BACKFILL.COMPACT }
+  HSV-1-028e: { verdict: exact_code, code: EARTHWORK.TESTING.PLATE_LOAD, note: "statická zatěžovací zkouška Edef2" }
+  HSV-1-028f: { verdict: not_work, note: "geodetická kontrola — QC/geodézie" }
+  HSV-1-013: { verdict: exact_code, code: EARTHWORK.BACKFILL.COMPACT, note: "štěrkové lože — keywords jen zásyp/obsyp" }
+  HSV-1-014: { verdict: exact_code, code: EARTHWORK.BACKFILL.COMPACT, note: "hutnění pláně bez zásypu — zvážit vlastní kód" }
+  HSV-1-015: { verdict: exact_code, code: EARTHWORK.BACKFILL.COMPACT }
+  HSV-1-024: { verdict: exact_code, code: LANDSCAPING.TOPSOIL.SEED, note: "náhradní výsadba — LANDSCAPING" }
+
+  # ── HSV-2 (18) — základy + deska ─────────────────────────────────────────────
+  HSV-2-018: { verdict: exact_code, code: WATERPROOFING.MEMBRANE.APPLY, note: "SBS pás pod desku — díra v1.2 zaplacena" }
+  HSV-2-009: { verdict: exact_code, code: REINFORCEMENT.REBAR.INSTALL }
+  HSV-2-002: { verdict: exact_code, code: FORMWORK.PANEL.ERECT }
+  HSV-2-001: { verdict: exact_code, code: CONCRETE.POUR.STRUCTURE }
+  HSV-2-003: { verdict: exact_code, code: FORMWORK.PANEL.STRIP }
+  HSV-2-005: { verdict: exact_code, code: FORMWORK.PANEL.ERECT }
+  HSV-2-004: { verdict: exact_code, code: CONCRETE.POUR.STRUCTURE }
+  HSV-2-006: { verdict: exact_code, code: FORMWORK.PANEL.STRIP }
+  HSV-2-008: { verdict: exact_code, code: FORMWORK.PANEL.ERECT }
+  HSV-2-007: { verdict: exact_code, code: CONCRETE.POUR.STRUCTURE }
+  HSV-2-010: { verdict: exact_code, code: PILING.BORED.INSTALL, note: "VARIANTA; jednotka ks vs m — přepočet" }
+  HSV-2-011: { verdict: exact_code, code: PILING.BORED.INSTALL, note: "vrtání = krok téže práce" }
+  HSV-2-012: { verdict: exact_code, code: REINFORCEMENT.REBAR.CAGE }
+  HSV-2-014: { verdict: exact_code, code: FORMWORK.PANEL.ERECT, note: "bm → přepočet na m² (výška hrany)" }
+  HSV-2-016: { verdict: exact_code, code: REINFORCEMENT.REBAR.INSTALL }
+  HSV-2-017: { verdict: exact_code, code: REINFORCEMENT.REBAR.INSTALL, note: "distanční podložky = příslušenství výztuže (bundle)" }
+  HSV-2-015: { verdict: exact_code, code: REINFORCEMENT.REBAR.INSTALL }
+  HSV-2-013: { verdict: exact_code, code: CONCRETE.POUR.STRUCTURE, note: "strojně rovnaný povrch — zvážit CONCRETE.FINISH.* v budoucnu" }
+
+  # ── HSV-3 (14) — ocelová konstrukce ─────────────────────────────────────────
+  HSV-3-011: { verdict: exact_code, code: TRANSPORT.DELIVERY.MATERIAL, note: "t·km — weak_seed; rule-4 params kandidát" }
+  HSV-3-009: { verdict: exact_code, code: STEEL.ANCHORING.INSTALL, note: "chemické kotvy / zalité šrouby" }
+  HSV-3-001: { verdict: exact_code, code: STEEL.STRUCTURE.ERECT, note: "dodávka → scope=supply (pravidlo 5, v1.3)" }
+  HSV-3-002: { verdict: exact_code, code: STEEL.STRUCTURE.ERECT, note: "scope=supply" }
+  HSV-3-003: { verdict: exact_code, code: STEEL.STRUCTURE.ERECT, note: "scope=supply" }
+  HSV-3-004: { verdict: exact_code, code: STEEL.STRUCTURE.ERECT, note: "scope=supply" }
+  HSV-3-005: { verdict: exact_code, code: STEEL.STRUCTURE.ERECT, note: "scope=supply" }
+  HSV-3-006: { verdict: exact_code, code: STEEL.STRUCTURE.ERECT, note: "scope=supply" }
+  HSV-3-007: { verdict: exact_code, code: STEEL.STRUCTURE.ERECT, note: "scope=supply" }
+  HSV-3-008: { verdict: not_work, note: "paušál 6 % spojovací materiál = %-allowance" }
+  HSV-3-010: { verdict: exact_code, code: STEEL.STRUCTURE.ERECT }
+  HSV-3-012: { verdict: exact_code, code: STEEL.COATING.ANTICORROSION, note: "nátěry OK — predikce ревью potvrzena" }
+  HSV-3-013: { verdict: exact_code, code: STEEL.COATING.FIREPROOF }
+  HSV-3-014: { verdict: exact_code, code: STEEL.INSPECTION.STATUTORY, note: "revize OK EXC2" }
+
+  # ── HSV-9 (4) — lešení + přesun ──────────────────────────────────────────────
+  HSV-9-002: { verdict: exact_code, code: SCAFFOLDING.SPATIAL.ERECTION, note: "prostorové lešení m³ — v1.3 SPATIAL trio (dvě fyziky, jako skruž ≠ bednění)" }
+  HSV-9-003: { verdict: exact_code, code: SCAFFOLDING.SPATIAL.DISMANTLING }
+  HSV-9-004: { verdict: exact_code, code: SCAFFOLDING.SPATIAL.ERECTION, note: "pojízdné = param mobility, ne kód" }
+  HSV-9-001: { verdict: exact_code, code: TRANSPORT.MATERIAL.MOVE, note: "t·km — rule-4 druhá dimenze potvrzena korpusem" }
+
+  # ── PSV-OPL (12) — opláštění Kingspan ───────────────────────────────────────
+  PSV-OPL-007: { verdict: exact_code, code: TRANSPORT.DELIVERY.MATERIAL }
+  PSV-OPL-001: { verdict: exact_code, code: CLADDING.PANEL.INSTALL, note: "dodávka → scope=supply (pravidlo 5, v1.3)" }
+  PSV-OPL-002: { verdict: exact_code, code: CLADDING.PANEL.INSTALL }
+  PSV-OPL-009: { verdict: exact_code, code: CLADDING.PANEL.INSTALL, note: "scope=supply" }
+  PSV-OPL-010: { verdict: exact_code, code: CLADDING.PANEL.INSTALL }
+  PSV-OPL-003: { verdict: exact_code, code: CLADDING.PANEL.INSTALL, note: "scope=supply" }
+  PSV-OPL-004: { verdict: exact_code, code: CLADDING.PANEL.INSTALL, note: "střešní panely — montáž táž rodina" }
+  PSV-OPL-011: { verdict: exact_code, code: CLADDING.PANEL.INSTALL, note: "scope=supply" }
+  PSV-OPL-012: { verdict: exact_code, code: CLADDING.PANEL.INSTALL }
+  PSV-OPL-006: { verdict: exact_code, code: CLADDING.PANEL.INSTALL, note: "spojovací mat. + EPDM = bundle montáže" }
+  PSV-OPL-005: { verdict: exact_code, code: ROOFING.FLASHING.INSTALL, note: "klempířské lemy — predikce ревью potvrzena" }
+  PSV-OPL-008: { verdict: not_work, note: "statické posouzení = inženýrská služba (ADR-005 hranice)" }
+
+  # ── PSV-78x (12) — klempířina + odvodnění střechy ───────────────────────────
+  PSV-78x-012: { verdict: exact_code, code: TRANSPORT.DELIVERY.MATERIAL }
+  PSV-78x-007: { verdict: exact_code, code: ROOFING.FLASHING.INSTALL }
+  PSV-78x-008: { verdict: exact_code, code: ROOFING.FLASHING.INSTALL }
+  PSV-78x-009: { verdict: exact_code, code: ROOFING.FLASHING.INSTALL }
+  PSV-78x-010: { verdict: exact_code, code: ROOFING.FLASHING.INSTALL, note: "tmelení spár klempířiny — fold" }
+  PSV-78x-001: { verdict: exact_code, code: ROOFING.RAINWATER.INSTALL, note: "svody Lindab — dodávka+montáž rodina" }
+  PSV-78x-002: { verdict: exact_code, code: ROOFING.RAINWATER.INSTALL }
+  PSV-78x-003: { verdict: exact_code, code: ROOFING.RAINWATER.INSTALL, note: "střešní vpusti" }
+  PSV-78x-004: { verdict: exact_code, code: ROOFING.RAINWATER.INSTALL }
+  PSV-78x-005: { verdict: exact_code, code: EARTHWORK.DRAINAGE.CHANNEL, note: "liniový žlab povrchový ≠ trativod; táž rodina M-VK-042..049" }
+  PSV-78x-006: { verdict: exact_code, code: EARTHWORK.DRAINAGE.CHANNEL }
+  PSV-78x-011: { verdict: exact_code, code: ROOFING.FLASHING.INSTALL }
+
+  # ── PSV-76x (13) — okna / vrata / dveře ─────────────────────────────────────
+  PSV-76x-001: { verdict: exact_code, code: OPENINGS.WINDOW.INSTALL, note: "doména měla notu «jen renovace» — potvrzeno; dodávka+montáž vzor" }
+  PSV-76x-013: { verdict: exact_code, code: OPENINGS.WINDOW.INSTALL }
+  PSV-76x-002: { verdict: exact_code, code: OPENINGS.WINDOW.INSTALL }
+  PSV-76x-003: { verdict: exact_code, code: ROOFING.FLASHING.INSTALL, note: "parapet pozink = klempířský prvek" }
+  PSV-76x-004: { verdict: exact_code, code: ROOFING.FLASHING.INSTALL }
+  PSV-76x-005: { verdict: exact_code, code: OPENINGS.GATE.INSTALL, note: "sekční vrata — predikce ревью potvrzena" }
+  PSV-76x-006: { verdict: exact_code, code: OPENINGS.GATE.INSTALL, note: "pohon = příslušenství vrat" }
+  PSV-76x-007: { verdict: exact_code, code: OPENINGS.GATE.INSTALL }
+  PSV-76x-008: { verdict: exact_code, code: OPENINGS.GATE.INSTALL }
+  PSV-76x-009: { verdict: exact_code, code: OPENINGS.DOOR.INSTALL }
+  PSV-76x-010: { verdict: exact_code, code: OPENINGS.DOOR.INSTALL }
+  PSV-76x-011: { verdict: exact_code, code: OPENINGS.DOOR.INSTALL, note: "zámkový systém = příslušenství" }
+  PSV-76x-012: { verdict: exact_code, code: OPENINGS.DOOR.INSTALL }
+
+  # ── PSV-71x (4) — izolace soklu ─────────────────────────────────────────────
+  PSV-71x-001: { verdict: exact_code, code: WATERPROOFING.MEMBRANE.APPLY, note: "penetrace = přípravný krok izolace" }
+  PSV-71x-002: { verdict: exact_code, code: WATERPROOFING.MEMBRANE.APPLY }
+  PSV-71x-003: { verdict: exact_code, code: WATERPROOFING.MEMBRANE.APPLY, note: "lišty/napojení = příslušenství" }
+  PSV-71x-004: { verdict: exact_code, code: WATERPROOFING.PROTECTION.INSTALL, note: "nopová folie — ochranná vrstva ≠ izolace" }
+
+  # ── PSV-77x (6) — průmyslová podlaha ────────────────────────────────────────
+  PSV-77x-001: { verdict: exact_code, code: FLOORING.INDUSTRIAL.COATING, note: "PSV-ocas predikce potvrzena; primer = krok" }
+  PSV-77x-002: { verdict: exact_code, code: FLOORING.INDUSTRIAL.COATING }
+  PSV-77x-003: { verdict: exact_code, code: FLOORING.INDUSTRIAL.COATING, note: "lokální zesílení = varianta" }
+  PSV-77x-004: { verdict: exact_code, code: CONCRETE.JOINT.DILATATION, note: "dilatační lišty podlahy" }
+  PSV-77x-005: { verdict: exact_code, code: FLOORING.INDUSTRIAL.COATING, note: "lemovací úhelníky — fold" }
+  PSV-77x-006: { verdict: exact_code, code: FLOORING.INDUSTRIAL.COATING, note: "posyp = krok PU varianty" }
+
+  # ── M-UT (12) — vytápění ────────────────────────────────────────────────────
+  M-UT-012: { verdict: exact_code, code: TRANSPORT.DELIVERY.MATERIAL }
+  M-UT-009: { verdict: exact_code, code: SCAFFOLDING.SPATIAL.ERECTION, note: "montážní plošina → SPATIAL (keyword v1.3); mobility=pojízdné" }
+  M-UT-001: { verdict: exact_code, code: HVAC.HEATER.INSTALL, note: "el. topidla — BOILER kód nesedí; dodávka+montáž vzor" }
+  M-UT-003: { verdict: exact_code, code: HVAC.HEATER.INSTALL, note: "závěsný materiál = příslušenství" }
+  M-UT-002: { verdict: exact_code, code: HVAC.HEATER.INSTALL }
+  M-UT-004: { verdict: exact_code, code: HVAC.HEATER.INSTALL }
+  M-UT-005: { verdict: exact_code, code: HVAC.HEATER.INSTALL }
+  M-UT-006: { verdict: exact_code, code: HVAC.CONTROLS.INSTALL, note: "řídicí jednotka / MaR-light" }
+  M-UT-007: { verdict: exact_code, code: HVAC.CONTROLS.INSTALL }
+  M-UT-008: { verdict: not_work, note: "pomocný materiál = bundle-složka montáže" }
+  M-UT-010: { verdict: exact_code, code: HVAC.INSPECTION.STATUTORY, note: "funkční zkouška/uvedení do provozu — zvážit COMMISSIONING" }
+  M-UT-011: { verdict: not_work, note: "dokumentace + zaškolení = služba" }
+
+  # ── M-ZTI (56) — vodovod, kanalizace, přípojky ──────────────────────────────
+  M-ZTI-032: { verdict: exact_code, code: PLUMBING.ROUGHIN.INSTALL, note: "PE potrubí vč. montáže — m + dn_mm sedí (fix v1.2)" }
+  M-ZTI-033: { verdict: exact_code, code: PLUMBING.ROUGHIN.INSTALL, note: "navrtávací pas = tvarovka" }
+  M-ZTI-034: { verdict: exact_code, code: PLUMBING.PUMPSTATION.INSTALL, note: "přečerpávací stanice = technologický celek" }
+  M-ZTI-035: { verdict: exact_code, code: EARTHWORK.EXCAVATION.TRENCH, note: "pažený — viz EARTHWORK.SHORING kandidát" }
+  M-ZTI-036: { verdict: exact_code, code: EARTHWORK.BACKFILL.COMPACT, note: "podsyp" }
+  M-ZTI-037: { verdict: exact_code, code: EARTHWORK.BACKFILL.COMPACT }
+  M-ZTI-038: { verdict: exact_code, code: EARTHWORK.BACKFILL.COMPACT }
+  M-ZTI-039: { verdict: exact_code, code: TRANSPORT.SPOIL.REMOVE }
+  M-ZTI-040: { verdict: not_work, note: "montážní materiál — bundle" }
+  M-ZTI-041: { verdict: not_work, note: "«ostatní práce» = pytel bez fyzikální identity — Stage-1 review_flag, anti-atom" }
+  M-ZTI-042: { verdict: not_work, note: "vytýčení sítí — geodézie/VRN" }
+  M-ZTI-043: { verdict: not_work, note: "inženýrská činnost" }
+  M-ZTI-044: { verdict: not_work, note: "dílenská dokumentace" }
+  M-ZTI-045: { verdict: not_work, note: "DSPS" }
+  M-ZTI-046: { verdict: exact_code, code: PLUMBING.INSPECTION.STATUTORY, note: "zkouška těsnosti — 2. výskyt VRN-021" }
+  M-ZTI-047: { verdict: exact_code, code: PLUMBING.ROUGHIN.INSTALL }
+  M-ZTI-048: { verdict: exact_code, code: PLUMBING.ROUGHIN.INSTALL }
+  M-ZTI-049: { verdict: exact_code, code: PLUMBING.ROUGHIN.INSTALL, note: "šoupě + zemní souprava = armatura; zvážit VALVES kód" }
+  M-ZTI-050: { verdict: exact_code, code: EARTHWORK.EXCAVATION.TRENCH }
+  M-ZTI-051: { verdict: exact_code, code: EARTHWORK.BACKFILL.COMPACT }
+  M-ZTI-052: { verdict: exact_code, code: EARTHWORK.BACKFILL.COMPACT }
+  M-ZTI-053: { verdict: exact_code, code: EARTHWORK.BACKFILL.COMPACT }
+  M-ZTI-054: { verdict: exact_code, code: EARTHWORK.BACKFILL.COMPACT, note: "výstražná folie = složka záhozu" }
+  M-ZTI-055: { verdict: exact_code, code: TRANSPORT.SPOIL.REMOVE }
+  M-ZTI-056: { verdict: not_work, note: "montážní materiál — bundle" }
+  M-ZTI-016: { verdict: exact_code, code: PLUMBING.ROUGHIN.INSTALL }
+  M-ZTI-017: { verdict: exact_code, code: PLUMBING.ROUGHIN.INSTALL }
+  M-ZTI-018: { verdict: exact_code, code: PLUMBING.ROUGHIN.INSTALL }
+  M-ZTI-019: { verdict: exact_code, code: PLUMBING.ROUGHIN.INSTALL }
+  M-ZTI-020: { verdict: exact_code, code: PLUMBING.ROUGHIN.INSTALL }
+  M-ZTI-021: { verdict: exact_code, code: PLUMBING.ROUGHIN.INSTALL }
+  M-ZTI-022: { verdict: exact_code, code: PLUMBING.MANHOLE.INSTALL, note: "revizní šachty DN1000 — rodina 5 položek" }
+  M-ZTI-023: { verdict: exact_code, code: PLUMBING.MANHOLE.INSTALL }
+  M-ZTI-024: { verdict: exact_code, code: PLUMBING.MANHOLE.INSTALL }
+  M-ZTI-025: { verdict: exact_code, code: PLUMBING.MANHOLE.INSTALL }
+  M-ZTI-026: { verdict: exact_code, code: PLUMBING.STORMWATER.RETAIN, note: "zasakovací těleso" }
+  M-ZTI-027: { verdict: exact_code, code: PLUMBING.STORMWATER.RETAIN, note: "retenční nádoba 15 m³" }
+  M-ZTI-028: { verdict: exact_code, code: PLUMBING.MANHOLE.INSTALL }
+  M-ZTI-029: { verdict: exact_code, code: PLUMBING.FIXTURES.INSTALL, note: "sifony = příslušenství sanity" }
+  M-ZTI-030: { verdict: exact_code, code: PLUMBING.FIXTURES.INSTALL }
+  M-ZTI-031: { verdict: exact_code, code: PLUMBING.FIXTURES.INSTALL, note: "lapač splavenin" }
+  M-ZTI-001: { verdict: exact_code, code: PLUMBING.ROUGHIN.INSTALL, note: "izolace mirelon bundled — INSULATION doména zůstává prázdná ok" }
+  M-ZTI-002: { verdict: exact_code, code: PLUMBING.ROUGHIN.INSTALL }
+  M-ZTI-003: { verdict: exact_code, code: PLUMBING.ROUGHIN.INSTALL }
+  M-ZTI-004: { verdict: exact_code, code: PLUMBING.FIXTURES.INSTALL, note: "rohový ventil + flexi = připojení ZP" }
+  M-ZTI-005: { verdict: exact_code, code: PLUMBING.ROUGHIN.INSTALL, note: "armatura" }
+  M-ZTI-006: { verdict: exact_code, code: PLUMBING.ROUGHIN.INSTALL, note: "vodoměrná sestava — zvážit vlastní kód" }
+  M-ZTI-007: { verdict: exact_code, code: PLUMBING.FIXTURES.INSTALL }
+  M-ZTI-008: { verdict: exact_code, code: PLUMBING.WATERHEATER.INSTALL, note: "TUV stanice/zásobník — BOILER (plyn) nesedí" }
+  M-ZTI-009: { verdict: exact_code, code: PLUMBING.ROUGHIN.INSTALL }
+  M-ZTI-010: { verdict: exact_code, code: PLUMBING.FIXTURES.INSTALL }
+  M-ZTI-011: { verdict: exact_code, code: PLUMBING.ROUGHIN.INSTALL, note: "požární vodovod — rozvod" }
+  M-ZTI-012: { verdict: exact_code, code: PLUMBING.ROUGHIN.INSTALL }
+  M-ZTI-013: { verdict: exact_code, code: PLUMBING.ROUGHIN.INSTALL }
+  M-ZTI-014: { verdict: exact_code, code: PLUMBING.FIREWATER.HYDRANT, note: "hydrant D19/30 per PBŘ — požární technologie; zvážit doménu FIRE_PROTECTION" }
+  M-ZTI-015: { verdict: exact_code, code: PLUMBING.ROUGHIN.INSTALL, note: "zpětná klapka EA = armatura" }
+
+  # ── M-VK (38) — venkovní úpravy, komunikace, odvodnění ──────────────────────
+  M-VK-009: { verdict: needs_decomposition, note: "přeložka řadu kpl = balík (výkop+potrubí+zásyp) → SPEC Stage-2 split, ne kód" }
+  M-VK-008: { verdict: needs_decomposition, note: "přípojka NN kpl = balík (chránička+výkop+lože+zásyp+folie)" }
+  M-VK-027: { verdict: exact_code, code: EARTHWORK.EXCAVATION.TRENCH }
+  M-VK-028: { verdict: exact_code, code: TRANSPORT.SPOIL.REMOVE }
+  M-VK-024: { verdict: exact_code, code: EARTHWORK.BACKFILL.COMPACT, note: "úprava pláně + hutnění" }
+  M-VK-029: { verdict: exact_code, code: EARTHWORK.GEOTEXTILE.INSTALL, note: "separační geotextilie" }
+  M-VK-022: { verdict: exact_code, code: EARTHWORK.BACKFILL.COMPACT, note: "štěrkový podklad" }
+  M-VK-025: { verdict: exact_code, code: EARTHWORK.BACKFILL.COMPACT }
+  M-VK-026: { verdict: exact_code, code: FORMWORK.PANEL.ERECT }
+  M-VK-021: { verdict: exact_code, code: REINFORCEMENT.REBAR.INSTALL }
+  M-VK-020: { verdict: exact_code, code: CONCRETE.POUR.STRUCTURE }
+  M-VK-023: { verdict: exact_code, code: CONCRETE.JOINT.DILATATION }
+  M-VK-030: { verdict: exact_code, code: EARTHWORK.EXCAVATION.TRENCH }
+  M-VK-031: { verdict: exact_code, code: TRANSPORT.SPOIL.REMOVE }
+  M-VK-032: { verdict: exact_code, code: EARTHWORK.BACKFILL.COMPACT }
+  M-VK-033: { verdict: exact_code, code: EARTHWORK.GEOTEXTILE.INSTALL }
+  M-VK-034: { verdict: exact_code, code: EARTHWORK.BACKFILL.COMPACT }
+  M-VK-035: { verdict: exact_code, code: PAVING.BLOCK.INSTALL, note: "ložná vrstva dlažby — nová doména PAVING (venkovní ≠ FINISHES.TILING)" }
+  M-VK-036: { verdict: exact_code, code: PAVING.KERB.INSTALL, note: "obrubníky do lože" }
+  M-VK-037: { verdict: exact_code, code: CONCRETE.POUR.BLINDING, note: "lože C16/20 pod obrubníky" }
+  M-VK-038: { verdict: exact_code, code: PAVING.BLOCK.INSTALL, note: "zámková dlažba kladení" }
+  M-VK-039: { verdict: exact_code, code: PAVING.BLOCK.INSTALL, note: "zásyp spár = krok kladení" }
+  M-VK-003: { verdict: exact_code, code: EARTHWORK.BACKFILL.COMPACT }
+  M-VK-002: { verdict: exact_code, code: REINFORCEMENT.REBAR.INSTALL, note: "KARI + bednění v jedné položce — mini-balík; dominantní = výztuž" }
+  M-VK-001: { verdict: exact_code, code: CONCRETE.POUR.STRUCTURE }
+  M-VK-004: { verdict: exact_code, code: PAVING.KERB.INSTALL }
+  M-VK-040: { verdict: exact_code, code: EARTHWORK.EXCAVATION.TRENCH }
+  M-VK-041: { verdict: exact_code, code: TRANSPORT.SPOIL.REMOVE }
+  M-VK-042: { verdict: exact_code, code: EARTHWORK.DRAINAGE.CHANNEL, note: "liniový žlab — rodina s PSV-78x-005/006" }
+  M-VK-043: { verdict: exact_code, code: EARTHWORK.DRAINAGE.CHANNEL }
+  M-VK-046: { verdict: exact_code, code: CONCRETE.POUR.BLINDING, note: "lože pod žlab" }
+  M-VK-047: { verdict: exact_code, code: CONCRETE.POUR.STRUCTURE, note: "obetonování žlabu" }
+  M-VK-044: { verdict: exact_code, code: EARTHWORK.DRAINAGE.CHANNEL, note: "litinová mříž = součást žlabu" }
+  M-VK-045: { verdict: exact_code, code: EARTHWORK.DRAINAGE.CHANNEL }
+  M-VK-048: { verdict: exact_code, code: EARTHWORK.DRAINAGE.CHANNEL, note: "vpust ACO — napojení" }
+  M-VK-049: { verdict: exact_code, code: EARTHWORK.DRAINAGE.CHANNEL }
+  M-VK-019: { verdict: exact_code, code: EARTHWORK.BACKFILL.COMPACT, note: "vyspádování terénu — modelace" }
+  M-VK-018: { verdict: exact_code, code: LANDSCAPING.TOPSOIL.SEED, note: "ohumusování + osetí — LANDSCAPING s HSV-1-024" }

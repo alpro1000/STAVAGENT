@@ -1595,7 +1595,14 @@ async def rest_breakdown(
     # Single server-side policy enforcement point (tools stay dumb). Session-less
     # calls pass through; a supplied session_id activates stage gating.
     from app.mcp.stage_gating_gateway import enforce_or_raise
-    await enforce_or_raise(tool_name="create_work_breakdown", session_id=body.session_id)
+    await enforce_or_raise(
+        tool_name="create_work_breakdown",
+        session_id=body.session_id,
+        # Stage-1 invariant §6.4.1 (SPEC §9.1): a session at WORK_ATOMIZATION may
+        # only call this work-first — the YAML param_constraints refuse
+        # mode=work_with_catalog server-side, not by prompt.
+        tool_args={"mode": body.mode, "catalog": body.catalog},
+    )
 
     api_key = _extract_bearer(authorization)
     credit_check = mcp_auth.check_credits(api_key or "", "create_work_breakdown")

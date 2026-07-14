@@ -465,3 +465,161 @@ def test_enforce_or_raise_unresolvable_session_is_session_required():
         asyncio.run(_call())
     assert exc_info.value.status_code == 400
     assert exc_info.value.detail["error_code"] == "SESSION_REQUIRED"
+
+
+# ── Param constraints — SPEC document-to-worklist §9.1 / invariant §6.4.1 ─────
+# "In Stage 1 there is not one catalog code and not one price. Enforced
+# server-side, not by prompt." The YAML param_constraints block makes the
+# work-first mode of create_work_breakdown a POLICY at WORK_ATOMIZATION, not a
+# convention: a session-gated call with mode=work_with_catalog is refused.
+
+def test_param_constraints_loaded_from_yaml():
+    """The single source of truth (YAML) carries the §6.4.1 constraint."""
+    constraints = CFG.param_constraints_for(
+        WorkflowState.WORK_ATOMIZATION, "create_work_breakdown"
+    )
+    assert constraints == {"mode": frozenset({"work_first"})}
+    # Only WORK_ATOMIZATION constrains the tool — no phantom constraints.
+    for state in WorkflowState:
+        if state is not WorkflowState.WORK_ATOMIZATION:
+            assert CFG.param_constraints_for(state, "create_work_breakdown") == {}
+
+
+def test_work_first_mode_allowed_in_work_atomization():
+    decision = evaluate_tool_policy(
+        tool_name="create_work_breakdown",
+        config=CFG,
+        session_id="sess-mode-1",
+        current_state=WorkflowState.WORK_ATOMIZATION,
+        tool_args={"mode": "work_first", "catalog": "otskp"},
+    )
+    assert decision.allowed
+
+
+def test_work_with_catalog_refused_in_work_atomization():
+    """mode=work_with_catalog at Stage 1 → STAGE_VIOLATION + audit record."""
+    audit_records = []
+    decision = evaluate_tool_policy(
+        tool_name="create_work_breakdown",
+        config=CFG,
+        session_id="sess-mode-2",
+        current_state=WorkflowState.WORK_ATOMIZATION,
+        tool_args={"mode": "work_with_catalog", "catalog": "otskp"},
+        audit_hook=audit_records.append,
+    )
+    assert not decision.allowed
+    assert decision.error_code == PolicyError.STAGE_VIOLATION
+    assert "work_first" in decision.detail
+    assert len(audit_records) == 1
+    rec = audit_records[0]
+    assert rec["event"] == "STAGE_VIOLATION"
+    assert rec["param"] == "mode"
+    assert rec["param_value"] == "work_with_catalog"
+    assert rec["allowed_values"] == ["work_first"]
+
+
+def _breakdown_mode_default_from_source() -> str:
+    """Resolve the `mode` signature default of create_work_breakdown from SOURCE
+    (AST, same pattern as _auth_tool_costs) — importing breakdown.py pulls the
+    sqlalchemy chain, which this hermetic suite must not require."""
+    import ast
+    from pathlib import Path
+
+    src = Path(__file__).resolve().parents[1] / "app" / "mcp" / "tools" / "breakdown.py"
+    tree = ast.parse(src.read_text(encoding="utf-8"))
+    consts = {
+        t.id: ast.literal_eval(node.value)
+        for node in tree.body
+        if isinstance(node, ast.Assign)
+        for t in node.targets
+        if isinstance(t, ast.Name) and isinstance(node.value, ast.Constant)
+    }
+    for node in tree.body:
+        if isinstance(node, ast.AsyncFunctionDef) and node.name == "create_work_breakdown":
+            args = node.args
+            # positional-or-keyword args with defaults, right-aligned
+            defaults = dict(
+                zip([a.arg for a in args.args[-len(args.defaults):]], args.defaults)
+            )
+            d = defaults["mode"]
+            if isinstance(d, ast.Constant):
+                return d.value
+            if isinstance(d, ast.Name):
+                return consts[d.id]
+    raise AssertionError("create_work_breakdown not found in breakdown.py")
+
+
+def test_absent_mode_param_allowed_because_tool_default_is_work_first():
+    """The gateway allows an ABSENT constrained param — sound only because the
+    tool default itself satisfies the constraint. Both halves pinned here."""
+    decision = evaluate_tool_policy(
+        tool_name="create_work_breakdown",
+        config=CFG,
+        session_id="sess-mode-3",
+        current_state=WorkflowState.WORK_ATOMIZATION,
+        tool_args={"catalog": "otskp"},  # no mode → tool default applies
+    )
+    assert decision.allowed
+    assert _breakdown_mode_default_from_source() == "work_first"
+
+
+def test_session_less_call_with_bad_mode_still_allowed():
+    """Opt-in session model unchanged: no session → no enforcement (standalone
+    REST / GPT-Actions behavior preserved)."""
+    decision = evaluate_tool_policy(
+        tool_name="create_work_breakdown",
+        config=CFG,
+        session_id=None,
+        current_state=None,
+        tool_args={"mode": "work_with_catalog", "catalog": "otskp"},
+    )
+    assert decision.allowed
+
+
+def test_param_constraint_on_unlisted_tool_fails_loading(tmp_path):
+    """A constraint referencing a tool outside the state's allow-list is a
+    loading ERROR (a typo must fail loudly, not silently disable an invariant)."""
+    from pathlib import Path
+
+    from app.services.stage_gating.workflow_loader import (
+        WorkflowDefinitionError,
+        load_workflow_config,
+    )
+
+    real = Path(
+        __file__
+    ).resolve().parents[1] / "app" / "services" / "stage_gating" / "workflow_definitions.yaml"
+    broken = real.read_text(encoding="utf-8").replace(
+        "      create_work_breakdown:\n        mode: [work_first]",
+        "      find_urs_code:\n        mode: [work_first]",
+    )
+    assert "find_urs_code:\n        mode" in broken, "fixture substitution failed"
+    bad_path = tmp_path / "workflow_definitions.yaml"
+    bad_path.write_text(broken, encoding="utf-8")
+    with pytest.raises(WorkflowDefinitionError):
+        load_workflow_config(bad_path)
+
+
+def test_enforce_or_raise_mode_violation_through_bridge():
+    """work_with_catalog at WORK_ATOMIZATION through the REAL enforce_or_raise
+    (args forwarded by routes.py) → HTTPException 409 STAGE_VIOLATION."""
+    pytest.importorskip("fastapi")
+    from fastapi import HTTPException
+
+    from app.mcp import stage_gating_gateway as gw
+
+    async def _fake_resolve(session_id):
+        return WorkflowState.WORK_ATOMIZATION
+
+    async def _call():
+        with patch.object(gw, "_resolve_session_state", _fake_resolve):
+            await gw.enforce_or_raise(
+                tool_name="create_work_breakdown",
+                session_id="00000000-0000-0000-0000-000000000004",
+                tool_args={"mode": "work_with_catalog", "catalog": "otskp"},
+            )
+
+    with pytest.raises(HTTPException) as exc_info:
+        asyncio.run(_call())
+    assert exc_info.value.status_code == 409
+    assert exc_info.value.detail["error_code"] == "STAGE_VIOLATION"

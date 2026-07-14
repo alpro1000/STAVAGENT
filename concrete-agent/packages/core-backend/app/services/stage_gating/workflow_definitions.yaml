@@ -39,7 +39,17 @@ states:
       - calculate_concrete_works
       - calculate_from_passport  # passport (JSON) → whole-SO plan (tz-passport Gate 2)
       - build_bridge_passport  # documents → passport (tz-passport half-B, ADR-008)
-      - create_work_breakdown   # only mode=work_first; mode enforcement is PR2
+      - create_work_breakdown   # only mode=work_first — enforced via param_constraints below
+    # Per-tool parameter constraints, enforced by the policy gateway when the
+    # caller supplies tool args (SPEC document-to-worklist §9.1 / invariant
+    # §6.4.1: "In Stage 1 there is not one catalog code and not one price.
+    # Enforced server-side, not by prompt."). A session-gated call whose args
+    # fall outside the allowed values is a STAGE_VIOLATION. An absent param is
+    # allowed — the tool default must itself satisfy the constraint
+    # (test-pinned: create_work_breakdown defaults to mode=work_first).
+    param_constraints:
+      create_work_breakdown:
+        mode: [work_first]
   DECOMPOSITION:
     optional: true              # not all workflows enter this state
     tools:

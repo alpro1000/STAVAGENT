@@ -61,6 +61,27 @@ značí «Návrh — ověřte»; strategické rozhodnutí koupit ÚRS katalog = 
 
 ---
 
+## mcp-transport-stage-gating — FastMCP dispatch obchází policy gateway (2026-07-14)
+
+**Severity:** P1 — díra v invariantu §6.4.1, ne regrese (bylo tak i před Gate 5).
+**Source:** honest note z UWO Gate 5 (SPEC document-to-worklist §9.1 uzavřen).
+
+Stage-gating policy (`evaluate_tool_policy` + `param_constraints`) se vynucuje
+JEN na REST wrapperech s `session_id` (opt-in model, `enforce_or_raise` v
+`routes.py`). Přímý FastMCP dispatch (`/mcp` transport — Claude.ai connector,
+ChatGPT) policy gateway NEVOLÁ vůbec: session-gated invariant «ve Stage 1 ani
+jeden kód, ani jedna cena» tedy server vynucuje jen na jednom ze dvou povrchů.
+
+**Scope (vlastní session):**
+1. Rozhodnout, jak MCP transport nese workflow-session kontext (header /
+   tool-param `session_id` / FastMCP middleware s per-connection state).
+2. Zapojit `enforce_or_raise` (včetně `tool_args`!) do FastMCP dispatch cesty —
+   jedno místo, ne per-tool logika (AC6 «tools stay dumb» platí i tady).
+3. Transport-level testy (in-process `fastmcp.Client`) per MCP authoring rules —
+   typed STAGE_VIOLATION musí přežít FastMCP serializaci.
+
+---
+
 ## mcp-e2e-zalmanov-findings (2026-07-07) — 5 tickets, all ✅ FIXED same day
 
 **Source:** live MCP E2E test on SO 202 (D6 Olšová Vrata–Žalmanov, most přes

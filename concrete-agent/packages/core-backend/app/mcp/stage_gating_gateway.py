@@ -119,13 +119,15 @@ async def enforce_or_raise(
     confirmation_token: Optional[str] = None,
     user_id: Optional[str] = None,
     project_id: Optional[str] = None,
+    tool_args: Optional[dict] = None,
 ) -> None:
     """Run the policy gateway for `tool_name`; raise HTTPException on refusal.
 
     Async because session-state resolution awaits the DB repository. Call it with
     `await` from the async tool surfaces. No-op (allows) for session-less calls —
     preserves current behavior. When a session_id is supplied, resolves its state
-    and enforces the YAML allow-list.
+    and enforces the YAML allow-list plus any `param_constraints` for the state
+    (pass the relevant call args via `tool_args` — SPEC §9.1 / §6.4.1).
     """
     current_state = (
         await _resolve_session_state(session_id) if session_id else None
@@ -138,6 +140,7 @@ async def enforce_or_raise(
         confirmation_token=confirmation_token,
         user_id=user_id,
         project_id=project_id,
+        tool_args=tool_args,
     )
     if not decision.allowed:
         status = _STATUS_BY_ERROR.get(decision.error_code, 403)

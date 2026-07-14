@@ -51,6 +51,8 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_drawing_note_gate.py'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_build_bridge_passport.py'
       - 'concrete-agent/packages/core-backend/tests/test_extract_tz_llm_seam.py'
+      - 'concrete-agent/packages/core-backend/tests/test_uwo_vocabulary.py'
+      - 'concrete-agent/packages/core-backend/tests/test_uwo_vocabulary_retrofit.py'
       - 'concrete-agent/packages/core-backend/tests/test_extract_tz_content.py'
       - 'concrete-agent/packages/core-backend/tests/test_soupis_ref_build.py'
       - 'concrete-agent/packages/core-backend/tests/test_soupis_handles.py'
@@ -107,6 +109,8 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_drawing_note_gate.py'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_build_bridge_passport.py'
       - 'concrete-agent/packages/core-backend/tests/test_extract_tz_llm_seam.py'
+      - 'concrete-agent/packages/core-backend/tests/test_uwo_vocabulary.py'
+      - 'concrete-agent/packages/core-backend/tests/test_uwo_vocabulary_retrofit.py'
       - 'concrete-agent/packages/core-backend/tests/test_extract_tz_content.py'
       - 'concrete-agent/packages/core-backend/tests/test_soupis_ref_build.py'
       - 'concrete-agent/packages/core-backend/tests/test_soupis_handles.py'
@@ -237,6 +241,8 @@ jobs:
             tests/test_drawing_note_gate.py \
             tests/test_mcp_golden_build_bridge_passport.py \
             tests/test_extract_tz_llm_seam.py \
+            tests/test_uwo_vocabulary.py \
+            tests/test_uwo_vocabulary_retrofit.py \
             tests/test_extract_tz_content.py \
             tests/test_soupis_ref_build.py \
             tests/test_soupis_handles.py \

@@ -1,5 +1,15 @@
 # TASK — Orchestrator: Work Ontology pro klasifikaci konstrukčních prvků
 
+> **✅ OSA C — element typing acceptance (SHIPPED). Přejmenováno 2026-07-14 per ADR-009 (a).**
+> Původní jméno `TASK_Orchestrator_WorkOntology_SO250.md` neslo axis-B (workflow) jméno nad
+> axis-C obsahem — head-noun akceptační kritéria #63–70 níže. Kritéria jsou POKRYTA odgruženou
+> implementací: `Monolit-Planner/shared/src/classifiers/element-name-normalizer.ts` +
+> `element_rules/element_types.yaml` (v4.34, TASK_2b; W3 zrcadlo `element_name_normalizer.py`).
+> Tento dokument zůstává jako acceptance-referenc osy C. Osy viz
+> `docs/architecture/decisions/ADR-009_*.md` §D3; workflow-kánon (osa B) =
+> `docs/specs/document-to-worklist/SPEC.md`. Stage-1 fixture pro SO-250 =
+> `test-data/tz/SO-250_golden_test.md`.
+
 **Kick-off zadání. Akceptační fixtury: SO 250 (úhlová zárubní zeď) + SO 202 (most).**
 Stavba: D6 Olšová Vrata – Žalmanov, VD-ZDS, stupeň PDPS.
 
