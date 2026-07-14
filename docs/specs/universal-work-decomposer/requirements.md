@@ -2,7 +2,7 @@
 
 > **Spec ID:** `universal-work-decomposer`
 > **Datum:** 2026-06-08
-> **Status:** review
+> **Status:** ACCEPTED — kánon osy A (vocabulary + adapters) per ADR-009 D3, ratifikováno 2026-07-14. NENÍ workflow-kánon (osa B = `docs/specs/document-to-worklist/SPEC.md`).
 > **Priority:** P1
 > **Owner:** Alexander Prokopov / Claude Code session (stoic-cerf)
 >

@@ -9,7 +9,7 @@ immutable once accepted — supersede with a new ADR rather than edit history.
 | [ADR-005](ADR-005_phase_E_dropped.md) | Drop Phase E (engineering drawings) from STAVAGENT scope | Accepted | 2026-05-07 |
 | [ADR-007](ADR-007_monolith_classification_signal_ladder.md) | Monolith classification — signal ladder, grouping, single shared classifier | Accepted | 2026-07-11 |
 | [ADR-008](ADR-008_bridge_passport_extraction_halfB.md) | tz-passport half-B — sibling assembler, shared key map, host-vision notes gate, real LLM seam | Accepted | 2026-07-11 |
-| [ADR-009](ADR-009_document_to_worklist_spine_and_uwo_canon.md) | Document→worklist 6-stage spine, three ontology axes (vocab/workflow/element-typing), per-axis canon + supersedes-ledger | Proposed | 2026-07-12 |
+| [ADR-009](ADR-009_document_to_worklist_spine_and_uwo_canon.md) | Document→worklist 6-stage spine, three ontology axes (vocab/workflow/element-typing), per-axis canon + supersedes-ledger | Accepted | 2026-07-14 |
 
 > ADR-001..004 + 006 are queued in `docs/STAVAGENT_PATTERNS.md` Priority 2 backlog
 > (audit-trail-mandatory, triangulation-no-winner, calculator-deterministic-default,

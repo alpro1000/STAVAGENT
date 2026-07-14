@@ -375,7 +375,8 @@ Expected: CZ adapter → KROS/ÚRS candidates; DE → BKI; ES → FIEBDC; FR →
 These are **Plan-stage (stage 6) fixtures** — hand-verified geometry, volumes, formwork areas, rebar, pour windows. They validate the calculator, **not** the Stage-1 DoD. Stage-1 DoD is validated by HK212 (§12.1). Do not conflate.
 
 > **Repo paths (verified at import — the PK package was itself part-stale):**
-> - `test-data/tz/SO-250.md` — imported with this spec (was genuinely missing).
+> - `test-data/tz/SO-250_golden_test.md` — imported with this spec (was genuinely missing; named
+>   per the neighbor `_golden_test` convention — `SO-250.md` stays free for the source TZ).
 > - `test-data/tz/SO-202_D6_most_golden_test.md` — **already in repo and RICHER than the PK copy**
 >   (28 KB with v4.17+ audit annotations vs 12 KB PK snapshot). Repo version is canonical; the PK
 >   copy was NOT imported.

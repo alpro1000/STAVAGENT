@@ -357,6 +357,17 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ## 9. Session log
 
+## 2026-07-14 — Session: ADR-009 ACCEPTED — ratifikace tří os + stamps + SO250 reconcile (a)
+
+**Rozhodnuto:** Alexander ratifikoval ADR-009 celý (3 osy · ledger · stamps) → status **Accepted**, všechny stamps provedeny týž den: (1) `TASK_UWO_Bridge_Ontology.md` — `SUPERSEDED_BY` ukazatel OPRAVEN na `universal-work-decomposer` (osa A; původní banner mířil na orchestrator rodinu = osa B = špatně); (2) `_SO202_Bridge` + `_KROS_Adapter_Wrap` — header-linky na kánon `docs/specs/document-to-worklist/SPEC.md` («živá, NE hotová»); (3) `universal-work-decomposer` requirements+design status review → **ACCEPTED (kánon osy A — jen vocabulary+adapters, NE workflow)**; (4) **SO250 reconcile = varianta (a)**: přejmenováno `TASK_Orchestrator_WorkOntology_SO250.md` → `TASK_ElementTyping_HeadNoun_SO250_acceptance.md` (osa C, obsah netknut, header linkuje normalizer v4.34; Stage-1 roli SO-250 nese fixture+SPEC); (5) **oprava jmen fixture od Alexandra**: `test-data/tz/SO-250.md` → `SO-250_golden_test.md` (sousedská `_golden_test` konvence; jméno `SO-250.md` zůstává VOLNÉ pro zdrojový TZ — hlavička fixture ho tak označuje; dva artefakty nesmí sdílet jedno jméno — anti-drift).
+
+**Odmítnuto:** varianta (b) přepisu SO250 na Stage-1 intent (duplikovala by fixture+SPEC); start vocab v1 bez schváleného scope-plánu (Alexander: «вернись ко мне с планом, что именно входит в словарь. Не начинай»).
+
+**Otevřené otázky:** scope-plán vocab v1 osy A předložen Alexandrovi v chatu (co vstupuje do slovníku v1, domov YAML-codegen, registrace nových kódů) — čeká GO. Po něm: vocab v1 proti SPEC DoD → `create_work_breakdown` split (SPEC §9.1 BLOCKING).
+
+**Co dál:** po GO na scope → vocab v1 (osa A) jako SDD spec.
+
+
 ## 2026-07-12 — Session: ADR-009 (Proposed, Rev 3) — document→worklist spine, tři osy «WorkOntology», de-graveyard axis-B kánonu
 
 **Rozhodnuto:** Z landscape-auditu «4 nespojené implementace seznamu prací» vznikl meta-**ADR-009** (`docs/architecture/decisions/`, status **Proposed** — čeká ratifikaci Alexandra): (D1) 6-stádiový spine Extract→Structure→Quantify→Decompose→Bind→Plan, každé stádium = Core capability s carrier (data+confidence+provenance), doménové profily (bridge/monolit) = profily stádií 2–3, ne paralelní pipelines; (D2) UWO = sémantická vrstva mezi 4 a 5 — stage 4 emituje `uwo_code` z controlled vocab (~50–100), stage 5 = **deterministický adapter** `uwo_code+params → katalog`, NIKDY fuzzy text→code (příklad `dohloubky patek` ∩ `Bednění základů patek` = {patek} → FORMWORK na EXCAVATION); `not_covered_branch` = štandardní výstup routeru; (D3) **TŘI osy** jménem «WorkOntology»: **A** vocabulary+adapters (Pattern 16) → kánon `universal-work-decomposer` · **B** orchestrator workflow → kánon **`docs/specs/document-to-worklist/SPEC.md`** (importován 2026-07-12 z PK-only TaskSpec; «PDF» byl ve skutečnosti ZIP rastrů+text-layer — proto ho `find`/grep nikdy neviděl) + `_SO202_Bridge` + `_KROS_Adapter_Wrap`, **živá, NE hotová** · **C** element typing (head-noun) → shipped `element_types.yaml`+normalizer, KOMPONENT stádií 2/4; (D4) supersedes-ledger per osa (lék na PK-graveyard); (D5) osa B přejmenována `document-to-worklist` — slovo «WorkOntology» BYLO zdrojem kolize.

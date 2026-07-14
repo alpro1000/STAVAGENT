@@ -1,5 +1,10 @@
 # TASK_Orchestrator_KROS_Adapter_Wrap
 
+> **OSA B — document-to-worklist (živá, NE hotová).** Kánon osy =
+> [`docs/specs/document-to-worklist/SPEC.md`](../specs/document-to-worklist/SPEC.md)
+> (ADR-009 D3/D4). Tento task = Bind-stádium (pipeline 5 / policy Stage 3) té rodiny;
+> adapter-kontrakt viz SPEC §5.1 + §6.5 (Bind = deterministický mapping, ne fuzzy search).
+
 **Target week:** Week 4 of Cemex CSC 2026 runway (Jun 17 — Jun 23, 2026)
 **Estimated effort:** ~22 hours (adapter abstraction ~4h + KROS adapter implementation ~12h + batch endpoint ~2h + explain_decision integration ~2h + tests ~2h)
 **Dependencies:**

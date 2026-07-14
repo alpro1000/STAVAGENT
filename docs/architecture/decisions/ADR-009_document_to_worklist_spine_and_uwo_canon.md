@@ -1,9 +1,11 @@
 # ADR-009 — Document→Worklist pipeline: the 6-stage spine, three ontology axes, and the canonical-artifact ledger
 
-> **Status:** PROPOSED — awaiting Alexander's ratification. The **per-axis canon (D3)** and the
-> **supersedes-ledger (D4)** are his merge-gate call; this ADR *recommends*, it does not enact.
-> No `SUPERSEDED_BY:` / status header is stamped into any other file until ratified.
-> **Date:** 2026-07-12 · **Rev 3** (axis-B canon de-graveyarded into the repo — see §"Revision note").
+> **Status:** ACCEPTED — ratified by Alexander 2026-07-14 («Ратифицирую ADR-009: три оси — ок,
+> ledger — ок, штампы — проставляй»). Stamps enacted the same day: `SUPERSEDED_BY` pointer fixed on
+> `TASK_UWO_Bridge_Ontology`, canon header-links added to the two axis-B family tasks, axis-A spec
+> status → Accepted, `SO250` reconciled per option **(a)**, fixture renamed to neighbor convention.
+> **Date:** 2026-07-12 · **Rev 3** (axis-B canon de-graveyarded into the repo — see §"Revision note") ·
+> **Rev 4** 2026-07-14 (ratification + stamps).
 > **Sources:** **axis-B canon `docs/specs/document-to-worklist/SPEC.md`** (imported 2026-07-12 from the
 > PK-only TaskSpec) · worklist-audit (`docs/handoff/2026-07-08_worklist-gate2-next-session.md`) · UWO spec
 > (`docs/specs/universal-work-decomposer/`) · orchestrator task family
@@ -37,8 +39,9 @@ empty **correctly** (the string exists — §7.8 of the source, now SPEC §7). T
 archive's text layer, merged with explicitly-marked `CONTRACT ADDITION` sections. Axis B is
 simultaneously **renamed** `document-to-worklist` (D5 enacted by the SPEC itself). Import
 verification also caught the graveyard defect *inside the import package*: of 3 fixtures, SO-250 was
-genuinely missing (imported → `test-data/tz/SO-250.md`), SO-202 was a **stale PK copy** of a richer
-repo file (NOT imported), VP4 was byte-identical (skipped).
+genuinely missing (imported → `test-data/tz/SO-250_golden_test.md`, renamed at ratification to the
+neighbor `_golden_test` convention, keeping `SO-250.md` free for the source TZ), SO-202 was a
+**stale PK copy** of a richer repo file (NOT imported), VP4 was byte-identical (skipped).
 
 ---
 
@@ -113,14 +116,14 @@ Pattern 16 stays the *principle* (registry), not a competing spec.
 
 One in-repo place stating alive vs dead **per axis**. Enacting = stamping headers post-ratification.
 
-| Artifact | Axis | Recommended status | Successor / note |
+| Artifact | Axis | Status (enacted 2026-07-14) | Successor / note |
 |---|---|---|---|
-| **`docs/specs/document-to-worklist/SPEC.md`** | B | **CANON (new — imported 2026-07-12)** | replaces the PK-only TaskSpec; fixtures repo-grounded (SPEC §12.4) |
-| `docs/specs/universal-work-decomposer/` | A | **CANON** for vocabulary + adapters (review → Accepted) | **not** the workflow canon |
-| `docs/TASK_UWO_Bridge_Ontology.md` | A | Superseded (fix its **wrong** pointer) | → `universal-work-decomposer` |
-| `docs/tasks/TASK_Orchestrator_WorkOntology_SO202_Bridge.md` | B | **alive, not done** (Stage-1 bridge) | add header link → SPEC canon; SO-202 golden already in repo (richer than PK copy) |
-| `docs/tasks/TASK_Orchestrator_KROS_Adapter_Wrap.md` | B (stage 5 / policy Stage 3) | **alive, not done** | add header link → SPEC canon |
-| `docs/tasks/TASK_Orchestrator_WorkOntology_SO250.md` | B name / **C content** | **RECONCILE — open decision (Alexander)** | re-title as element-typing acceptance doc **or** re-scope to Stage-1 intent |
+| **`docs/specs/document-to-worklist/SPEC.md`** | B | **CANON** (imported 2026-07-12) | replaces the PK-only TaskSpec; fixtures repo-grounded (SPEC §12.4) |
+| `docs/specs/universal-work-decomposer/` | A | **CANON** for vocabulary + adapters — **Accepted** (stamped) | **not** the workflow canon |
+| `docs/TASK_UWO_Bridge_Ontology.md` | A | Superseded — **pointer fixed** (stamped) | → `universal-work-decomposer` |
+| `docs/tasks/TASK_Orchestrator_WorkOntology_SO202_Bridge.md` | B | **alive, not done** (Stage-1 bridge) — **canon header-link stamped** | SO-202 golden already in repo (richer than PK copy) |
+| `docs/tasks/TASK_Orchestrator_KROS_Adapter_Wrap.md` | B (stage 5 / policy Stage 3) | **alive, not done** — **canon header-link stamped** | — |
+| `docs/tasks/TASK_ElementTyping_HeadNoun_SO250_acceptance.md` | **C** | **RECONCILED per (a)** — renamed from `TASK_Orchestrator_WorkOntology_SO250.md`, content untouched, header links normalizer v4.34 | Stage-1 SO-250 role now carried by `test-data/tz/SO-250_golden_test.md` + SPEC |
 | `element_types.yaml` + `element-name-normalizer.ts` | C | **Shipped / done** | component of stages 2/4, not a pipeline |
 | `docs/STAVAGENT_PATTERNS.md` Pattern 16 | principle | Principle (registry) | referenced by axis-A canon |
 
@@ -160,8 +163,10 @@ Remaining follow-up: header links from the `_SO202_Bridge` / `_KROS_Adapter_Wrap
 
 - `TASK_UWO_Bridge_Ontology.md` → `SUPERSEDED_BY: universal-work-decomposer` (fix wrong pointer).
 - ~~Bring axis-B TaskSpec into the repo~~ **DONE 2026-07-12** (`docs/specs/document-to-worklist/SPEC.md`
-  + `test-data/tz/SO-250.md`; SO-202 golden was already in repo, richer than the PK copy).
-- Reconcile the mis-scoped repo `SO250.md` vs the family's Stage-1 intent — **open decision**.
+  + `test-data/tz/SO-250_golden_test.md`; SO-202 golden was already in repo, richer than the PK copy).
+- ~~Reconcile the mis-scoped repo `SO250.md`~~ **DONE 2026-07-14 per option (a)** — renamed to
+  `TASK_ElementTyping_HeadNoun_SO250_acceptance.md` (axis C, content untouched, header links
+  `element-name-normalizer` v4.34).
 - ~~Rename axis B off "WorkOntology"~~ **DONE** — `document-to-worklist` (D5); header links from the
   two family tasks = post-ratification follow-up.
 - No new UI for `/api/v1/work-packages`; kill orphan `ContextEditor.html`; verify/strip
@@ -188,14 +193,17 @@ Remaining follow-up: header links from the `_SO202_Bridge` / `_KROS_Adapter_Wrap
 
 ---
 
-## Open ratification points (for Alexander)
+## Ratification record (2026-07-14, Alexander)
 
-1. **Three-axis model (D3):** confirm A = `universal-work-decomposer` (vocab/adapters only),
-   B = `document-to-worklist` SPEC + family (alive, not done, canon now in-repo), C = element typing
-   (shipped component).
-2. **Ledger (D4):** approve the per-axis statuses + post-ratification stamps (`SUPERSEDED_BY` on
-   `TASK_UWO_Bridge_Ontology`, header links on the two family tasks).
-3. **`SO250.md` reconcile — the one open decision:** (a) re-title as an element-typing acceptance doc
-   (axis C, content stays), or (b) re-scope/rewrite to the Stage-1 worklist intent its family assumes.
-4. **Sequencing confirmed:** SO250 reconcile → vocab v1 → `create_work_breakdown` split (§9.1).
-   Vocab NOT started yet.
+1. **Three-axis model (D3)** — ✅ ratified as written.
+2. **Ledger (D4)** — ✅ ratified; all stamps enacted same day (see ledger table).
+3. **`SO250.md` reconcile** — ✅ decided **option (a)**: renamed to
+   `TASK_ElementTyping_HeadNoun_SO250_acceptance.md`, content untouched, header links normalizer
+   v4.34. Rationale: Stage-1 role for SO-250 already carried by the imported fixture + SPEC.
+4. **Fixture naming correction (added at ratification):** `test-data/tz/SO-250.md` →
+   `SO-250_golden_test.md` per the neighbor `_golden_test` convention; the name `SO-250.md` stays
+   free for the **source TZ** (the fixture's own header designates that path for the TZ — two
+   artifacts must not share one name).
+5. **Sequencing confirmed:** vocab v1 (axis A) is next, **but a scope plan goes to Alexander first**
+   — what enters the v1 dictionary — before any vocabulary work starts. Then the
+   `create_work_breakdown` split (SPEC §9.1).

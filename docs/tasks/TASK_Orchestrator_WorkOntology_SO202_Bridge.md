@@ -1,5 +1,11 @@
 # TASK_Orchestrator_WorkOntology_SO202_Bridge
 
+> **OSA B — document-to-worklist (živá, NE hotová).** Kánon osy =
+> [`docs/specs/document-to-worklist/SPEC.md`](../specs/document-to-worklist/SPEC.md)
+> (importován 2026-07-12 z PK-only TaskSpec; ADR-009 D3/D4). Tento task = Stage-1
+> bridge-větev té rodiny. SO-202 golden fixture žije v repu:
+> `test-data/tz/SO-202_D6_most_golden_test.md` (bohatší než PK kopie — repo verze kanonická).
+
 **Target week:** Late Week 3 / early Week 4 of Cemex CSC 2026 runway (Jun 14 — Jun 21, 2026)
 **Estimated effort:** ~38 hours (extraction ~16h + calculator integration for 9 element types ~12h + validation rules ~6h + tests ~4h)
 **Dependencies:**
