@@ -74,16 +74,30 @@ value}` shape (`soil_class`, `surface_class`, `curing_class`, `inspection_regime
   SO-250/SO-202/VP4 goldens each map to an existing code with a declared domain (honest
   not_covered_branch path guaranteed), corpus spans BOTH coverage states.
 
-## Gate 3 — Coverage harness (BEFORE retrofit — order flipped per Alexander 2026-07-14)
+## Gate 3 — Coverage harness (DONE 2026-07-14; verdict table = the deliverable)
 
-> The hall/interiér tiers were derived from registry references and the sandbox, NOT from the
-> HK212 corpus itself (READ-denied). Bolting the engine to an unverified dictionary is backwards —
-> the harness validates the vocabulary FIRST; the retrofit consumes a verified one.
+> Order flipped per Alexander: harness BEFORE retrofit — never bolt the engine to an unverified
+> dictionary. Mechanics constraint (ratified): the harness judges by a **hand-curated verdict map**,
+> NEVER keyword matching (seed keywords are uncalibrated; token overlap gives false gaps AND false
+> hits — the `{patek}` case). The matcher is calibrated BY this corpus later, it is not its own judge.
 
-- CI-side script (not by-eye) classifies each HK212 Stage-1 item to a v1 code or an explicit flag;
-  acceptance = 100 % coded-or-flagged, 0 silently dropped. Findings → vocabulary v1.2 data-fix.
-- Unit: `dohloubky patek` → `EARTHWORK.EXCAVATION.*`, never `FORMWORK.*` (the token-overlap case
-  from SPEC §5.1).
+- Corpus reality: **244 items**, not the historical 138 (full sequential list; ~43 % MEP tail:
+  M-ZTI 56 + M-VK 38 + M-UT 12).
+- `scripts/uwo_hk212_verdicts.yaml` — hand-curated calibration map, all 244 assigned; sixth verdict
+  `needs_decomposition` added for consolidated packs (SPEC Stage-2 split, not a vocab gap).
+- `scripts/uwo_hk212_coverage_harness.py` — validates bijection corpus↔map, code-exists +
+  domain-declared for exact/keyword verdicts, proposed-code-must-NOT-exist for needs_new_code
+  (stale-map guard: after a v1.3 add, the verdict must flip to exact). Exit ≠ 0 only on
+  CONSISTENCY errors — gaps are findings, not failures.
+- **Result (zero consistency errors):** exact_code 108 · needs_keyword 15 · needs_new_code 86 ·
+  needs_decomposition 2 · not_work 33 · not_covered_ok 0. Of 209 real work items: 59 % covered by
+  v1.2, 41 % gaps — above the 10–15 % estimate BECAUSE of the MEP/PSV tail; every qualitative
+  prediction from the domain review confirmed (nátěry OK, kotvení, klempířina, vrata).
+- **30 proposed codes, 2 proposed domains (LANDSCAPING, PAVING)** — aggregated in the report;
+  the `dohloubky patek` items verdict to `EARTHWORK.EXCAVATION.PIT` (discrimination case pinned).
+- Report: `docs/audits/uwo_vocabulary/2026-07-14_hk212_coverage.md` (per-item table).
+- **v1.3 = decided together with Alexander over the table** (incl. the supply-vs-montáž PATTERN
+  decision: supply codes per domain vs a supply param).
 
 ## Gate 4 — Retrofit: concrete branch emits `vocabulary_code` (AFTER the harness)
 
