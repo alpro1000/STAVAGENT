@@ -24,6 +24,14 @@
 #                        formwork surface class (TKP C1d/C2d vs DBV SB1–SB4),
 #                        curing class (TKP 18 vs ZTV-ING). Emitters MUST send
 #                        {market, scheme, value}, never a bare number.
+# 4. ONE canonical unit per code = the PRIMARY PHYSICAL DIMENSION. A catalog's
+#    second dimension is ALWAYS a mandatory param; conversion is the adapter's
+#    job — NEVER a second unit (otherwise quantity stops being comparable and
+#    Replay breaks). Confirmed by three cases (ratified 2026-07-14):
+#      · přesun hmot:      t      + distance_m
+#      · lešení-pronájem:  m2_day = m2 + duration_days
+#      · zábradlí:         m      + mass_kg_per_m (m × kg/m → t is deterministic;
+#                          t → m is NOT — tonnage-only source stays a review_flag)
 #
 # ── Coverage contract (audit fix 2026-07-14, Alexander) ─────────────────────
 # `coverage: covered` means THE DECOMPOSER BRANCH IS BUILT and can emit this
@@ -60,7 +68,7 @@
 #   coverage: covered | declared             # see coverage contract above
 
 schema_version: 1
-vocabulary_version: "v1.1-2026-07-14"
+vocabulary_version: "v1.2-2026-07-14"
 
 domains:
   # branch: monolit | interier_psv | none — which DECOMPOSER branch is built.
@@ -79,7 +87,7 @@ domains:
   - { key: DEMOLITION,     branch: none,         label: { cs: "Bourání a demontáže", de: null, es: null } }
   - { key: WATERPROOFING,  branch: none,         label: { cs: "Hydroizolace", de: null, es: null } }
   - { key: FLOORING,       branch: none,         label: { cs: "Podlahy", de: null, es: null } }
-  - { key: OPENINGS,       branch: none,         label: { cs: "Okna a dveře", de: null, es: null } }
+  - { key: OPENINGS,       branch: none,         label: { cs: "Okna a dveře", de: null, es: null }, note: "v1 jen renovace — montáž nových výplní chybí; první ne-renovační interiér narazí" }
   - { key: PLUMBING,       branch: none,         label: { cs: "ZTI", de: null, es: null } }
   - { key: ELECTRICAL,     branch: none,         label: { cs: "Silnoproud", de: null, es: null } }
   - { key: HVAC,           branch: none,         label: { cs: "Vytápění, plyn, VZT", de: null, es: null } }
@@ -106,12 +114,23 @@ codes:
     coverage: covered
 
   - code: FORMWORK.FALSEWORK.ERECT
-    label: { cs: "Skruž (pevná/posuvná) pro NK", de: null, es: null }
+    label: { cs: "Skruž (pevná/posuvná) pro NK — zřízení", de: null, es: null }
     keywords: { cs: [skruž, skruz, podpěrná konstrukce, mss], de: [], es: [] }
-    unit_canonical: m2
+    # m³ obestavěného prostoru podpěrné konstrukce — OTSKP kánon (skruž ≠ bednění;
+    # m² je kontaktní plocha bednění — třívrstvý stack terminologie Gate 1).
+    unit_canonical: m3
     params:
       - { name: falsework_type, kind: scalar, note: "pevná | posuvná (MSS)" }
     coverage: covered
+
+  - code: FORMWORK.FALSEWORK.STRIP
+    label: { cs: "Skruž — odstranění", de: null, es: null }
+    keywords: { cs: [odstranění skruže, demontáž skruže], de: [], es: [] }
+    # Samostatná položka i práce; vazba na zrání (min. 21 dní per ČSN 73 6244)
+    # žije v kalkulátoru, ne zde. WORK_TEMPLATES tento atom dnes NEemituje → declared.
+    unit_canonical: m3
+    params: []
+    coverage: declared
 
   - code: FORMWORK.TRAVELER.OPERATE
     label: { cs: "Římsový vozík — montáž a provoz", de: null, es: null }
@@ -161,6 +180,26 @@ codes:
     params:
       - { name: curing_class, kind: market_scheme, note: "CZ TKP 18 §7.8.3 třídy 2/3/4 vs DE ZTV-ING — national taxonomies" }
     coverage: covered
+
+  # Podkladní beton explicitně (adapter-determinismus: «beton základů» vs
+  # «podkladní vrstvy z betonu» = jiné katalogové položky; bez vlastního kódu
+  # by adapter musel do element-kontextu). WORK_TEMPLATES dnes neemituje → declared.
+  - code: CONCRETE.POUR.BLINDING
+    label: { cs: "Podkladní beton (prostý, např. C12/15 X0)", de: null, es: null }
+    keywords: { cs: [podkladní beton, podkladni beton, vyrovnávací vrstva betonu], de: [], es: [] }
+    unit_canonical: m3
+    params:
+      - { name: concrete_class, kind: eurocode_class }
+    coverage: declared
+
+  # Dilatační spára — samostatný work item (SO-250: 42 dilatačních celků);
+  # lineární prvek (těsnění/výplň spáry).
+  - code: CONCRETE.JOINT.DILATATION
+    label: { cs: "Dilatační spára — provedení, těsnění/výplň", de: null, es: null }
+    keywords: { cs: [dilatační spára, dilatace, dilatacni celek, těsnění spáry], de: [], es: [] }
+    unit_canonical: m
+    params: []
+    coverage: declared
 
   - code: PILING.BORED.INSTALL
     label: { cs: "Zřízení pilot vrtaných", de: null, es: null }
@@ -220,12 +259,34 @@ codes:
     params: []
     coverage: declared
 
+  # Drenáž za zdí / trativod (SO-250 §odvodnění, VP4) — lineární prvek.
+  - code: EARTHWORK.DRAINAGE.INSTALL
+    label: { cs: "Drenáž / trativod — zřízení", de: null, es: null }
+    keywords: { cs: [drenáž, drenaz, trativod, odvodnění rubu], de: [], es: [] }
+    unit_canonical: m
+    params:
+      - { name: dn_mm, kind: scalar }
+    coverage: declared
+
   - code: STEEL.STRUCTURE.ERECT
     label: { cs: "Montáž ocelové konstrukce", de: null, es: null }
     keywords: { cs: [ocelová konstrukce, ocelova konstrukce, montáž OK, IPE, HEB], de: [], es: [] }
     unit_canonical: t
     params:
       - { name: profile, kind: eurocode_class, note: "IPE 400 = IPE 400 EU-wide" }
+    coverage: declared
+
+  # Zábradlí = lineární prvek (pravidlo 4, třetí případ dvourozměrnosti):
+  # kanon m (délka je v TZ vždy); hmotnost = param. m × kg/m → t je
+  # deterministický přepočet adapteru (katalog t-položek); t → m NELZE bez
+  # výšky/typu — zdroj jen s tonáží zůstává review_flag.
+  - code: STEEL.RAILING.INSTALL
+    label: { cs: "Zábradlí ocelové — dodávka a montáž", de: null, es: null }
+    keywords: { cs: [zábradlí, zabradli, mostní zábradlí, svodidlo-zábradlí], de: [], es: [] }
+    unit_canonical: m
+    params:
+      - { name: mass_kg_per_m, kind: scalar, note: "hmotnost bm — pokud TZ/výkaz udává t/kg, adapter přepočte a volí t-položku katalogu" }
+      - { name: height_m, kind: scalar }
     coverage: declared
 
   - code: CLADDING.PANEL.INSTALL
@@ -291,6 +352,16 @@ codes:
     unit_canonical: kpl
     params: []
     coverage: declared
+    weak_seed: true   # nejslabší kód seznamu — pytel, ne atom; kandidát revize po Gate-3 harness
+
+  # Výkopek ≠ suť: jiný tok (uložení na skládku, poplatek za uložení) → vlastní kód.
+  - code: TRANSPORT.SPOIL.REMOVE
+    label: { cs: "Odvoz výkopku a uložení na skládku", de: null, es: null }
+    keywords: { cs: [odvoz výkopku, výkopek, uložení na skládku], de: [], es: [] }
+    unit_canonical: t
+    params:
+      - { name: distance_m, kind: scalar, note: "odvozová vzdálenost — druhá dimenze (pravidlo 4)" }
+    coverage: declared
 
   # ═══ DECLARED — interiér/PSV (sandbox S1–S10; port = UWO F2) ═════════════════
   - code: DEMOLITION.FIXTURES.REMOVE
@@ -337,7 +408,15 @@ codes:
 
   - code: WATERPROOFING.SLURRY.APPLY
     label: { cs: "Hydroizolační stěrka", de: null, es: null }
-    keywords: { cs: [hydroizolace, hydroizolační stěrka], de: [], es: [] }
+    keywords: { cs: [hydroizolační stěrka, stěrková izolace], de: [], es: [] }
+    unit_canonical: m2
+    params: []
+    coverage: declared
+
+  # Pásová/NAIP izolace ≠ interiérová stěrka (SO-202 izolace NK, SO-250 rub zdi).
+  - code: WATERPROOFING.MEMBRANE.APPLY
+    label: { cs: "Hydroizolace pásová / NAIP — natavení/pokládka", de: null, es: null }
+    keywords: { cs: [hydroizolace, izolace proti vodě, asfaltové pásy, naip, izolace nk, izolace rubu], de: [], es: [] }
     unit_canonical: m2
     params: []
     coverage: declared
@@ -393,9 +472,12 @@ codes:
 
   - code: PLUMBING.ROUGHIN.INSTALL
     label: { cs: "ZTI rozvody (voda, kanalizace)", de: null, es: null }
-    keywords: { cs: [zti, rozvody vody, kanalizace], de: [], es: [] }
-    unit_canonical: kpl
-    params: []
+    keywords: { cs: [zti, rozvody vody, kanalizace, potrubí], de: [], es: [] }
+    # Rozvody = metry potrubí (kpl by degeneroval quantity na 1 a G2 Quantify
+    # by procházel vakuově). „Komplet za byt" je katalogové balení → adapter.
+    unit_canonical: m
+    params:
+      - { name: dn_mm, kind: scalar, note: "jmenovitá světlost potrubí" }
     coverage: declared
 
   - code: PLUMBING.FIXTURES.INSTALL
@@ -406,9 +488,10 @@ codes:
     coverage: declared
 
   - code: ELECTRICAL.ROUGHIN.INSTALL
-    label: { cs: "Rozvody silnoproudu", de: null, es: null }
+    label: { cs: "Rozvody silnoproudu (kabeláž)", de: null, es: null }
     keywords: { cs: [elektroinstalace, rozvody silnoproud, kabeláž], de: [], es: [] }
-    unit_canonical: kpl
+    # Kabeláž = metry (viz PLUMBING.ROUGHIN — kpl zabíjí G2 Quantify).
+    unit_canonical: m
     params: []
     coverage: declared
 

@@ -1,7 +1,7 @@
 # Universal Work Decomposer (UWO) — Tasks (vocab v1 increment)
 
 > **Spec ID:** `universal-work-decomposer` (axis-A canon per ADR-009 D3)
-> **Status:** Gate 0–1 DONE (2026-07-14) · Gate 2+ pending
+> **Status:** Gate 0–2 DONE (2026-07-14, vocab v1.2 post domain-review) · Gate 3+ pending
 > **Prerequisites:** ADR-009 Accepted · axis-B canon `docs/specs/document-to-worklist/SPEC.md`
 > **Scope GO:** Alexander 2026-07-14 — three-tier plan + 3 market-proofing schema fixes
 > (lang-map labels/keywords · `unit_canonical` + adapter render · market-typed params).
@@ -47,15 +47,32 @@ value}` shape (`soil_class`, `surface_class`, `curing_class`, `inspection_regime
   (human approval = PR), per SPEC document-to-worklist §6.3.
 - Hermetic YAML invariant check green (lang-map keys, unit whitelist, unique codes, param kinds,
   coverage-contract prefixes, no SITE/VRN codes).
+- **v1.2 (domain review Alexander, 8 fixes + rule 4):** (A) FALSEWORK.ERECT unit m²→**m³**
+  (obestavěný prostor podpěrné konstrukce — OTSKP kánon, skruž ≠ bednění) + new
+  `FORMWORK.FALSEWORK.STRIP` (own položka; zrání ≥ 21 d ČSN 73 6244 lives in the calculator);
+  rough-ins kpl→**m** (kpl degenerates quantity to 1 → G2 Quantify passes vacuously). (B) 5 gaps
+  proven by OUR OWN fixtures (SO-250/SO-202/VP4 did not pass the dictionary):
+  `WATERPROOFING.MEMBRANE.APPLY` · `EARTHWORK.DRAINAGE.INSTALL` · `STEEL.RAILING.INSTALL` (m +
+  mass_kg_per_m; m×kg/m→t deterministic, t→m = review_flag) · `CONCRETE.JOINT.DILATATION` (SO-250
+  42 DC) · `TRANSPORT.SPOIL.REMOVE` (výkopek ≠ suť) + recommended `CONCRETE.POUR.BLINDING`
+  (adapter determinism). (C) **Header rule 4** (three-case-confirmed): ONE canonical unit per code
+  = primary physical dimension; the catalog's second dimension is ALWAYS a mandatory param,
+  conversion = adapter, never a second unit (přesun t+distance · pronájem m2_day+duration ·
+  zábradlí m+mass). `weak_seed: true` on TRANSPORT.DELIVERY.MATERIAL; OPENINGS domain gap noted.
+  → **54 codes (13 covered / 41 declared) · 22 domains.**
 
-## Gate 2 — Python loader + invariant tests (NEXT)
+## Gate 2 — Python loader + hermetic tests (DONE 2026-07-14)
 
-- Loader beside the existing branch-template loader in the decomposition tool module (lazy, cached,
-  honest-empty on malformed file — mirror `_load_interier_psv_templates`).
-- Hermetic pytest: the invariant set from Gate 1 (lang-map shape, unit whitelist, unique codes,
-  param kinds, coverage-contract) + the **market-proofing test**: injecting a `de` label into a
-  fixture copy passes schema unchanged.
-- No consumer change yet (additive).
+- `app/services/uwo_vocabulary.py`: `load_vocabulary()` (lru_cache; unreadable OR
+  invariant-violating file → honest-EMPTY + loud log — a broken controlled vocab is never served),
+  `validate_vocabulary()` (pure, shared by tests/CI), accessors `get_code` (None, never invented) /
+  `is_covered` (coverage contract) / `domain_of`.
+- `tests/test_uwo_vocabulary.py` — **39 hermetic tests green**: invariants (incl. negative tests —
+  validator FIRES on broken copies, not a rubber stamp) · **market-proofing test** (German
+  label/keyword = slot fill, zero violations) · rule-4 trio · falsework m³+STRIP · rough-ins=m ·
+  no-VRN · **fixture smoke** (Alexander's process requirement): 27 curated works from
+  SO-250/SO-202/VP4 goldens each map to an existing code with a declared domain (honest
+  not_covered_branch path guaranteed), corpus spans BOTH coverage states.
 
 ## Gate 3 — Coverage harness (BEFORE retrofit — order flipped per Alexander 2026-07-14)
 
