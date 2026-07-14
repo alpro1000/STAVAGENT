@@ -105,3 +105,27 @@ def test_breakdown_items_carry_covered_vocabulary_codes():
         code = it.get("vocabulary_code")
         assert code, f"item without vocabulary_code: {it.get('work_description')!r}"
         assert is_covered(code), f"emitted code not covered: {code}"
+
+# ── SPEC §6.4.3 coverage field (Gate 5 contract naming) ─────────────────────
+
+def test_emitted_items_carry_coverage_covered():
+    """Every item a BUILT branch emits carries coverage='covered' (SPEC §6.3)."""
+    result = asyncio.run(create_work_breakdown(
+        elements=[{"name": "Opěrná zeď", "volume_m3": 94, "concrete_class": "C30/37"}],
+    ))
+    assert result["items"], "no items emitted"
+    for it in result["items"]:
+        assert it.get("coverage") == "covered", it.get("work_description")
+
+
+def test_unresolved_scope_carries_not_covered_branch():
+    """A branch that is not built returns not_covered_branch — never a silent
+    fallback to the concrete decomposition (SPEC invariant §6.4.3)."""
+    result = asyncio.run(create_work_breakdown(
+        elements=[{"name": "Dodávka a montáž fotovoltaiky"}],
+        project_type="budova",
+        catalog="none",
+    ))
+    assert result["total_items"] == 0
+    assert len(result["unresolved"]) == 1
+    assert result["unresolved"][0]["coverage"] == "not_covered_branch"

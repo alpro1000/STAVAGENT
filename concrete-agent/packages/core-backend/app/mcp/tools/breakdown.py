@@ -154,6 +154,8 @@ def _decompose_interier_psv(name: str, elem: dict) -> list[dict]:
             "element_type": "interier_psv",
             # axis-A code — static per-atom mapping carried by the KB YAML
             "vocabulary_code": atom.get("vocabulary_code"),
+            # SPEC §6.3 item contract: emitted by a BUILT branch (§6.4.3)
+            "coverage": "covered",
             "_source": f"element:{name} / psv_template:{section.get('section_key')}:{atom['key']}",
             # reserved catalog/price slots — bound later by the ÚRS adapter
             "urs_code": None,
@@ -468,6 +470,10 @@ async def create_work_breakdown(
                         "element_name": name,
                         "section_code": route["section_code"],
                         "scope_guard_status": "no_template_for_section",
+                        # SPEC document-to-worklist §6.4.3: a branch that is not
+                        # built returns not_covered_branch — never a silent
+                        # fallback to the concrete decomposition.
+                        "coverage": "not_covered_branch",
                         "_source": f"element:{name} / scope_router:{route['matched_rule']}",
                     })
                     continue
@@ -543,6 +549,9 @@ async def create_work_breakdown(
                     # axis-A code — static template mapping, deterministic 1.0
                     # (Gate 4; stage-5 Bind maps it, SPEC §5.1/§6.3)
                     "vocabulary_code": tmpl.get("vocabulary_code"),
+                    # SPEC §6.3 item contract: emitted by a BUILT branch (§6.4.3;
+                    # the not-built case lands in `unresolved` as not_covered_branch)
+                    "coverage": "covered",
                     "_source": f"element:{name} / template:{tmpl['work']}",
                     # classification provenance (separate from any calc confidence)
                     "classification_confidence": classification.get("confidence"),

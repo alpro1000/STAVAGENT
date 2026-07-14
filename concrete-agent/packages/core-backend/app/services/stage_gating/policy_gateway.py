@@ -98,6 +98,7 @@ def evaluate_tool_policy(
     enforce_session: bool = False,
     user_id: Optional[str] = None,
     project_id: Optional[str] = None,
+    tool_args: Optional[dict[str, Any]] = None,
     audit_hook: AuditHook = _default_audit_hook,
 ) -> PolicyDecision:
     """Evaluate whether `tool_name` may be invoked. Pure + deterministic.
@@ -108,12 +109,20 @@ def evaluate_tool_policy(
     activates as soon as a `session_id` (and thus `current_state`) is supplied,
     or when a caller opts into strict mode via `enforce_session=True`.
 
+    `tool_args` (optional) enables per-parameter constraints from the YAML
+    (`param_constraints` — SPEC document-to-worklist §9.1 / invariant §6.4.1:
+    in Stage 1 not one catalog code and not one price, server-enforced). A
+    constrained param present in `tool_args` with a value outside the allowed
+    set is a STAGE_VIOLATION. An ABSENT param is allowed — the tool default
+    must itself satisfy the constraint (test-pinned at the tool).
+
     Order of checks (task §3):
       1. UNKNOWN_TOOL    — tool has no manifest
       2. SESSION_REQUIRED — requires_session but no session, in enforced mode
       3. (session-less + not enforced) → ALLOW (preserve current behavior)
-      4. STAGE_VIOLATION — tool not in the YAML allow-list for current_state
-                            (logged to the audit hook)
+      4. STAGE_VIOLATION — tool not in the YAML allow-list for current_state,
+                            OR a tool_args param violates the state's
+                            param_constraints (both logged to the audit hook)
       5. CONFIRMATION_REQUIRED — requires_confirmation but no token
       6. SESSION_TERMINAL — writes_state in a terminal state, not re-export
     """
@@ -168,6 +177,35 @@ def evaluate_tool_policy(
             ),
             manifest=manifest,
         )
+
+    # Param constraints (SPEC §9.1 / §6.4.1) — same STAGE_VIOLATION class as the
+    # allow-list check: the tool IS allowed here, but only with these args.
+    constraints = config.param_constraints_for(current_state, tool_name)
+    if constraints and tool_args is not None:
+        for param, allowed in constraints.items():
+            if param in tool_args and tool_args[param] not in allowed:
+                record = {
+                    "event": "STAGE_VIOLATION",
+                    "tool_name": tool_name,
+                    "attempted_in_state": current_state.value,
+                    "param": param,
+                    "param_value": tool_args[param],
+                    "allowed_values": sorted(allowed),
+                    "session_id": session_id,
+                    "user_id": user_id,
+                    "project_id": project_id,
+                }
+                audit_hook(record)
+                return PolicyDecision(
+                    allowed=False,
+                    error_code=PolicyError.STAGE_VIOLATION,
+                    detail=(
+                        f"Tool '{tool_name}' in state {current_state.value} "
+                        f"requires {param} in {sorted(allowed)}; "
+                        f"got {tool_args[param]!r}."
+                    ),
+                    manifest=manifest,
+                )
 
     if manifest.requires_confirmation and not confirmation_token:
         return PolicyDecision(

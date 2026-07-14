@@ -1,8 +1,8 @@
 # Universal Work Decomposer (UWO) — Tasks (vocab v1 increment)
 
 > **Spec ID:** `universal-work-decomposer` (axis-A canon per ADR-009 D3)
-> **Status:** Gate 0–4 DONE (2026-07-14; vocab **v1.3** — 85 codes, HK212 100 % work-item
-> coverage; retrofit: coverage contract test-enforced) · Gate 5 (create_work_breakdown split) next
+> **Status:** Gate 0–5 DONE (2026-07-14; vocab **v1.3** — 85 codes, HK212 100 % work-item
+> coverage; retrofit: coverage contract test-enforced; SPEC §9.1 mode enforcement server-side)
 > **Prerequisites:** ADR-009 Accepted · axis-B canon `docs/specs/document-to-worklist/SPEC.md`
 > **Scope GO:** Alexander 2026-07-14 — three-tier plan + 3 market-proofing schema fixes
 > (lang-map labels/keywords · `unit_canonical` + adapter render · market-typed params).
@@ -137,11 +137,34 @@ Three ratified checks (Alexander GO), all shipped:
    MCP compat via CI (local fastmcp blocked by Debian PyJWT — documented blocker); both new test
    files registered in `test-mcp-compatibility.yml` (push paths + PR paths + pytest list).
 
-## Gate 5 — pointer: `create_work_breakdown` split
+## Gate 5 — `create_work_breakdown` split server-ENFORCED (DONE 2026-07-14)
 
-Blocking defect per SPEC document-to-worklist §9.1 (mixes decompose with catalog/pricing) — own
-gate AFTER the vocabulary is consumable; Stage-1 invariant «no code, no price» becomes
-server-enforceable only then.
+Recon finding: the SPLIT itself already shipped earlier (SPEC §9.1's "one tool with an explicit
+mode" option — `mode='work_first'` DEFAULT, catalog binding decoupled into
+`_attach_catalog_codes`, `catalog='none'` alias, response echoes `mode` + `catalog_bound`).
+What was missing — pinned by the YAML comment «mode enforcement is PR2» — was the
+SERVER-side enforcement. Shipped:
+
+- **`param_constraints` block in `workflow_definitions.yaml`** (data, single source):
+  WORK_ATOMIZATION → `create_work_breakdown: mode: [work_first]`. Loader parses + STRICTLY
+  validates (constrained tool must be in the state's allow-list; a typo fails loading, never
+  silently disables the invariant).
+- **`evaluate_tool_policy(tool_args=…)`**: a session-gated call whose constrained param falls
+  outside the allowed set → STAGE_VIOLATION (409) + audit record with param/value/allowed.
+  Absent param = allowed — sound because the tool default is `work_first`, test-pinned from
+  SOURCE via AST (no heavy import in the hermetic suite). Session-less calls unchanged (opt-in
+  model preserved).
+- **REST wrapper forwards `tool_args={"mode", "catalog"}`** → invariant §6.4.1 («in Stage 1 not
+  one catalog code and not one price») is enforced server-side, not by prompt. The orchestrator
+  recipe already calls the tool with defaults (work_first) — consistent.
+- **§6.4.3 contract naming**: additive `coverage` field — `covered` on every item emitted by a
+  built branch (monolit + interiér), `not_covered_branch` on `unresolved` entries.
+
+Tests: +9 in `test_stage_gating_policy.py` (constraint load/allow/refuse/absent-param/
+session-less/loader-negative/bridge-409) + 2 in `test_uwo_vocabulary_retrofit.py` (coverage
+field both states). Local: 132 passed across the touched suites; goldens byte-stable.
+Stage chain 1–4 closes for the first time: Extract→…→Decompose emits vocabulary_code,
+Bind is a separate stage behind the gate, and the gate is POLICY.
 
 ---
 
@@ -158,3 +181,4 @@ server-enforceable only then.
 |---|---|
 | 2026-07-14 | Gate 0 recon + Gate 1 vocabulary v1 (47 codes / 22 domains) shipped; Gates 2–5 planned |
 | 2026-07-14 | Gate 2 harness + Gate 3 HK212 verdict table (v1.2 → v1.3, 85 codes) + Gate 4 retrofit (coverage contract closed, 13 emitted == 13 covered, test-enforced) |
+| 2026-07-14 | Gate 5 — SPEC §9.1 closed: mode=work_first server-enforced via YAML param_constraints + policy gateway tool_args; §6.4.3 coverage field |
