@@ -379,7 +379,9 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 **Otevřené otázky:** lokální fastmcp blocker trvá (mcp-compat přes CI); MCP-transport stage-gating (BACKLOG P1); zbytek Quantify-osy — plnohodnotný `doc_to_quantified_elements` (soupis-join → from_soupis upgrade, geometrické vzorce pro ostatní typy — základ 5286 m² je taky nadhozený odhad, teď aspoň poctivě `assumed`); UWO fronta (F2 port S2–S10, keyword-kalibrace).
 
-**Co dál:** PR pro Quantify-inkrement na pokyn; potom druhé kolo reality-checku (SO-250 s rebar_tons z fixtury → assumed zmizí tam, kde vstup existuje).
+**Kolo 3 — length-priorita (GO Alexander nad kolem 2: «квадратная гипотеза — это тот же дефолт, только геометрический»):** SO-250 je zárubní zeď 515 m — LINEÁRNÍ objekt, a délka leží v téže fixtuře jako rebar_tons; input-beats-default platí i pro GEOMETRII. Shipnuto: `length_m` na vstupu → bednění lineárně (blinding `2 líce × L × tl.`; stěny/základy s height_m `2 líce × L × H`) se statusem **computed**; čtvercová hypotéza zůstává fallback bez délky (patky — tam je poctivá, `assumed`). REST `BreakdownElement` doplněn o `length_m` + `area_m2` (do té doby REST povrch dokumentní geometrii TIŠE ZAHAZOVAL — pre-existing gap). **Kolo 3 na SO-250 (515.2 m):** blinding 1004 → 24.55 → **154.56 m² computed** (≈ manuální ~155); základ 5286.67 → **1236.48 m² computed**; dřík 3980 → **3606.4 m² computed** (2×L×H_max; Alexandrův odhad 2000–2400 odpovídá průměrné výšce — reálná páka pro dřík je tloušťka stěny 0.45 z fixtury: 2×V/tl. = 2653 m²; `thickness_m` vstup = kandidát dalšího kroku, NEpřidán bez GO). Římsa-bednění zůstává `assumed` (vlastní konzolová šablona, délka jí nepředána). Testy +4 (`test_quantify_status.py` = 14; 31 passed s goldeny).
+
+**Co dál:** PR pro Quantify-inkrement (kola 1–3) — příkaz «PR после третьего прогона».
 
 
 ## 2026-07-13 — Session: whole-stavba saga DOKONČENA — inkrementy 3+4 (#1506, #1507), 14/14 na reálném souboru, všech 5 PR smergováno

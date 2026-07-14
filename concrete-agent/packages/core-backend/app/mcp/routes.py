@@ -1573,6 +1573,10 @@ class BreakdownElement(BaseModel):
     height_m: Optional[float] = None
     is_prestressed: bool = False
     rebar_tons: Optional[float] = None
+    # stage-3 Quantify geometry: without these the REST surface silently
+    # dropped document quantities and the tool fell back to `assumed` estimates
+    area_m2: Optional[float] = None
+    length_m: Optional[float] = None
 
 
 class BreakdownRequest(BaseModel):

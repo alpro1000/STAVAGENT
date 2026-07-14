@@ -140,3 +140,44 @@ def test_blinding_thickness_from_height_input_when_plausible():
     # 4 × sqrt(100/0.2) × 0.2 = 17.89
     assert abs(bedneni["quantity"] - 17.89) < 0.05
     assert "0.2" in bedneni["quantity_formula"]
+
+# ── Length priority: documented geometry beats the geometric hypothesis ──────
+# (SO-250 round-3, Alexander: zárubní/opěrné zdi and bridges are LINEAR by
+# definition — the square-footprint hypothesis is itself a default; with
+# length_m in the input the formwork is COMPUTED, the hypothesis stays a
+# fallback for elements without a length, honestly `assumed`.)
+
+def test_blinding_with_length_is_linear_and_computed():
+    """SO-250: 515.20 m strip @ 150 mm → 2 × 515.2 × 0.15 = 154.56 m²."""
+    r = _run([{"name": "Podkladní beton", "volume_m3": 251.16,
+               "concrete_class": "C12/15", "length_m": 515.2}])
+    bedneni = _item(r, "Bednění")
+    assert abs(bedneni["quantity"] - 154.56) < 0.01
+    assert bedneni["quantity_status"] == "computed"
+    assert "length_m" in bedneni["quantity_formula"]
+
+
+def test_wall_with_length_and_height_is_computed():
+    """Dřík 515 m × 3.5 m → 2 líce × L × H = 3 606.4 m² (was 3 980 assumed)."""
+    r = _run([{"name": "Dřík zárubní zdi", "volume_m3": 597,
+               "concrete_class": "C30/37", "height_m": 3.5, "length_m": 515.2}])
+    bedneni = _item(r, "Bednění")
+    assert abs(bedneni["quantity"] - 2 * 515.2 * 3.5) < 0.01
+    assert bedneni["quantity_status"] == "computed"
+
+
+def test_foundation_with_length_and_height_deflates():
+    """Základ 515 m × 1.2 m → 1 236.5 m² (was 5 286.67 assumed)."""
+    r = _run([{"name": "Základ zárubní zdi", "volume_m3": 793,
+               "concrete_class": "C25/30", "height_m": 1.2, "length_m": 515.2}])
+    bedneni = _item(r, "Bednění")
+    assert abs(bedneni["quantity"] - 2 * 515.2 * 1.2) < 0.01
+    assert bedneni["quantity_status"] == "computed"
+
+
+def test_length_without_height_stays_assumed_for_walls():
+    """Length alone doesn't determine a wall face — no fabricated height."""
+    r = _run([{"name": "Dřík zárubní zdi", "volume_m3": 597,
+               "concrete_class": "C30/37", "length_m": 515.2}])
+    bedneni = _item(r, "Bednění")
+    assert bedneni["quantity_status"] == "assumed"

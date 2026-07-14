@@ -378,6 +378,10 @@ async def create_work_breakdown(
             - volume_m3: Concrete volume in m³
             - area_m2: Formwork area in m² (estimated if missing)
             - height_m: Element height in m (default: 3.0)
+            - length_m: Element run length in m — linear elements (walls,
+              bridges, blinding strips): formwork = 2 faces × length ×
+              height/thickness (quantity_status 'computed' instead of the
+              geometric 'assumed' estimate)
             - exposure: Exposure class, e.g. 'XF4'
             - is_prestressed: boolean (triggers prestress steel item)
             - rebar_tons: Rebar mass in tons (estimated from volume if missing)
@@ -509,6 +513,12 @@ async def create_work_breakdown(
 
             height_provided = elem.get("height_m") is not None
             height = elem["height_m"] if height_provided else 3.0
+            # Linear-element geometry (SO-250 round-3): zárubní/opěrné zdi and
+            # bridges are LINEAR by definition — when the document carries the
+            # length, guessing the footprint shape is just a geometric default,
+            # and input beats default applies to geometry too.
+            length_provided = (elem.get("length_m") or 0) > 0
+            length_m = elem.get("length_m") or 0
             concrete_class = elem.get("concrete_class", "C30/37")
 
             rebar_provided = elem.get("rebar_tons") is not None
@@ -531,17 +541,35 @@ async def create_work_breakdown(
             elif volume:
                 fw_status = "assumed"
                 if etype == "podkladni_beton":
-                    # Blinding bug (SO-250 reality-check): a thin slab's side
-                    # formwork = perimeter × thickness, NOT volume/0.25 (which
-                    # over-estimated by an order of magnitude). Without plan
-                    # geometry the perimeter is a square-footprint estimate —
-                    # honest tens of m², labeled assumed.
+                    # Blinding (SO-250 reality-check): a thin slab's side formwork
+                    # = perimeter × thickness, NOT volume/0.25 (order of magnitude
+                    # off). With a documented length the element is a strip —
+                    # 2 long edges × length × thickness = COMPUTED geometry;
+                    # without it the square-footprint hypothesis is an honest
+                    # fallback (patky, isolated slabs), labeled assumed.
                     thickness = height if (height_provided and 0 < height <= 0.5) else 0.15
-                    footprint = volume / thickness
-                    fw_area = 4 * (footprint ** 0.5) * thickness
+                    if length_provided:
+                        fw_area = 2 * length_m * thickness
+                        fw_status = "computed"
+                        fw_formula = (
+                            f"2 líce × {length_m} m × tl. {thickness} m "
+                            f"(lineární prvek — vstup length_m)"
+                        )
+                    else:
+                        footprint = volume / thickness
+                        fw_area = 4 * (footprint ** 0.5) * thickness
+                        fw_formula = (
+                            f"odhad: obvod čtvercového půdorysu (4×√({volume}/{thickness})) "
+                            f"× tl. {thickness} m — boční bednění podkladního betonu"
+                        )
+                elif length_provided and height_provided and height > 0:
+                    # Linear element with documented length AND height: both
+                    # faces over the full run — deterministic over inputs.
+                    fw_area = 2 * length_m * height
+                    fw_status = "computed"
                     fw_formula = (
-                        f"odhad: obvod čtvercového půdorysu (4×√({volume}/{thickness})) "
-                        f"× tl. {thickness} m — boční bednění podkladního betonu"
+                        f"2 líce × {length_m} m × výška {height} m "
+                        f"(vstupy length_m + height_m)"
                     )
                 elif profile["orientation"] == "horizontal":
                     fw_area = volume / 0.25  # rough: volume / thickness
