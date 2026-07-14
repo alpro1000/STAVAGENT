@@ -357,6 +357,19 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ## 9. Session log
 
+## 2026-07-12 — Session: ADR-009 (Proposed, Rev 3) — document→worklist spine, tři osy «WorkOntology», de-graveyard axis-B kánonu
+
+**Rozhodnuto:** Z landscape-auditu «4 nespojené implementace seznamu prací» vznikl meta-**ADR-009** (`docs/architecture/decisions/`, status **Proposed** — čeká ratifikaci Alexandra): (D1) 6-stádiový spine Extract→Structure→Quantify→Decompose→Bind→Plan, každé stádium = Core capability s carrier (data+confidence+provenance), doménové profily (bridge/monolit) = profily stádií 2–3, ne paralelní pipelines; (D2) UWO = sémantická vrstva mezi 4 a 5 — stage 4 emituje `uwo_code` z controlled vocab (~50–100), stage 5 = **deterministický adapter** `uwo_code+params → katalog`, NIKDY fuzzy text→code (příklad `dohloubky patek` ∩ `Bednění základů patek` = {patek} → FORMWORK na EXCAVATION); `not_covered_branch` = štandardní výstup routeru; (D3) **TŘI osy** jménem «WorkOntology»: **A** vocabulary+adapters (Pattern 16) → kánon `universal-work-decomposer` · **B** orchestrator workflow → kánon **`docs/specs/document-to-worklist/SPEC.md`** (importován 2026-07-12 z PK-only TaskSpec; «PDF» byl ve skutečnosti ZIP rastrů+text-layer — proto ho `find`/grep nikdy neviděl) + `_SO202_Bridge` + `_KROS_Adapter_Wrap`, **živá, NE hotová** · **C** element typing (head-noun) → shipped `element_types.yaml`+normalizer, KOMPONENT stádií 2/4; (D4) supersedes-ledger per osa (lék na PK-graveyard); (D5) osa B přejmenována `document-to-worklist` — slovo «WorkOntology» BYLO zdrojem kolize.
+
+**Oprava po Alexandrovi (Rev 1→2):** Rev 1 sloučil tři osy do dvou a orchestrator-rodinu označil «element classification, done» — falsifiable test (grep DoD-strings + čtení SO202/KROS_Adapter celých) potvrdil Alexandrovu korekci: SO202+KROS_Adapter = workflow (osa B), živé; nález navíc — repo-`SO250.md` nese axis-C obsah (#63–70 head-noun) pod axis-B jménem = mis-scoped. **Import-balíček z PK byl sám z poloviny hřbitovní:** SO-250 fixture reálně chyběla (→ `test-data/tz/SO-250.md`), SO-202 kopie z PK byla STARÁ verze bohatšího repo-souboru (28 KB vs 12 KB — NEimportováno), VP4 byte-identická (skip). Pravidlo potvrzeno dvakrát za den: **kritická cesta nesmí vést přes úložiště, které implementující agent nečte; každou PK-citaci ověřit proti repu.**
+
+**Odmítnuto:** ratifikace ledgeru v Rev-1 podobě (pohřbila by živý workflow-kánon a poslala stavět vocab bez acceptance criteria jeho jediného konzumenta → «pátá implementace»); vocab v1 PŘED reconcile SO250 (pořadí: DoD → slovník); `test-data/golden/` jako nový domov fixtur (paralelní struktura — repo-konvence je `test-data/tz/`).
+
+**Otevřené otázky:** ratifikace ADR-009 (3 osy + ledger + stamps); **SO250.md reconcile — jediné otevřené rozhodnutí:** (a) přejmenovat na element-typing acceptance doc (obsah zůstává, osa C), nebo (b) přepsat na Stage-1 worklist intent rodiny; potvrzení pořadí SO250 → vocab v1 → `create_work_breakdown` split (SPEC §9.1 BLOCKING pro Stage-1 invariant «žádný kód, žádná cena» server-side).
+
+**Co dál:** po ratifikaci — stamps (`SUPERSEDED_BY` na `TASK_UWO_Bridge_Ontology` s opravou křivého ukazatele, header-linky na kánon do dvou family-tasků) → SO250 reconcile dle volby → vocab v1 proti SPEC DoD §3.5.
+
+
 ## 2026-07-12 — Session: composite #7 — pilíř jako druhý composite-typ (aditivní, engine netknutý)
 
 **Kontext:** Fronta-poznámka „composite-parts Gate 3+ (přerušeno na design-gate)" byla ZASTARALÁ — celá composite-element-parts (Gates 0–5) je smerged na main (PR #1412 Fáze 1 + PR #1422 Fáze 2, live-tested 2026-07-07). Jediné reálně zbývající = follow-upy z out-of-scope. Alexander vybral **pilíř jako 2. composite-typ**.
