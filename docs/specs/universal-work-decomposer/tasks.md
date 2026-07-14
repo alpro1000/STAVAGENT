@@ -1,7 +1,8 @@
 # Universal Work Decomposer (UWO) — Tasks (vocab v1 increment)
 
 > **Spec ID:** `universal-work-decomposer` (axis-A canon per ADR-009 D3)
-> **Status:** Gate 0–2 DONE (2026-07-14, vocab v1.2 post domain-review) · Gate 3+ pending
+> **Status:** Gate 0–3 DONE (2026-07-14; vocab **v1.3** post verdict-table ratification — 85 codes,
+> HK212 100 % work-item coverage) · Gate 4 (retrofit) next
 > **Prerequisites:** ADR-009 Accepted · axis-B canon `docs/specs/document-to-worklist/SPEC.md`
 > **Scope GO:** Alexander 2026-07-14 — three-tier plan + 3 market-proofing schema fixes
 > (lang-map labels/keywords · `unit_canonical` + adapter render · market-typed params).
@@ -96,8 +97,27 @@ value}` shape (`soil_class`, `surface_class`, `curing_class`, `inspection_regime
 - **30 proposed codes, 2 proposed domains (LANDSCAPING, PAVING)** — aggregated in the report;
   the `dohloubky patek` items verdict to `EARTHWORK.EXCAVATION.PIT` (discrimination case pinned).
 - Report: `docs/audits/uwo_vocabulary/2026-07-14_hk212_coverage.md` (per-item table).
-- **v1.3 = decided together with Alexander over the table** (incl. the supply-vs-montáž PATTERN
-  decision: supply codes per domain vs a supply param).
+- **v1.3 ratified over the table (Alexander) and shipped same day:**
+  1. **Supply vs montáž = param `scope`** (`supply | install | supply_install`, default install) —
+     rule 4 with a COMMERCIAL second dimension; header **rule 5** documents the boundary (scope on
+     every product/material-installing code; pure process works carry none, so «code without
+     scope» keeps ONE meaning). SUPPLY code proposals absorbed → their items map to existing
+     ERECT/INSTALL with scope=supply. 39 codes carry scope.
+  2. **28 new codes** (30 − 2 absorbed SUPPLY) + **2 new domains (LANDSCAPING, PAVING)**;
+     `PLUMBING.FIREWATER.HYDRANT` stays under PLUMBING (FIRE_PROTECTION = future domain at the
+     PBŘS branch); `ELECTRICAL.LIGHTNING.INSPECT` noted: the montáž pair is a CORPUS gap, not a
+     vocabulary gap. One-hit codes kept deliberately — cutting by hits of one corpus = overfitting
+     to HK212 (kotvení/pažení/nátěry are every-hall works).
+  3. **SCAFFOLDING.SPATIAL trio** (m³ / **m3_day** / m³) — prostorové vs fasádní lešení are two
+     physics (volume-fill vs plane-cover), same principle as skruž ≠ bednění; pojízdné/plošina =
+     `mobility` param. HSV-9 + M-UT-009 remapped.
+  4. 7 keyword fixes → all 15 `needs_keyword` flipped; all 86 `needs_new_code` flipped (stale-map
+     guard enforced). **Final table: exact 209 / split 2 / not_work 33 — 100 % of work items
+     covered; harness zero errors; 39 hermetic tests green.**
+  → **85 codes (13 covered / 72 declared) · 24 domains.**
+- ⚠️ **§5.1 ceiling note (Alexander):** 85 codes nears the ~50–100 controlled-vocab limit. The NEXT
+  expansion is NOT flat-list growth — it is **domain sublists for LLM choice** (the scope-router
+  narrows to a domain → the LLM sees 5–15 codes). Not now, but the ceiling must stay visible.
 
 ## Gate 4 — Retrofit: concrete branch emits `vocabulary_code` (AFTER the harness)
 

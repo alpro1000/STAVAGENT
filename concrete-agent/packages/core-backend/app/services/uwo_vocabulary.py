@@ -19,7 +19,7 @@ from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
-ALLOWED_UNITS = {"m", "m2", "m3", "m2_day", "t", "ks", "kpl", "h"}
+ALLOWED_UNITS = {"m", "m2", "m3", "m2_day", "m3_day", "t", "ks", "kpl", "h"}
 ALLOWED_PARAM_KINDS = {"scalar", "eurocode_class", "market_scheme"}
 ALLOWED_COVERAGE = {"covered", "declared"}
 LANG_SLOTS = {"cs", "de", "es"}

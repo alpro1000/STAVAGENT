@@ -117,7 +117,16 @@ def main() -> int:
     for vd in VERDICT_ORDER:
         n = counts.get(vd, 0)
         lines.append(f"| {vd} | {n} | {n * 100 // max(total, 1)} % |")
-    lines += [f"| **total** | **{total}** | |", ""]
+    lines += [
+        f"| **total** | **{total}** | |",
+        "",
+        "> `needs_decomposition` = consolidated pack per **SPEC document-to-worklist §4 (Stage 2 —",
+        "> Decomposition on demand)**: the item is a bundle of atoms (výkop+potrubí+zásyp) and must",
+        "> be split with parent-ref + rationale + inherited sources — it is NOT a vocabulary gap.",
+        "> These rows are the first live confirmation that Stage 2 exists for real corpora, not",
+        "> theoretically.",
+        "",
+    ]
 
     lines += ["## v1.3 candidates (proposed codes, aggregated)", ""]
     lines += ["| Proposed code | Hits | Items |", "|---|---:|---|"]
