@@ -1,8 +1,8 @@
 # Universal Work Decomposer (UWO) — Tasks (vocab v1 increment)
 
 > **Spec ID:** `universal-work-decomposer` (axis-A canon per ADR-009 D3)
-> **Status:** Gate 0–3 DONE (2026-07-14; vocab **v1.3** post verdict-table ratification — 85 codes,
-> HK212 100 % work-item coverage) · Gate 4 (retrofit) next
+> **Status:** Gate 0–4 DONE (2026-07-14; vocab **v1.3** — 85 codes, HK212 100 % work-item
+> coverage; retrofit: coverage contract test-enforced) · Gate 5 (create_work_breakdown split) next
 > **Prerequisites:** ADR-009 Accepted · axis-B canon `docs/specs/document-to-worklist/SPEC.md`
 > **Scope GO:** Alexander 2026-07-14 — three-tier plan + 3 market-proofing schema fixes
 > (lang-map labels/keywords · `unit_canonical` + adapter render · market-typed params).
@@ -119,12 +119,23 @@ value}` shape (`soil_class`, `surface_class`, `curing_class`, `inspection_regime
   expansion is NOT flat-list growth — it is **domain sublists for LLM choice** (the scope-router
   narrows to a domain → the LLM sees 5–15 codes). Not now, but the ceiling must stay visible.
 
-## Gate 4 — Retrofit: concrete branch emits `vocabulary_code` (AFTER the harness)
+## Gate 4 — Retrofit: concrete branch emits `vocabulary_code` (DONE 2026-07-14)
 
-- Every atom the decomposition tool emits carries `vocabulary_code` (additive field per SPEC §6.3).
-- Existing goldens byte-stable except the added field; MCP compat suite green
-  (response shape gains an optional field → CHECK NEEDED per root CLAUDE.md rules).
-- Interiér branch atoms (malba) get codes from the same vocabulary.
+Three ratified checks (Alexander GO), all shipped:
+
+1. **Static mapping** — every `WORK_TEMPLATES` atom (breakdown.py) and every malba.yaml atom
+   carries an inline `vocabulary_code` (STATIC data, deterministic, never an LLM pick; an
+   unmapped atom = vocabulary HOLE → tests fail loudly, file a registration proposal).
+   Both emission sites (monolit item + interiér item) forward the field additively.
+2. **Coverage-contract closure as an ASSERTION** — `tests/test_uwo_vocabulary_retrofit.py`:
+   `set(emitted codes) == set(covered codes)` EXACTLY (13 == 13); honesty pin that
+   `FORMWORK.FALSEWORK.STRIP` stays declared and unemitted (retrofit did not "pull it in");
+   totality tests over both branches; live `create_work_breakdown` run — every item carries a
+   covered code.
+3. **Golden byte-stability** — existing atomizer goldens (`test_uwo_atomizer_t1.py`, per-field
+   tuples) green untouched alongside. Local run: **55 passed** (retrofit 6 + atomizer + vocab 39).
+   MCP compat via CI (local fastmcp blocked by Debian PyJWT — documented blocker); both new test
+   files registered in `test-mcp-compatibility.yml` (push paths + PR paths + pytest list).
 
 ## Gate 5 — pointer: `create_work_breakdown` split
 
@@ -146,3 +157,4 @@ server-enforceable only then.
 | Date | Change |
 |---|---|
 | 2026-07-14 | Gate 0 recon + Gate 1 vocabulary v1 (47 codes / 22 domains) shipped; Gates 2–5 planned |
+| 2026-07-14 | Gate 2 harness + Gate 3 HK212 verdict table (v1.2 → v1.3, 85 codes) + Gate 4 retrofit (coverage contract closed, 13 emitted == 13 covered, test-enforced) |

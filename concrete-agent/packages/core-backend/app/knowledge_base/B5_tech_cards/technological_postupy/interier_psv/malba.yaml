@@ -21,7 +21,8 @@ source:
   expected_urs_family: "784"   # MALBY / NATĚRAČSKÉ práce (sanity reference only)
   procurement_default: privatni
 
-# Each atom: key (stable id) · work (Czech description) · unit · qty_source.
+# Each atom: key (stable id) · work (Czech description) · unit · qty_source ·
+# vocabulary_code (axis-A, STATIC mapping — Gate 4; deterministic, never LLM).
 # qty_source: section_m2 = m² from scope geometry (derived_from_scope when present,
 # else needs_input); fixed_1 = one komplet (needs_input).
 atoms:
@@ -30,15 +31,18 @@ atoms:
     unit: m2
     qty_source: section_m2
     quantity_provenance: derived_from_scope
+    vocabulary_code: FINISHES.PAINT.PREP
 
   - key: malba_2x
     work: "Malba vnitřní 2× — finální nátěr"
     unit: m2
     qty_source: section_m2
     quantity_provenance: derived_from_scope
+    vocabulary_code: FINISHES.PAINT.INTERIOR
 
   - key: malba_zakryti_uklid
     work: "Zakrytí konstrukcí a úklid po malbě"
     unit: komplet
     qty_source: fixed_1
     quantity_provenance: needs_input
+    vocabulary_code: FINISHES.PROTECT.COVER

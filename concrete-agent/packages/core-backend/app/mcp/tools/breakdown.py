@@ -18,31 +18,38 @@ logger = logging.getLogger(__name__)
 
 # Work decomposition templates per element type
 # Each element generates these work items
+# Each template atom carries its axis-A `vocabulary_code` as STATIC data
+# (Gate 4 retrofit, ADR-009 D2 / SPEC document-to-worklist §6.3): the
+# template→code mapping is a deterministic table, never an LLM pick. A
+# template atom whose mapping is unclear is a VOCABULARY HOLE — stop and
+# file a registration proposal; do not "pick something similar" here.
+# Coverage contract: the set of codes these atoms emit must equal the set
+# of `coverage: covered` codes in uwo_vocabulary.yaml (test-enforced).
 WORK_TEMPLATES = {
     "default": [
-        {"work": "Bednění {element}", "unit": "m²", "qty_factor": "formwork_area", "hsv": "HSV3"},
-        {"work": "Odbednění {element}", "unit": "m²", "qty_factor": "formwork_area", "hsv": "HSV3"},
-        {"work": "Výztuž {element} z oceli B500B", "unit": "t", "qty_factor": "rebar_tons", "hsv": "HSV4"},
-        {"work": "Beton {element} {concrete_class}", "unit": "m³", "qty_factor": "volume", "hsv": "HSV2"},
-        {"work": "Ošetřování betonu {element}", "unit": "m²", "qty_factor": "formwork_area", "hsv": "HSV2"},
+        {"work": "Bednění {element}", "unit": "m²", "qty_factor": "formwork_area", "hsv": "HSV3", "vocabulary_code": "FORMWORK.PANEL.ERECT"},
+        {"work": "Odbednění {element}", "unit": "m²", "qty_factor": "formwork_area", "hsv": "HSV3", "vocabulary_code": "FORMWORK.PANEL.STRIP"},
+        {"work": "Výztuž {element} z oceli B500B", "unit": "t", "qty_factor": "rebar_tons", "hsv": "HSV4", "vocabulary_code": "REINFORCEMENT.REBAR.INSTALL"},
+        {"work": "Beton {element} {concrete_class}", "unit": "m³", "qty_factor": "volume", "hsv": "HSV2", "vocabulary_code": "CONCRETE.POUR.STRUCTURE"},
+        {"work": "Ošetřování betonu {element}", "unit": "m²", "qty_factor": "formwork_area", "hsv": "HSV2", "vocabulary_code": "CONCRETE.CURING.SURFACE"},
     ],
     "pilota": [
-        {"work": "Zřízení pilot svislých {concrete_class}", "unit": "m", "qty_factor": "length", "hsv": "HSV2"},
-        {"work": "Výztuž pilot z oceli B500B", "unit": "t", "qty_factor": "rebar_tons", "hsv": "HSV4"},
+        {"work": "Zřízení pilot svislých {concrete_class}", "unit": "m", "qty_factor": "length", "hsv": "HSV2", "vocabulary_code": "PILING.BORED.INSTALL"},
+        {"work": "Výztuž pilot z oceli B500B", "unit": "t", "qty_factor": "rebar_tons", "hsv": "HSV4", "vocabulary_code": "REINFORCEMENT.REBAR.CAGE"},
     ],
     "mostovkova_deska": [
-        {"work": "Skruž pevná/posuvná pro NK", "unit": "m²", "qty_factor": "formwork_area", "hsv": "HSV4"},
-        {"work": "Bednění NK — spodní deska", "unit": "m²", "qty_factor": "formwork_area", "hsv": "HSV4"},
-        {"work": "Výztuž NK z oceli B500B", "unit": "t", "qty_factor": "rebar_tons", "hsv": "HSV4"},
-        {"work": "Beton NK {concrete_class}", "unit": "m³", "qty_factor": "volume", "hsv": "HSV4"},
-        {"work": "Předpínací výztuž Y1860 S7", "unit": "t", "qty_factor": "prestress_tons", "hsv": "HSV4"},
-        {"work": "Ošetřování betonu NK", "unit": "m²", "qty_factor": "formwork_area", "hsv": "HSV4"},
+        {"work": "Skruž pevná/posuvná pro NK", "unit": "m²", "qty_factor": "formwork_area", "hsv": "HSV4", "vocabulary_code": "FORMWORK.FALSEWORK.ERECT"},
+        {"work": "Bednění NK — spodní deska", "unit": "m²", "qty_factor": "formwork_area", "hsv": "HSV4", "vocabulary_code": "FORMWORK.PANEL.ERECT"},
+        {"work": "Výztuž NK z oceli B500B", "unit": "t", "qty_factor": "rebar_tons", "hsv": "HSV4", "vocabulary_code": "REINFORCEMENT.REBAR.INSTALL"},
+        {"work": "Beton NK {concrete_class}", "unit": "m³", "qty_factor": "volume", "hsv": "HSV4", "vocabulary_code": "CONCRETE.POUR.STRUCTURE"},
+        {"work": "Předpínací výztuž Y1860 S7", "unit": "t", "qty_factor": "prestress_tons", "hsv": "HSV4", "vocabulary_code": "REINFORCEMENT.PRESTRESS.TENDON"},
+        {"work": "Ošetřování betonu NK", "unit": "m²", "qty_factor": "formwork_area", "hsv": "HSV4", "vocabulary_code": "CONCRETE.CURING.SURFACE"},
     ],
     "rimsa": [
-        {"work": "Římsový vozík — montáž", "unit": "kpl", "qty_factor": "1", "hsv": "HSV4"},
-        {"work": "Bednění říms", "unit": "m²", "qty_factor": "formwork_area", "hsv": "HSV4"},
-        {"work": "Výztuž říms z oceli B500B", "unit": "t", "qty_factor": "rebar_tons", "hsv": "HSV4"},
-        {"work": "Beton říms {concrete_class}", "unit": "m³", "qty_factor": "volume", "hsv": "HSV4"},
+        {"work": "Římsový vozík — montáž", "unit": "kpl", "qty_factor": "1", "hsv": "HSV4", "vocabulary_code": "FORMWORK.TRAVELER.OPERATE"},
+        {"work": "Bednění říms", "unit": "m²", "qty_factor": "formwork_area", "hsv": "HSV4", "vocabulary_code": "FORMWORK.PANEL.ERECT"},
+        {"work": "Výztuž říms z oceli B500B", "unit": "t", "qty_factor": "rebar_tons", "hsv": "HSV4", "vocabulary_code": "REINFORCEMENT.REBAR.INSTALL"},
+        {"work": "Beton říms {concrete_class}", "unit": "m³", "qty_factor": "volume", "hsv": "HSV4", "vocabulary_code": "CONCRETE.POUR.STRUCTURE"},
     ],
 }
 
@@ -145,6 +152,8 @@ def _decompose_interier_psv(name: str, elem: dict) -> list[dict]:
             "hsv_section": "PSV",
             "element_name": name,
             "element_type": "interier_psv",
+            # axis-A code — static per-atom mapping carried by the KB YAML
+            "vocabulary_code": atom.get("vocabulary_code"),
             "_source": f"element:{name} / psv_template:{section.get('section_key')}:{atom['key']}",
             # reserved catalog/price slots — bound later by the ÚRS adapter
             "urs_code": None,
@@ -531,6 +540,9 @@ async def create_work_breakdown(
                     "hsv_section": tmpl.get("hsv", ""),
                     "element_name": name,
                     "element_type": etype,
+                    # axis-A code — static template mapping, deterministic 1.0
+                    # (Gate 4; stage-5 Bind maps it, SPEC §5.1/§6.3)
+                    "vocabulary_code": tmpl.get("vocabulary_code"),
                     "_source": f"element:{name} / template:{tmpl['work']}",
                     # classification provenance (separate from any calc confidence)
                     "classification_confidence": classification.get("confidence"),
