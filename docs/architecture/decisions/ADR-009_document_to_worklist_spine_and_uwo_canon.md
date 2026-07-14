@@ -58,7 +58,7 @@ specializations (bridge / monolit) are **profiles of stages 2–3**, not paralle
 |---|-------|--------------|------------------------|----------|
 | 1 | **Extract** | document → structured facts | `extract_tz_fields`, `parse_construction_budget`, UEP, MinerU OCR | **A** live |
 | 2 | **Structure** | facts → domain object | `build_bridge_passport` (bridge profile) | **A** live |
-| 3 | **Quantify** | attach quantities (soupis qty → element volume) | `doc_to_quantified_elements` join (monolit profile) | **B** P1 landed, P2/P3 gated |
+| 3 | **Quantify** | attach quantities (soupis qty → element volume) | bridge profile: passport-path soupis join (#1502–#1507, live-verified 14/14 vs manual etalon on SO-202) · monolit profile: `doc_to_quantified_elements` join | **A** bridge / **B** monolit (P1 landed, P2/P3 gated) |
 | 4 | **Decompose** | element → work atoms, **emitting `uwo_code`** | `create_work_breakdown` (`breakdown.py`, Pattern 15) — concrete branch only | **A** live (concrete-only) |
 | 5 | **Bind** | `uwo_code + params → catalog code` (per market) | `catalog_matching.py` + `find_otskp_code`/`find_urs_code`; `KROS_Adapter_Wrap` (task) | **B** honest chain live; UWO-keyed adapter not built |
 | 6 | **Plan** | works → schedule + cost | `calculate_from_passport`, Kalkulátor 7-engine | **A** live |
