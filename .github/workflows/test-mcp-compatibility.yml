@@ -56,6 +56,7 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_extract_tz_content.py'
       - 'concrete-agent/packages/core-backend/tests/test_soupis_ref_build.py'
       - 'concrete-agent/packages/core-backend/tests/test_soupis_handles.py'
+      - 'concrete-agent/packages/core-backend/tests/test_quantify_status.py'
       # Pin B: the parity guard asserts the Python volume-geometry mirror equals
       # the canonical TS engine. A change to the TS constants/bands must trigger
       # this workflow so the guard runs — otherwise TS drift lands silently.
@@ -114,6 +115,7 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_extract_tz_content.py'
       - 'concrete-agent/packages/core-backend/tests/test_soupis_ref_build.py'
       - 'concrete-agent/packages/core-backend/tests/test_soupis_handles.py'
+      - 'concrete-agent/packages/core-backend/tests/test_quantify_status.py'
       - 'Monolit-Planner/shared/src/classifiers/element-classifier.ts'
 
 jobs:
@@ -246,4 +248,5 @@ jobs:
             tests/test_extract_tz_content.py \
             tests/test_soupis_ref_build.py \
             tests/test_soupis_handles.py \
+            tests/test_quantify_status.py \
             -v --tb=short

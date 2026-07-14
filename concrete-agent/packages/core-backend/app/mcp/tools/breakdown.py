@@ -143,10 +143,25 @@ def _decompose_interier_psv(name: str, elem: dict) -> list[dict]:
             quantity = None
             provenance = "needs_input"
 
+        # SPEC §6.3 quantity_status — uniform across branches (stage-3 Quantify).
+        # `quantity_provenance` stays (shipped shape); status is the SPEC axis:
+        # a missing výměra is an explicit NEPOČÍTÁNO with a reason (§6.4.2).
+        if quantity is None:
+            q_status = "NEPOČÍTÁNO(chybí výměra z podkladu)"
+            q_formula = "m² sekce nejsou k dispozici (vstup area_m2 chybí)"
+        elif qty_source == "fixed_1":
+            q_status = "computed"
+            q_formula = "paušál: 1 komplet"
+        else:
+            q_status = "from_input"
+            q_formula = f"m² ze scope geometrie: {quantity} (vstup area_m2)"
+
         items.append({
             "work_description": atom["work"],
             "unit": atom.get("unit", "m2"),
             "quantity": quantity,
+            "quantity_status": q_status,
+            "quantity_formula": q_formula,
             "quantity_provenance": provenance,
             "section_code": SECTION_INTERIER_PSV,
             "hsv_section": "PSV",
@@ -363,6 +378,10 @@ async def create_work_breakdown(
             - volume_m3: Concrete volume in m³
             - area_m2: Formwork area in m² (estimated if missing)
             - height_m: Element height in m (default: 3.0)
+            - length_m: Element run length in m — linear elements (walls,
+              bridges, blinding strips): formwork = 2 faces × length ×
+              height/thickness (quantity_status 'computed' instead of the
+              geometric 'assumed' estimate)
             - exposure: Exposure class, e.g. 'XF4'
             - is_prestressed: boolean (triggers prestress steel item)
             - rebar_tons: Rebar mass in tons (estimated from volume if missing)
@@ -478,22 +497,90 @@ async def create_work_breakdown(
                     })
                     continue
 
-            # Step 2: Get quantities. Stage-1 extract ships volume_m3=None
-            # (volumes are stage 2) — coalesce to 0 so the qty<=0 skip applies
-            # cleanly instead of crashing on a None comparison.
+            # Step 2: Get quantities WITH provenance (stage-3 Quantify, SPEC
+            # document-to-worklist §6.3 `quantity_status` + invariant §6.4.2).
+            # Rule (SO-250 reality-check, 2026-07-14): a caller-provided number
+            # ALWAYS beats a template default; a default is only a fallback and
+            # must be labeled `assumed` — it must never look like a fact.
+            # Status values: `from_input` = taken verbatim from the caller's
+            # element field (the tool cannot attest soupis provenance — an
+            # upstream joiner that knows may upgrade this to `from_soupis`);
+            # `computed` = deterministic formula over caller values;
+            # `assumed` = element-type default estimate.
+            # Stage-1 extract ships volume_m3=None (volumes are stage 2) —
+            # coalesce to 0 so the qty<=0 skip applies cleanly.
             volume = elem.get("volume_m3", 0) or 0
-            height = elem.get("height_m", 3.0)
-            concrete_class = elem.get("concrete_class", "C30/37")
-            rebar_tons = elem.get("rebar_tons", volume * profile["rebar_kg_m3"] / 1000 if volume else 0)
 
-            # Estimate formwork area
-            fw_area = elem.get("area_m2", 0)
-            if not fw_area and volume:
-                width = 0.3
-                if profile["orientation"] == "horizontal":
+            height_provided = elem.get("height_m") is not None
+            height = elem["height_m"] if height_provided else 3.0
+            # Linear-element geometry (SO-250 round-3): zárubní/opěrné zdi and
+            # bridges are LINEAR by definition — when the document carries the
+            # length, guessing the footprint shape is just a geometric default,
+            # and input beats default applies to geometry too.
+            length_provided = (elem.get("length_m") or 0) > 0
+            length_m = elem.get("length_m") or 0
+            concrete_class = elem.get("concrete_class", "C30/37")
+
+            rebar_provided = elem.get("rebar_tons") is not None
+            if rebar_provided:
+                rebar_tons = elem["rebar_tons"] or 0
+                rebar_status = "from_input"
+                rebar_formula = f"výztuž z podkladu: {rebar_tons} t (vstup rebar_tons)"
+            else:
+                rebar_tons = volume * profile["rebar_kg_m3"] / 1000 if volume else 0
+                rebar_status = "assumed"
+                rebar_formula = (
+                    f"odhad: {volume} m³ × {profile['rebar_kg_m3']} kg/m³ (typový default)"
+                )
+
+            # Formwork area: input wins; else per-element estimate, labeled assumed.
+            fw_area = elem.get("area_m2", 0) or 0
+            if fw_area:
+                fw_status = "from_input"
+                fw_formula = f"plocha bednění z podkladu: {fw_area} m² (vstup area_m2)"
+            elif volume:
+                fw_status = "assumed"
+                if etype == "podkladni_beton":
+                    # Blinding (SO-250 reality-check): a thin slab's side formwork
+                    # = perimeter × thickness, NOT volume/0.25 (order of magnitude
+                    # off). With a documented length the element is a strip —
+                    # 2 long edges × length × thickness = COMPUTED geometry;
+                    # without it the square-footprint hypothesis is an honest
+                    # fallback (patky, isolated slabs), labeled assumed.
+                    thickness = height if (height_provided and 0 < height <= 0.5) else 0.15
+                    if length_provided:
+                        fw_area = 2 * length_m * thickness
+                        fw_status = "computed"
+                        fw_formula = (
+                            f"2 líce × {length_m} m × tl. {thickness} m "
+                            f"(lineární prvek — vstup length_m)"
+                        )
+                    else:
+                        footprint = volume / thickness
+                        fw_area = 4 * (footprint ** 0.5) * thickness
+                        fw_formula = (
+                            f"odhad: obvod čtvercového půdorysu (4×√({volume}/{thickness})) "
+                            f"× tl. {thickness} m — boční bednění podkladního betonu"
+                        )
+                elif length_provided and height_provided and height > 0:
+                    # Linear element with documented length AND height: both
+                    # faces over the full run — deterministic over inputs.
+                    fw_area = 2 * length_m * height
+                    fw_status = "computed"
+                    fw_formula = (
+                        f"2 líce × {length_m} m × výška {height} m "
+                        f"(vstupy length_m + height_m)"
+                    )
+                elif profile["orientation"] == "horizontal":
                     fw_area = volume / 0.25  # rough: volume / thickness
+                    fw_formula = f"odhad: {volume} m³ / 0.25 m (typová tloušťka)"
                 else:
+                    width = 0.3
                     fw_area = volume / width * 2
+                    fw_formula = f"odhad: {volume} m³ / {width} m × 2 (obě líce)"
+            else:
+                fw_status = "assumed"
+                fw_formula = "bez objemu ani plochy — 0"
 
             # Step 3: Decompose into work items
             templates = WORK_TEMPLATES.get(etype, WORK_TEMPLATES["default"])
@@ -504,21 +591,38 @@ async def create_work_breakdown(
                     concrete_class=concrete_class,
                 )
 
-                # Calculate quantity
+                # Calculate quantity + its provenance (stage-3 Quantify)
                 qty = 0
+                q_status, q_formula = "assumed", ""
                 factor = tmpl["qty_factor"]
                 if factor == "volume":
                     qty = volume
+                    q_status = "from_input"
+                    q_formula = f"objem z podkladu: {volume} m³ (vstup volume_m3)"
                 elif factor == "formwork_area":
                     qty = fw_area
+                    q_status, q_formula = fw_status, fw_formula
                 elif factor == "rebar_tons":
                     qty = rebar_tons
+                    q_status, q_formula = rebar_status, rebar_formula
                 elif factor == "length":
                     qty = height
+                    if height_provided:
+                        q_status = "from_input"
+                        q_formula = f"výška z podkladu: {height} m (vstup height_m)"
+                    else:
+                        q_formula = f"typový default výšky: {height} m"
                 elif factor == "prestress_tons":
                     qty = rebar_tons * 0.3 if elem.get("is_prestressed") else 0
+                    if rebar_provided:
+                        q_status = "computed"
+                        q_formula = f"{rebar_tons} t výztuže (vstup) × 0.3"
+                    else:
+                        q_formula = f"odhad: {round(rebar_tons, 2)} t výztuže (default) × 0.3"
                 elif factor == "1":
                     qty = 1
+                    q_status = "computed"
+                    q_formula = "paušál: 1 kpl"
 
                 if qty <= 0:
                     continue
@@ -543,6 +647,10 @@ async def create_work_breakdown(
                     "work_description": work_name,
                     "unit": tmpl["unit"],
                     "quantity": round(qty, 2),
+                    # SPEC §6.3 / §6.4.2 — no number without a formula + an honest
+                    # status; an `assumed` default must scream, never look like a fact.
+                    "quantity_status": q_status,
+                    "quantity_formula": q_formula,
                     "hsv_section": tmpl.get("hsv", ""),
                     "element_name": name,
                     "element_type": etype,
