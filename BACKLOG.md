@@ -82,6 +82,32 @@ jeden kód, ani jedna cena» tedy server vynucuje jen na jednom ze dvou povrchů
 
 ---
 
+## quantify-review-1510-followups (2026-07-14) — z /code-review po merge #1510
+
+**Source:** 8-úhlový self-review Quantify-inkrementu; top-4+№10 opraveno hned
+(orientation-first · curing_area factor · mixed-provenance→worse status ·
+pile length_m · XLSX last mile). Zbytek:
+
+- **P1 — QuantityStatus enum + 3-slovníková kolize:** klíč `quantity_status`
+  nese TŘI slovníky (elements: soupis_quantity_join `extracted|missing|
+  ambiguous|collapsed_into_sibling`; items: breakdown `from_input|computed|
+  assumed|NEPOČÍTÁNO(...)`; PricedPolozka: otskp_engine `OK|ODHADNUTO|
+  CHYBÍ_VSTUP`) jako syrové literály. Unifikovat po precedentu `CodeStatus`
+  (F3, item_schemas.py) — enum(y) + vědomé pojmenování os. Vlastní session.
+- **P2 — formwork-geometry parity pin:** breakdown geometrie (2×L×H, V/0.25,
+  obvod×tl.) je třetí divergentní implementace vedle kanonického TS
+  `element-geometry.ts`; zavést stejný parity-guard jako volume_geometry.py
+  (pin B v CI). Doktrína «fix once on both runtimes».
+- **P2 — provenance single chokepoint:** (qty, status, formula) se odvozuje
+  ve 3 místech (Step-2, Step-3 switch, interiér) — jediný helper; podmínka
+  «fixy trápí všechna tři místa» při review-balíčku neplatila (interiér
+  netknut), proto odloženo.
+- **(sloučeno s existujícím deferred)** magický práh `height_m ≤ 0.5` jako
+  nosič tloušťky + tichý discard tl. > 0.5 → umře s explicitním `thickness_m`
+  vstupem (čeká na GO).
+
+---
+
 ## mcp-e2e-zalmanov-findings (2026-07-07) — 5 tickets, all ✅ FIXED same day
 
 **Source:** live MCP E2E test on SO 202 (D6 Olšová Vrata–Žalmanov, most přes

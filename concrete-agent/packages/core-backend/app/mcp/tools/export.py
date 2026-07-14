@@ -67,6 +67,15 @@ def _items_to_soupis_data(items: list, project_id: Optional[str]) -> dict:
             zdroj_label = it.get("classification_source") or ""
         else:
             zdroj_label = f"{_cls_src} · NEPOČÍTÁNO"
+        # Last mile of the quantity-honesty axis (review #1510 finding 10): the
+        # whole `quantity_status` discipline exists for the human opening the
+        # XLSX — an `assumed` that screams only in JSON screams to nobody. The
+        # status rides the visible Zdroj label (incl. the NEPOČÍTÁNO(reason)
+        # text verbatim) and the quantity_formula fills the EXISTING KROS
+        # 'VV vzorec' column (the renderer already reads `vv_vzorec`).
+        q_status = it.get("quantity_status")
+        if q_status:
+            zdroj_label = f"{zdroj_label} · množ. {q_status}" if zdroj_label else f"množ. {q_status}"
         positions.append(
             {
                 "poradi": idx,
@@ -76,6 +85,8 @@ def _items_to_soupis_data(items: list, project_id: Optional[str]) -> dict:
                 "popis": it.get("work_description") or it.get("popis") or "",
                 "mj": it.get("unit") or it.get("mj") or "",
                 "mnozstvi": it.get("quantity", it.get("mnozstvi", "")),
+                "vv_vzorec": it.get("quantity_formula") or None,
+                "quantity_status": q_status,
                 "section": hsv or None,
                 # Fill the EXISTING visible KROS columns (renderer already declares
                 # Zdroj + Důvěra and reads these keys): confidence ← classification
