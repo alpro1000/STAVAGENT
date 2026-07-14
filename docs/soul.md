@@ -363,9 +363,11 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 **Odmítnuto:** varianta (b) přepisu SO250 na Stage-1 intent (duplikovala by fixture+SPEC); start vocab v1 bez schváleného scope-plánu (Alexander: «вернись ко мне с планом, что именно входит в словарь. Не начинай»).
 
-**Otevřené otázky:** scope-plán vocab v1 osy A předložen Alexandrovi v chatu (co vstupuje do slovníku v1, domov YAML-codegen, registrace nových kódů) — čeká GO. Po něm: vocab v1 proti SPEC DoD → `create_work_breakdown` split (SPEC §9.1 BLOCKING).
+**GO + realizace (týž den):** Alexander dal GO na vocab v1 se **3 market-proof opravami schématu** (label/keywords = jazykové MAPY s prázdnými de/es sloty, ne `_cs` skaláry · `unit_canonical` SI + lokální render v adapteru · params s národní sémantikou = typované `{market, scheme, value}` — DIN 18300 Bodenklassen zrušeny 2016 → Homogenbereiche, přímý mapping na ČSN 73 6133 neexistuje; invariant-test: přidání německého labelu = vyplnění slotu, NIKDY migrace schématu). **Gate 0 recon** (bottom-up ze 3 reálných zdrojů: WORK_TEMPLATES · HK212 korpus přes Pattern 15/16 — test-data READ-deny ⇒ coverage check = CI-side skript · interiér malba.yaml MVP + sandbox S1–S10; nález: Eurocode-parametry jsou market-neutrální BY EN-unifikace → market-tag jen národním schématům soil/surface/curing/inspection) + **Gate 1 DATA**: `B5_tech_cards/technological_postupy/uwo_vocabulary.yaml` — **47 kódů · 22 domén** (deep 4 / working 15 / declared 3), hermetický invariant-check zelený; `docs/specs/universal-work-decomposer/tasks.md` (Gates 0–5, split §9.1 jako pointer-gate).
 
-**Co dál:** po GO na scope → vocab v1 (osa A) jako SDD spec.
+**Otevřené otázky:** review slovníku Alexandrem (47 kódů — obsahová kontrola doménového experta); Gate 2 loader+testy → Gate 3 retrofit (`vocabulary_code` na atomech, MCP compat CHECK) → Gate 4 HK212 coverage harness → Gate 5 split.
+
+**Co dál:** Gate 2 na pokyn.
 
 
 ## 2026-07-12 — Session: ADR-009 (Proposed, Rev 3) — document→worklist spine, tři osy «WorkOntology», de-graveyard axis-B kánonu

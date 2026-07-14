@@ -1,0 +1,425 @@
+# UWO vocabulary v1 — axis-A controlled work vocabulary (Pattern 16).
+#
+# Single source of the `vocabulary_code` values that stage-4 Decompose emits and
+# stage-5 Bind consumes (SPEC document-to-worklist §5.1/§6.3; ADR-009 D2).
+# The LLM never sees catalog entries — it chooses from THIS list (~50 codes).
+# Inventing a code is FORBIDDEN: an unknown work type becomes a registration
+# proposal in a review queue (human approval = PR to this file), never a
+# fabricated code.
+#
+# ── Market-proofing rules (ratified 2026-07-14, Alexander) ──────────────────
+# 1. `label` / `keywords` are LANGUAGE MAPS (cs filled; de/es are EMPTY SLOTS,
+#    not missing keys). Adding a German label = filling a slot, NEVER a schema
+#    migration.
+# 2. `unit_canonical` is the single SI-ish canonical unit (m/m2/m3/t/ks/kpl/h).
+#    Local rendering (ks↔St↔ud, bm↔m↔ml) is the market adapter's job — no
+#    per-market unit fields here.
+# 3. Params carry NATIONAL SEMANTICS explicitly via `kind`:
+#      scalar          — plain number/string, market-neutral (diameter_mm, depth_m)
+#      eurocode_class  — EN-unified value, market-neutral BY EUROCODE
+#                        (C30/37, XF4, B500B, Y1860 — same in CZ/DE/ES)
+#      market_scheme   — value is MEANINGLESS without {market, scheme}:
+#                        soil_class (ČSN 73 6133 I–VII vs DIN 18300 Bodenklassen
+#                        RETIRED 2016 → Homogenbereiche — no direct mapping),
+#                        formwork surface class (TKP C1d/C2d vs DBV SB1–SB4),
+#                        curing class (TKP 18 vs ZTV-ING). Emitters MUST send
+#                        {market, scheme, value}, never a bare number.
+#
+# ── Provenance (Gate 0 recon 2026-07-14, bottom-up from real atoms) ─────────
+#   T1: app/mcp/tools/breakdown.py WORK_TEMPLATES (live concrete branch)
+#   T2: HK212 Stage-1 corpus (Pattern 15/16 registry; 138-item DoD test) +
+#       interiér branch: interier_psv/malba.yaml (shipped MVP) +
+#       sandbox/uwo-interier-mezonet/src/templates.mjs S1–S10
+#   T3: Pattern 16 domain list — declared, no codes yet → router answers
+#       `not_covered_branch` honestly (never a concrete-template default).
+#
+# Schema per code:
+#   code: DOMAIN.CATEGORY.VARIANT (dot-notation, UPPER_SNAKE segments)
+#   label: {cs: str, de: null, es: null}
+#   keywords: {cs: [..], de: [], es: []}     # deterministic matching aid
+#   unit_canonical: m|m2|m3|t|ks|kpl|h
+#   params: [{name, kind, note?}]            # minimal in v1; schemas grow with adapters
+#   coverage: covered | declared             # declared → not_covered_branch
+#
+# ⚠️ Placeholder discipline: keywords are seed lists, NOT calibrated corpora.
+# Calibration (HK212 + pilots) is a data-swap, does not change this schema.
+
+schema_version: 1
+vocabulary_version: "v1-2026-07-14"
+
+domains:
+  # tier: deep = live branch · working = HK212/interiér corpus · declared = name only
+  - { key: CONCRETE,       tier: deep,     label: { cs: "Betonářské práce", de: null, es: null } }
+  - { key: FORMWORK,       tier: deep,     label: { cs: "Bednění a skruže", de: null, es: null } }
+  - { key: REINFORCEMENT,  tier: deep,     label: { cs: "Výztuž", de: null, es: null } }
+  - { key: PILING,         tier: deep,     label: { cs: "Piloty a hlubinné založení", de: null, es: null } }
+  - { key: EARTHWORK,      tier: working,  label: { cs: "Zemní práce", de: null, es: null } }
+  - { key: STEEL,          tier: working,  label: { cs: "Ocelové konstrukce", de: null, es: null } }
+  - { key: CLADDING,       tier: working,  label: { cs: "Opláštění", de: null, es: null } }
+  - { key: ROOFING,        tier: working,  label: { cs: "Střechy", de: null, es: null } }
+  - { key: SCAFFOLDING,    tier: working,  label: { cs: "Lešení", de: null, es: null } }
+  - { key: TRANSPORT,      tier: working,  label: { cs: "Přesuny, doprava, likvidace", de: null, es: null } }
+  - { key: DEMOLITION,     tier: working,  label: { cs: "Bourání a demontáže", de: null, es: null } }
+  - { key: WATERPROOFING,  tier: working,  label: { cs: "Hydroizolace", de: null, es: null } }
+  - { key: FINISHES,       tier: working,  label: { cs: "Povrchové úpravy interiéru", de: null, es: null } }
+  - { key: FLOORING,       tier: working,  label: { cs: "Podlahy", de: null, es: null } }
+  - { key: OPENINGS,       tier: working,  label: { cs: "Okna a dveře", de: null, es: null } }
+  - { key: PLUMBING,       tier: working,  label: { cs: "ZTI", de: null, es: null } }
+  - { key: ELECTRICAL,     tier: working,  label: { cs: "Silnoproud", de: null, es: null } }
+  - { key: HVAC,           tier: working,  label: { cs: "Vytápění, plyn, VZT", de: null, es: null } }
+  - { key: SITE,           tier: working,  label: { cs: "Zařízení staveniště, koordinace, VRN", de: null, es: null } }
+  - { key: MASONRY,        tier: declared, label: { cs: "Zdivo", de: null, es: null } }
+  - { key: INSULATION,     tier: declared, label: { cs: "Izolace tepelné/akustické", de: null, es: null } }
+  - { key: LOW_VOLTAGE,    tier: declared, label: { cs: "Slaboproud", de: null, es: null } }
+
+codes:
+  # ═══ TIER 1 — deep (retrofit targets of the live concrete branch) ═══════════
+  - code: FORMWORK.PANEL.ERECT
+    label: { cs: "Bednění — zřízení", de: null, es: null }
+    keywords: { cs: [bednění, bedneni, zřízení bednění], de: [], es: [] }
+    unit_canonical: m2
+    params:
+      - { name: surface_class, kind: market_scheme, note: "CZ TKP kap.18 C1d/C2d vs DE DBV SB1–SB4 — no direct mapping" }
+    coverage: covered
+
+  - code: FORMWORK.PANEL.STRIP
+    label: { cs: "Odbednění", de: null, es: null }
+    keywords: { cs: [odbednění, odbedneni, odstranění bednění, demontáž bednění], de: [], es: [] }
+    unit_canonical: m2
+    params: []
+    coverage: covered
+
+  - code: FORMWORK.FALSEWORK.ERECT
+    label: { cs: "Skruž (pevná/posuvná) pro NK", de: null, es: null }
+    keywords: { cs: [skruž, skruz, podpěrná konstrukce, mss], de: [], es: [] }
+    unit_canonical: m2
+    params:
+      - { name: falsework_type, kind: scalar, note: "pevná | posuvná (MSS)" }
+    coverage: covered
+
+  - code: FORMWORK.TRAVELER.OPERATE
+    label: { cs: "Římsový vozík — montáž a provoz", de: null, es: null }
+    keywords: { cs: [římsový vozík, rimsovy vozik], de: [], es: [] }
+    unit_canonical: kpl
+    params: []
+    coverage: covered
+
+  - code: REINFORCEMENT.REBAR.INSTALL
+    label: { cs: "Výztuž z oceli (betonářská)", de: null, es: null }
+    keywords: { cs: [výztuž, vyztuz, armování, armatura, B500B], de: [], es: [] }
+    unit_canonical: t
+    params:
+      - { name: steel_grade, kind: eurocode_class, note: "B500B — EN-unified" }
+      - { name: diameter_mm, kind: scalar }
+    coverage: covered
+
+  - code: REINFORCEMENT.REBAR.CAGE
+    label: { cs: "Armokoš pilot — výroba a osazení", de: null, es: null }
+    keywords: { cs: [armokoš, armokos, výztuž pilot], de: [], es: [] }
+    unit_canonical: t
+    params:
+      - { name: steel_grade, kind: eurocode_class }
+    coverage: covered
+
+  - code: REINFORCEMENT.PRESTRESS.TENDON
+    label: { cs: "Předpínací výztuž — kabely, napínání, injektáž", de: null, es: null }
+    keywords: { cs: [předpínací, predpinaci, předpětí, Y1860, lana, kabely], de: [], es: [] }
+    unit_canonical: t
+    params:
+      - { name: strand_grade, kind: eurocode_class, note: "Y1860S7 — EN-unified" }
+    coverage: covered
+
+  - code: CONCRETE.POUR.STRUCTURE
+    label: { cs: "Beton konstrukce — uložení a hutnění", de: null, es: null }
+    keywords: { cs: [beton, betonáž, betonaz, uložení betonu], de: [], es: [] }
+    unit_canonical: m3
+    params:
+      - { name: concrete_class, kind: eurocode_class, note: "C30/37 — EN-unified" }
+      - { name: exposure_class, kind: eurocode_class, note: "XF4/XA2… — EN-unified" }
+    coverage: covered
+
+  - code: CONCRETE.CURING.SURFACE
+    label: { cs: "Ošetřování betonu", de: null, es: null }
+    keywords: { cs: [ošetřování, osetrovani, curing], de: [], es: [] }
+    unit_canonical: m2
+    params:
+      - { name: curing_class, kind: market_scheme, note: "CZ TKP 18 §7.8.3 třídy 2/3/4 vs DE ZTV-ING — national taxonomies" }
+    coverage: covered
+
+  - code: PILING.BORED.INSTALL
+    label: { cs: "Zřízení pilot vrtaných", de: null, es: null }
+    keywords: { cs: [pilota, piloty, vrtané piloty, zřízení pilot], de: [], es: [] }
+    unit_canonical: m
+    params:
+      - { name: diameter_mm, kind: scalar }
+      - { name: concrete_class, kind: eurocode_class }
+      - { name: casing_method, kind: scalar, note: "pažnice / CFA / bez pažení" }
+    coverage: covered
+
+  # ═══ TIER 2 — working (HK212 Stage-1 DoD corpus) ════════════════════════════
+  - code: EARTHWORK.EXCAVATION.PIT
+    label: { cs: "Hloubení jam (stavební jámy, patky)", de: null, es: null }
+    keywords: { cs: [hloubení, hloubeni, výkop jámy, dohloubka, dohloubky], de: [], es: [] }
+    unit_canonical: m3
+    params:
+      - { name: soil_class, kind: market_scheme, note: "CZ ČSN 73 6133 I–VII; DE DIN 18300 Bodenklassen RETIRED 2016 → Homogenbereiche" }
+      - { name: depth_m, kind: scalar }
+    coverage: covered
+
+  - code: EARTHWORK.EXCAVATION.TRENCH
+    label: { cs: "Hloubení rýh", de: null, es: null }
+    keywords: { cs: [rýha, ryha, výkop rýhy, hloubení rýh], de: [], es: [] }
+    unit_canonical: m3
+    params:
+      - { name: soil_class, kind: market_scheme }
+      - { name: depth_m, kind: scalar }
+    coverage: covered
+
+  - code: EARTHWORK.BACKFILL.COMPACT
+    label: { cs: "Zásyp a hutnění", de: null, es: null }
+    keywords: { cs: [zásyp, zasyp, obsyp, hutnění, hutneni], de: [], es: [] }
+    unit_canonical: m3
+    params: []
+    coverage: covered
+
+  - code: STEEL.STRUCTURE.ERECT
+    label: { cs: "Montáž ocelové konstrukce", de: null, es: null }
+    keywords: { cs: [ocelová konstrukce, ocelova konstrukce, montáž OK, IPE, HEB], de: [], es: [] }
+    unit_canonical: t
+    params:
+      - { name: profile, kind: eurocode_class, note: "IPE 400 = IPE 400 EU-wide" }
+    coverage: covered
+
+  - code: CLADDING.PANEL.INSTALL
+    label: { cs: "Opláštění — sendvičové panely", de: null, es: null }
+    keywords: { cs: [opláštění, oplasteni, sendvičové panely, Kingspan], de: [], es: [] }
+    unit_canonical: m2
+    params: []
+    coverage: covered
+
+  - code: ROOFING.DECK.INSTALL
+    label: { cs: "Střešní plášť — montáž", de: null, es: null }
+    keywords: { cs: [střecha, strecha, střešní plášť, krytina], de: [], es: [] }
+    unit_canonical: m2
+    params: []
+    coverage: covered
+
+  - code: SCAFFOLDING.STANDARD.CYCLE
+    label: { cs: "Lešení — montáž, pronájem, demontáž", de: null, es: null }
+    keywords: { cs: [lešení, leseni], de: [], es: [] }
+    unit_canonical: m2
+    params: []
+    coverage: covered
+
+  - code: TRANSPORT.MATERIAL.MOVE
+    label: { cs: "Přesun hmot", de: null, es: null }
+    keywords: { cs: [přesun hmot, presun hmot], de: [], es: [] }
+    unit_canonical: t
+    params: []
+    coverage: covered
+
+  - code: TRANSPORT.DEBRIS.REMOVE
+    label: { cs: "Odvoz a likvidace suti", de: null, es: null }
+    keywords: { cs: [odvoz suti, likvidace suti, suť], de: [], es: [] }
+    unit_canonical: t
+    params: []
+    coverage: covered
+
+  - code: TRANSPORT.DELIVERY.MATERIAL
+    label: { cs: "Doprava materiálu", de: null, es: null }
+    keywords: { cs: [doprava, doprava materiálu], de: [], es: [] }
+    unit_canonical: kpl
+    params: []
+    coverage: covered
+
+  # ═══ TIER 2 — working (interiér/PSV: malba.yaml MVP + sandbox S1–S10) ═══════
+  - code: DEMOLITION.FIXTURES.REMOVE
+    label: { cs: "Demontáž zařizovacích předmětů", de: null, es: null }
+    keywords: { cs: [demontáž zp, demontáž zařizovacích], de: [], es: [] }
+    unit_canonical: kpl
+    params: []
+    coverage: covered
+
+  - code: DEMOLITION.SURFACES.REMOVE
+    label: { cs: "Demontáž obkladů / dlažeb / krytin", de: null, es: null }
+    keywords: { cs: [demontáž obkladů, demontáž dlažby, demontáž krytin, vybourání], de: [], es: [] }
+    unit_canonical: m2
+    params: []
+    coverage: covered
+
+  - code: DEMOLITION.COATINGS.REMOVE
+    label: { cs: "Odstranění starých nátěrů / omítek", de: null, es: null }
+    keywords: { cs: [odstranění nátěrů, oškrabání, otlučení omítek], de: [], es: [] }
+    unit_canonical: m2
+    params: []
+    coverage: covered
+
+  - code: FINISHES.PLASTER.MESH
+    label: { cs: "Armovací stěrka s perlinkou", de: null, es: null }
+    keywords: { cs: [armovací stěrka, perlinka, sítka], de: [], es: [] }
+    unit_canonical: m2
+    params: []
+    coverage: covered
+
+  - code: FINISHES.PLASTER.SKIM
+    label: { cs: "Štuková omítka vnitřní", de: null, es: null }
+    keywords: { cs: [štuk, stuk, štuková omítka], de: [], es: [] }
+    unit_canonical: m2
+    params: []
+    coverage: covered
+
+  - code: FINISHES.PAINT.PREP
+    label: { cs: "Příprava a penetrace podkladu", de: null, es: null }
+    keywords: { cs: [penetrace, příprava podkladu], de: [], es: [] }
+    unit_canonical: m2
+    params: []
+    coverage: covered
+
+  - code: FINISHES.PAINT.INTERIOR
+    label: { cs: "Malba vnitřní (finální nátěr)", de: null, es: null }
+    keywords: { cs: [malba, malování, malirské práce], de: [], es: [] }
+    unit_canonical: m2
+    params: []
+    coverage: covered
+
+  - code: FINISHES.DRYWALL.CEILING
+    label: { cs: "SDK podhled (rošt + opláštění + tmelení)", de: null, es: null }
+    keywords: { cs: [sdk, sádrokarton, podhled], de: [], es: [] }
+    unit_canonical: m2
+    params: []
+    coverage: covered
+
+  - code: FINISHES.PROTECT.COVER
+    label: { cs: "Zakrytí a ochrana konstrukcí, úklid", de: null, es: null }
+    keywords: { cs: [zakrytí, ochrana konstrukcí, úklid], de: [], es: [] }
+    unit_canonical: kpl
+    params: []
+    coverage: covered
+
+  - code: WATERPROOFING.SLURRY.APPLY
+    label: { cs: "Hydroizolační stěrka", de: null, es: null }
+    keywords: { cs: [hydroizolace, hydroizolační stěrka], de: [], es: [] }
+    unit_canonical: m2
+    params: []
+    coverage: covered
+
+  - code: FINISHES.TILING.WALL
+    label: { cs: "Obklad keramický stěn", de: null, es: null }
+    keywords: { cs: [obklad, obklady stěn], de: [], es: [] }
+    unit_canonical: m2
+    params: []
+    coverage: covered
+
+  - code: FINISHES.TILING.FLOOR
+    label: { cs: "Dlažba keramická podlah", de: null, es: null }
+    keywords: { cs: [dlažba, dlazba], de: [], es: [] }
+    unit_canonical: m2
+    params: []
+    coverage: covered
+
+  - code: FLOORING.SUBFLOOR.LEVEL
+    label: { cs: "Samonivelační stěrka podkladu", de: null, es: null }
+    keywords: { cs: [samonivelační, nivelace podkladu], de: [], es: [] }
+    unit_canonical: m2
+    params: []
+    coverage: covered
+
+  - code: FLOORING.RESILIENT.INSTALL
+    label: { cs: "Pokládka vinylové/PVC podlahy", de: null, es: null }
+    keywords: { cs: [vinyl, vinylová podlaha, pvc podlaha, pokládka], de: [], es: [] }
+    unit_canonical: m2
+    params: []
+    coverage: covered
+
+  - code: FLOORING.WOOD.RENOVATE
+    label: { cs: "Renovace dřevěných podlah (broušení + lak)", de: null, es: null }
+    keywords: { cs: [parkety, broušení parket, lakování], de: [], es: [] }
+    unit_canonical: m2
+    params: []
+    coverage: covered
+
+  - code: FLOORING.SKIRTING.INSTALL
+    label: { cs: "Soklové lišty", de: null, es: null }
+    keywords: { cs: [soklové lišty, sokl], de: [], es: [] }
+    unit_canonical: m
+    params: []
+    coverage: covered
+
+  - code: OPENINGS.RENOVATE.COAT
+    label: { cs: "Renovace oken a dveří (broušení, tmelení, nátěr)", de: null, es: null }
+    keywords: { cs: [renovace oken, nátěr oken, nátěr dveří], de: [], es: [] }
+    unit_canonical: kpl
+    params: []
+    coverage: covered
+
+  - code: PLUMBING.ROUGHIN.INSTALL
+    label: { cs: "ZTI rozvody (voda, kanalizace)", de: null, es: null }
+    keywords: { cs: [zti, rozvody vody, kanalizace], de: [], es: [] }
+    unit_canonical: kpl
+    params: []
+    coverage: covered
+
+  - code: PLUMBING.FIXTURES.INSTALL
+    label: { cs: "Montáž zařizovacích předmětů", de: null, es: null }
+    keywords: { cs: [montáž zp, zařizovací předměty, vana, umyvadlo], de: [], es: [] }
+    unit_canonical: kpl
+    params: []
+    coverage: covered
+
+  - code: ELECTRICAL.ROUGHIN.INSTALL
+    label: { cs: "Rozvody silnoproudu", de: null, es: null }
+    keywords: { cs: [elektroinstalace, rozvody silnoproud, kabeláž], de: [], es: [] }
+    unit_canonical: kpl
+    params: []
+    coverage: covered
+
+  - code: ELECTRICAL.FIXTURES.INSTALL
+    label: { cs: "Elektro kompletace (zásuvky, svítidla, rozvaděč)", de: null, es: null }
+    keywords: { cs: [zásuvky, vypínače, svítidla, rozvaděč], de: [], es: [] }
+    unit_canonical: kpl
+    params: []
+    coverage: covered
+
+  - code: ELECTRICAL.INSPECTION.STATUTORY
+    label: { cs: "Výchozí revize elektro", de: null, es: null }
+    keywords: { cs: [revize elektro, výchozí revize], de: [], es: [] }
+    unit_canonical: kpl
+    params:
+      - { name: inspection_regime, kind: market_scheme, note: "CZ revize vs DE Prüfung — national statutory regimes" }
+    coverage: covered
+
+  - code: HVAC.BOILER.REPLACE
+    label: { cs: "Výměna plynového kotle (demontáž + montáž)", de: null, es: null }
+    keywords: { cs: [kotel, plynový kotel, výměna kotle], de: [], es: [] }
+    unit_canonical: ks
+    params: []
+    coverage: covered
+
+  - code: HVAC.FLUE.INSTALL
+    label: { cs: "Spalinová cesta (komín / odkouření)", de: null, es: null }
+    keywords: { cs: [spalinová cesta, komín, odkouření], de: [], es: [] }
+    unit_canonical: kpl
+    params: []
+    coverage: covered
+
+  - code: HVAC.INSPECTION.STATUTORY
+    label: { cs: "Revize plynu a spalinové cesty", de: null, es: null }
+    keywords: { cs: [revize plynu, revize spalinové], de: [], es: [] }
+    unit_canonical: kpl
+    params:
+      - { name: inspection_regime, kind: market_scheme }
+    coverage: covered
+
+  - code: SITE.COORDINATION.ADMIN
+    label: { cs: "Koordinace a administrativa stavby", de: null, es: null }
+    keywords: { cs: [koordinace, administrativa], de: [], es: [] }
+    unit_canonical: kpl
+    params: []
+    coverage: covered
+
+  - code: SITE.HOURLY.WORKS
+    label: { cs: "Hodinové práce (drobné, nepředvídané)", de: null, es: null }
+    keywords: { cs: [hodinové práce, hzs], de: [], es: [] }
+    unit_canonical: h
+    params: []
+    coverage: covered
