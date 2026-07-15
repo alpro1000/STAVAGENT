@@ -64,6 +64,96 @@ class CodeStatus(str, Enum):
 
 
 # ---------------------------------------------------------------------------
+# `quantity_status` — AXIS INVENTORY (recon 2026-07-15, CodeStatus discipline)
+#
+# The key `quantity_status` rides THREE different entities and carries THREE
+# semantically DIFFERENT axes. They are deliberately NOT merged into one
+# vocabulary (unlike CodeStatus/F3, where `bound`≡`candidate` were synonyms of
+# one outcome) — here the axes answer different questions. Unified is the
+# DISCIPLINE: no raw string literals at producers, every axis named here.
+#
+#   1. ElementQuantityStatus — elements[] (soupis_quantity_join.py):
+#      OUTCOME OF THE SOUPIS→ELEMENT JOIN. Did the authoritative soupis
+#      volume land on this element?
+#   2. ItemQuantityStatus — work-breakdown items (mcp/tools/breakdown.py):
+#      PROVENANCE OF THE NUMBER. Where did this quantity come from
+#      (verbatim input / deterministic formula / typed default / not
+#      computable)? NEPOČÍTÁNO is a PREFIX — see the enum docstring.
+#   3. PricingQuantityStatus — PricedPolozka (pricing/otskp_engine.py,
+#      railway svršek/spodek engine, surfaced via /api/v1/soupis/generate):
+#      COMPLETENESS OF THE PRICING INPUT.
+#
+# Known satellites (mapped, intentionally untouched):
+#   - DORMANT DIALECT D: Monolit-Planner migration 002-add-soupis-items.sql
+#     has a `quantity_status TEXT DEFAULT 'OK'` column mirroring
+#     PricedPolozka — NO JS writer or reader exists (dead since the Soupis
+#     Prací tab era). Tracked in BACKLOG; do not resurrect silently.
+#   - SYNONYM ROW: soupis_quantity_join also writes a per-field provenance
+#     sub-axis `_source.volume_m3.status` (`not_extracted_from_soupis` /
+#     `collapsed_into_same_type_sibling` /
+#     `ambiguous_multiple_elements_same_type`) — a 1:1 verbose mirror of
+#     ElementQuantityStatus, NOT unified here (evidence detail, own shape).
+#   - WORD COLLISION: the literal «NEPOČÍTÁNO» also appears on the separate
+#     calc/soft-degradation axis (TS UncalculatedError, v4.38; export.py
+#     `calc_status` Zdroj label) — same word, different axis. Enum names keep
+#     the axes apart in code even where the visible label shares the word.
+# ---------------------------------------------------------------------------
+class ElementQuantityStatus(str, Enum):
+    """Outcome of the soupis→element quantity join (`quantity_status` on
+    elements[], producer: services/stage_gating/soupis_quantity_join.py).
+
+    D-rules recap: soupis is authoritative; no match → honest-blank `missing`
+    (element KEPT, volume None); same-type ambiguity → `ambiguous` +
+    candidates[], never a silent split; a same-type sibling whose volume the
+    carrier already holds → `collapsed_into_sibling` (no quantity, prevents
+    double-count at the passport-key merge)."""
+    EXTRACTED = "extracted"                          # summed soupis volume assigned (carrier / soupis-only synth)
+    MISSING = "missing"                              # no soupis volume for this element_type — honest blank
+    AMBIGUOUS = "ambiguous"                          # >1 element shares the type — candidates[], never split
+    COLLAPSED_INTO_SIBLING = "collapsed_into_sibling"  # carrier sibling holds the volume — no quantity here
+
+
+class ItemQuantityStatus(str, Enum):
+    """Provenance of a work-breakdown item's quantity (`quantity_status` on
+    items, producer: mcp/tools/breakdown.py; SPEC document-to-worklist §6.3,
+    invariant §6.4.2 — no number without a formula + an honest status).
+
+    Ladder: `from_input` = verbatim caller/document value; `computed` =
+    deterministic formula where EVERY factor comes from the input (mixed
+    provenance = the WORSE status, ratified after review #1510 finding 4);
+    `assumed` = element-type default estimate — must scream, never look like
+    a fact.
+
+    NEPOCITANO is a PREFIX, not a full value: real payloads carry
+    ``NEPOČÍTÁNO(<reason>)`` built via :meth:`nepocitano` — the reason rides
+    the string verbatim into the XLSX Zdroj label (review #1510 finding 10)
+    and tests pin ``startswith("NEPOČÍTÁNO")``. Splitting the reason into its
+    own field is a conscious non-goal of the enum step (separate ticket)."""
+    FROM_INPUT = "from_input"    # taken verbatim from the caller's element field
+    COMPUTED = "computed"        # deterministic formula, all factors from input
+    ASSUMED = "assumed"          # element-type default estimate
+    NEPOCITANO = "NEPOČÍTÁNO"    # PREFIX — real values are NEPOČÍTÁNO(<reason>)
+
+    @classmethod
+    def nepocitano(cls, reason: str) -> str:
+        """Build the parametrized honest-refusal value ``NEPOČÍTÁNO(<reason>)``."""
+        return f"{cls.NEPOCITANO.value}({reason})"
+
+
+class PricingQuantityStatus(str, Enum):
+    """Completeness of the pricing input for a PricedPolozka
+    (`quantity_status` on priced rows, producer: pricing/otskp_engine.py —
+    railway svršek/spodek engine; REST surface /api/v1/soupis/generate).
+
+    NOTE: `CHYBÍ_VSTUP` is counted by ``summarize()`` but no production site
+    was found at enum introduction (recon 2026-07-15) — dead-or-missing-emitter
+    question tracked in BACKLOG, deliberately not resolved by the enum step."""
+    OK = "OK"                    # quantity derived from a real input (confidence ≥ 0.8)
+    ODHADNUTO = "ODHADNUTO"      # estimated — low-confidence derivation
+    CHYBI_VSTUP = "CHYBÍ_VSTUP"  # input missing — quantity not derivable
+
+
+# ---------------------------------------------------------------------------
 # Namespace — who owns which data block
 # ---------------------------------------------------------------------------
 class Namespace(str, Enum):

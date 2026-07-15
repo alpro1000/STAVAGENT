@@ -30,6 +30,8 @@ import re
 import unicodedata
 from typing import Callable, Optional
 
+from app.models.item_schemas import ElementQuantityStatus
+
 from .volume_geometry import check_volume_geometry
 
 # TZ cross_section_type vocab (extract_tz_fields._CROSS_SECTION) → the TS
@@ -383,7 +385,7 @@ def map_soupis_to_elements(
         if bucket is None:
             # honest-blank — no soupis volume for this element_type
             new_el["volume_m3"] = el.get("volume_m3")  # keep as-is (None)
-            new_el["quantity_status"] = "missing"
+            new_el["quantity_status"] = ElementQuantityStatus.MISSING.value
             new_el["_source"]["volume_m3"] = {
                 "status": "not_extracted_from_soupis", "confidence": 0.0,
             }
@@ -396,7 +398,7 @@ def map_soupis_to_elements(
                 # downstream, so it carries NO quantity (the carrier has it all;
                 # duplicating here would multiply the volume at the key merge).
                 new_el["volume_m3"] = el.get("volume_m3")  # stays None
-                new_el["quantity_status"] = "collapsed_into_sibling"
+                new_el["quantity_status"] = ElementQuantityStatus.COLLAPSED_INTO_SIBLING.value
                 new_el["_source"]["volume_m3"] = {
                     "status": "collapsed_into_same_type_sibling",
                     "matched_by": f"element_type:{etype}",
@@ -406,7 +408,7 @@ def map_soupis_to_elements(
                 continue
             # genuine same-type ambiguity → never silently split
             new_el["volume_m3"] = el.get("volume_m3")  # stays None
-            new_el["quantity_status"] = "ambiguous"
+            new_el["quantity_status"] = ElementQuantityStatus.AMBIGUOUS.value
             new_el["candidates"] = [dict(line) for line in bucket["lines"]]
             new_el["_source"]["volume_m3"] = {
                 "status": "ambiguous_multiple_elements_same_type",
@@ -419,7 +421,7 @@ def map_soupis_to_elements(
         # carrier → assign summed soupis volume (authoritative)
         vol = round(bucket["quantity"], 6)
         new_el["volume_m3"] = vol
-        new_el["quantity_status"] = "extracted"
+        new_el["quantity_status"] = ElementQuantityStatus.EXTRACTED.value
         evidence = "; ".join(
             f"{line['code']} {line['description']} qty={line['quantity']} {line['unit']}".strip()
             for line in bucket["lines"]
@@ -454,7 +456,7 @@ def map_soupis_to_elements(
             synth = {
                 "name": bucket["class_name"],
                 "volume_m3": round(bucket["quantity"], 6),
-                "quantity_status": "extracted",
+                "quantity_status": ElementQuantityStatus.EXTRACTED.value,
                 "_soupis_only": True,
                 "_source": {"volume_m3": {
                     "source": "soupis",
