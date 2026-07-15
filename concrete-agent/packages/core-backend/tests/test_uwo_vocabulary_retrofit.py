@@ -129,3 +129,32 @@ def test_unresolved_scope_carries_not_covered_branch():
     assert result["total_items"] == 0
     assert len(result["unresolved"]) == 1
     assert result["unresolved"][0]["coverage"] == "not_covered_branch"
+
+# ── Unit parity: atom MJ == vocabulary unit_canonical (finding #11) ──────────
+# Gate 4 asserted code-set closure but NOT units: an atom converging on the
+# code while diverging on MJ is the same class of quiet lie (skruž emitted m²
+# while FORMWORK.FALSEWORK.ERECT is m³ of obestavěný prostor — OTSKP canon).
+
+_UNIT_NORM = {"m²": "m2", "m³": "m3", "komplet": "kpl", "bm": "m"}
+
+
+def _canon_unit(u: str) -> str:
+    return _UNIT_NORM.get(u, u)
+
+
+def test_every_emitting_atom_unit_matches_vocabulary_canonical():
+    vocab = load_vocabulary()
+    for etype, atoms in WORK_TEMPLATES.items():
+        for t in atoms:
+            entry = vocab["codes"][t["vocabulary_code"]]
+            assert _canon_unit(t["unit"]) == entry["unit_canonical"], (
+                f"{etype}: {t['work']!r} emits {t['unit']} but "
+                f"{t['vocabulary_code']} is {entry['unit_canonical']}"
+            )
+    for key, section in _load_interier_psv_templates().items():
+        for a in section.get("atoms", []):
+            entry = vocab["codes"][a["vocabulary_code"]]
+            assert _canon_unit(a.get("unit", "m2")) == entry["unit_canonical"], (
+                f"interier/{key}: {a['key']} emits {a.get('unit')} but "
+                f"{a['vocabulary_code']} is {entry['unit_canonical']}"
+            )

@@ -255,3 +255,28 @@ def test_export_carries_quantity_provenance_to_xlsx_columns():
     assert "množ. assumed" in vyztuz["source"]
     assert "typový default" in (vyztuz["vv_vzorec"] or "")
     assert vyztuz["quantity_status"] == "assumed"
+
+
+# ── Skruž in m³ (finding #11): obestavěný prostor, honest without height ─────
+
+def test_falsework_is_m3_obestaveny_prostor_with_height():
+    """Skruž = půdorys × výška pod NK, in m³ (vocabulary unit_canonical);
+    thickness is a default → mixed provenance → assumed."""
+    r = _run([{"name": "NK mostovka", "volume_m3": 605, "concrete_class": "C35/45",
+               "is_prestressed": True, "height_m": 2.4}])
+    skruz = _item(r, "Skruž")
+    assert skruz["unit"] == "m³"
+    assert abs(skruz["quantity"] - (605 / 0.25) * 2.4) < 0.01  # 5 808 m³
+    assert skruz["quantity_status"] == "assumed"
+    assert "výška pod NK" in skruz["quantity_formula"]
+
+
+def test_falsework_without_height_is_explicit_nepocitano_in_m3():
+    """No height under the deck → NO fabricated default: the row stays, in m³,
+    quantity None with an explicit NEPOČÍTÁNO reason (§6.4.2)."""
+    r = _run([{"name": "NK mostovka", "volume_m3": 605, "concrete_class": "C35/45",
+               "is_prestressed": True}])
+    skruz = _item(r, "Skruž")
+    assert skruz["unit"] == "m³"
+    assert skruz["quantity"] is None
+    assert skruz["quantity_status"].startswith("NEPOČÍTÁNO"), skruz["quantity_status"]

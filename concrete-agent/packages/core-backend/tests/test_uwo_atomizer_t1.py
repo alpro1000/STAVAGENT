@@ -42,7 +42,11 @@ _MONOLIT_GOLDEN = [
     ("Výztuž Dříky pilířů / sloupy z oceli B500B", "t", 3.6, "HSV4", "driky_piliru"),
     ("Beton Dříky pilířů / sloupy C30/37", "m³", 24, "HSV2", "driky_piliru"),
     ("Ošetřování betonu Dříky pilířů / sloupy", "m²", 160.0, "HSV2", "driky_piliru"),
-    ("Skruž pevná/posuvná pro NK", "m²", 2420.0, "HSV4", "mostovkova_deska"),
+    # DELIBERATE golden change (finding #11 on #1510): skruž is priced per m³
+    # of obestavěný prostor (FORMWORK.FALSEWORK.ERECT unit_canonical, OTSKP
+    # canon) — the old m² 2420.0 row contradicted its own vocabulary_code.
+    # This fixture has no height under the deck → explicit NEPOČÍTÁNO (None).
+    ("Skruž pevná/posuvná pro NK", "m³", None, "HSV4", "mostovkova_deska"),
     ("Bednění NK — spodní deska", "m²", 2420.0, "HSV4", "mostovkova_deska"),
     ("Výztuž NK z oceli B500B", "t", 108.9, "HSV4", "mostovkova_deska"),
     ("Beton NK C35/45", "m³", 605, "HSV4", "mostovkova_deska"),

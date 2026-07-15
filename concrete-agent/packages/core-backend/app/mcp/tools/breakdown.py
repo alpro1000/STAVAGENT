@@ -38,7 +38,11 @@ WORK_TEMPLATES = {
         {"work": "Výztuž pilot z oceli B500B", "unit": "t", "qty_factor": "rebar_tons", "hsv": "HSV4", "vocabulary_code": "REINFORCEMENT.REBAR.CAGE"},
     ],
     "mostovkova_deska": [
-        {"work": "Skruž pevná/posuvná pro NK", "unit": "m²", "qty_factor": "formwork_area", "hsv": "HSV4", "vocabulary_code": "FORMWORK.FALSEWORK.ERECT"},
+        # Skruž ≠ bednění: FORMWORK.FALSEWORK.ERECT is priced per m³ of
+        # obestavěný prostor (OTSKP canon, vocabulary v1.2 fix) — the atom's
+        # MJ must match its vocabulary_code's unit_canonical (unit-parity
+        # test-enforced; finding #11 on #1510: it silently emitted m²).
+        {"work": "Skruž pevná/posuvná pro NK", "unit": "m³", "qty_factor": "falsework_volume", "hsv": "HSV4", "vocabulary_code": "FORMWORK.FALSEWORK.ERECT"},
         {"work": "Bednění NK — spodní deska", "unit": "m²", "qty_factor": "formwork_area", "hsv": "HSV4", "vocabulary_code": "FORMWORK.PANEL.ERECT"},
         {"work": "Výztuž NK z oceli B500B", "unit": "t", "qty_factor": "rebar_tons", "hsv": "HSV4", "vocabulary_code": "REINFORCEMENT.REBAR.INSTALL"},
         {"work": "Beton NK {concrete_class}", "unit": "m³", "qty_factor": "volume", "hsv": "HSV4", "vocabulary_code": "CONCRETE.POUR.STRUCTURE"},
@@ -330,7 +334,13 @@ async def _attach_catalog_codes(items: list[dict], catalog: str) -> list[dict]:
             item["otskp_code"] = top["code"]
             item["otskp_description"] = top["description"]
             item["unit_price_czk"] = top.get("unit_price_czk")
-            item["total_price_czk"] = round((top.get("unit_price_czk") or 0.0) * item["quantity"], 0)
+            # NEPOČÍTÁNO rows carry quantity=None — a code candidate is still
+            # useful, but a total from None would TypeError (latent finding 3
+            # of the #1510 review); the total stays honestly None.
+            item["total_price_czk"] = (
+                round((top.get("unit_price_czk") or 0.0) * item["quantity"], 0)
+                if item["quantity"] is not None else None
+            )
             # F3: OTSKP text-search top above floor = `candidate` (unified with the
             # catalog-binding adapter, which calls the identical operation
             # `candidate`). `exact` stays reserved for a deterministic DB code hit.
@@ -639,6 +649,26 @@ async def create_work_breakdown(
                 elif factor == "curing_area":
                     qty = curing_area
                     q_status, q_formula = curing_status, curing_formula
+                elif factor == "falsework_volume":
+                    # Skruž = obestavěný prostor pod NK v m³ (OTSKP canon):
+                    # půdorys (footprint = V / typ. tl.) × výška pod NK
+                    # (height_m). Without the height there is NO honest number
+                    # — the row is an explicit NEPOČÍTÁNO in m³ (§6.4.2),
+                    # never a fabricated default height.
+                    if volume and height_provided and height > 0:
+                        qty = (volume / thickness) * height
+                        q_status = "assumed"  # thickness is a default → worse status
+                        q_formula = (
+                            f"obestavěný prostor: půdorys ({volume} m³ / tl. {thickness} m — "
+                            f"typový default) × výška pod NK {height} m (vstup height_m)"
+                        )
+                    else:
+                        qty = None
+                        q_status = "NEPOČÍTÁNO(chybí výška pod NK — vstup height_m)"
+                        q_formula = (
+                            "obestavěný prostor = půdorys × výška pod NK; "
+                            "výška není ve vstupu"
+                        )
                 elif factor == "rebar_tons":
                     qty = rebar_tons
                     q_status, q_formula = rebar_status, rebar_formula
@@ -668,7 +698,9 @@ async def create_work_breakdown(
                     q_status = "computed"
                     q_formula = "paušál: 1 kpl"
 
-                if qty <= 0:
+                if qty is None:
+                    pass  # explicit NEPOČÍTÁNO row is KEPT (§6.4.2), quantity stays None
+                elif qty <= 0:
                     continue
 
                 # Build the work item (code-less). Each item carries `_source`
@@ -690,7 +722,7 @@ async def create_work_breakdown(
                 item = {
                     "work_description": work_name,
                     "unit": tmpl["unit"],
-                    "quantity": round(qty, 2),
+                    "quantity": round(qty, 2) if qty is not None else None,
                     # SPEC §6.3 / §6.4.2 — no number without a formula + an honest
                     # status; an `assumed` default must scream, never look like a fact.
                     "quantity_status": q_status,
