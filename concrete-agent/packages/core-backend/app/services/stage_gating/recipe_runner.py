@@ -30,6 +30,7 @@ import asyncio
 import json
 from typing import Any, Callable, Optional
 
+from app.models.item_schemas import ElementQuantityStatus
 from app.services.stage_gating._tracing import get_tracer
 from app.services.stage_gating.orchestrator import (
     StepContext,
@@ -262,7 +263,15 @@ def _summarize_quantification(quantified: list):
     as a calculator warning when it reaches the deliverable alongside
     `calc_warnings` — shared surface, distinct identity.
     """
-    counts = {"extracted": 0, "missing": 0, "ambiguous": 0}
+    # NOTE (recon 2026-07-15): COLLAPSED_INTO_SIBLING deliberately stays outside
+    # this counter — adding it changes the `quantification_summary` shape
+    # (behavioral), tracked as its own BACKLOG ticket; the enum step is
+    # vocabulary-only.
+    counts = {
+        ElementQuantityStatus.EXTRACTED.value: 0,
+        ElementQuantityStatus.MISSING.value: 0,
+        ElementQuantityStatus.AMBIGUOUS.value: 0,
+    }
     divergences: list[dict] = []
     q_warnings: list[dict] = []
     for el in quantified:

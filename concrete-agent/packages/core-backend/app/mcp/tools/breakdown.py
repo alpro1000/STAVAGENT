@@ -11,7 +11,7 @@ concrete, insulation...) → OTSKP/ÚRS code matching from the database.
 import logging
 from typing import Optional
 
-from app.models.item_schemas import CodeStatus
+from app.models.item_schemas import CodeStatus, ItemQuantityStatus
 from app.services.catalog_matching import classify_work_type
 
 logger = logging.getLogger(__name__)
@@ -151,13 +151,13 @@ def _decompose_interier_psv(name: str, elem: dict) -> list[dict]:
         # `quantity_provenance` stays (shipped shape); status is the SPEC axis:
         # a missing výměra is an explicit NEPOČÍTÁNO with a reason (§6.4.2).
         if quantity is None:
-            q_status = "NEPOČÍTÁNO(chybí výměra z podkladu)"
+            q_status = ItemQuantityStatus.nepocitano("chybí výměra z podkladu")
             q_formula = "m² sekce nejsou k dispozici (vstup area_m2 chybí)"
         elif qty_source == "fixed_1":
-            q_status = "computed"
+            q_status = ItemQuantityStatus.COMPUTED.value
             q_formula = "paušál: 1 komplet"
         else:
-            q_status = "from_input"
+            q_status = ItemQuantityStatus.FROM_INPUT.value
             q_formula = f"m² ze scope geometrie: {quantity} (vstup area_m2)"
 
         items.append({
@@ -534,11 +534,11 @@ async def create_work_breakdown(
             rebar_provided = elem.get("rebar_tons") is not None
             if rebar_provided:
                 rebar_tons = elem["rebar_tons"] or 0
-                rebar_status = "from_input"
+                rebar_status = ItemQuantityStatus.FROM_INPUT.value
                 rebar_formula = f"výztuž z podkladu: {rebar_tons} t (vstup rebar_tons)"
             else:
                 rebar_tons = volume * profile["rebar_kg_m3"] / 1000 if volume else 0
-                rebar_status = "assumed"
+                rebar_status = ItemQuantityStatus.ASSUMED.value
                 rebar_formula = (
                     f"odhad: {volume} m³ × {profile['rebar_kg_m3']} kg/m³ (typový default)"
                 )
@@ -568,15 +568,15 @@ async def create_work_breakdown(
 
             fw_area = elem.get("area_m2", 0) or 0
             if fw_area:
-                fw_status = "from_input"
+                fw_status = ItemQuantityStatus.FROM_INPUT.value
                 fw_formula = f"plocha bednění z podkladu: {fw_area} m² (vstup area_m2)"
             elif volume:
-                fw_status = "assumed"
+                fw_status = ItemQuantityStatus.ASSUMED.value
                 if horizontal:
                     if blinding and length_provided:
                         # Strip blinding: 2 long edges × length × thickness.
                         fw_area = 2 * length_m * thickness
-                        fw_status = "computed" if thickness_provided else "assumed"
+                        fw_status = ItemQuantityStatus.COMPUTED.value if thickness_provided else ItemQuantityStatus.ASSUMED.value
                         fw_formula = (
                             f"2 líce × {length_m} m × tl. {thickness} m"
                             + (" (vstupy length_m + height_m)" if thickness_provided
@@ -598,7 +598,7 @@ async def create_work_breakdown(
                     # VERTICAL linear element with documented length AND height:
                     # both faces over the full run — deterministic over inputs.
                     fw_area = 2 * length_m * height
-                    fw_status = "computed"
+                    fw_status = ItemQuantityStatus.COMPUTED.value
                     fw_formula = (
                         f"2 líce × {length_m} m × výška {height} m "
                         f"(vstupy length_m + height_m)"
@@ -608,7 +608,7 @@ async def create_work_breakdown(
                     fw_area = volume / width * 2
                     fw_formula = f"odhad: {volume} m³ / {width} m × 2 (obě líce)"
             else:
-                fw_status = "assumed"
+                fw_status = ItemQuantityStatus.ASSUMED.value
                 fw_formula = ""
 
             # Curing surface: horizontal → the TOP (footprint = V / tl.);
@@ -616,7 +616,7 @@ async def create_work_breakdown(
             # factor stays separate so a formwork fix never drags curing along).
             if volume and horizontal:
                 curing_area = volume / thickness
-                curing_status = "computed" if thickness_provided else "assumed"
+                curing_status = ItemQuantityStatus.COMPUTED.value if thickness_provided else ItemQuantityStatus.ASSUMED.value
                 curing_formula = (
                     f"horní povrch (půdorys): {volume} m³ / tl. {thickness} m"
                     + ("" if thickness_provided else " (tl. typový default)")
@@ -637,11 +637,11 @@ async def create_work_breakdown(
 
                 # Calculate quantity + its provenance (stage-3 Quantify)
                 qty = 0
-                q_status, q_formula = "assumed", ""
+                q_status, q_formula = ItemQuantityStatus.ASSUMED.value, ""
                 factor = tmpl["qty_factor"]
                 if factor == "volume":
                     qty = volume
-                    q_status = "from_input"
+                    q_status = ItemQuantityStatus.FROM_INPUT.value
                     q_formula = f"objem z podkladu: {volume} m³ (vstup volume_m3)"
                 elif factor == "formwork_area":
                     qty = fw_area
@@ -657,14 +657,14 @@ async def create_work_breakdown(
                     # never a fabricated default height.
                     if volume and height_provided and height > 0:
                         qty = (volume / thickness) * height
-                        q_status = "assumed"  # thickness is a default → worse status
+                        q_status = ItemQuantityStatus.ASSUMED.value  # thickness is a default → worse status
                         q_formula = (
                             f"obestavěný prostor: půdorys ({volume} m³ / tl. {thickness} m — "
                             f"typový default) × výška pod NK {height} m (vstup height_m)"
                         )
                     else:
                         qty = None
-                        q_status = "NEPOČÍTÁNO(chybí výška pod NK — vstup height_m)"
+                        q_status = ItemQuantityStatus.nepocitano("chybí výška pod NK — vstup height_m")
                         q_formula = (
                             "obestavěný prostor = půdorys × výška pod NK; "
                             "výška není ve vstupu"
@@ -677,11 +677,11 @@ async def create_work_breakdown(
                     # (pile length, wall run); height_m stays the legacy carrier.
                     if length_provided:
                         qty = length_m
-                        q_status = "from_input"
+                        q_status = ItemQuantityStatus.FROM_INPUT.value
                         q_formula = f"délka z podkladu: {length_m} m (vstup length_m)"
                     elif height_provided:
                         qty = height
-                        q_status = "from_input"
+                        q_status = ItemQuantityStatus.FROM_INPUT.value
                         q_formula = f"výška z podkladu: {height} m (vstup height_m)"
                     else:
                         qty = height
@@ -689,13 +689,13 @@ async def create_work_breakdown(
                 elif factor == "prestress_tons":
                     qty = rebar_tons * 0.3 if elem.get("is_prestressed") else 0
                     if rebar_provided:
-                        q_status = "computed"
+                        q_status = ItemQuantityStatus.COMPUTED.value
                         q_formula = f"{rebar_tons} t výztuže (vstup) × 0.3"
                     else:
                         q_formula = f"odhad: {round(rebar_tons, 2)} t výztuže (default) × 0.3"
                 elif factor == "1":
                     qty = 1
-                    q_status = "computed"
+                    q_status = ItemQuantityStatus.COMPUTED.value
                     q_formula = "paušál: 1 kpl"
 
                 if qty is None:

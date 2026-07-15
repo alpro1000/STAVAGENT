@@ -25,6 +25,8 @@ from typing import Optional, List, Dict
 from pathlib import Path
 from dataclasses import dataclass, field
 
+from app.models.item_schemas import PricingQuantityStatus
+
 logger = logging.getLogger(__name__)
 
 
@@ -57,7 +59,7 @@ class PricedPolozka:
     quantity: Optional[Decimal]
     unit_price: Decimal
     total_price: Optional[Decimal]
-    quantity_status: str  # "OK" / "CHYBÍ_VSTUP" / "ODHADNUTO"
+    quantity_status: str  # PricingQuantityStatus values (item_schemas.py axis inventory)
     confidence: float
     source_param: str
     quantity_formula: str
@@ -472,14 +474,14 @@ class RailwayPriceEngine:
 
     def summarize(self, items: List[PricedPolozka]) -> dict:
         """Return summary with total prices."""
-        total_ok = sum(i.total or 0 for i in items if i.quantity_status == "OK")
-        total_est = sum(i.total or 0 for i in items if i.quantity_status == "ODHADNUTO")
+        total_ok = sum(i.total or 0 for i in items if i.quantity_status == PricingQuantityStatus.OK.value)
+        total_est = sum(i.total or 0 for i in items if i.quantity_status == PricingQuantityStatus.ODHADNUTO.value)
 
         return {
             "items_count": len(items),
-            "items_ok": sum(1 for i in items if i.quantity_status == "OK"),
-            "items_estimated": sum(1 for i in items if i.quantity_status == "ODHADNUTO"),
-            "items_missing": sum(1 for i in items if i.quantity_status == "CHYBÍ_VSTUP"),
+            "items_ok": sum(1 for i in items if i.quantity_status == PricingQuantityStatus.OK.value),
+            "items_estimated": sum(1 for i in items if i.quantity_status == PricingQuantityStatus.ODHADNUTO.value),
+            "items_missing": sum(1 for i in items if i.quantity_status == PricingQuantityStatus.CHYBI_VSTUP.value),
             "total_ok_czk": round(total_ok, 0),
             "total_estimated_czk": round(total_est, 0),
             "total_all_czk": round(total_ok + total_est, 0),
@@ -505,7 +507,7 @@ class RailwayPriceEngine:
             quantity=qty,
             unit_price=up,
             total_price=tp,
-            quantity_status="OK" if confidence >= 0.8 else "ODHADNUTO",
+            quantity_status=PricingQuantityStatus.OK.value if confidence >= 0.8 else PricingQuantityStatus.ODHADNUTO.value,
             confidence=confidence,
             source_param=source,
             quantity_formula=source,

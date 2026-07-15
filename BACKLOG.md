@@ -88,12 +88,15 @@ jeden kód, ani jedna cena» tedy server vynucuje jen na jednom ze dvou povrchů
 (orientation-first · curing_area factor · mixed-provenance→worse status ·
 pile length_m · XLSX last mile). Zbytek:
 
-- **P1 — QuantityStatus enum + 3-slovníková kolize:** klíč `quantity_status`
-  nese TŘI slovníky (elements: soupis_quantity_join `extracted|missing|
-  ambiguous|collapsed_into_sibling`; items: breakdown `from_input|computed|
-  assumed|NEPOČÍTÁNO(...)`; PricedPolozka: otskp_engine `OK|ODHADNUTO|
-  CHYBÍ_VSTUP`) jako syrové literály. Unifikovat po precedentu `CodeStatus`
-  (F3, item_schemas.py) — enum(y) + vědomé pojmenování os. Vlastní session.
+- ~~**P1 — QuantityStatus enum + 3-slovníková kolize**~~ ✅ **HOTOVO
+  2026-07-15:** TŘI enumy (osy jsou sémanticky různé — NE jeden slovník):
+  `ElementQuantityStatus` / `ItemQuantityStatus` (NEPOČÍTÁNO = prefix,
+  helper `nepocitano(reason)`) / `PricingQuantityStatus` v item_schemas.py
+  vedle CodeStatus + inventář os v hlavičce modulu (vč. spícího dialektu D
+  a synonymické řady `_source.volume_m3.status`). Čistě strukturní —
+  payloady byte-stable, goldens beze změny. Guard
+  `tests/test_quantity_status_enum.py`. Recon-nálezy → 4 tikety níže
+  (`quantity-status-recon-followups`).
 - **P2 — formwork-geometry parity pin:** breakdown geometrie (2×L×H, V/0.25,
   obvod×tl.) je třetí divergentní implementace vedle kanonického TS
   `element-geometry.ts`; zavést stejný parity-guard jako volume_geometry.py
@@ -105,6 +108,35 @@ pile length_m · XLSX last mile). Zbytek:
 - **(sloučeno s existujícím deferred)** magický práh `height_m ≤ 0.5` jako
   nosič tloušťky + tichý discard tl. > 0.5 → umře s explicitním `thickness_m`
   vstupem (čeká na GO).
+
+---
+
+## quantity-status-recon-followups (2026-07-15) — nálezy z recon 3 slovníků
+
+**Source:** recon před enum-unifikací (viz `item_schemas.py` axis inventory).
+Enum-větev byla VĚDOMĚ čistě strukturní (byte-stable payloady = důkaz, že
+unifikace nic nerozbila) — behaviorální nálezy jdou samostatně:
+
+- **P2 — `collapsed_into_sibling` mimo summary counter:**
+  `recipe_runner._summarize_quantification` počítá jen
+  extracted/missing/ambiguous; element se statusem collapsed_into_sibling
+  propadá NEZAPOČTEN (summary tiše nedopočítává). Fix = přidat klíč do
+  counts → mění tvar `quantification_summary` → dotčené P3 e2e testy.
+  Pinned poznámkou v recipe_runner.py + testem
+  `test_summary_counter_keys_match_element_axis`.
+- **P3 — fantomní `from_soupis`:** komentář v breakdown.py (Step-2 blok)
+  deklaruje upgrade `from_input → from_soupis` upstream joinerem — nikdo ho
+  neprodukuje. Rozhodnout při Bind-adaptéru: buď ho join začne emitovat
+  (přidat do `ItemQuantityStatus`), nebo komentář vyčistit.
+- **P3 — `CHYBÍ_VSTUP` bez producenta:** otskp_engine `summarize()` ho
+  počítá (items_missing), ale jediné přiřazení statusu (`_make_item`) emituje
+  jen OK/ODHADNUTO. Buď mrtvá větev counteru, nebo chybějící emitter na
+  cestě bez quantity — prověřit railway engine samostatně.
+- **P3 — mrtvý sloupec `quantity_status` v Monolit DB:** migrace
+  `002-add-soupis-items.sql` (tabulka `soupis_items`, DEFAULT 'OK', zrcadlí
+  PricedPolozka) — ŽÁDNÝ JS writer/reader neexistuje (éra «Soupis Prací
+  tab»). SQL NEmazat (migrace historie); při příštím oživení tabulky vědomě
+  napojit na `PricingQuantityStatus`, jinak sloupec ignorovat.
 
 ---
 
