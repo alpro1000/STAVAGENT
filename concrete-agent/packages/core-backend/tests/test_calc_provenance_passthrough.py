@@ -207,9 +207,13 @@ def test_export_visible_columns_filled_and_source_preserved(_mock_engine):
     wb = openpyxl.load_workbook(BytesIO(base64.b64decode(committed["file_base64"])))
     ws = wb["Soupis prací"]                               # AC7 — structure intact
     # Columns: 9 = Zdroj, 10 = Důvěra (header row 4, data from row 5).
-    zdroj = [ws.cell(row=r, column=9).value for r in range(5, ws.max_row + 1)]
+    zdroj = [str(ws.cell(row=r, column=9).value or "")
+             for r in range(5, ws.max_row + 1)]
     duvera = [ws.cell(row=r, column=10).value for r in range(5, ws.max_row + 1)]
-    assert "keywords" in zdroj, zdroj                     # computed source visible
+    # Since the quantity-honesty last mile (#1511) the Zdroj label also carries
+    # the quantity_status ("keywords · množ. assumed") — assert the source
+    # prefix, not exact equality.
+    assert any(z.startswith("keywords") for z in zdroj), zdroj  # computed source visible
     # Důvěra renders classification confidence as a percent. Both fixture elements
     # are clean keyword wins → 0.90 on the signal ladder (W3 reads the shared
     # element_types.yaml; keyword ≤ 0.9). Was "85%" when W3 hardcoded a flat
@@ -232,5 +236,6 @@ def test_honest_blank_rows_marked_distinct_in_export(_mock_engine):
     # the soupis does not read as fully calculated where it was not.
     assert any("NEPOČÍTÁNO" in z for z in zdroj), zdroj
     # …and computed (deck) rows must NOT carry that marker — the two are distinct.
-    assert any(z == "keywords" for z in zdroj), zdroj
-    assert "keywords" != "keywords · NEPOČÍTÁNO"
+    # (The label also carries "· množ. <status>" since #1511 — the distinctness
+    # axis under test is the calc NEPOČÍTÁNO marker, not the quantity status.)
+    assert any(z.startswith("keywords") and "NEPOČÍTÁNO" not in z for z in zdroj), zdroj

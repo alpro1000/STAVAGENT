@@ -196,7 +196,7 @@ These fields are **new in v1** and are what make the honest-blank and coverage g
 | Field | Rule |
 |---|---|
 | `vocabulary_code` | Axis-A code (`DOMAIN.CATEGORY.SUBCATEGORY.VARIANT`). **Inventing a code is forbidden** — an unknown work type becomes a registration proposal in a review queue, never a fabricated code. |
-| `quantity_status` | `from_soupis` \| `computed` \| `assumed` \| `NEPOČÍTÁNO(reason)` |
+| `quantity_status` | `from_soupis` \| `computed` \| `assumed` \| `NEPOČÍTÁNO(reason)`. **Mixed provenance = the worse status:** `computed` requires EVERY factor of the formula to come from the input/document; any defaulted factor (a typical thickness, a default height) downgrades the row to `assumed` — a default must never ride a document value into looking computed. Tool-level refinement `from_input` (verbatim caller value) may be upgraded to `from_soupis` by the joiner that knows. |
 | `status` | `exact` \| `candidate` \| `group_only` \| `not_verified` |
 | `confidence` + `confidence_source` | catalog/regex 1.0 · human 0.99 · ÚRS-web 0.80–0.85 · AI 0.70–0.80 |
 | `coverage` | `covered` \| `not_covered_branch` |

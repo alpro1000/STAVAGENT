@@ -31,7 +31,7 @@ WORK_TEMPLATES = {
         {"work": "Odbednění {element}", "unit": "m²", "qty_factor": "formwork_area", "hsv": "HSV3", "vocabulary_code": "FORMWORK.PANEL.STRIP"},
         {"work": "Výztuž {element} z oceli B500B", "unit": "t", "qty_factor": "rebar_tons", "hsv": "HSV4", "vocabulary_code": "REINFORCEMENT.REBAR.INSTALL"},
         {"work": "Beton {element} {concrete_class}", "unit": "m³", "qty_factor": "volume", "hsv": "HSV2", "vocabulary_code": "CONCRETE.POUR.STRUCTURE"},
-        {"work": "Ošetřování betonu {element}", "unit": "m²", "qty_factor": "formwork_area", "hsv": "HSV2", "vocabulary_code": "CONCRETE.CURING.SURFACE"},
+        {"work": "Ošetřování betonu {element}", "unit": "m²", "qty_factor": "curing_area", "hsv": "HSV2", "vocabulary_code": "CONCRETE.CURING.SURFACE"},
     ],
     "pilota": [
         {"work": "Zřízení pilot svislých {concrete_class}", "unit": "m", "qty_factor": "length", "hsv": "HSV2", "vocabulary_code": "PILING.BORED.INSTALL"},
@@ -43,7 +43,7 @@ WORK_TEMPLATES = {
         {"work": "Výztuž NK z oceli B500B", "unit": "t", "qty_factor": "rebar_tons", "hsv": "HSV4", "vocabulary_code": "REINFORCEMENT.REBAR.INSTALL"},
         {"work": "Beton NK {concrete_class}", "unit": "m³", "qty_factor": "volume", "hsv": "HSV4", "vocabulary_code": "CONCRETE.POUR.STRUCTURE"},
         {"work": "Předpínací výztuž Y1860 S7", "unit": "t", "qty_factor": "prestress_tons", "hsv": "HSV4", "vocabulary_code": "REINFORCEMENT.PRESTRESS.TENDON"},
-        {"work": "Ošetřování betonu NK", "unit": "m²", "qty_factor": "formwork_area", "hsv": "HSV4", "vocabulary_code": "CONCRETE.CURING.SURFACE"},
+        {"work": "Ošetřování betonu NK", "unit": "m²", "qty_factor": "curing_area", "hsv": "HSV4", "vocabulary_code": "CONCRETE.CURING.SURFACE"},
     ],
     "rimsa": [
         {"work": "Římsový vozík — montáž", "unit": "kpl", "qty_factor": "1", "hsv": "HSV4", "vocabulary_code": "FORMWORK.TRAVELER.OPERATE"},
@@ -533,54 +533,88 @@ async def create_work_breakdown(
                     f"odhad: {volume} m³ × {profile['rebar_kg_m3']} kg/m³ (typový default)"
                 )
 
-            # Formwork area: input wins; else per-element estimate, labeled assumed.
+            # Formwork (bednění) vs curing (ošetřování) are DIFFERENT physical
+            # surfaces (review #1510 finding 2): a slab/blinding cures its TOP
+            # (footprint = V / tl.) while its formwork is the side strip; a wall
+            # cures the same faces the formwork covered. Each gets its own
+            # qty_factor ('formwork_area' / 'curing_area') — never shared.
+            #
+            # Provenance rule (SPEC §6.3, ratified after review #1510 finding 4):
+            # MIXED provenance = the WORSE status. `computed` only when EVERY
+            # factor of the formula comes from the input/document; any defaulted
+            # factor (e.g. thickness) downgrades the row to `assumed`.
+            #
+            # Orientation decides FIRST (finding 1): the linear-wall formula
+            # 2×L×H must never capture a horizontal element — a deck's height_m
+            # is not a face height, and 2×L×H on a slab is nonsense labeled
+            # `computed`, the exact sebevědomě-špatně class this axis fights.
+            blinding = etype == "podkladni_beton"
+            horizontal = profile["orientation"] == "horizontal"
+            # Slab thickness for horizontal surfaces: on blinding, a small
+            # height_m (≤ 0.5) is read as the slab thickness — interim carrier
+            # until an explicit thickness_m input exists (deferred with GO).
+            thickness_provided = blinding and height_provided and 0 < height <= 0.5
+            thickness = height if thickness_provided else (0.15 if blinding else 0.25)
+
             fw_area = elem.get("area_m2", 0) or 0
             if fw_area:
                 fw_status = "from_input"
                 fw_formula = f"plocha bednění z podkladu: {fw_area} m² (vstup area_m2)"
             elif volume:
                 fw_status = "assumed"
-                if etype == "podkladni_beton":
-                    # Blinding (SO-250 reality-check): a thin slab's side formwork
-                    # = perimeter × thickness, NOT volume/0.25 (order of magnitude
-                    # off). With a documented length the element is a strip —
-                    # 2 long edges × length × thickness = COMPUTED geometry;
-                    # without it the square-footprint hypothesis is an honest
-                    # fallback (patky, isolated slabs), labeled assumed.
-                    thickness = height if (height_provided and 0 < height <= 0.5) else 0.15
-                    if length_provided:
+                if horizontal:
+                    if blinding and length_provided:
+                        # Strip blinding: 2 long edges × length × thickness.
                         fw_area = 2 * length_m * thickness
-                        fw_status = "computed"
+                        fw_status = "computed" if thickness_provided else "assumed"
                         fw_formula = (
-                            f"2 líce × {length_m} m × tl. {thickness} m "
-                            f"(lineární prvek — vstup length_m)"
+                            f"2 líce × {length_m} m × tl. {thickness} m"
+                            + (" (vstupy length_m + height_m)" if thickness_provided
+                               else " (vstup length_m; tl. typový default)")
                         )
-                    else:
+                    elif blinding:
+                        # No length: square-footprint hypothesis (patky,
+                        # isolated slabs) — an honest fallback, assumed.
                         footprint = volume / thickness
                         fw_area = 4 * (footprint ** 0.5) * thickness
                         fw_formula = (
                             f"odhad: obvod čtvercového půdorysu (4×√({volume}/{thickness})) "
                             f"× tl. {thickness} m — boční bednění podkladního betonu"
                         )
+                    else:
+                        fw_area = volume / 0.25  # soffit estimate: footprint @ typ. tl.
+                        fw_formula = f"odhad: {volume} m³ / 0.25 m (typová tloušťka)"
                 elif length_provided and height_provided and height > 0:
-                    # Linear element with documented length AND height: both
-                    # faces over the full run — deterministic over inputs.
+                    # VERTICAL linear element with documented length AND height:
+                    # both faces over the full run — deterministic over inputs.
                     fw_area = 2 * length_m * height
                     fw_status = "computed"
                     fw_formula = (
                         f"2 líce × {length_m} m × výška {height} m "
                         f"(vstupy length_m + height_m)"
                     )
-                elif profile["orientation"] == "horizontal":
-                    fw_area = volume / 0.25  # rough: volume / thickness
-                    fw_formula = f"odhad: {volume} m³ / 0.25 m (typová tloušťka)"
                 else:
                     width = 0.3
                     fw_area = volume / width * 2
                     fw_formula = f"odhad: {volume} m³ / {width} m × 2 (obě líce)"
             else:
                 fw_status = "assumed"
-                fw_formula = "bez objemu ani plochy — 0"
+                fw_formula = ""
+
+            # Curing surface: horizontal → the TOP (footprint = V / tl.);
+            # vertical → the same faces as the formwork (values coincide, the
+            # factor stays separate so a formwork fix never drags curing along).
+            if volume and horizontal:
+                curing_area = volume / thickness
+                curing_status = "computed" if thickness_provided else "assumed"
+                curing_formula = (
+                    f"horní povrch (půdorys): {volume} m³ / tl. {thickness} m"
+                    + ("" if thickness_provided else " (tl. typový default)")
+                )
+            else:
+                curing_area = fw_area
+                curing_status = fw_status
+                curing_formula = fw_formula
 
             # Step 3: Decompose into work items
             templates = WORK_TEMPLATES.get(etype, WORK_TEMPLATES["default"])
@@ -602,15 +636,25 @@ async def create_work_breakdown(
                 elif factor == "formwork_area":
                     qty = fw_area
                     q_status, q_formula = fw_status, fw_formula
+                elif factor == "curing_area":
+                    qty = curing_area
+                    q_status, q_formula = curing_status, curing_formula
                 elif factor == "rebar_tons":
                     qty = rebar_tons
                     q_status, q_formula = rebar_status, rebar_formula
                 elif factor == "length":
-                    qty = height
-                    if height_provided:
+                    # A documented run length (length_m) IS the length quantity
+                    # (pile length, wall run); height_m stays the legacy carrier.
+                    if length_provided:
+                        qty = length_m
+                        q_status = "from_input"
+                        q_formula = f"délka z podkladu: {length_m} m (vstup length_m)"
+                    elif height_provided:
+                        qty = height
                         q_status = "from_input"
                         q_formula = f"výška z podkladu: {height} m (vstup height_m)"
                     else:
+                        qty = height
                         q_formula = f"typový default výšky: {height} m"
                 elif factor == "prestress_tons":
                     qty = rebar_tons * 0.3 if elem.get("is_prestressed") else 0

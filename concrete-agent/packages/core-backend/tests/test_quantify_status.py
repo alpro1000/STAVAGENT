@@ -147,14 +147,26 @@ def test_blinding_thickness_from_height_input_when_plausible():
 # length_m in the input the formwork is COMPUTED, the hypothesis stays a
 # fallback for elements without a length, honestly `assumed`.)
 
-def test_blinding_with_length_is_linear_and_computed():
-    """SO-250: 515.20 m strip @ 150 mm → 2 × 515.2 × 0.15 = 154.56 m²."""
+def test_blinding_with_length_only_is_linear_but_assumed():
+    """SO-250: 515.20 m strip @ default 150 mm → 2 × 515.2 × 0.15 = 154.56 m².
+    Mixed provenance = the WORSE status (SPEC §6.3, review #1510 finding 4):
+    the thickness is a default, so the row must NOT claim computed."""
     r = _run([{"name": "Podkladní beton", "volume_m3": 251.16,
                "concrete_class": "C12/15", "length_m": 515.2}])
     bedneni = _item(r, "Bednění")
     assert abs(bedneni["quantity"] - 154.56) < 0.01
-    assert bedneni["quantity_status"] == "computed"
+    assert bedneni["quantity_status"] == "assumed"
     assert "length_m" in bedneni["quantity_formula"]
+    assert "default" in bedneni["quantity_formula"]
+
+
+def test_blinding_with_length_and_thickness_is_computed():
+    """Every factor from the input (L + tl. via height_m ≤ 0.5) → computed."""
+    r = _run([{"name": "Podkladní beton", "volume_m3": 251.16,
+               "concrete_class": "C12/15", "length_m": 515.2, "height_m": 0.15}])
+    bedneni = _item(r, "Bednění")
+    assert abs(bedneni["quantity"] - 154.56) < 0.01
+    assert bedneni["quantity_status"] == "computed"
 
 
 def test_wall_with_length_and_height_is_computed():
@@ -181,3 +193,65 @@ def test_length_without_height_stays_assumed_for_walls():
                "concrete_class": "C30/37", "length_m": 515.2}])
     bedneni = _item(r, "Bednění")
     assert bedneni["quantity_status"] == "assumed"
+
+
+# ── Review #1510 fix pack: orientation-first, curing_area, pile length ───────
+
+def test_horizontal_element_with_length_and_height_never_gets_wall_formula():
+    """Finding 1 (sebevědomě-špatně class): a deck with length_m + height_m
+    must NOT get 2×L×H (= 40 m² nonsense labeled computed) — orientation
+    decides FIRST; the horizontal soffit estimate stays volume/0.25."""
+    r = _run([{"name": "NK mostovka", "volume_m3": 605, "concrete_class": "C35/45",
+               "is_prestressed": True, "length_m": 110, "height_m": 2.4}])
+    bedneni = _item(r, "Bednění NK")
+    assert abs(bedneni["quantity"] - 605 / 0.25) < 0.01, bedneni["quantity"]
+    assert bedneni["quantity_status"] == "assumed"
+
+
+def test_blinding_curing_is_top_surface_not_side_strip():
+    """Finding 2: curing and formwork are DIFFERENT surfaces. Blinding cures
+    its TOP (footprint = V/tl. ≈ 1 674 m²), not the 154 m² side strip."""
+    r = _run([{"name": "Podkladní beton", "volume_m3": 251.16,
+               "concrete_class": "C12/15", "length_m": 515.2}])
+    curing = _item(r, "Ošetřování")
+    assert abs(curing["quantity"] - 251.16 / 0.15) < 0.01, curing["quantity"]
+    assert curing["quantity_status"] == "assumed"  # default thickness
+    bedneni = _item(r, "Bednění")
+    assert curing["quantity"] != bedneni["quantity"]
+
+
+def test_wall_curing_equals_formwork_faces():
+    """Vertical elements cure the faces the formwork covered — values coincide,
+    the factor stays separate (a formwork fix must not drag curing along)."""
+    r = _run([{"name": "Dřík zárubní zdi", "volume_m3": 597,
+               "concrete_class": "C30/37", "height_m": 3.5, "length_m": 515.2}])
+    curing = _item(r, "Ošetřování")
+    bedneni = _item(r, "Bednění")
+    assert curing["quantity"] == bedneni["quantity"]
+    assert curing["quantity_status"] == "computed"
+
+
+def test_pile_length_uses_length_m_input():
+    """Finding 5: a documented pile length (length_m) IS the length quantity —
+    it must not be dropped in favor of the 3.0 m height default."""
+    r = _run([{"name": "Piloty OP1 Ø900", "volume_m3": 50.9,
+               "concrete_class": "C30/37", "length_m": 12.0}])
+    piloty = _item(r, "Zřízení pilot")
+    assert piloty["quantity"] == 12.0
+    assert piloty["quantity_status"] == "from_input"
+    assert "length_m" in piloty["quantity_formula"]
+
+
+def test_export_carries_quantity_provenance_to_xlsx_columns():
+    """Finding 10 (last mile): quantity_formula fills the KROS 'VV vzorec'
+    column and quantity_status rides the visible Zdroj label — assumed must
+    scream in the XLSX, not only in JSON."""
+    from app.mcp.tools.export import _items_to_soupis_data
+
+    r = _run([{"name": "Základ zárubní zdi", "volume_m3": 793,
+               "concrete_class": "C25/30"}])
+    data = _items_to_soupis_data(r["items"], None)
+    vyztuz = next(p for p in data["positions"] if "Výztuž" in p["popis"])
+    assert "množ. assumed" in vyztuz["source"]
+    assert "typový default" in (vyztuz["vv_vzorec"] or "")
+    assert vyztuz["quantity_status"] == "assumed"
