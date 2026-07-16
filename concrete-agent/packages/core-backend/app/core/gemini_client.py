@@ -488,9 +488,17 @@ class VertexGeminiClient:
         self,
         prompt: str,
         system_prompt: Optional[str] = None,
-        temperature: float = 0.3
+        temperature: float = 0.3,
+        json_mode: bool = False,
     ) -> Dict[str, Any]:
-        """Call Vertex AI Gemini — same interface as GeminiClient.call()"""
+        """Call Vertex AI Gemini — same interface as GeminiClient.call().
+
+        json_mode=True sets ``response_mime_type=application/json`` so the model
+        is CONSTITUTIONALLY constrained to emit JSON (HOTFIX-1 canon — no more
+        heuristic prose-parsing). Even so the caller must handle a ``raw_text``
+        result: a max_tokens cutoff can still truncate valid JSON mid-stream, so
+        json_mode is a strong default, not a guarantee (typed-error the caller).
+        """
         t0 = time.monotonic()
         full_prompt = prompt
         if system_prompt:
@@ -513,6 +521,10 @@ class VertexGeminiClient:
                     "temperature": temperature,
                     "max_output_tokens": self.max_tokens,
                 }
+                if json_mode:
+                    # Force-JSON (HOTFIX-1): Vertex constrains the decoder to
+                    # valid JSON. Kills the prose→ai_no_parse class.
+                    generation_config["response_mime_type"] = "application/json"
 
                 # Bound the call so a hung Vertex request (429 storm) can't block
                 # ~10 min and 502 the endpoint. On timeout we raise and let the

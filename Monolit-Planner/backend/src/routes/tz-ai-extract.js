@@ -3,12 +3,17 @@
  * POST /api/tz-ai-extract
  *
  * The frontend's deterministic regex pass runs first (conf 1.0/0.9); this
- * route asks CORE (Vertex Gemini via Multi-Role) to fill ONLY the gaps.
- * The prompt is built server-side from the SHARED extraction manifest
- * (tz-ai-extraction.ts) — one source for "what to extract"; the response is
- * validated per-item by the same shared mergeAiParams on the frontend, so
- * this route stays a thin transport: prompt → LLM → robust JSON extraction
- * → raw candidate list. API keys never reach the browser.
+ * route asks CORE to fill ONLY the gaps. The prompt is built server-side from
+ * the SHARED extraction manifest (tz-ai-extraction.ts) — ONE source for "what
+ * to extract" (single-source, no drift); the response is validated per-item by
+ * the same shared mergeAiParams on the frontend.
+ *
+ * HOTFIX-1 (2026-07-16, variant B2 ratified): switched CORE transport from the
+ * free-form chat endpoint (/api/v1/multi-role/ask — no schema, prose parsed by
+ * heuristic → the 502/422 / ai_no_parse class) to the canonical schema-validated
+ * force-JSON route (/api/v1/tz/extract-calculator-fields). The manifest prompt
+ * stays single-source in shared; Core is the force-JSON transport. multi-role/ask
+ * is untouched (other consumers). API keys never reach the browser.
  */
 
 import express from 'express';
@@ -40,33 +45,11 @@ async function fetchWithRetry(url, options, retries = 1) {
 }
 
 /**
- * Robust JSON-array extraction from an LLM answer. Gemini via Multi-Role has
- * no force-JSON yet (known Core TODO) — the answer may wrap the array in
- * prose or a ```json fence. Returns null when no parseable array is found
- * (the route then answers with a typed error, never a fabricated list).
- */
-export function extractJsonArray(text) {
-  if (typeof text !== 'string' || !text.trim()) return null;
-  const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
-  const candidates = [fenced?.[1], text];
-  for (const c of candidates) {
-    if (!c) continue;
-    const start = c.indexOf('[');
-    const end = c.lastIndexOf(']');
-    if (start === -1 || end <= start) continue;
-    try {
-      const parsed = JSON.parse(c.slice(start, end + 1));
-      if (Array.isArray(parsed)) return parsed;
-    } catch { /* try next candidate */ }
-  }
-  return null;
-}
-
-/**
  * POST /api/tz-ai-extract
  * Body: { element_type, tz_text }
  * Returns: { params: [{field, value, quote, confidence}], model }
- *          | { error: 'ai_no_parse' | 'core_unavailable' | 'bad_request', message }
+ *          | { error: 'bad_request' | 'ai_invalid_json' | 'llm_unavailable'
+ *                     | 'core_unavailable', message }  (message = one layer)
  */
 router.post('/', async (req, res) => {
   const { element_type, tz_text } = req.body || {};
@@ -87,41 +70,45 @@ router.post('/', async (req, res) => {
   try {
     const controller = new AbortController();
     const tid = setTimeout(() => controller.abort(), TIMEOUT_MS);
-    const coreRes = await fetchWithRetry(`${CORE_API_URL}/api/v1/multi-role/ask`, {
+    // Canonical schema-validated force-JSON route (HOTFIX-1). Prompt is the
+    // shared-manifest-built prompt (single-source); Core is the force-JSON
+    // transport and returns { params:[{field,value,quote,confidence}], model }
+    // or a TYPED error we propagate verbatim (one error layer, no 502/422 mix).
+    const coreRes = await fetchWithRetry(`${CORE_API_URL}/api/v1/tz/extract-calculator-fields`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        role: 'concrete_specialist',
-        question: prompt,
-        context: { element_type, task: 'tz_field_extraction' },
-      }),
+      body: JSON.stringify({ prompt, element_type }),
       signal: controller.signal,
     });
     clearTimeout(tid);
 
+    const data = await coreRes.json().catch(() => ({}));
+
     if (!coreRes.ok) {
-      logger.warn(`[TzAiExtract] Core returned ${coreRes.status}`);
-      return res.status(502).json({
-        error: 'core_unavailable',
-        message: `AI služba vrátila ${coreRes.status} — zkuste to později.`,
+      // Log the Core DETAIL body (not just the code) so a future contract drift
+      // is debuggable from the planner logs; surface ONE layer to the UI.
+      const detail = data?.message || data?.error || `HTTP ${coreRes.status}`;
+      logger.warn(`[TzAiExtract] Core ${coreRes.status}: ${JSON.stringify(data).slice(0, 300)}`);
+      return res.status(coreRes.status === 422 ? 422 : 502).json({
+        error: data?.error || 'core_unavailable',
+        message: `Extrakce selhala: ${detail}`,
       });
     }
-    const data = await coreRes.json();
-    const answer = data.answer || data.response || '';
-    const params = extractJsonArray(answer);
+
+    const params = Array.isArray(data.params) ? data.params : null;
     if (params === null) {
-      logger.warn('[TzAiExtract] LLM answer had no parseable JSON array');
+      logger.warn('[TzAiExtract] Core 200 but no params array');
       return res.status(422).json({
-        error: 'ai_no_parse',
-        message: 'AI nevrátila parsovatelný seznam parametrů — zkuste to znovu.',
+        error: 'ai_invalid_json',
+        message: 'Extrakce selhala: AI nevrátila platný seznam parametrů — zkuste to znovu.',
       });
     }
-    return res.json({ params, model: data.model_used || 'multi-role' });
+    return res.json({ params, model: data.model || 'vertex-gemini' });
   } catch (err) {
-    logger.warn(`[TzAiExtract] error: ${err.message}`);
+    logger.warn(`[TzAiExtract] transport error: ${err.message}`);
     return res.status(502).json({
       error: 'core_unavailable',
-      message: 'AI služba není dostupná — deterministická extrakce funguje dál.',
+      message: `Extrakce selhala: AI služba není dostupná (${err.message}) — deterministická extrakce funguje dál.`,
     });
   }
 });

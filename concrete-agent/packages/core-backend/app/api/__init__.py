@@ -36,6 +36,7 @@ from app.api.routes_soupis import router as soupis_router
 from app.api.routes_calculator_suggestions import router as calculator_suggestions_router
 from app.api.routes_uep import router as uep_router
 from app.api.routes_orchestrator import router as orchestrator_router
+from app.api.routes_tz_extract import router as tz_extract_router
 
 # Création hlavního API routeru
 api_router = APIRouter()
@@ -49,6 +50,7 @@ api_router.include_router(chat_router)            # /api/chat/*
 api_router.include_router(pdf_router)             # /api/pdf/*
 api_router.include_router(agents_router)          # /api/agents/*
 api_router.include_router(multi_role_router)      # /api/v1/multi-role/*
+api_router.include_router(tz_extract_router)      # /api/v1/tz/* (HOTFIX-1 calculator-field extraction, force-JSON)
 api_router.include_router(summary_router)         # /api/v1/summary/*
 api_router.include_router(workflow_c_router)      # /api/v1/workflow/c/*
 api_router.include_router(accumulator_router)     # /api/v1/accumulator/* (Document Accumulator)

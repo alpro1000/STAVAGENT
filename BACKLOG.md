@@ -5,6 +5,26 @@ items deferred from in-flight PRs that need their own focused work.
 
 ---
 
+## hotfix-followups (2026-07-16) — z HOTFIX-1 + HOTFIX-2 (založeno, neřešeno)
+
+- **P2 — audit dalších konzumentů `/api/v1/multi-role/ask`:** kdo ještě vozí
+  STRUKTURNÍ úlohy (extrakce polí / klasifikace) přes free-form chat endpoint
+  bez schématu + force-JSON? HOTFIX-1 přepnul kalkulátorovou AI-extrakci na
+  kanonický `/api/v1/tz/extract-calculator-fields`; ostatní kandidáti na stejné
+  vyrovnání = grep `multi-role/ask` napříč Monolit/Portal/URS. Class defektu
+  «paralelní pipeline přes chat».
+- **P2 — UX-banner typové neshody → `TASK_Calculator_UI_Transparency`:** když
+  ≥ ½ extrahovaných parametrů nese `(jiný typ)` (manifest říká, že pole nepatří
+  k aktuálnímu element_type), nabídnout přepnutí typu přes classify. Čeká na
+  sběr podnětů; VĚDOMĚ mimo HOTFIX-1 (jen extrakce, ne UX).
+- **P1 — audit auth-díry ostatních kiosků (z HOTFIX-2):** HOTFIX-2 zavřel
+  compute/AI endpointy jen na planner-api. `registry` backend + `portal`
+  backend + URS NEBYLY auditovány na tutéž díru (neautentizovaný compute).
+  Sekvenční kázeň — samostatný PR per služba; NEopravovat pod flagem jiného
+  hotfixu.
+
+---
+
 ## tz-to-worklist — «TZ text → soupis prací všech profesí» (Blok C, plán ratifikován 2026-07-07)
 
 **Severity:** P1 — founder's core product ask («посчитать любую смету»)
