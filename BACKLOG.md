@@ -140,6 +140,37 @@ unifikace nic nerozbila) — behaviorální nálezy jdou samostatně:
 
 ---
 
+## breakdown-geometry-divergence-followups (2026-07-15) — z divergence-pinu
+
+**Source:** recon + pin `tests/test_breakdown_geometry_parity.py` (documented
+divergence, 3 třídy; verdikt-tabulka v `docs/soul.md §9` 2026-07-15). Diagnóza:
+breakdown si postavil TŘETÍ systém geometrických heuristik, aniž viděl
+`element-geometry.ts` NEBO `estimateFormworkArea` (orchestrator), a rozešel se
+s oběma všude, kde se protínají. Vyrovnání = vlastní větev per řádek verdiktu,
+NIKDY «oprava» pinu bez review:
+
+- **P1 — `rebar-defaults-parity` (rozšířeno: W3 profile constants):** W3
+  `ELEMENT_TYPES` (classifier.py) vs TS v4.18 — rebar: zaklady_piliru 100↔120,
+  opery_ulozne_prahy 130↔140, pilota 60↔Ø-gradace 40/90/100 (+TS
+  REBAR_RATES_MATRIX); dopad = přesně třída 17% chyby na výztuži chytané
+  ručně 2026-07-14. PLUS orientation drift (live nález pinu, řádek 4):
+  W3 `zaklady` orientation=vertical, TS je flipnul na horizontal ve v4.17 C1
+  → breakdown počítá bloky stěnovým modelem (200 m² vs TS perimetr ≈27 m²,
+  ~7×). Osa klasifikátoru, ne geometrie.
+- **P2 — `blinding-formwork-flag`:** doménový verdikt (Alexander 2026-07-15):
+  podkladní beton se standardně lije proti stěnám výkopu → default bednění = 0 (jako
+  TS `needs_formwork: false`); vzácný bortovaný случай = explicitní opt-in
+  flag `blinding_formwork: true` na vstupu (default false), status `assumed`.
+  Nahrazuje dnešní «vždy emitovat pásové bednění» (systematické nadhodnocení).
+- **P2 — `breakdown-element-width_m-contract`:** box-rule `2(L+W)·H`
+  z element-geometry je na MCP povrchu STRUKTURNĚ neaplikovatelné —
+  `BreakdownElement` (routes.py) nenese `width_m`. Vyrovnání řádků 1–2
+  verdiktu vyžaduje NEJDŘÍV změnu kontraktu (přidat width_m → obě strany
+  konvergují na jedné formuli). Pin `test_row11_*` zčervená, jakmile se
+  width_m objeví — revisit řádků 1–2 spolu s ním.
+
+---
+
 ## mcp-e2e-zalmanov-findings (2026-07-07) — 5 tickets, all ✅ FIXED same day
 
 **Source:** live MCP E2E test on SO 202 (D6 Olšová Vrata–Žalmanov, most přes
