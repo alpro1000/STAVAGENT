@@ -4,7 +4,7 @@
 **Stupeň:** DSP + PDPS, 31.08.2025 · **Zakázka:** veřejná (SŽ) → OTSKP primary
 
 Kalibrační fixture pro **24. typ elementu — uzavřený rám (tubus), podtyp podchod**
-(`docs/tasks/TASK_Element24_UzavrenyRam_Tubus_v2_1.md`, PR1–PR4).
+(`docs/tasks/TASK_Element24_UzavrenyRam_Tubus_v2_1.md`, PR1–PR5).
 **Golden test:** [`../tz/SO-11-20-04_podchod_golden_test.md`](../tz/SO-11-20-04_podchod_golden_test.md)
 **TZ digest (verbatim citace):** [`SO_112004_tz_facts.md`](SO_112004_tz_facts.md)
 
@@ -36,7 +36,7 @@ Kalibrační fixture pro **24. typ elementu — uzavřený rám (tubus), podtyp 
 ## Co v podkladech NENÍ (honest gaps)
 
 - **Výkres výztuže rámu chybí** → průměry výztuže neodvoditelné, honest-blank
-  (golden §8); **PR4 (golden test v CI) je tím blokován** — viz task §6.
+  (golden §8); **PR5 (golden test v CI) je tím blokován** — viz task §6.
 - Statický výpočet (příloha 3.002 — pažení) není součástí fixture.
 - B.8 ZOV (podrobný postup výstavby) není součástí fixture; TZ §6 nese
   zjednodušený popis — pro golden dostačuje.

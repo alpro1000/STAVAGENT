@@ -61,6 +61,39 @@ Klasifikační signály v TZ: „uzavřená rámová konstrukce", „rám", „t
 „světlá šířka × světlá výška". Otevřený polorám (schodiště, U-profil) NENÍ
 tento typ — zůstává u stávajících typů.
 
+**Rozhodující diskriminátor (Q9, ratifikováno Alexandrem 2026-07-16,
+verifikováno 4 tradicemi):** klasifikaci rozhoduje PRŮŘEZ, ne slova.
+- **Uzavřený průřez** — spodní deska spojující stěny → `uzavreny_ram_tubus`,
+  ať v názvu stojí cokoli.
+- **Otevřený rám / polorám** — stěny na samostatných základech, BEZ spojující
+  dolní desky → NENÍ tubus (rámový most → mostovka/ramovy; schodišťový
+  polorám → schodiště).
+- **Názvy objektů NEROZHODUJÍ** — SŽ administrativně zove každý podchod
+  „železniční most v km X" (past navždy, viz golden SO 11-20-04).
+- Slova podchod/propustek/kolektor/přesypávka = sekundární POTVRZUJÍCÍ
+  signály, nikdy rozhodující.
+- Administrativní hranice propustek/most (světlost 2 m, SŽ) ovlivňuje jen
+  volbu PODTYPU uvnitř rodiny, ne vstup do ní.
+
+Zdroje pravidla (zapsat jako DATA se zdrojem, ne komentář):
+- CZ: ŽPSV TP-02/18 („rámový propustek … charakter uzavřeného rámu");
+  praxe uzavřený rám na základové desce vs. polorám na mikropilotách
+- DE: standardizace Rahmenbauwerke DB (Hennecke/Mölter): Vollrahmen —
+  „Gründung über die Bodenplatte zwischen den Wänden"; Halbrahmen —
+  „Streifenfundament unter den Widerlagerwänden"
+- ES: marco cerrado (solera + hastiales + dintel; Mitma N-II, CivilCAD3000
+  „Cajones") vs. pórtico en U invertida
+- INT: box culvert vs. portal frame
+
+**Dvouúrovňová klasifikace (doplněk §2.1, ratifikováno 2026-07-16):**
+- úroveň OBJEKTU: SO = `uzavreny_ram_tubus / <podtyp>` (Turnov: podchod);
+- úroveň ELEMENTŮ: tubusové DC → fáze rámu (Q1a — JEDEN typ s vnitřním plánem
+  „DC × fáze", invariant „jeden PlannerInput → jeden pour-plán" zachován);
+  schodišťové DC → stávající typ `schodiste` s poznámkou polorám (stěny →
+  kategorie walls). Slovník projektanta Turnov to potvrzuje doslova:
+  „uzavřená rámová konstrukce" (tubus) vs. „otevřený železobetonový polorám"
+  (schodiště).
+
 ### 2.2 Dilatační celky — vstup, ne výpočet
 
 Počet DC je **vstup z projektu**. Kalkulátor ho nesmí dopočítávat z objemu
@@ -146,6 +179,13 @@ Nový typ nese příznak `monolityczny | prefabrikovaný`:
 Klasifikační signál: „prefabrikované rámy", „IZM/ZBM dílce", „montáž" vs.
 „betonáž na místě", „monolitický rám".
 
+Prefab práce (montáž dílců, zálivky spár) nemají kódy ve slovníku → registrace
+VÝHRADNĚ přes proposal-frontu (slovník v1.3), nikdy fabrikovaný kód; confidence
+prefab plánu odpovídá proposal-statusu. **Schéma příznaku navrhnout rozšiřitelné
+na tristav `monolit | prefab | hybrid`** (ES praxe Forte: hastiales + dintel
+prefab, losa de cimentación + losa de compresión in situ) — v PR1 se implementují
+dvě hodnoty, ale schéma nesmí zabetonovat binárnost (ratifikováno 2026-07-16).
+
 ### 2.7 Katalogová politika — potvrzeno reálnou zakázkou
 
 Ve výkazu SO 11-20-04 (45 položek) není jediná položka bednění/odbednění/
@@ -166,6 +206,14 @@ ošetřování/skruže; jediná opalubková položka je R-příplatek za atypick
 
 Zapsat jako data se zdrojem a confidence odpovídající jednomu vzorku.
 Průměry výztuže: bez výkresu výztuže NEZADÁVAT default — AskUserQuestion.
+
+**Kategorie pracnosti (Q4, rozhodnuto Alexandrem 2026-07-16): per-fáze.**
+Dno + strop → `slabs_foundations`, stěny → `walls` (ležatá síť vs. vertikální
+vázání jsou fyzicky různé práce; „walls na vše" by nadhodnotilo pracnost na
+2/3 objemu rámu). Tíha rámových rohů (ohýbané pruty) sedí v indexu 131 kg/m³
+(Turnov — rohy uvnitř čísla), NE v kategorii. Fallback: vyžaduje-li per-fáze
+invazivní zásah do mechaniky matice (víc než mapping fáze→kategorie) →
+`walls` jednotně + tiket „známé nadhodnocení".
 
 ### 2.9 Třídy prostředí
 
@@ -224,6 +272,9 @@ stávajícího UI vzoru, žádný nový design jazyk.
 1. Klasifikátor: TZ podchodu → `uzavreny_ram_tubus / podchod / monolit`.
    TZ rámového propustku → `uzavreny_ram_tubus / ramovy_propustek`.
    Nikdy `jiné`, nikdy `mostovka`. Otevřený polorám tímto typem není.
+   **Anti-kritérium (doplněk 2026-07-16): schodišťový polorám → typ
+   `schodiste`, NIKDY fáze tubusu.** Diskriminátor = uzavřený vs. otevřený
+   průřez (§2.1); název objektu („železniční most…") nerozhoduje.
 2. Prefab propustek → žádné bednění, žádné fáze; jen montáž + zálivky.
 3. Počet DC převzat ze vstupu; kalkulátor ho nedopočítává.
 4. Konvenční technologie: 3 fáze rámu na DC (spodní deska → stěny → strop);
