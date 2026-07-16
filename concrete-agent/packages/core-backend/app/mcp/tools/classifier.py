@@ -153,6 +153,21 @@ ELEMENT_TYPES = {
         "orientation": "horizontal",
         "formwork": ["Tradiční tesařské"],
     },
+    # 24. typ (TASK_Element24_UzavrenyRam_Tubus_v2_1, PR1). rebar 131 = kalibrace
+    # n=1 ze SO 11-20-04 ŽST Turnov (XDC: 389365/389325 = 137 161 kg / 1 046,800 m³,
+    # C30/37; tíha rámových rohů sedí UVNITŘ čísla) — NE norma. Orientation
+    # 'special': tubus má vlastní fázový plán (spodní deska/stěny/strop), obecné
+    # orientation-větve breakdown geometrie jsou pro něj ZAKÁZÁNY (task §2.10,
+    # pin #1514). Formwork: stěny rámové systémy; při PB2/PB3 jen nosníkové
+    # (Top 50 / VARIO GT 24) — filtr §2.5.
+    "uzavreny_ram_tubus": {
+        "label_cs": "Uzavřený rám (tubus) — podchod/propustek/podjezd",
+        "difficulty": 1.1,
+        "rebar_kg_m3": 131,
+        "rebar_range": [90, 160],
+        "orientation": "special",
+        "formwork": ["Framax Xlife", "TRIO", "Top 50", "VARIO GT 24"],
+    },
     "izolacni_stena": {
         "label_cs": "Izolační stěna / bílá vana",
         "difficulty": 1.2,
@@ -355,6 +370,30 @@ def _detect_prestress(name: str) -> bool:
     return bool(re.search(r"předp[ěj]|prestress|post[\s-]?tens|Y1860", name, re.I))
 
 
+# ── 24. typ: podtyp + režim výstavby (task v2.1 §2.1/§2.6, ratifikováno
+# 2026-07-16). Pořadí rozhoduje: propustek PŘED podchodem. Administrativní
+# hranice propustek/most (světlost 2 m, SŽ) ovlivňuje jen PODTYP, ne rodinu.
+_TUBUS_SUBTYPES: list = [
+    ("ramovy_propustek", re.compile(r"propust")),
+    ("podchod", re.compile(r"podchod")),
+    ("podjezd", re.compile(r"podjezd")),
+    ("hloubeny_tunel", re.compile(r"tunel")),
+    ("kolektor", re.compile(r"kolektor")),
+]
+# Prefab signály (IZM/ZBM dílce, prefabrikované rámy, montáž dílců) vs. výchozí
+# monolit (betonáž na místě). Hodnoty schématu: monolit | prefab — rozšiřitelné
+# na tristav s `hybrid` (ES praxe Forte), binárnost NENÍ zabetonována.
+_TUBUS_PREFAB_RE = re.compile(r"prefabrik|\bprefa\b|\bizm\b|\bzbm\b|montaz\s+dil|dilc")
+# Primární closed-frame signál na RAW normalizovaném textu (early-detect):
+# «uzavřený [železobetonový] rám», «uzavřená rámová konstrukce», «tubus».
+# Adjektivum mezi slovy → regex s mezislovem, ne YAML substring.
+_TUBUS_CLOSED_FRAME_RE = re.compile(
+    r"tubus|uzavren\w*(?:\s+\w+){0,2}\s+ram(?:\b|ov)|uzavren\w*\s+ramov"
+)
+# Otevřený rám / polorám NIKDY tubus (Q9 + AC1) — stráž early-detectu.
+_TUBUS_OPEN_GUARD_RE = re.compile(r"poloram|otevren")
+
+
 def _result(
     etype: str,
     source: str,
@@ -364,6 +403,8 @@ def _result(
     *,
     candidates: Optional[list] = None,
     reject_reason: Optional[str] = None,
+    subtype: Optional[str] = None,
+    construction_mode: Optional[str] = None,
 ) -> dict:
     """Assemble a classify response from a resolved W3 element type + the
     normalization result. A reject (reject_reason set) flags is_concrete_element
@@ -390,6 +431,11 @@ def _result(
     if reject_reason is not None:
         out["is_concrete_element"] = False
         out["reject_reason"] = reject_reason
+    # 24. typ: aditivní pole JEN pro uzavreny_ram_tubus (ostatních 23 typů se
+    # response shape nemění — zpětná kompatibilita task §3).
+    if construction_mode is not None:
+        out["construction_mode"] = construction_mode
+        out["subtype"] = subtype
     return out
 
 
@@ -420,6 +466,22 @@ def _classify(
             reject_reason="gabion_non_concrete",
         )
 
+    # UZAVŘENÝ RÁM early-detect (24. typ, zrcadlo GABION vzoru — sken RAW textu):
+    # head-noun normalizer řeže participiální ocas, takže golden věta «nosná
+    # konstrukce je navržena jako uzavřený železobetonový rám…» dorazí do
+    # keyword matcheru jako holé «nosná konstrukce» (= deck) a closed-frame
+    # signál se ztratí. Diskriminátor Q9: uzavřený průřez BIJE head-noun i
+    # název objektu. Vylučovací stráž: polorám/otevřený (schodišťový polorám
+    # NENÍ tubus, AC1). Slova podchod/propustek zůstávají sekundární — ta řeší
+    # keyword tier přes YAML, ne tento early-detect.
+    raw_norm = _normalize(name)
+    if not _TUBUS_OPEN_GUARD_RE.search(raw_norm) and _TUBUS_CLOSED_FRAME_RE.search(raw_norm):
+        return _result(
+            "uzavreny_ram_tubus", "keywords", 0.9, norm, name,
+            subtype=next((s for s, p in _TUBUS_SUBTYPES if p.search(raw_norm)), None),
+            construction_mode="prefab" if _TUBUS_PREFAB_RE.search(raw_norm) else "monolit",
+        )
+
     engine_type, confidence, candidates = _match_keyword_type(norm.canonical_name, is_bridge)
     if engine_type is None:
         return _result("jine", "fallback", 0.3, norm, name)
@@ -430,9 +492,17 @@ def _classify(
     etype = type_core.get(engine_type, {}).get("w3_name", engine_type)
     reject = type_core.get(engine_type, {}).get("family") == "reject"
     reason = _REJECT_REASONS.get(etype, "not_concrete_element") if reject else None
+    # 24. typ: deterministický podtyp + režim výstavby (task v2.1 §2.1/§2.6).
+    subtype = None
+    mode = None
+    if etype == "uzavreny_ram_tubus":
+        n = _normalize(name)
+        subtype = next((s for s, p in _TUBUS_SUBTYPES if p.search(n)), None)
+        mode = "prefab" if _TUBUS_PREFAB_RE.search(n) else "monolit"
     return _result(
         etype, "keywords", confidence, norm, name,
         candidates=candidates, reject_reason=reason,
+        subtype=subtype, construction_mode=mode,
     )
 
 
