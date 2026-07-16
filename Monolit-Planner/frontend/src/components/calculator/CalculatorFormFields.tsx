@@ -532,10 +532,128 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                 </div>
               );
             })()}
+            {/* 2026-07-16: TUBUS geometry block (element 24 — uzavřený rám).
+                Geometry comes EXCLUSIVELY from these explicit inputs (§2.10):
+                the engine's honest-blank gate reports missing fields instead
+                of a V/thickness heuristic. Same step-3 slot pattern as pilota. */}
+            {(() => {
+              if (form.element_type !== 'uzavreny_ram_tubus') return null;
+              const isPrefab = form.tubus_construction_mode === 'prefab';
+              // Geometric-volume preview per the engine formulas (cross-check
+              // vs the výkaz volume — never a replacement, Q10).
+              const L = parseFloat(form.tubus_section_length_m) || 0;
+              const W = parseFloat(form.tubus_clear_width_m) || 0;
+              const H = parseFloat(form.tubus_clear_height_m) || 0;
+              const tb = parseFloat(form.tubus_bottom_thickness_m) || 0;
+              const tw = parseFloat(form.tubus_wall_thickness_m) || 0;
+              const tt = parseFloat(form.tubus_top_thickness_m) || 0;
+              const dc = parseInt(form.tubus_dc_count, 10) || 0;
+              const outerW = W + 2 * tw;
+              const vPerDc = L > 0 && W > 0 && H > 0 && tb > 0 && tw > 0 && tt > 0
+                ? L * outerW * tb + 2 * L * H * tw + L * outerW * tt
+                : 0;
+              return (
+                <div style={{
+                  padding: '10px 12px', marginBottom: 10,
+                  background: 'var(--r0-slate-50, #f8fafc)',
+                  border: '1px solid var(--r0-slate-200, #e2e8f0)',
+                  borderRadius: 6,
+                }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--r0-slate-600, #475569)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    Geometrie uzavřeného rámu (tubus)
+                  </div>
+                  <Field label="Režim výstavby">
+                    <select style={inputStyle} value={form.tubus_construction_mode}
+                      onChange={e => update('tubus_construction_mode', e.target.value as any)}>
+                      <option value="">Monolitický (default)</option>
+                      <option value="monolit">Monolitický (fázová betonáž)</option>
+                      <option value="prefab">Prefabrikovaný (montáž dílců + zálivky)</option>
+                    </select>
+                  </Field>
+                  {isPrefab && (
+                    <div style={{ marginTop: 6, marginBottom: 6, padding: '6px 10px', background: '#fffbeb', border: '1px solid #fde68a', borderRadius: 4, fontSize: 11, color: '#92400e' }}>
+                      Prefabrikovaný tubus: bednění a fáze betonáže se negenerují —
+                      plán nese jen montáž dílců + zálivky spár (rozpad prací přes
+                      work-breakdown, množství jen ze vstupů výrobce).
+                    </div>
+                  )}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                    <Field label="Počet dilatačních celků" hint="vždy ze zadání — nedopočítává se">
+                      <NumInput style={inputStyle} value={form.tubus_dc_count} min={1} step={1}
+                        onChange={v => update('tubus_dc_count', String(Math.max(1, Math.round(Number(v)))))} placeholder="10" />
+                    </Field>
+                    <Field label="Délka sekce (m)" hint="podél osy tubusu">
+                      <NumInput style={inputStyle} value={form.tubus_section_length_m} min={1} step={0.5}
+                        onChange={v => update('tubus_section_length_m', String(v))} placeholder="12" />
+                    </Field>
+                  </div>
+                  {!isPrefab && (<>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                    <Field label="Světlá šířka (m)">
+                      <NumInput style={inputStyle} value={form.tubus_clear_width_m} min={0.5} step={0.1}
+                        onChange={v => update('tubus_clear_width_m', String(v))} placeholder="5.5" />
+                    </Field>
+                    <Field label="Světlá výška (m)" hint="= pracovní výška podpěr">
+                      <NumInput style={inputStyle} value={form.tubus_clear_height_m} min={0.5} step={0.1}
+                        onChange={v => update('tubus_clear_height_m', String(v))} placeholder="3.0" />
+                    </Field>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6 }}>
+                    <Field label="Tl. spodní desky (m)">
+                      <NumInput style={inputStyle} value={form.tubus_bottom_thickness_m} min={0.1} step={0.05}
+                        onChange={v => update('tubus_bottom_thickness_m', String(v))} placeholder="0.45" />
+                    </Field>
+                    <Field label="Tl. stěn (m)">
+                      <NumInput style={inputStyle} value={form.tubus_wall_thickness_m} min={0.1} step={0.05}
+                        onChange={v => update('tubus_wall_thickness_m', String(v))} placeholder="0.50" />
+                    </Field>
+                    <Field label="Tl. stropu (m)">
+                      <NumInput style={inputStyle} value={form.tubus_top_thickness_m} min={0.1} step={0.05}
+                        onChange={v => update('tubus_top_thickness_m', String(v))} placeholder="0.45" />
+                    </Field>
+                  </div>
+                  <Field label="Technologie bednění" hint="auto = volba řízená daty (A/B)">
+                    <select style={inputStyle} value={form.tubus_technology}
+                      onChange={e => update('tubus_technology', e.target.value as any)}>
+                      <option value="">Auto (doporučení dle profilu)</option>
+                      <option value="conventional">A — konvenční (3 fáze na DC)</option>
+                      <option value="traveler">B — bednící vozík (stěny+strop, 2 fáze na DC)</option>
+                    </select>
+                  </Field>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 8, fontSize: 12, color: 'var(--r0-slate-600)', cursor: 'pointer', userSelect: 'none' }}>
+                    <input type="checkbox" checked={form.tubus_visual_concrete}
+                      onChange={e => update('tubus_visual_concrete', e.target.checked)} />
+                    Pohledový beton PB2/PB3 nebo reliéf (jen nosníkové stěnové systémy)
+                  </label>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 4, fontSize: 12, color: 'var(--r0-slate-600)', cursor: 'pointer', userSelect: 'none' }}>
+                    <input type="checkbox" checked={form.tubus_internal_structures}
+                      onChange={e => update('tubus_internal_structures', e.target.checked)} />
+                    Vnitřní konstrukce v sekcích (niky, šachty, schodiště)
+                  </label>
+                  </>)}
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 4, fontSize: 12, color: 'var(--r0-slate-600)', cursor: 'pointer', userSelect: 'none' }}>
+                    <input type="checkbox" checked={form.tubus_exposure_from_documentation}
+                      onChange={e => update('tubus_exposure_from_documentation', e.target.checked)} />
+                    Třídy prostředí převzaty z dokumentace (XD1+XC4+XF2+XA1 je pro tubus běžné)
+                  </label>
+                  {vPerDc > 0 && (
+                    <div style={{
+                      marginTop: 8, padding: '6px 10px', background: 'white',
+                      border: '1px dashed var(--r0-slate-300)', borderRadius: 4,
+                      fontSize: 11, color: 'var(--r0-slate-600)', fontFamily: "var(--r0-font-mono, 'JetBrains Mono', monospace)",
+                    }}>
+                      Geometrický objem rámu / DC: <strong>{vPerDc.toFixed(1)} m³</strong>
+                      {dc > 0 && (<>{' · '}celkem: <strong>{(vPerDc * dc).toFixed(1)} m³</strong> ({dc}× DC)</>)}
+                      {' — '}kontrolní číslo vůči výkazu, nikdy náhrada
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
             {(() => {
               const elemType = form.element_type;
-              // Pilota uses its own geometry block above — skip the standard hint block.
-              if (elemType === 'pilota') return null;
+              // Pilota + tubus use their own geometry blocks above — skip the standard hint block.
+              if (elemType === 'pilota' || elemType === 'uzavreny_ram_tubus') return null;
               const hint = ELEMENT_DIMENSION_HINTS[elemType];
               if (!hint) return null;
 

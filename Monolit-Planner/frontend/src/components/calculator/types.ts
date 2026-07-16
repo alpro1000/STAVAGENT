@@ -259,6 +259,36 @@ export interface FormState {
   pile_cap_length_m: string;
   pile_cap_width_m: string;
   pile_cap_height_m: string;
+
+  // ─── Tubus-specific (element 24 — uzavřený rám, 2026-07-16) ────────────
+  // Read ONLY when element_type === 'uzavreny_ram_tubus'. Routed to
+  // PlannerInput.construction_mode + tubus_* in useCalculator.buildInput.
+  // Geometry comes EXCLUSIVELY from these explicit inputs (§2.10) — empty
+  // required fields yield the engine's honest NEPOČÍTÁNO, never a default.
+  /** Režim výstavby: monolit (fázová betonáž) | prefab (jen montáž + zálivky). */
+  tubus_construction_mode: '' | 'monolit' | 'prefab';
+  /** Počet dilatačních celků — VŽDY ze zadání, kalkulátor ho nedopočítává (AC3). */
+  tubus_dc_count: string;
+  /** Světlá šířka rámu (m). */
+  tubus_clear_width_m: string;
+  /** Světlá výška rámu (m) — pracovní výška podpěrné konstrukce (AC7). */
+  tubus_clear_height_m: string;
+  /** Tloušťka spodní desky (m). */
+  tubus_bottom_thickness_m: string;
+  /** Tloušťka stěn (m). */
+  tubus_wall_thickness_m: string;
+  /** Tloušťka stropu (m). */
+  tubus_top_thickness_m: string;
+  /** Délka jedné sekce podél osy (m). */
+  tubus_section_length_m: string;
+  /** Technologie bednění: auto (data-driven A/B) | conventional (3 fáze) | traveler (vozík, 2 fáze). */
+  tubus_technology: '' | 'auto' | 'conventional' | 'traveler';
+  /** Pohledový beton PB2/PB3 / reliéf — jen nosníkové stěnové systémy (AC9). */
+  tubus_visual_concrete: boolean;
+  /** Vnitřní konstrukce (niky, šachty, schodiště) — signál pro konvenční technologii. */
+  tubus_internal_structures: boolean;
+  /** Třídy prostředí převzaty z dokumentace → bez varování (§2.9). */
+  tubus_exposure_from_documentation: boolean;
 }
 
 // ─── Composite part (Fáze 2 #7 Gate 5) ──────────────────────────────────────
@@ -486,4 +516,17 @@ export const DEFAULT_FORM: FormState = {
   pile_cap_length_m: '',
   pile_cap_width_m: '',
   pile_cap_height_m: '',
+  // Tubus defaults — only consumed when element_type === 'uzavreny_ram_tubus'
+  tubus_construction_mode: '',
+  tubus_dc_count: '',
+  tubus_clear_width_m: '',
+  tubus_clear_height_m: '',
+  tubus_bottom_thickness_m: '',
+  tubus_wall_thickness_m: '',
+  tubus_top_thickness_m: '',
+  tubus_section_length_m: '',
+  tubus_technology: '',
+  tubus_visual_concrete: false,
+  tubus_internal_structures: false,
+  tubus_exposure_from_documentation: false,
 };

@@ -1328,6 +1328,36 @@ export default function useCalculator() {
       }
     }
 
+    // === Tubus fields (element 24) — forwarded ONLY when element_type
+    // === 'uzavreny_ram_tubus'. Geometry comes exclusively from these
+    // explicit inputs (§2.10) — a missing value is NOT defaulted here; the
+    // engine's honest-blank gate reports exactly which field is missing.
+    if (form.element_type === 'uzavreny_ram_tubus') {
+      const num = (s: string) => {
+        const v = parseFloat(s);
+        return Number.isFinite(v) && v > 0 ? v : undefined;
+      };
+      if (form.tubus_construction_mode) input.construction_mode = form.tubus_construction_mode;
+      const dc = parseInt(form.tubus_dc_count, 10);
+      if (Number.isFinite(dc) && dc > 0) input.tubus_dc_count = dc;
+      const cw = num(form.tubus_clear_width_m);
+      if (cw) input.tubus_clear_width_m = cw;
+      const chh = num(form.tubus_clear_height_m);
+      if (chh) input.tubus_clear_height_m = chh;
+      const tb = num(form.tubus_bottom_thickness_m);
+      if (tb) input.tubus_bottom_thickness_m = tb;
+      const tw = num(form.tubus_wall_thickness_m);
+      if (tw) input.tubus_wall_thickness_m = tw;
+      const tt = num(form.tubus_top_thickness_m);
+      if (tt) input.tubus_top_thickness_m = tt;
+      const sl = num(form.tubus_section_length_m);
+      if (sl) input.tubus_section_length_m = sl;
+      if (form.tubus_technology) input.tubus_technology = form.tubus_technology as any;
+      if (form.tubus_visual_concrete) input.tubus_visual_concrete = true;
+      if (form.tubus_internal_structures) input.tubus_internal_structures = true;
+      if (form.tubus_exposure_from_documentation) input.exposure_from_documentation = true;
+    }
+
     // ── tz_facts wire (Part B/C live) ────────────────────────────────────
     // Derive the documented construction technology + pour-stage count from
     // the pasted TZ text and pass it as the SEPARATE comparison source for

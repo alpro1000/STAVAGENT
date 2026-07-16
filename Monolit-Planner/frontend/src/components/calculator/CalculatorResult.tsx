@@ -702,6 +702,15 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
         <PileCards pile={plan.pile} />
       )}
 
+      {/* 2026-07-16: TUBUS phase card (element 24 — uzavřený rám). Rendered
+          IN ADDITION to the standard formwork card (walls still get a real
+          wall system): phases per DC, A/B technology decision with reasons,
+          total pour count (AC4: 10 DC × 3 fáze = 30 betonáží). plan.tubus is
+          populated by the orchestrator's runTubusPath. */}
+      {plan.element.type === 'uzavreny_ram_tubus' && (plan as any).tubus && (
+        <TubusCards tubus={(plan as any).tubus} />
+      )}
+
       {/* Standard formwork card — hidden for piles (no formwork on a bored pile).
           Terminology Commit 4 (2026-04-17): card title + icon branch on
           pour_role so users see the actual layer — "🏗️ Skruž" (nosníky,
@@ -1281,6 +1290,98 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
         </Card>
       )}
     </div>
+  );
+}
+
+// ─── TUBUS: Uzavřený rám phase card (element 24, 2026-07-16) ────────────────
+
+/**
+ * TubusCards — fázový plán betonáže uzavřeného rámu na dilatační celky.
+ *
+ * Rendered by CalculatorResult IN ADDITION to the standard formwork card when
+ * plan.element.type === 'uzavreny_ram_tubus'. Data = plan.tubus (orchestrator
+ * runTubusPath): phases per DC (3 conventional / 2 traveler), A/B technology
+ * decision with data-driven reasons + the NOT-chosen alternative (§2.4 — the
+ * calculator proposes both), total pour count (AC4), support working height =
+ * SVĚTLÁ výška rámu (AC7 — never the slab thickness).
+ */
+function TubusCards({ tubus }: { tubus: any }) {
+  const techLabelCs: Record<string, string> = {
+    conventional: 'A — konvenční (spodní deska → stěny → strop)',
+    traveler: 'B — bednící vozík (stěny + strop jedna fáze)',
+  };
+  const phases: any[] = tubus.phases || [];
+  return (
+    <Card
+      title={`Fáze betonáže — uzavřený rám (${tubus.dc_count}× DC)`}
+      icon={<span>🚇</span>}
+    >
+      <div className="r0-grid-3">
+        <div>
+          <div style={subTitle}>Technologie</div>
+          <Row label="Volba" value={techLabelCs[tubus.technology?.choice] ?? tubus.technology?.choice ?? '—'} />
+          <Row label="Fází na 1 DC" value={String(tubus.technology?.phases_per_dc ?? phases.length)} />
+          <Row label="Betonáží rámu celkem" value={`${formatNum(tubus.pour_count, 0)} (${tubus.dc_count} DC × ${tubus.technology?.phases_per_dc ?? phases.length} fáze)`} />
+        </div>
+        <div>
+          <div style={subTitle}>Podpěrná konstrukce</div>
+          <Row label="Pracovní výška" value={`${formatNum(tubus.support_height_m, 2)} m (světlá výška rámu)`} />
+          <Row label="Stěnový systém" value={tubus.wall_formwork_system ?? '—'} />
+        </div>
+        <div>
+          <div style={subTitle}>Kontrola geometrie</div>
+          <Row label="Geometrický objem" value={`${formatNum(tubus.geometric_volume_m3, 1)} m³`} />
+          <div style={{ fontSize: 10, color: 'var(--r0-slate-400)', fontStyle: 'italic', marginTop: 4 }}>
+            Kontrolní číslo vůči výkazu — výkazová položka může krýt i další
+            konstrukce; nikdy náhrada výkazu.
+          </div>
+        </div>
+      </div>
+
+      {phases.length > 0 && (
+        <div style={{ marginTop: 10, overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+            <thead>
+              <tr>
+                <th style={thStyle}>Fáze (na 1 DC)</th>
+                <th style={thStyle}>Beton (m³)</th>
+                <th style={thStyle}>Bednění (m²)</th>
+                <th style={thStyle}>Ošetřování (m²)</th>
+                <th style={thStyle}>Kategorie pracnosti výztuže</th>
+              </tr>
+            </thead>
+            <tbody>
+              {phases.map((p: any) => (
+                <tr key={p.phase}>
+                  <td style={tdStyle}>{p.label_cs}</td>
+                  <td style={tdStyle}>{formatNum(p.volume_m3_per_dc, 2)}</td>
+                  <td style={tdStyle}>{formatNum(p.formwork_m2_per_dc, 2)}</td>
+                  <td style={tdStyle}>{formatNum(p.curing_m2_per_dc, 2)}</td>
+                  <td style={tdStyle}>{p.rebar_category === 'walls' ? 'stěny (vertikální vázání)' : 'desky/základy (ležatá síť)'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {(tubus.technology?.reasons_cs?.length ?? 0) > 0 && (
+        <div style={{ marginTop: 10, padding: '8px 10px', background: 'var(--r0-slate-50, #f8fafc)', border: '1px solid var(--r0-slate-200, #e2e8f0)', borderRadius: 4, fontSize: 11, color: 'var(--r0-slate-600)' }}>
+          <strong>Zdůvodnění volby (řízeno daty):</strong>
+          <ul style={{ margin: '4px 0 0 16px', padding: 0 }}>
+            {tubus.technology.reasons_cs.map((r: string, i: number) => (
+              <li key={i}>{r}</li>
+            ))}
+          </ul>
+          {tubus.technology?.alternative && (
+            <div style={{ marginTop: 4, fontStyle: 'italic' }}>
+              Alternativa: {techLabelCs[tubus.technology.alternative] ?? tubus.technology.alternative} —
+              kalkulátor navrhuje obě varianty, volbu potvrzuje přípravář.
+            </div>
+          )}
+        </div>
+      )}
+    </Card>
   );
 }
 
