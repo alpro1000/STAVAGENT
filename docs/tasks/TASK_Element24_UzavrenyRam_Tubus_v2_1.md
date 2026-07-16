@@ -6,7 +6,10 @@ pin #1514) · §2.11 Dotazy na projektanta (třetí kategorie nálezů) · AC 14
 Změny v1 → v2: typ je rodina (tubus s podtypy); výběr technologie bednění
 (konvenční vs. bednící vozík); PB3 filtr systémů; prefab větev; pětifázová sekvence.
 
-**Sekvence:** PR1 ze 4. Následuje XDC adapter (PR2) → Fix 3+4 (PR3) → golden test (PR4).
+**Sekvence:** PR1 z 5 (pořadí rozhodnuto 2026-07-16, risk-ranking podle peněz).
+Následuje breakdown-geometry parity (PR2 — vyrovnání Python heuristik na kanonický
+TS engine, sejmutí pinů #1514 fixem, ne fixací) → XDC adapter (PR3) → Fix 3+4 (PR4)
+→ golden test v CI (PR5, blokován chybějícím výkresem výztuže).
 **Rozsah:** Core Engine + MCP + Monolit-Planner frontend. Jedna větev, jeden PR.
 
 ---
@@ -250,7 +253,8 @@ stávajícího UI vzoru, žádný nový design jazyk.
 
 ## 6. Mimo rozsah
 
-XDC parser (PR2) · Fix 3+4 (PR3) · golden test SO 11-20-04 (PR4) ·
+Breakdown-geometry parity / vyrovnání heuristik (PR2) · XDC parser (PR3) ·
+Fix 3+4 (PR4) · golden test SO 11-20-04 v CI (PR5) ·
 změny 7-engine pipeline nad rámec nového typu · žádný PR bez pokynu,
 jedna větev, nic paralelně.
 
