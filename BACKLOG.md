@@ -5,6 +5,61 @@ items deferred from in-flight PRs that need their own focused work.
 
 ---
 
+## normalizer-sweep-findings (2026-07-16) — adversarial svip W3 klasifikátoru (element 24 Wave 5b; NÁLEZY SE NEČINÍ V PR1)
+
+**Pravidlo ratifikováno Alexandrem 2026-07-16:** svip = pouze REPORT; fixy
+starých typů = samostatný PR PO breakdown parity, podle této tabulky. PR1
+(element 24) se mergeuje s known-unfixed nálezy.
+
+**Třída defektu:** `_TAIL_MARKERS` v `element_name_normalizer.py` řeže jméno
+na prvním markeru (`z/ze`, `kotven*`, `obložen*`, `vlepen*`, `pro založen`,
+`na líci`) — signál žijící ZA markerem (materiál, prostý beton, prefab) je
+pro rule-table neviditelný. Druhá odhalená třída: dvojité genitivy
+(`základů pilířů`) a wall-kontext, který neřídí finální typ.
+
+**Metoda:** 30 adversariálních frází přes 23 před-tubusových typů, W3
+`_classify` (bez sítě/DB), ruční re-triage proti reálné W3 typové sadě
+(W3 je hrubší než engine: `deska`≡engine `stropni_deska` přes MCP alias;
+`zakladova_patka`/`zaklady_oper` v W3 neexistují → očekávání = `zaklady`).
+Skript: session scratchpad `normalizer_sweep.py` (reprodukovatelné).
+
+### ⛔ CRITICAL — sebevědomě špatně (conf 0.9), mění pracovní plán
+
+| Fráze | Očekáváno | Skutečně (conf) | Mechanismus |
+|---|---|---|---|
+| Základy z prostého betonu | `podkladni_beton`/`zaklady` (prostý) | `zaklady_piliru` (0.9) | «prostého betonu» za `z` odříznuto → ŽB default → fabrikovaná výztuž; navíc `_piliru` bez jediného pilířového signálu |
+| Zdivo nadzákladové z lomového kamene | `zdivo_obklad` (reject) | `zaklady_piliru` (0.9) | reject-signál «zdivo» přebit substringem «nadzákladové»→základ; kámen za `z` odříznut — kamenné zdivo dostane betonový plán |
+| Bednění základů pilířů | `zaklady_piliru` | `driky_piliru` (0.9) | dvojitý genitiv «základů pilířů» — 'základů' potlačen, vyhrál pilíř → základy oceněny jako dříky (bednění/výztuž úplně jiné) |
+| Úhlová zeď ze železobetonu na líci obložená | `operna_zed` | `stena` (0.9) | `_WALL_CONTENT` úhlovou zeď VIDÍ (kontext retaining_wall), ale finální typ stejně building `stena` — kontext neřídí typ |
+
+### ⚠️ WARNING — miss, ale čestný fallback NEBO špatný fine-typ v rodině
+
+| Fráze | Očekáváno | Skutečně (conf) | Mechanismus |
+|---|---|---|---|
+| Deska z prostého betonu pod základy | `podkladni_beton` | `jine` (0.3) | tail-cut nechá jen «Deska», rule-table samostatnou «desku» nechytá → honest jine (scope-router), ne confident-wrong |
+| Stěny kotvené do skalního masivu | `stena` | `jine` (0.3) | «Stěny» (plurál) po kotven*-cutu rule-table nechytá; honest fallback |
+| Patky z dílců | `zaklady` | `zaklady_piliru` (0.9) | rodina drží; `_piliru` bez pilířového signálu + prefab osa chybí (pinned gap Gate 6 monolith-classification — «Z DÍLCŮ» je beton-typ) |
+| Základy opěr z betonu C25/30 | `zaklady` | `zaklady_piliru` (0.9) | genitiv «opěr» nesmí dávat pilíře; engine má `zaklady_oper`, W3 ne — při MCP classify-delegaci se srovná |
+
+### OK (22/30) — drží mj. tyto zapinnuté třídy
+
+genitivy #1507 (dříků/opěr a křídel/příčníky mostní) · «pro založení X»
+nepřetahuje na X · participia mimo kurátorský set (vetknutý, pažené) ·
+NK/mostovka z hlavy · AC1 anti-kritérium (otevřený polorám → schodiste) ·
+«Zárubní zeď z gabionů» → `gabionova_zed` (přesnější než očekávání — ok) ·
+«Stropní deska z panelů Spiroll» → `deska` (≡ engine stropni_deska, alias).
+
+**Priorita fixů (po breakdown parity, samostatný PR):**
+P1 = 4× critical (každý = golden-test + cílený fix; NEROZŠIŘOVAT
+`_TAIL_MARKERS` plošně — fix per mechanismus: prostý-beton signál číst PŘED
+cutem jako materiálovou osu; reject-vocab prioritu nad substring «základ»;
+dvojitý genitiv «základů X» → základy; wall-context → typ).
+P2 = 2× honest-jine (rule-table plurály/holá «deska»).
+P3 = `_piliru` default bez pilířového signálu (2× warning) — souvisí
+s budoucí MCP classify-delegací (zaklady_oper parita).
+
+---
+
 ## hotfix-followups (2026-07-16) — z HOTFIX-1 + HOTFIX-2 (založeno, neřešeno)
 
 - **P2 — audit dalších konzumentů `/api/v1/multi-role/ask`:** kdo ještě vozí
