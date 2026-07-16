@@ -48,6 +48,7 @@ import { autoImportOtskpIfNeeded } from './src/services/otskpAutoImport.js';
 
 // Middleware
 import { apiLimiter, authLimiter, uploadLimiter, otskpLimiter } from './src/middleware/rateLimiter.js';
+import { requireAuthOrServiceKey } from './src/middleware/auth.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -173,7 +174,7 @@ app.get('/healthcheck', (req, res) => {
 });
 
 // API Routes
-app.use('/api/upload', uploadLimiter, uploadRoutes);
+app.use('/api/upload', requireAuthOrServiceKey, uploadLimiter, uploadRoutes);        // HOTFIX-2: compute/parse
 app.use('/api/positions', positionsRoutes);
 app.use('/api/bridges', bridgesRoutes);
 app.use('/api/monolith-projects', monolithProjectsRoutes);
@@ -182,25 +183,25 @@ app.use('/api/export', exportRoutes);
 app.use('/api/mapping', mappingRoutes);
 app.use('/api/config', configRoutes);
 app.use('/api/snapshots', snapshotsRoutes);
-app.use('/api/otskp', otskpLimiter, otskpRoutes);
+app.use('/api/otskp', requireAuthOrServiceKey, otskpLimiter, otskpRoutes);            // HOTFIX-2: catalog search
 // app.use('/api/soupis', soupisRoutes); — moved to Portal
-app.use('/api/documents', uploadLimiter, documentsRoutes);
-app.use('/api/sheathing', sheathingRoutes);
-app.use('/api/formwork-calculator', formworkCalcRoutes);
-app.use('/api/formwork-assistant', formworkAssistantRoutes);
+app.use('/api/documents', requireAuthOrServiceKey, uploadLimiter, documentsRoutes);   // HOTFIX-2: compute/parse
+app.use('/api/sheathing', requireAuthOrServiceKey, sheathingRoutes);                  // HOTFIX-2: compute
+app.use('/api/formwork-calculator', requireAuthOrServiceKey, formworkCalcRoutes);     // HOTFIX-2: compute
+app.use('/api/formwork-assistant', requireAuthOrServiceKey, formworkAssistantRoutes); // HOTFIX-2: AI
 app.use('/api/export-to-registry', exportToRegistryRoutes);
 app.use('/api/import-from-registry', importFromRegistryRoutes);
 app.use('/api/r0', r0Routes);
-app.use('/api/kb/research', kbResearchRoutes);
+app.use('/api/kb/research', requireAuthOrServiceKey, kbResearchRoutes);               // HOTFIX-2: AI (Perplexity)
 app.use('/api/v1/registry', registryRoutes);
 app.use('/api/relink', relinkRoutes);
-app.use('/api/planner-advisor', plannerAdvisorRoutes);
-app.use('/api/tz-ai-extract', tzAiExtractRoutes);
+app.use('/api/planner-advisor', requireAuthOrServiceKey, plannerAdvisorRoutes);       // HOTFIX-2: AI (Core)
+app.use('/api/tz-ai-extract', requireAuthOrServiceKey, tzAiExtractRoutes);            // HOTFIX-2: AI (Core)
 app.use('/api/planner-variants', plannerVariantsRoutes);
 // Canonical engine delegate (SSOT): POST /api/calculate + /api/classify.
 // Thin wrappers over @stavagent/monolit-shared (planElement / classifyElement)
 // so the MCP/agent surface delegates instead of running a divergent calculator.
-app.use('/api', engineRoutes);
+app.use('/api', requireAuthOrServiceKey, engineRoutes);                               // HOTFIX-2: calculate/classify/calculate-from-passport
 
 // DEBUG routes - ONLY enabled in development
 if (process.env.NODE_ENV !== 'production') {

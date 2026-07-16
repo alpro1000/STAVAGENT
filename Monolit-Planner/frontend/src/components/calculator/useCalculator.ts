@@ -30,7 +30,7 @@ import { loadFromLS, LS_FORM_KEY, LS_SCENARIOS_KEY, LS_SCENARIO_SEQ_KEY, getSmar
 import { loadTzBlob, saveTzText, appendTzHistory, clearTzBlob, type TzHistoryEntry } from './tzStorage';
 import type { AIAdvisorResult, DocSuggestion, DocSuggestionsResponse, FormState, ScenarioSnapshot, SavedVariant, PartFormState } from './types';
 import { DEFAULT_FORM } from './types';
-import { plannerVariantsAPI } from '../../services/api';
+import { plannerVariantsAPI, authHeader } from '../../services/api';
 import { applyPlanToPositions, applyCompositeToPositions } from './applyPlanToPositions';
 import { buildPartInput, makePart, makeAbutmentTemplate, makePierTemplate } from './compositeParts';
 
@@ -746,7 +746,7 @@ export default function useCalculator() {
     setDocSugLoading(true);
     fetch(`${API_URL}/api/planner-advisor/calculator-suggestions`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...authHeader() }, // HOTFIX-2
       body: JSON.stringify({
         portal_project_id: portalProjectId,
         building_object: buildingObject,
@@ -900,7 +900,7 @@ export default function useCalculator() {
       }
       const res = await fetch(`${API_URL}/api/planner-advisor`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeader() }, // HOTFIX-2
         body: JSON.stringify({
           element_type: form.element_type,
           volume_m3: form.volume_m3,

@@ -46,6 +46,16 @@ MONOLIT_API_URL = os.getenv(
     "https://monolit-planner-api-1086027517695.europe-west3.run.app",
 )
 
+# Server-to-server auth (HOTFIX-2, 2026-07-16). The Monolit compute endpoints
+# (/api/calculate, /api/calculate-from-passport) are now fail-closed behind
+# `requireAuthOrServiceKey` — this delegate authenticates with the SHARED
+# ecosystem service key (the SAME secret Monolit→Portal write-back uses, NOT a
+# second one). MUST be provisioned in the concrete-agent Cloud Run env BEFORE
+# this deploys, else calculate_from_passport gets a 401. Read at call time (not
+# import) so tests / rotations don't need a process restart.
+def _service_key() -> Optional[str]:
+    return os.getenv("SERVICE_API_KEY") or None
+
 # Per-attempt HTTP timeouts. Connect is generous for Cloud Run cold start
 # (min-instances=0 → 2–8 s spin-up); read covers the synchronous engine run.
 _CONNECT_TIMEOUT_S = 8.0
@@ -119,9 +129,19 @@ async def _http_post(path: str, payload: dict) -> tuple[int, Any]:
     """
     import httpx
 
+    # Attach the shared service key so the fail-closed Monolit compute surface
+    # (HOTFIX-2) accepts this server-to-server call. Absent key → no header →
+    # Monolit returns 401 (surfaced as EngineInvalidInput) rather than a silent
+    # wrong result — an honest, debuggable failure that points straight at the
+    # missing secret.
+    headers = {}
+    key = _service_key()
+    if key:
+        headers["X-Service-Key"] = key
+
     timeout = httpx.Timeout(_READ_TIMEOUT_S, connect=_CONNECT_TIMEOUT_S)
     async with httpx.AsyncClient(timeout=timeout) as client:
-        resp = await client.post(f"{MONOLIT_API_URL}{path}", json=payload)
+        resp = await client.post(f"{MONOLIT_API_URL}{path}", json=payload, headers=headers)
         try:
             body = resp.json()
         except Exception:

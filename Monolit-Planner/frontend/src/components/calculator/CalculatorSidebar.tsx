@@ -21,6 +21,7 @@ import { ELEMENT_TYPES, SEASONS, CONCRETE_CLASSES, CEMENT_TYPES, DEFAULT_FORM } 
 import { Download, Hourglass, Star } from 'lucide-react';
 import CalculatorFormFields from './CalculatorFormFields';
 import WizardHintsPanel, { ReviewHint } from './WizardHints';
+import { authHeader } from '../../services/api';
 
 // ─── Props ─────────────────────────────────────────────────────────────────
 
@@ -787,7 +788,7 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
                           // Proxy through Monolit backend to avoid CORS issues
                           const r = await fetch(`${apiUrl}/api/planner-advisor/norms/scrape-all`, {
                             method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
+                            headers: { 'Content-Type': 'application/json', ...authHeader() }, // HOTFIX-2
                             body: JSON.stringify({}),
                           });
                           if (r.ok) {

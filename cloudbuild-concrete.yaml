@@ -107,7 +107,15 @@ steps:
           --set-env-vars="$${ENV_VARS}" \
           --memory=6Gi \
           --timeout=1800 \
-          --update-secrets=GOOGLE_API_KEY=GOOGLE_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,OPENAI_API_KEY=OPENAI_API_KEY:latest,PERPLEXITY_API_KEY=PPLX_API_KEY:latest,XAI_API_KEY=XAI_API_KEY:latest,DEEPSEEK_API_KEY=DEEPSEEK_API_KEY:latest,DATABASE_URL=CONCRETE_DATABASE_URL:latest,SERVICE_TOKEN=SERVICE_TOKEN:latest,AWS_ACCESS_KEY_ID=aws-access-key-id:latest,AWS_SECRET_ACCESS_KEY=aws-secret-access-key:latest,JWT_SECRET=JWT_SECRET:latest
+          --update-secrets=GOOGLE_API_KEY=GOOGLE_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,OPENAI_API_KEY=OPENAI_API_KEY:latest,PERPLEXITY_API_KEY=PPLX_API_KEY:latest,XAI_API_KEY=XAI_API_KEY:latest,DEEPSEEK_API_KEY=DEEPSEEK_API_KEY:latest,DATABASE_URL=CONCRETE_DATABASE_URL:latest,SERVICE_TOKEN=SERVICE_TOKEN:latest,SERVICE_API_KEY=SERVICE_API_KEY:latest,AWS_ACCESS_KEY_ID=aws-access-key-id:latest,AWS_SECRET_ACCESS_KEY=aws-secret-access-key:latest,JWT_SECRET=JWT_SECRET:latest
+          # HOTFIX-2 (2026-07-16): SERVICE_API_KEY = the SHARED ecosystem X-Service-Key
+          # (SAME secret Monolit+Portal use — «set on Portal + all kiosks», serviceAuth.js;
+          # NOT the Core-internal SERVICE_TOKEN above). The MCP delegate
+          # (monolit_delegate.py) sends it so the now-fail-closed Monolit compute
+          # endpoints (/api/calculate, /api/calculate-from-passport) accept it.
+          # PREREQ: a Secret Manager secret named SERVICE_API_KEY must exist (it
+          # already feeds Portal). If the deploy step errors «secret not found»,
+          # the secret has a different name — adjust `SERVICE_API_KEY:latest` here.
         # (--memory: PR3 IFC streaming budget 1.5 GB/job, RssAbortGuard 95 %;
         #  --timeout: PR3 §15.4, longest observed pilot run ≈ 30 min.
         #  JWT_SECRET secret-ref added 2026-06-10 — it was manual-only and
