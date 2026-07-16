@@ -50,10 +50,11 @@
 # atom — NOT "the code exists in this YAML". Built today:
 #   · branch `monolit`      — WORK_TEMPLATES in the decomposition tool
 #                             → CONCRETE / FORMWORK / REINFORCEMENT / PILING atoms
+#                             + PRECAST/GROUT (element 24 prefab tubus, 2026-07-16)
 #   · branch `interier_psv` — ONE section shipped (malba.yaml MVP)
 #                             → 3 FINISHES codes only; S2–S10 port = UWO F2, zbývá
 # Everything else is `declared`: the router answers `not_covered_branch`
-# honestly (never a concrete-template default). Honest tally v1.3: 13 covered /
+# honestly (never a concrete-template default). Honest tally: 15 covered /
 # 72 declared.
 #
 # ── Provenance (Gate 0 recon 2026-07-14, bottom-up; corrected) ──────────────
@@ -90,6 +91,7 @@ domains:
   - { key: FORMWORK,       branch: monolit,      label: { cs: "Bednění a skruže", de: null, es: null } }
   - { key: REINFORCEMENT,  branch: monolit,      label: { cs: "Výztuž", de: null, es: null } }
   - { key: PILING,         branch: monolit,      label: { cs: "Piloty a hlubinné založení", de: null, es: null } }
+  - { key: PRECAST,        branch: monolit,      label: { cs: "Montáž prefabrikátů", de: null, es: null }, note: "v1.3+: element 24 prefab tubus (WORK_TEMPLATES větev uzavreny_ram_tubus__prefab)" }
   - { key: FINISHES,       branch: interier_psv, label: { cs: "Povrchové úpravy interiéru", de: null, es: null }, note: "partial — jen sekce malba; S2–S10 = F2" }
   - { key: EARTHWORK,      branch: none,         label: { cs: "Zemní práce", de: null, es: null } }
   - { key: STEEL,          branch: none,         label: { cs: "Ocelové konstrukce", de: null, es: null } }
@@ -216,6 +218,18 @@ codes:
     params: []
     coverage: declared
 
+  # Zálivka spár mezi prefabrikovanými dílci (element 24 prefab, AC2 —
+  # registration proposal doručen PR #element24 Wave 3d, 2026-07-16).
+  # Odlišné od JOINT.DILATATION: zálivková malta/beton MEZI dílci (m³),
+  # ne těsnění dilatační spáry (m). Betonářský PROCES → bez scope (pravidlo 5).
+  - code: CONCRETE.JOINT.GROUT
+    label: { cs: "Zálivka spár mezi prefabrikovanými dílci", de: null, es: null }
+    keywords: { cs: [zálivka spár, zálivka, zálivková malta, zálivkový beton, spáry mezi dílci], de: [], es: [] }
+    unit_canonical: m3
+    params:
+      - { name: concrete_class, kind: eurocode_class, note: "třída zálivkové směsi (např. C25/30) nebo malta dle specifikace" }
+    coverage: covered
+
   - code: PILING.BORED.INSTALL
     label: { cs: "Zřízení pilot vrtaných", de: null, es: null }
     keywords: { cs: [pilota, piloty, vrtané piloty, zřízení pilot], de: [], es: [] }
@@ -224,6 +238,20 @@ codes:
       - { name: diameter_mm, kind: scalar }
       - { name: concrete_class, kind: eurocode_class }
       - { name: casing_method, kind: scalar, note: "pažnice / CFA / bez pažení" }
+    coverage: covered
+
+  # Montáž prefabrikovaných rámových dílců (element 24 uzavřený rám/tubus,
+  # construction_mode=prefab, AC2 «žádné bednění, žádné fáze; jen montáž +
+  # zálivky» — registration proposal doručen PR #element24 Wave 3d, 2026-07-16).
+  # Instaluje DODANÝ výrobek → nese scope (pravidlo 5). Druhá dimenze
+  # (hmotnost dílce pro jeřáb) = param, nikdy druhá jednotka (pravidlo 4).
+  - code: PRECAST.FRAME.INSTALL
+    label: { cs: "Montáž prefabrikovaných rámových dílců (IZM/ZBM, propustky, tubusy)", de: null, es: null }
+    keywords: { cs: [montáž dílců, prefabrikované rámy, prefabrikát, IZM, ZBM, montáž prefabrikátů], de: [], es: [] }
+    unit_canonical: ks
+    params:
+      - { name: piece_mass_t, kind: scalar, note: "hmotnost dílce v t — dimenzuje jeřáb; druhá dimenze jako param (pravidlo 4)" }
+      - { name: scope, kind: scalar, note: "supply | install | supply_install (D+M); default install — adapter volí specifikace vs montáž položku (pravidlo 5)" }
     coverage: covered
 
   # ═══ COVERED — branch `interier_psv`, section malba (shipped MVP) ════════════

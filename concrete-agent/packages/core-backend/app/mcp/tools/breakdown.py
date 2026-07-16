@@ -55,6 +55,17 @@ WORK_TEMPLATES = {
         {"work": "Výztuž říms z oceli B500B", "unit": "t", "qty_factor": "rebar_tons", "hsv": "HSV4", "vocabulary_code": "REINFORCEMENT.REBAR.INSTALL"},
         {"work": "Beton říms {concrete_class}", "unit": "m³", "qty_factor": "volume", "hsv": "HSV4", "vocabulary_code": "CONCRETE.POUR.STRUCTURE"},
     ],
+    # Prefabrikovaný uzavřený rám / tubus (element 24, task v2.1 §2.6 / AC2):
+    # ŽÁDNÉ bednění, žádné betonářské fáze, žádná on-site výztuž (dílce jsou
+    # vyztužené z výroby) — jen montáž dílců + zálivky spár. Selected by
+    # construction_mode='prefab' (explicit input > classifier signal), NOT by
+    # element type alone — monolitický tubus keeps the "default" template with
+    # the §2.10 honest-blank guards. Vocabulary codes registered v1.3+
+    # (registration-proposal-as-PR per the vocabulary header, 2026-07-16).
+    "uzavreny_ram_tubus__prefab": [
+        {"work": "Montáž prefabrikovaných rámových dílců — {element}", "unit": "ks", "qty_factor": "pieces_count", "hsv": "HSV2", "vocabulary_code": "PRECAST.FRAME.INSTALL"},
+        {"work": "Zálivka spár mezi prefabrikovanými dílci {concrete_class}", "unit": "m³", "qty_factor": "grout_volume", "hsv": "HSV2", "vocabulary_code": "CONCRETE.JOINT.GROUT"},
+    ],
 }
 
 
@@ -395,6 +406,13 @@ async def create_work_breakdown(
             - exposure: Exposure class, e.g. 'XF4'
             - is_prestressed: boolean (triggers prestress steel item)
             - rebar_tons: Rebar mass in tons (estimated from volume if missing)
+            - construction_mode: 'monolit' (default) | 'prefab' — for
+              uzavreny_ram_tubus a 'prefab' element yields an assembly-only
+              plan (montáž dílců + zálivky spár), never concrete-pour atoms
+            - pieces_count: Number of precast units (prefab tubus only;
+              missing → honest NEPOČÍTÁNO, never estimated)
+            - grout_volume_m3: Joint-grout volume in m³ (prefab tubus only;
+              missing → honest NEPOČÍTÁNO — joint detail is vendor-specific)
 
             Example for SO-202 bridge:
             [
@@ -660,7 +678,22 @@ async def create_work_breakdown(
                 curing_formula = fw_formula
 
             # Step 3: Decompose into work items
-            templates = WORK_TEMPLATES.get(etype, WORK_TEMPLATES["default"])
+            #
+            # AC2 (element 24): prefabrikovaný tubus → montážní plán (montáž
+            # dílců + zálivky spár), NIKDY betonářské atomy. construction_mode
+            # resolution mirrors the confidence ladder: explicit caller input
+            # wins over the classifier's prefab signal (_TUBUS_PREFAB_RE);
+            # default is monolit (cast-in-place keeps the default template
+            # with the §2.10 honest-blank guards above).
+            tubus_prefab = tubus and (
+                elem.get("construction_mode")
+                or classification.get("construction_mode")
+                or "monolit"
+            ) == "prefab"
+            if tubus_prefab:
+                templates = WORK_TEMPLATES["uzavreny_ram_tubus__prefab"]
+            else:
+                templates = WORK_TEMPLATES.get(etype, WORK_TEMPLATES["default"])
 
             for tmpl in templates:
                 work_name = tmpl["work"].format(
@@ -726,6 +759,34 @@ async def create_work_breakdown(
                         q_formula = f"{rebar_tons} t výztuže (vstup) × 0.3"
                     else:
                         q_formula = f"odhad: {round(rebar_tons, 2)} t výztuže (default) × 0.3"
+                elif factor == "pieces_count":
+                    # Prefab tubus (AC2): počet dílců JEN ze vstupu — počet se
+                    # nedopočítává z geometrie (délka dílce je výrobní údaj).
+                    pieces = elem.get("pieces_count")
+                    if pieces and pieces > 0:
+                        qty = pieces
+                        q_status = ItemQuantityStatus.FROM_INPUT.value
+                        q_formula = f"počet dílců z podkladu: {pieces} ks (vstup pieces_count)"
+                    else:
+                        qty = None
+                        q_status = ItemQuantityStatus.nepocitano(
+                            "chybí počet prefabrikovaných dílců — vstup pieces_count"
+                        )
+                        q_formula = "počet dílců = výrobní údaj dodavatele, neodhaduje se"
+                elif factor == "grout_volume":
+                    # Zálivka spár: objem JEN ze vstupu (závisí na detailu spáry
+                    # dle výrobce dílců) — žádný V/geometrie odhad.
+                    grout = elem.get("grout_volume_m3")
+                    if grout and grout > 0:
+                        qty = grout
+                        q_status = ItemQuantityStatus.FROM_INPUT.value
+                        q_formula = f"objem zálivky z podkladu: {grout} m³ (vstup grout_volume_m3)"
+                    else:
+                        qty = None
+                        q_status = ItemQuantityStatus.nepocitano(
+                            "chybí objem zálivky spár — vstup grout_volume_m3 (detail spáry dle výrobce)"
+                        )
+                        q_formula = "objem zálivky = detail spáry dle výrobce dílců, neodhaduje se"
                 elif factor == "1":
                     qty = 1
                     q_status = ItemQuantityStatus.COMPUTED.value
