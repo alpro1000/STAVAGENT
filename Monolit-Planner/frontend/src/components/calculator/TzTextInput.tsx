@@ -32,7 +32,7 @@ import {
   type ExtractedParam,
   type StructuralElementType,
 } from '@stavagent/monolit-shared';
-import { API_URL } from '../../services/api';
+import { API_URL, authHeader } from '../../services/api';
 import type { FormState } from './types';
 import {
   isFieldEmpty,
@@ -221,7 +221,8 @@ export function TzTextInput({
     try {
       const res = await fetch(`${API_URL}/api/tz-ai-extract`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        // HOTFIX-2: compute endpoint is fail-closed — send the Portal token.
+        headers: { 'Content-Type': 'application/json', ...authHeader() },
         body: JSON.stringify({ element_type: form.element_type, tz_text: combinedText }),
       });
       const data = await res.json().catch(() => ({}));
