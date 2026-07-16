@@ -12,7 +12,7 @@
 - `vykresy/` — 13 výkresů (situace, půdorysy 2.021/2.022, řezy, tvary vč. reliéfu a CRM)
 
 **Status:** kalibrační fixture pro 24. typ elementu (task
-`docs/tasks/TASK_Element24_UzavrenyRam_Tubus_v2.md`). Kubatury = ground truth.
+`docs/tasks/TASK_Element24_UzavrenyRam_Tubus_v2_1.md`). Kubatury = ground truth.
 Geometrie = ground truth. Rozpad na jednotlivé DC ve výkazu NENÍ (výkaz je
 agregovaný za celý SO).
 

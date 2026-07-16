@@ -4,7 +4,7 @@
 **Stupeň:** DSP + PDPS, 31.08.2025 · **Zakázka:** veřejná (SŽ) → OTSKP primary
 
 Kalibrační fixture pro **24. typ elementu — uzavřený rám (tubus), podtyp podchod**
-(`docs/tasks/TASK_Element24_UzavrenyRam_Tubus_v2.md`, PR1–PR4).
+(`docs/tasks/TASK_Element24_UzavrenyRam_Tubus_v2_1.md`, PR1–PR4).
 **Golden test:** [`../tz/SO-11-20-04_podchod_golden_test.md`](../tz/SO-11-20-04_podchod_golden_test.md)
 **TZ digest (verbatim citace):** [`SO_112004_tz_facts.md`](SO_112004_tz_facts.md)
 

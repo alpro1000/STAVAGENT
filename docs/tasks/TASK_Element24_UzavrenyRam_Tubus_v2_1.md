@@ -1,8 +1,10 @@
-# TASK v2: 24. typ elementu — UZAVŘENÝ RÁM (TUBUS)
+# TASK v2.1: 24. typ elementu — UZAVŘENÝ RÁM (TUBUS)
 
-**Nahrazuje:** TASK_Element24_MostniRamovaKonstrukce.md (v1). Změny: typ je rodina
-(tubus s podtypy), ne úzký „podchod"; přidán výběr technologie bednění (konvenční
-vs. bednící vozík); PB3 filtr systémů; prefab větev; pětifázová sekvence.
+**Nahrazuje:** v2 (byte-identická kopie v repu `docs/tasks/`) a v1. Změny v2 → v2.1:
+§2.10 geometrie jen z explicitních vstupů (ochrana proti heuristikám breakdown,
+pin #1514) · §2.11 Dotazy na projektanta (třetí kategorie nálezů) · AC 14–15.
+Změny v1 → v2: typ je rodina (tubus s podtypy); výběr technologie bednění
+(konvenční vs. bednící vozík); PB3 filtr systémů; prefab větev; pětifázová sekvence.
 
 **Sekvence:** PR1 ze 4. Následuje XDC adapter (PR2) → Fix 3+4 (PR3) → golden test (PR4).
 **Rozsah:** Core Engine + MCP + Monolit-Planner frontend. Jedna větev, jeden PR.
@@ -168,6 +170,34 @@ Kombinace typu XD1 + XC4 + XF2 + XA1 je pro zasypaný železniční/silniční t
 normální. Varování jen při vzájemně se vylučujících třídách; třídy převzaté
 z dokumentace varování nevyvolávají nikdy.
 
+### 2.10 Geometrie tubusu — jen z explicitních vstupů
+
+Množství bednění, skruže/stojek a betonu tubusu se odvozují VÝHRADNĚ z explicitní
+geometrie zadání: tloušťky spodní desky / stěn / stropu, světlá šířka × světlá
+výška, délka sekce. Obecné heuristiky breakdown (soffit V/0,25; stěnový model
+V/0,3×2 apod.) jsou pro tento typ **ZAKÁZÁNY** — jejich závady jsou zapinovány
+testem parity (#1514) a nesmí se dědit na nový typ. Nový typ se NEPŘIDÁVÁ do
+obecných WORK_TEMPLATES breakdownu zkratkou; dostává deterministické vzorce
+z vlastních vstupů. Chybí-li vstup → honest-blank / AskUserQuestion, ne default.
+
+Kalibrační kontrola: strop SO 11-20-04 tl. 450 mm — heuristika V/0,25 by
+nadhodnotila podložní plochu ~1,8×; správně = délka sekce × světlá šířka.
+
+### 2.11 Dotazy na projektanta — třetí kategorie nálezů
+
+Rozpor mezi zdroji jednoho projektu (TZ ↔ výkres ↔ výkaz) NENÍ chyba enginu
+ani automaticky chyba projektu. Je to **dotaz na projektanta** — běžná realita
+dokumentace (typicky třída betonu: TZ C25/30 vs. legenda výkresu C20/25).
+
+Výstup kalkulátoru nad objektem obsahuje sekci **„Dotazy na projektanta"**:
+- každý nález = citace OBOU zdrojů s kotvou (dokument, strana/pole)
+- kde je rozpor oceněný (jiná třída betonu × množství) → **cenová delta v CZK**;
+  kalkulátor počítá OBĚ varianty, nevybírá „konzervativnější" sám
+- úrovně nálezů: `otazka_na_projektanta` (rozpor mezi zdroji) ·
+  `sloppy_wording` (nedbalá formulace, upřesní RDS) ·
+  `chyba_v_dokumentaci` (zdroj si protiřečí sám sobě)
+Engine rozpory detekuje a reportuje; NIKDY je tiše neřeší volbou jednoho zdroje.
+
 ---
 
 ## 3. MCP
@@ -210,6 +240,13 @@ stávajícího UI vzoru, žádný nový design jazyk.
 12. XD1/XC4/XF2/XA1 z dokumentace → bez varování.
 13. Typ dostupný přes MCP i Monolit-Planner; 23 stávajících typů beze změny;
     stávající testy zelené; nové testy bez sítě/DB/AI.
+14. Množství tubusu nezávisí na defaultních heuristikách breakdown; parity
+    pin-test (#1514) zůstává zelený — jakákoli změna společných větví geometrie
+    jen přes explicitní rozbor. Test prokáže, že strop tl. 450 mm nedostane
+    podložní plochu z heuristiky V/0,25.
+15. Při rozporu zdrojů (třída betonu TZ vs. výkres) výstup obsahuje dotaz na
+    projektanta s citacemi obou zdrojů a cenovou deltou; engine počítá obě
+    varianty a žádnou tiše nevybírá.
 
 ## 6. Mimo rozsah
 

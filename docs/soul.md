@@ -365,7 +365,7 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 **Otevřené otázky:** выкрес выztuže рámu отсутствует в подкладах → PR4 (golden в CI) остаётся заблокирован (honest-blank по průměrům); B.8 ZOV и static. výpočet 3.002 вне fixture.
 
-**Co dál:** PR1 — 24-й тип элементу по `docs/tasks/TASK_Element24_UzavrenyRam_Tubus_v2.md` (Pre-Implementation Interview обязателен; помнить предохранитель: breakdown-геометрия несёт запиненные ×2/×7 завышения — новый тип не должен наследовать её эвристики слепо). Затем PR2 XDC-адаптер → PR3 Fix 3+4 → PR4 golden.
+**Co dál:** PR1 — 24-й тип элементу по `docs/tasks/TASK_Element24_UzavrenyRam_Tubus_v2_1.md` (Pre-Implementation Interview обязателен; помнить предохранитель: breakdown-геометрия несёт запиненные ×2/×7 завышения — новый тип не должен наследовать её эвристики слепо). Затем PR2 XDC-адаптер → PR3 Fix 3+4 → PR4 golden.
 
 ## 2026-07-15 — Session (b): parity-pin геометрии breakdown — documented divergence, третья система эвристик
 
