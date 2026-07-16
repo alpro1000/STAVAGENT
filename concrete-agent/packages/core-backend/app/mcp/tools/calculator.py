@@ -207,6 +207,19 @@ def _build_planner_payload(
     prestress_strand_mass_kg: Optional[float] = None,
     num_tacts_override: Optional[int] = None,
     parts: Optional[list] = None,
+    # ── uzavřený rám / tubus (element 24, §3) ────────────────────────────
+    construction_mode: Optional[str] = None,
+    tubus_dc_count: Optional[int] = None,
+    tubus_clear_width_m: Optional[float] = None,
+    tubus_clear_height_m: Optional[float] = None,
+    tubus_bottom_thickness_m: Optional[float] = None,
+    tubus_wall_thickness_m: Optional[float] = None,
+    tubus_top_thickness_m: Optional[float] = None,
+    tubus_section_length_m: Optional[float] = None,
+    tubus_technology: Optional[str] = None,
+    tubus_visual_concrete: Optional[bool] = None,
+    tubus_internal_structures: Optional[bool] = None,
+    exposure_from_documentation: Optional[bool] = None,
 ) -> dict:
     """Map MCP arguments → canonical engine PlannerInput.
 
@@ -252,6 +265,22 @@ def _build_planner_payload(
         "rebar_mass_kg": rebar_mass_kg,
         "prestress_strand_mass_kg": prestress_strand_mass_kg,
         "num_tacts_override": num_tacts_override,
+        # ── uzavřený rám / tubus (element 24, §3) — 1:1 passthrough ───────
+        # These map verbatim to the engine's PlannerInput.tubus_* / construction_mode
+        # fields; runTubusPath early-branches on element_type and derives the box
+        # geometry from THESE explicit inputs only (§2.10 — no breakdown heuristic).
+        "construction_mode": construction_mode,
+        "tubus_dc_count": tubus_dc_count,
+        "tubus_clear_width_m": tubus_clear_width_m,
+        "tubus_clear_height_m": tubus_clear_height_m,
+        "tubus_bottom_thickness_m": tubus_bottom_thickness_m,
+        "tubus_wall_thickness_m": tubus_wall_thickness_m,
+        "tubus_top_thickness_m": tubus_top_thickness_m,
+        "tubus_section_length_m": tubus_section_length_m,
+        "tubus_technology": tubus_technology,
+        "tubus_visual_concrete": tubus_visual_concrete,
+        "tubus_internal_structures": tubus_internal_structures,
+        "exposure_from_documentation": exposure_from_documentation,
     }
     for key, value in optional.items():
         if value is not None:
@@ -274,7 +303,10 @@ def _build_planner_payload(
         payload["width_m"] = float(width_m)
 
     # ── width_m hint translation ──────────────────────────────────────────
-    if width_m and width_m > 0:
+    # NB: uzavreny_ram_tubus is EXCLUDED from the formwork-area heuristic (§2.10 /
+    # AC14) — the tubus derives bednění/skruž/beton VÝHRADNĚ from its explicit
+    # tubus_* geometry, never from a V/width breakdown shortcut.
+    if width_m and width_m > 0 and element_type != "uzavreny_ram_tubus":
         if element_type == "mostovkova_deska":
             payload["nk_width_m"] = float(width_m)
         elif "formwork_area_m2" not in payload and volume_m3:
@@ -367,6 +399,18 @@ async def calculate_concrete_works(
     prestress_strand_mass_kg: Optional[float] = None,
     num_tacts_override: Optional[int] = None,
     parts: Optional[list] = None,
+    construction_mode: Optional[str] = None,
+    tubus_dc_count: Optional[int] = None,
+    tubus_clear_width_m: Optional[float] = None,
+    tubus_clear_height_m: Optional[float] = None,
+    tubus_bottom_thickness_m: Optional[float] = None,
+    tubus_wall_thickness_m: Optional[float] = None,
+    tubus_top_thickness_m: Optional[float] = None,
+    tubus_section_length_m: Optional[float] = None,
+    tubus_technology: Optional[str] = None,
+    tubus_visual_concrete: Optional[bool] = None,
+    tubus_internal_structures: Optional[bool] = None,
+    exposure_from_documentation: Optional[bool] = None,
 ) -> dict:
     """Calculate concrete works for a single RC structural element.
 
@@ -411,6 +455,14 @@ async def calculate_concrete_works(
             - tunel_rampa: tunnels / ramps
             - operna_zed: retaining walls
             - jine: other / unspecified
+
+            Closed monolithic frame (uzavřený rám / tubus — element 24):
+            - uzavreny_ram_tubus: closed RC box frame — pedestrian/rail
+              underpass (podchod), box culvert (rámový propustek), utility
+              collector (kolektor). Poured per dilatation unit (DC) in phases
+              (bottom slab → walls → top slab). Geometry comes ONLY from the
+              explicit tubus_* inputs below (never a breakdown heuristic). Use
+              construction_mode='prefab' for precast frame units (no pour phases).
 
         volume_m3: Total concrete volume in m³ for ONE structure.
             For bridges with num_bridges=2 (LM+PM), enter volume for 1 bridge —
@@ -616,6 +668,37 @@ async def calculate_concrete_works(
             volume + pour hours and emits mega-pour warnings honestly (crew
             relief, backup pump) instead of splitting by pour window. Wins
             over the cycle_length_bm-derived count.
+
+        construction_mode: Build mode for uzavreny_ram_tubus:
+            'monolit' (default) = cast-in-place frame with pour phases;
+            'prefab' = precast frame units → NO formwork/pour phases, an
+            assembly-only plan (montáž + zálivky). Extensible to 'hybrid'.
+        tubus_dc_count: Number of dilatation units (dilatační celky). Taken
+            from the input, NEVER computed by the calculator. 10 DC × 3 phases
+            (conventional) = 30 frame pours.
+        tubus_clear_width_m: Clear internal width of the box (světlá šířka).
+        tubus_clear_height_m: Clear internal height of the frame (světlá výška).
+            This — NOT the top-slab thickness — is the falsework working height
+            (SO 11-20-04: 3.0 m).
+        tubus_bottom_thickness_m: Bottom-slab thickness (spodní deska).
+        tubus_wall_thickness_m: Wall thickness (stěny).
+        tubus_top_thickness_m: Top-slab thickness (strop).
+        tubus_section_length_m: Length of one section along the axis (délka sekce).
+            Falsework/formwork/concrete quantities derive from these explicit
+            dimensions only (§2.10) — no V/thickness breakdown heuristic.
+        tubus_technology: Formwork technology — 'conventional' (3 frame phases
+            per DC: bottom → walls → top), 'traveler' (bednící vozík: walls+top
+            merged → 2 phases per DC), or 'auto' (data-driven A/B choice; a
+            varied profile with niches/shafts/stairs → conventional, a long run
+            of constant sections → traveler).
+        tubus_visual_concrete: True when surfaces are pohledový beton (PB2/PB3
+            or relief) — restricts formwork to beam-type wall systems and
+            proposes an R-item surcharge.
+        tubus_internal_structures: True when the section carries internal
+            structures (niches, shafts, stairs) — a signal toward conventional.
+        exposure_from_documentation: True when the exposure class was read
+            verbatim from the project documentation — suppresses the
+            atypical-exposure warning for the tubus (documented values are trusted).
     """
     try:
         # Stage-1 extract (extract_tz_fields) ships volume_m3=None — volumes are
@@ -695,6 +778,18 @@ async def calculate_concrete_works(
             prestress_strand_mass_kg=prestress_strand_mass_kg,
             num_tacts_override=num_tacts_override,
             parts=parts,
+            construction_mode=construction_mode,
+            tubus_dc_count=tubus_dc_count,
+            tubus_clear_width_m=tubus_clear_width_m,
+            tubus_clear_height_m=tubus_clear_height_m,
+            tubus_bottom_thickness_m=tubus_bottom_thickness_m,
+            tubus_wall_thickness_m=tubus_wall_thickness_m,
+            tubus_top_thickness_m=tubus_top_thickness_m,
+            tubus_section_length_m=tubus_section_length_m,
+            tubus_technology=tubus_technology,
+            tubus_visual_concrete=tubus_visual_concrete,
+            tubus_internal_structures=tubus_internal_structures,
+            exposure_from_documentation=exposure_from_documentation,
         )
 
         try:
