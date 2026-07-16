@@ -560,6 +560,16 @@ async def create_work_breakdown(
             # `computed`, the exact sebevědomě-špatně class this axis fights.
             blinding = etype == "podkladni_beton"
             horizontal = profile["orientation"] == "horizontal"
+            # §2.10 / AC14 — the uzavřený rám (tubus) is EXCLUDED from the generic
+            # V/thickness breakdown heuristics (soffit V/0.25, wall V/0.3×2). Those
+            # overstate a closed frame (the 450 mm strop's soffit ~1.8×) and their
+            # defects are pinned by the parity test (#1514) — they must NOT be
+            # inherited by the new type. The authoritative tubus geometry lives in
+            # the calculator engine (runTubusPath), from the explicit tubus_* fields.
+            # Here (soupis path) tubus quantities come ONLY from caller-provided
+            # numbers (area_m2 / volume_m3 / rebar_tons); a missing formwork/curing
+            # area is an honest NEPOČÍTÁNO, never a fabricated default.
+            tubus = etype == "uzavreny_ram_tubus"
             # Slab thickness for horizontal surfaces: on blinding, a small
             # height_m (≤ 0.5) is read as the slab thickness — interim carrier
             # until an explicit thickness_m input exists (deferred with GO).
@@ -570,6 +580,17 @@ async def create_work_breakdown(
             if fw_area:
                 fw_status = ItemQuantityStatus.FROM_INPUT.value
                 fw_formula = f"plocha bednění z podkladu: {fw_area} m² (vstup area_m2)"
+            elif tubus:
+                # §2.10 — no explicit area → honest NEPOČÍTÁNO, never V/thickness.
+                fw_area = None
+                fw_status = ItemQuantityStatus.nepocitano(
+                    "geometrie tubusu jen z explicitních vstupů (§2.10) — "
+                    "zadej area_m2 nebo použij kalkulátor betonáže (runTubusPath)"
+                )
+                fw_formula = (
+                    "tubus: plocha bednění z explicitní geometrie rámu "
+                    "(délka sekce × rozměry), NE breakdown heuristika V/tl."
+                )
             elif volume:
                 fw_status = ItemQuantityStatus.ASSUMED.value
                 if horizontal:
@@ -614,7 +635,19 @@ async def create_work_breakdown(
             # Curing surface: horizontal → the TOP (footprint = V / tl.);
             # vertical → the same faces as the formwork (values coincide, the
             # factor stays separate so a formwork fix never drags curing along).
-            if volume and horizontal:
+            if tubus:
+                # §2.10 — ošetřování betonu tubusu se neodvozuje breakdown
+                # heuristikou; navíc v OTSKP je zahrnuto v ceně betonu (bundled).
+                curing_area = None
+                curing_status = ItemQuantityStatus.nepocitano(
+                    "ošetřování tubusu jen z explicitní geometrie (§2.10); "
+                    "v OTSKP zahrnuto v betonu"
+                )
+                curing_formula = (
+                    "tubus: plocha ošetřování z explicitní geometrie, "
+                    "NE breakdown heuristika"
+                )
+            elif volume and horizontal:
                 curing_area = volume / thickness
                 curing_status = ItemQuantityStatus.COMPUTED.value if thickness_provided else ItemQuantityStatus.ASSUMED.value
                 curing_formula = (
