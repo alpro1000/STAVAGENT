@@ -1,10 +1,15 @@
-# TASK v2: 24. typ elementu — UZAVŘENÝ RÁM (TUBUS)
+# TASK v2.1: 24. typ elementu — UZAVŘENÝ RÁM (TUBUS)
 
-**Nahrazuje:** TASK_Element24_MostniRamovaKonstrukce.md (v1). Změny: typ je rodina
-(tubus s podtypy), ne úzký „podchod"; přidán výběr technologie bednění (konvenční
-vs. bednící vozík); PB3 filtr systémů; prefab větev; pětifázová sekvence.
+**Nahrazuje:** v2 (byte-identická kopie v repu `docs/tasks/`) a v1. Změny v2 → v2.1:
+§2.10 geometrie jen z explicitních vstupů (ochrana proti heuristikám breakdown,
+pin #1514) · §2.11 Dotazy na projektanta (třetí kategorie nálezů) · AC 14–15.
+Změny v1 → v2: typ je rodina (tubus s podtypy); výběr technologie bednění
+(konvenční vs. bednící vozík); PB3 filtr systémů; prefab větev; pětifázová sekvence.
 
-**Sekvence:** PR1 ze 4. Následuje XDC adapter (PR2) → Fix 3+4 (PR3) → golden test (PR4).
+**Sekvence:** PR1 z 5 (pořadí rozhodnuto 2026-07-16, risk-ranking podle peněz).
+Následuje breakdown-geometry parity (PR2 — vyrovnání Python heuristik na kanonický
+TS engine, sejmutí pinů #1514 fixem, ne fixací) → XDC adapter (PR3) → Fix 3+4 (PR4)
+→ golden test v CI (PR5, blokován chybějícím výkresem výztuže).
 **Rozsah:** Core Engine + MCP + Monolit-Planner frontend. Jedna větev, jeden PR.
 
 ---
@@ -55,6 +60,39 @@ Klasifikační signály v TZ: „uzavřená rámová konstrukce", „rám", „t
 „dilatační celky", „podchod/podjezd/propustek/kolektor", „přesypávka",
 „světlá šířka × světlá výška". Otevřený polorám (schodiště, U-profil) NENÍ
 tento typ — zůstává u stávajících typů.
+
+**Rozhodující diskriminátor (Q9, ratifikováno Alexandrem 2026-07-16,
+verifikováno 4 tradicemi):** klasifikaci rozhoduje PRŮŘEZ, ne slova.
+- **Uzavřený průřez** — spodní deska spojující stěny → `uzavreny_ram_tubus`,
+  ať v názvu stojí cokoli.
+- **Otevřený rám / polorám** — stěny na samostatných základech, BEZ spojující
+  dolní desky → NENÍ tubus (rámový most → mostovka/ramovy; schodišťový
+  polorám → schodiště).
+- **Názvy objektů NEROZHODUJÍ** — SŽ administrativně zove každý podchod
+  „železniční most v km X" (past navždy, viz golden SO 11-20-04).
+- Slova podchod/propustek/kolektor/přesypávka = sekundární POTVRZUJÍCÍ
+  signály, nikdy rozhodující.
+- Administrativní hranice propustek/most (světlost 2 m, SŽ) ovlivňuje jen
+  volbu PODTYPU uvnitř rodiny, ne vstup do ní.
+
+Zdroje pravidla (zapsat jako DATA se zdrojem, ne komentář):
+- CZ: ŽPSV TP-02/18 („rámový propustek … charakter uzavřeného rámu");
+  praxe uzavřený rám na základové desce vs. polorám na mikropilotách
+- DE: standardizace Rahmenbauwerke DB (Hennecke/Mölter): Vollrahmen —
+  „Gründung über die Bodenplatte zwischen den Wänden"; Halbrahmen —
+  „Streifenfundament unter den Widerlagerwänden"
+- ES: marco cerrado (solera + hastiales + dintel; Mitma N-II, CivilCAD3000
+  „Cajones") vs. pórtico en U invertida
+- INT: box culvert vs. portal frame
+
+**Dvouúrovňová klasifikace (doplněk §2.1, ratifikováno 2026-07-16):**
+- úroveň OBJEKTU: SO = `uzavreny_ram_tubus / <podtyp>` (Turnov: podchod);
+- úroveň ELEMENTŮ: tubusové DC → fáze rámu (Q1a — JEDEN typ s vnitřním plánem
+  „DC × fáze", invariant „jeden PlannerInput → jeden pour-plán" zachován);
+  schodišťové DC → stávající typ `schodiste` s poznámkou polorám (stěny →
+  kategorie walls). Slovník projektanta Turnov to potvrzuje doslova:
+  „uzavřená rámová konstrukce" (tubus) vs. „otevřený železobetonový polorám"
+  (schodiště).
 
 ### 2.2 Dilatační celky — vstup, ne výpočet
 
@@ -141,6 +179,13 @@ Nový typ nese příznak `monolityczny | prefabrikovaný`:
 Klasifikační signál: „prefabrikované rámy", „IZM/ZBM dílce", „montáž" vs.
 „betonáž na místě", „monolitický rám".
 
+Prefab práce (montáž dílců, zálivky spár) nemají kódy ve slovníku → registrace
+VÝHRADNĚ přes proposal-frontu (slovník v1.3), nikdy fabrikovaný kód; confidence
+prefab plánu odpovídá proposal-statusu. **Schéma příznaku navrhnout rozšiřitelné
+na tristav `monolit | prefab | hybrid`** (ES praxe Forte: hastiales + dintel
+prefab, losa de cimentación + losa de compresión in situ) — v PR1 se implementují
+dvě hodnoty, ale schéma nesmí zabetonovat binárnost (ratifikováno 2026-07-16).
+
 ### 2.7 Katalogová politika — potvrzeno reálnou zakázkou
 
 Ve výkazu SO 11-20-04 (45 položek) není jediná položka bednění/odbednění/
@@ -162,11 +207,47 @@ ošetřování/skruže; jediná opalubková položka je R-příplatek za atypick
 Zapsat jako data se zdrojem a confidence odpovídající jednomu vzorku.
 Průměry výztuže: bez výkresu výztuže NEZADÁVAT default — AskUserQuestion.
 
+**Kategorie pracnosti (Q4, rozhodnuto Alexandrem 2026-07-16): per-fáze.**
+Dno + strop → `slabs_foundations`, stěny → `walls` (ležatá síť vs. vertikální
+vázání jsou fyzicky různé práce; „walls na vše" by nadhodnotilo pracnost na
+2/3 objemu rámu). Tíha rámových rohů (ohýbané pruty) sedí v indexu 131 kg/m³
+(Turnov — rohy uvnitř čísla), NE v kategorii. Fallback: vyžaduje-li per-fáze
+invazivní zásah do mechaniky matice (víc než mapping fáze→kategorie) →
+`walls` jednotně + tiket „známé nadhodnocení".
+
 ### 2.9 Třídy prostředí
 
 Kombinace typu XD1 + XC4 + XF2 + XA1 je pro zasypaný železniční/silniční tubus
 normální. Varování jen při vzájemně se vylučujících třídách; třídy převzaté
 z dokumentace varování nevyvolávají nikdy.
+
+### 2.10 Geometrie tubusu — jen z explicitních vstupů
+
+Množství bednění, skruže/stojek a betonu tubusu se odvozují VÝHRADNĚ z explicitní
+geometrie zadání: tloušťky spodní desky / stěn / stropu, světlá šířka × světlá
+výška, délka sekce. Obecné heuristiky breakdown (soffit V/0,25; stěnový model
+V/0,3×2 apod.) jsou pro tento typ **ZAKÁZÁNY** — jejich závady jsou zapinovány
+testem parity (#1514) a nesmí se dědit na nový typ. Nový typ se NEPŘIDÁVÁ do
+obecných WORK_TEMPLATES breakdownu zkratkou; dostává deterministické vzorce
+z vlastních vstupů. Chybí-li vstup → honest-blank / AskUserQuestion, ne default.
+
+Kalibrační kontrola: strop SO 11-20-04 tl. 450 mm — heuristika V/0,25 by
+nadhodnotila podložní plochu ~1,8×; správně = délka sekce × světlá šířka.
+
+### 2.11 Dotazy na projektanta — třetí kategorie nálezů
+
+Rozpor mezi zdroji jednoho projektu (TZ ↔ výkres ↔ výkaz) NENÍ chyba enginu
+ani automaticky chyba projektu. Je to **dotaz na projektanta** — běžná realita
+dokumentace (typicky třída betonu: TZ C25/30 vs. legenda výkresu C20/25).
+
+Výstup kalkulátoru nad objektem obsahuje sekci **„Dotazy na projektanta"**:
+- každý nález = citace OBOU zdrojů s kotvou (dokument, strana/pole)
+- kde je rozpor oceněný (jiná třída betonu × množství) → **cenová delta v CZK**;
+  kalkulátor počítá OBĚ varianty, nevybírá „konzervativnější" sám
+- úrovně nálezů: `otazka_na_projektanta` (rozpor mezi zdroji) ·
+  `sloppy_wording` (nedbalá formulace, upřesní RDS) ·
+  `chyba_v_dokumentaci` (zdroj si protiřečí sám sobě)
+Engine rozpory detekuje a reportuje; NIKDY je tiše neřeší volbou jednoho zdroje.
 
 ---
 
@@ -191,6 +272,9 @@ stávajícího UI vzoru, žádný nový design jazyk.
 1. Klasifikátor: TZ podchodu → `uzavreny_ram_tubus / podchod / monolit`.
    TZ rámového propustku → `uzavreny_ram_tubus / ramovy_propustek`.
    Nikdy `jiné`, nikdy `mostovka`. Otevřený polorám tímto typem není.
+   **Anti-kritérium (doplněk 2026-07-16): schodišťový polorám → typ
+   `schodiste`, NIKDY fáze tubusu.** Diskriminátor = uzavřený vs. otevřený
+   průřez (§2.1); název objektu („železniční most…") nerozhoduje.
 2. Prefab propustek → žádné bednění, žádné fáze; jen montáž + zálivky.
 3. Počet DC převzat ze vstupu; kalkulátor ho nedopočítává.
 4. Konvenční technologie: 3 fáze rámu na DC (spodní deska → stěny → strop);
@@ -210,10 +294,18 @@ stávajícího UI vzoru, žádný nový design jazyk.
 12. XD1/XC4/XF2/XA1 z dokumentace → bez varování.
 13. Typ dostupný přes MCP i Monolit-Planner; 23 stávajících typů beze změny;
     stávající testy zelené; nové testy bez sítě/DB/AI.
+14. Množství tubusu nezávisí na defaultních heuristikách breakdown; parity
+    pin-test (#1514) zůstává zelený — jakákoli změna společných větví geometrie
+    jen přes explicitní rozbor. Test prokáže, že strop tl. 450 mm nedostane
+    podložní plochu z heuristiky V/0,25.
+15. Při rozporu zdrojů (třída betonu TZ vs. výkres) výstup obsahuje dotaz na
+    projektanta s citacemi obou zdrojů a cenovou deltou; engine počítá obě
+    varianty a žádnou tiše nevybírá.
 
 ## 6. Mimo rozsah
 
-XDC parser (PR2) · Fix 3+4 (PR3) · golden test SO 11-20-04 (PR4) ·
+Breakdown-geometry parity / vyrovnání heuristik (PR2) · XDC parser (PR3) ·
+Fix 3+4 (PR4) · golden test SO 11-20-04 v CI (PR5) ·
 změny 7-engine pipeline nad rámec nového typu · žádný PR bez pokynu,
 jedna větev, nic paralelně.
 
