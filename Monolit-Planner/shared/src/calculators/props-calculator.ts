@@ -134,6 +134,14 @@ export interface DimensionHint {
 }
 
 export const ELEMENT_DIMENSION_HINTS: Record<StructuralElementType, DimensionHint> = {
+  // 24. typ (AC7): výška = SVĚTLÁ výška rámu (Turnov 3,0 m) — nikdy tloušťka
+  // stropu (0,45), nikdy volná výška pod podhledem (2,65).
+  uzavreny_ram_tubus: {
+    required_dimensions: ['height_m'],
+    hint_cs: 'Výška = světlá výška rámu (horní líc spodní desky → spodní líc stropu). Nikdy tloušťka stropní desky, nikdy výška pod podhledem.',
+    typical_height_range: [1.0, 16.0],
+    has_height: true,
+  },
   // ─── Bridge: horizontal with supports ────
   mostovkova_deska: {
     required_dimensions: ['height_m', 'thickness_m'],

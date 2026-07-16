@@ -63,6 +63,9 @@ export type SchedulerMode = 'discrete_cyclic' | 'legacy';
  */
 export const SCHEDULER_MODE_DEFAULTS: Record<StructuralElementType, SchedulerMode> = {
   // ─── Bridge elements (mostní prvky) ───
+  // 24. typ: vlastní fázová cesta (runTubusPath) — scheduler mód se na tubus
+  // v generické větvi nikdy neaplikuje; 'legacy' je jen exhaustiveness plnič.
+  uzavreny_ram_tubus: 'legacy',
   zaklady_piliru: 'legacy',
   zaklady_oper: 'legacy',
   driky_piliru: 'legacy',

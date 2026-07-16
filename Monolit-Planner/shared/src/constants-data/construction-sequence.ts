@@ -32,6 +32,8 @@ export const BRIDGE_ELEMENT_ORDER: Record<StructuralElementType, number> = {
 
   // Group 3: Superstructure (Nosná konstrukce)
   rigel:                60,
+  // 24. typ: tubus JE nosná konstrukce podchodu — řadí se vedle mostovky.
+  uzavreny_ram_tubus:   70,
   mostovkova_deska:     70,
   prechodova_deska:     75,
 
@@ -60,6 +62,8 @@ export const BRIDGE_ELEMENT_ORDER: Record<StructuralElementType, number> = {
  * Lower number = built first (foundations → frame → floors → finishing).
  */
 export const BUILDING_ELEMENT_ORDER: Record<StructuralElementType, number> = {
+  // 24. typ v pozemním kontextu (kolektor/hloubený tunel) — spodní stavba.
+  uzavreny_ram_tubus:   35,
   // Group 1: Foundations
   pilota:               10,
   podzemni_stena:       15,

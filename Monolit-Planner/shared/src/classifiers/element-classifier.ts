@@ -89,8 +89,11 @@ export interface ElementProfile {
   // --- Curing ---
   /** Required strip strength as % of f_ck */
   strip_strength_pct: number;
-  /** Element orientation for curing model: vertical strips faster */
-  orientation: 'horizontal' | 'vertical';
+  /** Element orientation for curing model: vertical strips faster.
+   * 'special' (uzavreny_ram_tubus) = element has its OWN phase path and the
+   * generic orientation branches must never process it (task v2.1 §2.10,
+   * pin #1514). */
+  orientation: 'horizontal' | 'vertical' | 'special';
 
   // --- Pour ---
   /** Typical pour rate constraint (m³/h) — element-specific limit */
@@ -239,6 +242,32 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
     strip_strength_pct: 50,
     orientation: 'vertical',
     max_pour_rate_m3_h: 35,
+    pump_typical: true,
+  },
+  // 24. typ (task v2.1, PR1). rebar 131 = kalibrace n=1 ze SO 11-20-04 ŽST
+  // Turnov (XDC 389365/389325 = 137 161 kg / 1 046,800 m³, C30/37; tíha
+  // rámových rohů sedí UVNITŘ čísla) — NE norma. Orientation 'special':
+  // tubus jede VLASTNÍ fázovou cestou (spodní deska → stěny → strop na DC),
+  // obecné orientation-větve ho nesmí zpracovat (§2.10, pin #1514).
+  // Pracnost per-fáze (Q4): dno+strop → slabs_foundations, stěny → walls;
+  // profilová kategorie 'walls' je jen fallback pro generické čtenáře.
+  // Formwork: stěny rámové systémy; při PB2/PB3 (reliéf) jen nosníkové
+  // Top 50 / VARIO GT 24 — filtr §2.5 platí i na soffit stropu.
+  uzavreny_ram_tubus: {
+    label_cs: 'Uzavřený rám (tubus) — podchod / propustek / podjezd',
+    rebar_category: 'walls',
+    rebar_default_diameter_mm: 16,
+    recommended_formwork: ['Framax Xlife', 'TRIO', 'Top 50', 'VARIO GT 24'],
+    difficulty_factor: 1.1,
+    needs_supports: true,
+    needs_platforms: false,
+    needs_crane: true,
+    rebar_ratio_kg_m3: 131,
+    rebar_ratio_range: [90, 160],
+    rebar_norm_h_per_t: 45,
+    strip_strength_pct: 70,
+    orientation: 'special',
+    max_pour_rate_m3_h: 30,
     pump_typical: true,
   },
   mostovkova_deska: {
@@ -1365,6 +1394,16 @@ export interface RequiredFieldSpec {
  * Shared between wizard hints (HINT-1) and validation.
  */
 export const REQUIRED_FIELDS: Record<StructuralElementType, RequiredFieldSpec[]> = {
+  // 24. typ (§2.10): geometrie JEN z explicitních vstupů — chybí-li, honest-blank
+  // / dotaz, nikdy default. Objem = výkaz primárně (Q10); počet DC = vstup (§2.2).
+  uzavreny_ram_tubus: [
+    { field: 'volume_m3', label_cs: 'Objem betonu rámu', severity: 'critical', reason_cs: 'výkaz je primární zdroj objemu; bez něj nelze počítat' },
+    { field: 'tubus_dc_count', label_cs: 'Počet dilatačních celků', severity: 'critical', reason_cs: 'DC je vstup z projektu — kalkulátor ho nesmí dopočítávat (§2.2)' },
+    { field: 'tubus_clear_height_m', label_cs: 'Světlá výška rámu', severity: 'critical', reason_cs: 'pracovní výška podpěrné konstrukce stropu (nikdy tl. stropu, nikdy výška pod podhledem)' },
+    { field: 'tubus_clear_width_m', label_cs: 'Světlá šířka rámu', severity: 'critical', reason_cs: 'palubní bednění stropu = délka sekce × světlá šířka' },
+    { field: 'tubus_section_length_m', label_cs: 'Délka sekce (DC)', severity: 'critical', reason_cs: 'nosič plošných vzorců bednění (§2.10)' },
+    { field: 'tubus_wall_thickness_m', label_cs: 'Tloušťka stěn', severity: 'optional', reason_cs: 'objemový cross-check fází (výkaz zůstává primární)' },
+  ],
   zaklady_piliru: [
     { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry a náklady' },
     { field: 'height_m', label_cs: 'Výška základu', severity: 'optional', reason_cs: 'ovlivňuje boční tlak a volbu bednění' },
@@ -1501,6 +1540,10 @@ export interface SanityRanges {
 // The remaining ranges were spot-checked against typical Czech bridge and
 // pozemní stavby BOQs and kept as-is.
 export const SANITY_RANGES: Record<StructuralElementType, SanityRanges> = {
+  // 24. typ: volume horní mez 3000 (SO 11-20-04 celý rám = 1 046,8 m³; kolektor
+  // desítek sekcí jde výš); height_m = světlá výška rámu (Turnov 3,0 m;
+  // podtypová rozpětí 1–15+ m dle §2.1 tabulky podtypů).
+  uzavreny_ram_tubus: { volume_m3: [5, 3000], height_m: [1.0, 16.0], rebar_kg_m3: [90, 160] },
   zaklady_piliru:   { volume_m3: [10, 800],  height_m: [0.8, 3.0],  rebar_kg_m3: [60, 150] },
   zaklady_oper:     { volume_m3: [10, 800],  height_m: [0.8, 3.0],  rebar_kg_m3: [60, 150] }, // Phase 3 Gate 2a — same ranges as zaklady_piliru
   driky_piliru:     { volume_m3: [1, 800],   height_m: [3.0, 30.0], rebar_kg_m3: [80, 220] },
@@ -1898,6 +1941,9 @@ export const ELEMENT_TZ_COMPATIBILITY: Record<
   StructuralElementType,
   readonly TzParamName[]
 > = {
+  // 24. typ: height_m = SVĚTLÁ výška rámu (AC7 — nikdy tl. stropu 0,45,
+  // nikdy výška pod podhledem 2,65); volume z výkazu (Q10).
+  uzavreny_ram_tubus: ['height_m', 'total_length_m'],
   // ── Foundations (horizontal, no bridge-deck params) ──────────────────────
   zaklady_piliru: ['height_m', 'thickness_mm'],
   zaklady_oper:   ['height_m', 'thickness_mm'], // Phase 3 Gate 2a — same TZ params as zaklady_piliru
