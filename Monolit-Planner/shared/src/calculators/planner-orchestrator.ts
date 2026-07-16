@@ -34,9 +34,10 @@ import type { TzFacts, ValidationFlag } from './validation-rules.js';
 import { runValidationRules } from './validation-rules.js';
 import { estimateElementVolume, isPrismaticType } from './element-geometry.js';
 import {
-  computeTubusPhases, decideTubusTechnology, tubusGeometricVolume, tubusPourCount,
+  computeTubusPhases, decideTubusSupport, decideTubusTechnology,
+  tubusGeometricVolume, tubusPourCount,
 } from './tubus-engine.js';
-import type { TubusPhaseQuantities, TubusTechnologyDecision } from './tubus-engine.js';
+import type { TubusPhaseQuantities, TubusSupportDecision, TubusTechnologyDecision } from './tubus-engine.js';
 import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
 import { calculateProps } from './props-calculator.js';
 import type { PropsCalculatorResult } from './props-calculator.js';
@@ -646,6 +647,8 @@ export interface PlannerOutput {
     /** Pracovní výška podpěrné konstrukce stropu = SVĚTLÁ výška rámu (AC7).
      *  Nikdy tloušťka stropu, nikdy výška pod podhledem. */
     support_height_m: number;
+    /** SKRUŽ vs. STOJKY dle pravidla ze vstupů — světlá výška + zatížení (AC8). */
+    support: TubusSupportDecision;
     /** Geometrický objem rámu (cross-check; výkaz zůstává primární — Q10). */
     geometric_volume_m3: number;
     /** Per-fáze rozdělení výztuže (Q4 kategorie + hmotnost dle podílu objemu). */
@@ -3104,6 +3107,22 @@ function runTubusPath(
   );
   for (const r of technology.reasons_cs) log.push(`  volba technologie: ${r}`);
 
+  // ── AC8: SKRUŽ vs. STOJKY pro strop — pravidlo ze vstupů (výška, zatížení).
+  // Turnov (3,0 m / strop 450 mm → ~12,8 kN/m²) = STOJKY; falešná «skruž» by
+  // zopakovala falešné varování z retro-listu. Skruž jen nad prahy pravidla.
+  const support = decideTubusSupport(geom.clear_height_m, geom.top_thickness_m);
+  log.push(
+    `Podpěrná konstrukce stropu: ${support.type === 'skruz' ? 'SKRUŽ' : 'STOJKY'} `
+    + `(světlá ${support.clear_height_m} m, zatížení ${support.load_kn_m2} kN/m²).`,
+  );
+  for (const r of support.reasons_cs) log.push(`  podpěry: ${r}`);
+  if (support.type === 'skruz') {
+    warnings.push(
+      'ℹ️ Strop tubusu vyžaduje SKRUŽ (rámové věže) se statickým posouzením — '
+      + support.reasons_cs.join('; '),
+    );
+  }
+
   // ── Q10: objem — výkaz primární, geometrie cross-check, nikdy náhrada ───
   const geometricVolume = tubusGeometricVolume(geom);
   const ratio = geometricVolume > 0 ? input.volume_m3 / geometricVolume : 0;
@@ -3337,6 +3356,7 @@ function runTubusPath(
       // AC7: pracovní výška podpěrné konstrukce = SVĚTLÁ výška rámu.
       // Nikdy tloušťka stropu (0,45), nikdy výška pod podhledem (2,65).
       support_height_m: geom.clear_height_m,
+      support,
       geometric_volume_m3: geometricVolume,
       rebar_per_phase: rebarPerPhase,
       wall_formwork_system: fwSystem.name,

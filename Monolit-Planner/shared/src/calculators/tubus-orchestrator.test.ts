@@ -120,3 +120,31 @@ describe('tubus path — honest-blank + prefab + traveler', () => {
     expect(suppressed.warnings.join(' ')).not.toMatch(/XS3.*Vyberte|Vyberte.*XS3/);
   });
 });
+
+describe('tubus path — AC8 SKRUŽ vs. STOJKY (oboustranné, živá čísla)', () => {
+  it('Turnov: strop 450 mm nad světlou 3,0 m → STOJKY; žádné skruž-varování', () => {
+    const plan = planElement(TURNOV_INPUT);
+    const support = plan.tubus!.support;
+    expect(support.type).toBe('stojky');
+    expect(support.load_kn_m2).toBeCloseTo(12.75, 2);
+    // Falešná «skruž» na Turnově = třída falešného varování z retro-listu.
+    expect(plan.warnings.join(' ')).not.toContain('SKRUŽ');
+    expect(plan.decision_log.join(' ')).toContain('STOJKY');
+  });
+
+  it('syntetický podjezd 6,5 m / strop 800 mm → SKRUŽ + viditelné varování se statickým posouzením', () => {
+    const plan = planElement({
+      ...TURNOV_INPUT,
+      tubus_clear_height_m: 6.5,
+      tubus_top_thickness_m: 0.8,
+    });
+    const support = plan.tubus!.support;
+    expect(support.type).toBe('skruz');
+    expect(support.load_kn_m2).toBeCloseTo(21.5, 2);
+    const warn = plan.warnings.join(' ');
+    expect(warn).toContain('SKRUŽ');
+    expect(warn).toContain('statickým posouzením');
+    // AC7 drží i tady: pracovní výška = světlá výška, ne tloušťka stropu.
+    expect(plan.tubus!.support_height_m).toBe(6.5);
+  });
+});

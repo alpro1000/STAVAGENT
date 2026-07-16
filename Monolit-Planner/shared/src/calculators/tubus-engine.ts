@@ -182,3 +182,66 @@ export function decideTubusTechnology(t: TubusTechnologyInputs): TubusTechnology
 export function tubusPourCount(dc_count: number, phases_per_dc: number): number {
   return dc_count * phases_per_dc;
 }
+
+// ─── SKRUŽ vs. STOJKY pro strop tubusu (AC8 — pravidlo ze vstupů) ────────────
+
+/** Rozhodovací data se zdrojem (task v2.1 §2.3 «SKRUŽ vs. STOJKY dle
+ *  stávajícího pravidla ze vstupů (světlá výška, zatížení)»; prahy potvrzeny
+ *  Alexander 2026-07-16). Výška: jednotlivé stropní stojky v katalogu
+ *  (Eurex 20/30, PEP Ergo, Multiprop MP 250 — PROP_SYSTEMS) končí na
+ *  5,0–5,5 m; výš nastupují rámové věže = skruž. Zatížení: čerstvý ŽB
+ *  25 kN/m³ (ČSN EN 1991-1-1) × tloušťka stropu + montážní přirážka
+ *  (personál + drobná mechanizace, praxe stropního bednění; upřesní statik). */
+export const TUBUS_SUPPORT_RULE = {
+  max_props_clear_height_m: 5.0,
+  max_props_load_kn_m2: 50.0,
+  fresh_concrete_kn_m3: 25.0,
+  montage_surcharge_kn_m2: 1.5,
+  source: 'task v2.1 §2.3 + prahy Alexander 2026-07-16; výškový strop = katalog PROP_SYSTEMS (jednotlivé stojky ≤ 5,0–5,5 m)',
+} as const;
+
+export interface TubusSupportDecision {
+  type: 'stojky' | 'skruz';
+  /** Návrhové plošné zatížení stropního bednění (kN/m²) — beton + montáž. */
+  load_kn_m2: number;
+  clear_height_m: number;
+  reasons_cs: string[];
+}
+
+/** STOJKY, dokud světlá výška i zatížení sedí pod prahy; jinak SKRUŽ se
+ *  statickým posouzením. Kalibrace (obě strany pravidla pinnuty testem):
+ *  Turnov 3,0 m / strop 450 mm → ~12,8 kN/m² → STOJKY (falešná «težká»
+ *  volba by zopakovala falešné varování z retro-listu); syntetický podjezd
+ *  6,5 m / strop 800 mm → SKRUŽ (výška rozhoduje bez ohledu na zatížení). */
+export function decideTubusSupport(
+  clear_height_m: number,
+  top_thickness_m: number,
+): TubusSupportDecision {
+  const r = TUBUS_SUPPORT_RULE;
+  const load = Math.round(
+    (top_thickness_m * r.fresh_concrete_kn_m3 + r.montage_surcharge_kn_m2) * 100,
+  ) / 100;
+  const reasons: string[] = [];
+  const heightOk = clear_height_m <= r.max_props_clear_height_m;
+  const loadOk = load <= r.max_props_load_kn_m2;
+  if (heightOk && loadOk) {
+    reasons.push(
+      `světlá výška ${clear_height_m} m ≤ ${r.max_props_clear_height_m} m a zatížení `
+      + `${load} kN/m² ≤ ${r.max_props_load_kn_m2} kN/m² — stropní STOJKY stačí (skruž není potřeba)`,
+    );
+    return { type: 'stojky', load_kn_m2: load, clear_height_m, reasons_cs: reasons };
+  }
+  if (!heightOk) {
+    reasons.push(
+      `světlá výška ${clear_height_m} m > ${r.max_props_clear_height_m} m — nad strop `
+      + 'jednotlivých stojek (katalog), nutná SKRUŽ (rámové věže) se statickým posouzením',
+    );
+  }
+  if (!loadOk) {
+    reasons.push(
+      `zatížení ${load} kN/m² > ${r.max_props_load_kn_m2} kN/m² — nad únosnost `
+      + 'stropních stojek, nutná SKRUŽ se statickým posouzením',
+    );
+  }
+  return { type: 'skruz', load_kn_m2: load, clear_height_m, reasons_cs: reasons };
+}

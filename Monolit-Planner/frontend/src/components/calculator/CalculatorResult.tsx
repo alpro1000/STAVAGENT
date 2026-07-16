@@ -1326,6 +1326,12 @@ function TubusCards({ tubus }: { tubus: any }) {
         <div>
           <div style={subTitle}>Podpěrná konstrukce</div>
           <Row label="Pracovní výška" value={`${formatNum(tubus.support_height_m, 2)} m (světlá výška rámu)`} />
+          {tubus.support && (
+            <Row
+              label="Typ podpěr"
+              value={`${tubus.support.type === 'skruz' ? 'SKRUŽ (statické posouzení)' : 'Stropní stojky'} · ${formatNum(tubus.support.load_kn_m2, 1)} kN/m²`}
+            />
+          )}
           <Row label="Stěnový systém" value={tubus.wall_formwork_system ?? '—'} />
         </div>
         <div>

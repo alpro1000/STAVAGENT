@@ -7,7 +7,9 @@ import { describe, expect, it } from 'vitest';
 
 import {
   computeTubusPhases,
+  decideTubusSupport,
   decideTubusTechnology,
+  TUBUS_SUPPORT_RULE,
   tubusGeometricVolume,
   tubusPourCount,
   TUBUS_PHASE_REBAR_CATEGORY,
@@ -105,5 +107,43 @@ describe('tubusPourCount — §2.3 / golden AC4', () => {
   });
   it('10 DC × 2 fáze (vozík) = 20 betonáží rámu', () => {
     expect(tubusPourCount(10, 2)).toBe(20);
+  });
+});
+
+describe('decideTubusSupport — AC8 SKRUŽ vs. STOJKY, oboustranné pinned kalibrace', () => {
+  // Strana A (Turnov, živá čísla): světlá 3,0 m, strop 450 mm →
+  // 0,45 × 25 + 1,5 = 12,75 kN/m² — hluboko pod prahy (5 m / 50 kN/m²).
+  // STOJKY. Falešná «skruž» zde = třída falešného varování z retro-listu.
+  it('Turnov (3.0 m clear, strop 450 mm) → STOJKY, load ~12.75 kN/m², NIKDY skruž', () => {
+    const d = decideTubusSupport(3.0, 0.45);
+    expect(d.type).toBe('stojky');
+    expect(d.load_kn_m2).toBeCloseTo(12.75, 2);
+    expect(d.clear_height_m).toBe(3.0);
+    expect(d.reasons_cs.join(' ')).toContain('STOJKY');
+    expect(d.reasons_cs.join(' ')).not.toContain('statickým posouzením');
+  });
+
+  // Strana B (syntetický podjezd): světlá 6,5 m, strop 800 mm → výška
+  // rozhoduje (6,5 > 5 m — nad strop jednotlivých stojek v katalogu),
+  // SKRUŽ se statickým posouzením bez ohledu na zatížení (21,5 < 50).
+  it('synthetic underpass (6.5 m clear, strop 800 mm) → SKRUŽ se statickým posouzením', () => {
+    const d = decideTubusSupport(6.5, 0.8);
+    expect(d.type).toBe('skruz');
+    expect(d.load_kn_m2).toBeCloseTo(21.5, 2);
+    expect(d.reasons_cs.join(' ')).toContain('statickým posouzením');
+    expect(d.reasons_cs.join(' ')).toContain('6.5');
+  });
+
+  it('load alone above threshold forces skruž even under 5 m (druhá osa pravidla)', () => {
+    // Hypotetický masivní strop 2,0 m: 2×25 + 1,5 = 51,5 > 50 kN/m².
+    const d = decideTubusSupport(4.0, 2.0);
+    expect(d.type).toBe('skruz');
+    expect(d.reasons_cs.join(' ')).toContain('únosnost');
+  });
+
+  it('rule data carries a source (data, ne konstanta v kódu)', () => {
+    expect(TUBUS_SUPPORT_RULE.source).toContain('§2.3');
+    expect(TUBUS_SUPPORT_RULE.max_props_clear_height_m).toBe(5.0);
+    expect(TUBUS_SUPPORT_RULE.max_props_load_kn_m2).toBe(50.0);
   });
 });
