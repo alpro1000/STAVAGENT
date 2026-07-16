@@ -366,6 +366,67 @@ def _build_planner_payload(
     return payload
 
 
+async def _build_dotazy_section(
+    *,
+    concrete_class_sources: list,
+    main_class: str,
+    payload: dict,
+    element_type: str,
+    volume_m3: float,
+) -> list[dict]:
+    """§2.11 «Dotazy na projektanta» section for the calculate result.
+
+    Detects concrete-class conflicts between the caller-supplied source
+    claims, and for each PRICED conflict (otazka/chyba levels) computes:
+      * a FULL engine variant per conflicting class ≠ main_class (the same
+        payload re-delegated with the swapped class — «kalkulátor počítá
+        OBĚ varianty»); a failed variant leg degrades to a typed reason;
+      * the CZK delta from the OTSKP DB (honest None + reason when either
+        item is not reliably found).
+    sloppy_wording findings (DO-band containing the class, Pattern 53) carry
+    citations only — a band is not a priced conflict.
+    """
+    from app.mcp.tools.dotazy_projektanta import (
+        LEVEL_SLOPPY,
+        concrete_class_delta_czk,
+        detect_concrete_class_findings,
+        normalize_concrete_class,
+    )
+
+    # Finding classes are normalized ('C25/30'); the caller's input may carry
+    # exposure suffixes ('C25/30 XF2') — normalize before comparing.
+    main_norm = normalize_concrete_class(main_class) or main_class
+
+    findings = detect_concrete_class_findings(concrete_class_sources)
+    for finding in findings:
+        if finding["level"] == LEVEL_SLOPPY:
+            continue  # pásmo obsahující třídu — citace stačí, žádná delta
+
+        variant_classes = [c for c in finding["classes"] if c != main_norm]
+        variants = []
+        for cls in variant_classes:
+            try:
+                variant_out = await delegate_calculate({**payload, "concrete_class": cls})
+                variants.append({"concrete_class": cls, "plan": variant_out})
+            except EngineDelegationError as exc:
+                logger.warning(
+                    "[MCP/Calculator] §2.11 variant %s failed: %s", cls, exc)
+                variants.append({
+                    "concrete_class": cls,
+                    "plan": None,
+                    "error": to_error_dict(exc),
+                })
+        finding["variants"] = variants
+        finding["main_variant_class"] = main_norm
+
+        classes = finding["classes"]
+        if len(classes) >= 2:
+            finding["cena_delta"] = await concrete_class_delta_czk(
+                classes[0], classes[-1], volume_m3, element_type,
+            )
+    return findings
+
+
 async def calculate_concrete_works(
     element_type: str,
     volume_m3: float,
@@ -411,6 +472,7 @@ async def calculate_concrete_works(
     tubus_visual_concrete: Optional[bool] = None,
     tubus_internal_structures: Optional[bool] = None,
     exposure_from_documentation: Optional[bool] = None,
+    concrete_class_sources: Optional[list] = None,
 ) -> dict:
     """Calculate concrete works for a single RC structural element.
 
@@ -699,6 +761,22 @@ async def calculate_concrete_works(
         exposure_from_documentation: True when the exposure class was read
             verbatim from the project documentation — suppresses the
             atypical-exposure warning for the tubus (documented values are trusted).
+        concrete_class_sources: Concrete-class claims from the project sources
+            (§2.11 «Dotazy na projektanta»). Each: {source_document, anchor,
+            concrete_class} with the VERBATIM value as written (e.g.
+            [{"source_document": "TZ", "anchor": "§4.2 str. 12",
+              "concrete_class": "C25/30"},
+             {"source_document": "výkres D.4.2", "anchor": "legenda",
+              "concrete_class": "C20/25"}]).
+            On a conflict the result gains a `dotazy_na_projektanta` section:
+            citations of ALL sources with anchors, the level
+            (otazka_na_projektanta | sloppy_wording | chyba_v_dokumentaci),
+            a CZK price delta from the OTSKP DB, and a FULL engine variant
+            per conflicting class — the calculator computes BOTH variants and
+            NEVER silently picks one (the main plan stays on the caller's
+            explicit concrete_class input). Agreement or unreadable values
+            are silent. Catalog DO-bands («do C40/50») containing the project
+            class are flagged sloppy_wording, not priced conflicts.
     """
     try:
         # Stage-1 extract (extract_tz_fields) ships volume_m3=None — volumes are
@@ -805,6 +883,24 @@ async def calculate_concrete_works(
         output["source"] = "monolit_planner_api"
         if override_warnings:
             output.setdefault("warnings", []).extend(override_warnings)
+
+        # ── §2.11 Dotazy na projektanta (element 24 Wave 3c, AC15) ───────
+        # Source conflicts (TZ ↔ výkres ↔ výkaz) are DETECTED and REPORTED,
+        # never silently resolved: for each conflicting class the engine is
+        # re-run (full variant) and the CZK delta is priced from the OTSKP
+        # DB. The MAIN plan stays on the caller's explicit concrete_class —
+        # an explicit input is the caller's choice, not the engine's.
+        # Agreement / unreadable values = silence. A variant-leg failure or
+        # a missing OTSKP item degrades to an honest reason, never a number.
+        if concrete_class_sources:
+            output["dotazy_na_projektanta"] = await _build_dotazy_section(
+                concrete_class_sources=concrete_class_sources,
+                main_class=concrete_class,
+                payload=payload,
+                element_type=element_type,
+                volume_m3=volume_m3,
+            )
+
         return output
 
     except Exception as e:
