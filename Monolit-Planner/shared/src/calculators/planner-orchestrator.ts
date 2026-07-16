@@ -347,6 +347,42 @@ export interface PlannerInput {
   resource_ceiling?: ResourceCeiling;
 
   // --- Pile-specific (2026-04-15) ----------------------------------------
+  // ─── Uzavřený rám (tubus) — 24. typ (task v2.1, PR1) ─────────────────────
+  // Read ONLY when element_type === 'uzavreny_ram_tubus'. Feed the parallel
+  // tubus engine (tubus-engine.ts): vlastní fázová cesta (spodní deska →
+  // stěny → strop na každý DC). Geometrie VÝHRADNĚ z těchto explicitních
+  // vstupů (§2.10, pin #1514) — chybí-li, honest-blank, nikdy default.
+  /** Počet dilatačních celků — VSTUP z projektu, NIKDY nedopočítáván (§2.2). */
+  tubus_dc_count?: number;
+  /** Světlá šířka mezi stěnami (m). Turnov: 5,5. */
+  tubus_clear_width_m?: number;
+  /** Světlá výška rámu (m) — horní líc spodní desky → spodní líc stropu.
+   *  = pracovní výška podpěrné konstrukce stropu (AC7). NIKDY tloušťka
+   *  stropu, NIKDY „volná výška pod podhledem". Turnov: 3,0 (ne 2,65/0,45). */
+  tubus_clear_height_m?: number;
+  /** Tloušťka spodní desky (m). Turnov: 0,5. */
+  tubus_bottom_thickness_m?: number;
+  /** Tloušťka stěn (m). Turnov: 0,5. */
+  tubus_wall_thickness_m?: number;
+  /** Tloušťka stropní desky (m, v ose). Turnov: 0,45. */
+  tubus_top_thickness_m?: number;
+  /** Typická délka jedné sekce/DC (m). Per-DC pole = budoucí rozšíření
+   *  (precedent tact_volumes). Turnov: ~6,1 (61,23 / 10 DC). */
+  tubus_section_length_m?: number;
+  /** Technologie bednění (§2.4): konvenční fázová / bednící vozík / auto
+   *  (kalkulátor rozhodne z datové tabulky kritérií a zdůvodní). */
+  tubus_technology?: 'conventional' | 'traveler' | 'auto';
+  /** Pohledový beton stěn PB2/PB3 / reliéf matricí (§2.5) — filtr systémů
+   *  (jen nosníkové stěnové), R-položkový příplatek, kritérium volby A. */
+  tubus_visual_concrete?: boolean;
+  /** Vestavěné konstrukce uvnitř sekcí (niky, šachty, schodiště) —
+   *  kritérium volby technologie A (§2.4). */
+  tubus_internal_structures?: boolean;
+  /** Režim výstavby: monolit (default) | prefab. Rozšiřitelné (hybrid — ES
+   *  praxe), binárnost NENÍ zabetonována. Prefab → žádné bednění, žádné
+   *  fáze betonáže (jen montáž + zálivky — MCP větev). */
+  construction_mode?: string;
+
   // These fields are read ONLY when element_type === 'pilota'. They feed
   // the parallel pile engine (pile-engine.ts) which bypasses formwork +
   // lateral-pressure entirely. All optional — sensible defaults applied
