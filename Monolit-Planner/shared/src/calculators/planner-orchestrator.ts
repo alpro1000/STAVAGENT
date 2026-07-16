@@ -33,11 +33,15 @@ import { applyResourceCeilingDefaults, checkCeilingFeasibility } from './resourc
 import type { TzFacts, ValidationFlag } from './validation-rules.js';
 import { runValidationRules } from './validation-rules.js';
 import { estimateElementVolume, isPrismaticType } from './element-geometry.js';
+import {
+  computeTubusPhases, decideTubusTechnology, tubusGeometricVolume, tubusPourCount,
+} from './tubus-engine.js';
+import type { TubusPhaseQuantities, TubusTechnologyDecision } from './tubus-engine.js';
 import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
 import { calculateProps } from './props-calculator.js';
 import type { PropsCalculatorResult } from './props-calculator.js';
 
-import { classifyElement, getElementProfile, recommendFormwork, getAdjustedAssemblyNorm, getFilteredFormworkSystems, getSuitableSystemsForElement, checkVolumeGeometry } from '../classifiers/element-classifier.js';
+import { classifyElement, getElementProfile, recommendFormwork, getAdjustedAssemblyNorm, getFilteredFormworkSystems, getSuitableSystemsForElement, checkVolumeGeometry, REBAR_RATES_MATRIX } from '../classifiers/element-classifier.js';
 import { decidePourMode } from './pour-decision.js';
 import { calculateFormwork, calculateThreePhaseFormwork, calculateStrategiesDetailed } from './formwork.js';
 import { calculateRebarLite } from './rebar-lite.js';
@@ -347,6 +351,11 @@ export interface PlannerInput {
   resource_ceiling?: ResourceCeiling;
 
   // --- Pile-specific (2026-04-15) ----------------------------------------
+  /** Q3 (ratifikováno): exposure třídy převzaty z projektové dokumentace
+   *  (tz_facts autofill) → allow-list varování se NEvyvolá. Bez flagu =
+   *  dosavadní chování všech typů (AC13). */
+  exposure_from_documentation?: boolean;
+
   // ─── Uzavřený rám (tubus) — 24. typ (task v2.1, PR1) ─────────────────────
   // Read ONLY when element_type === 'uzavreny_ram_tubus'. Feed the parallel
   // tubus engine (tubus-engine.ts): vlastní fázová cesta (spodní deska →
@@ -622,6 +631,30 @@ export interface PlannerOutput {
   // / props / formwork comparison cards entirely.
   pile?: PileResult;
 
+  /**
+   * 24. typ (task v2.1): vyplněno POUZE tubusovou větví (runTubusPath).
+   * Fázový plán «DC × fáze» — Q1a: JEDEN PlannerInput → jeden pour-plán,
+   * fáze žijí uvnitř. Geometrie výhradně z explicitních vstupů (§2.10).
+   */
+  tubus?: {
+    dc_count: number;
+    technology: TubusTechnologyDecision;
+    /** Fázová množství NA JEDEN DC (geometrie §2.10). */
+    phases: TubusPhaseQuantities[];
+    /** Počet betonáží rámu = DC × fáze (AC4: Turnov 10×3 = 30). */
+    pour_count: number;
+    /** Pracovní výška podpěrné konstrukce stropu = SVĚTLÁ výška rámu (AC7).
+     *  Nikdy tloušťka stropu, nikdy výška pod podhledem. */
+    support_height_m: number;
+    /** Geometrický objem rámu (cross-check; výkaz zůstává primární — Q10). */
+    geometric_volume_m3: number;
+    /** Per-fáze rozdělení výztuže (Q4 kategorie + hmotnost dle podílu objemu). */
+    rebar_per_phase: { phase: string; mass_kg: number; category: string; norm_h_per_t: number }[];
+    /** Zvolený stěnový systém (PB2/PB3 → jen nosníkové — §2.5). */
+    wall_formwork_system: string;
+    construction_mode: string;
+  };
+
   // --- Monte Carlo (optional) ---
   monte_carlo?: MonteCarloResult;
 
@@ -757,6 +790,9 @@ const DEFAULTS = {
  * the same list when emitting the "⚠️ XF… je neobvyklá" warning.
  */
 const RECOMMENDED_EXPOSURE: Partial<Record<StructuralElementType, string[]>> = {
+  // 24. typ (AC9/AC12): XD1+XC4+XF2+XA1 je pro zasypaný železniční tubus
+  // NORMÁLNÍ kombinace (golden §3) — nesmí vyvolat varování.
+  uzavreny_ram_tubus: ['XD1', 'XC4', 'XF2', 'XA1', 'XC2', 'XF1', 'XA2'],
   mostovkova_deska: ['XF2', 'XF4', 'XD1', 'XD3', 'XC4'],
   rimsa: ['XF4', 'XD3'],
   driky_piliru: ['XC4', 'XD3', 'XF2', 'XF4'],
@@ -788,7 +824,11 @@ function pushExposureWarning(
   exposure_classes: readonly string[] | undefined,
   labelCs: string,
   warnings: string[],
+  fromDocumentation?: boolean,
 ): void {
+  // Q3 (ratifikováno 2026-07-16): třídy převzaté z DOKUMENTACE varování
+  // nevyvolávají nikdy — projekt je předepsal. Bez flagu = dosavadní chování.
+  if (fromDocumentation === true) return;
   if (!exposure_classes || exposure_classes.length === 0) return;
   const recommended = RECOMMENDED_EXPOSURE[elementType];
   if (!recommended) return;
@@ -1098,6 +1138,18 @@ export function planElement(input: PlannerInput): PlannerOutput {
   // branch remains untouched for the other 21 element types.
   if (elementType === 'pilota') {
     return runPilePath(input, profile, log, warnings, {
+      crew, crewRebar, shift, k, wage, wageFormwork, wageRebar, wagePour,
+      temperature,
+    });
+  }
+
+  // ─── 1b'. UZAVŘENÝ RÁM (TUBUS) early branch — 24. typ (task v2.1, PR1) ──
+  // Vlastní fázová cesta «DC × fáze» (Q1a): spodní deska → stěny → strop na
+  // každý dilatační celek. Obecné orientation-větve (soffit V/0,25, stěnový
+  // model V/0,3×2, estimateFormworkArea) jsou pro tubus ZAKÁZÁNY (§2.10,
+  // pin #1514) — všechna množství jedou z explicitní geometrie zadání.
+  if (elementType === 'uzavreny_ram_tubus') {
+    return runTubusPath(input, profile, log, warnings, {
       crew, crewRebar, shift, k, wage, wageFormwork, wageRebar, wagePour,
       temperature,
     });
@@ -2950,6 +3002,347 @@ interface PilePathDefaults {
   wageRebar: number;
   wagePour: number;
   temperature: number;
+}
+
+
+// ─── UZAVŘENÝ RÁM (TUBUS) path — 24. typ (task v2.1, PR1 Wave 2b) ───────────
+// Zrcadlo konvence runPilePath: všechna tubus-specifika na jednom místě,
+// zbytek orchestratoru pro ostatních 25 typů nedotčen. Fázová množství
+// počítá čistý modul tubus-engine.ts (§2.10 — jen explicitní vstupy).
+function runTubusPath(
+  input: PlannerInput,
+  profile: ElementProfile,
+  log: string[],
+  warnings: string[],
+  defaults: PilePathDefaults,
+): PlannerOutput {
+  const elementType = profile.element_type;
+  const { crew, crewRebar, shift, k, wageFormwork, wageRebar, wagePour } = defaults;
+
+  // Q3: třídy z dokumentace varování nevyvolávají nikdy; bez flagu = standard.
+  const exposureClasses = input.exposure_classes
+    ?? (input.exposure_class ? [input.exposure_class] : []);
+  pushExposureWarning(
+    elementType, exposureClasses, profile.label_cs, warnings,
+    input.exposure_from_documentation,
+  );
+
+  const constructionMode = input.construction_mode ?? 'monolit';
+  const dcCount = input.tubus_dc_count;
+
+  // ── AC2: PREFAB větev — žádné bednění, žádné fáze betonáže ──────────────
+  // Jen montáž dílců + zálivky spár; work-itemy s proposal-kódy žijí na MCP
+  // straně (slovník v1.3 — kódy se nefabrikují). Engine vrací honest minimal
+  // plán bez opalubkové logiky.
+  if (constructionMode === 'prefab') {
+    warnings.push(
+      'ℹ️ Prefabrikovaný tubus: bednění a fáze betonáže se negenerují — '
+      + 'plán nese jen montáž dílců + zálivky spár (podkladní vrstvy zvlášť).',
+    );
+    log.push('Tubus PREFAB: opalubkový plán se negeneruje (task v2.1 §2.6).');
+    throw new UncalculatedError(
+      'prefabrikovaný tubus — montážní plán (dílce + zálivky) není betonářský výpočet; '
+      + 'použijte work-breakdown (MCP) s proposal-kódy montáže',
+      ['construction_mode'],
+    );
+  }
+
+  // ── Honest-blank gate (§2.10): geometrie JEN z explicitních vstupů ──────
+  const missing: string[] = [];
+  if (!dcCount || dcCount <= 0) missing.push('tubus_dc_count');
+  if (!input.tubus_clear_width_m) missing.push('tubus_clear_width_m');
+  if (!input.tubus_clear_height_m) missing.push('tubus_clear_height_m');
+  if (!input.tubus_bottom_thickness_m) missing.push('tubus_bottom_thickness_m');
+  if (!input.tubus_wall_thickness_m) missing.push('tubus_wall_thickness_m');
+  if (!input.tubus_top_thickness_m) missing.push('tubus_top_thickness_m');
+  if (!input.tubus_section_length_m) missing.push('tubus_section_length_m');
+  if (missing.length > 0) {
+    throw new UncalculatedError(
+      'chybí explicitní geometrie tubusu (§2.10 — počet DC, světlé rozměry, '
+      + 'tloušťky, délka sekce se NIKDY nedefaultují)',
+      missing,
+    );
+  }
+
+  const geom = {
+    dc_count: dcCount!,
+    clear_width_m: input.tubus_clear_width_m!,
+    clear_height_m: input.tubus_clear_height_m!,
+    bottom_thickness_m: input.tubus_bottom_thickness_m!,
+    wall_thickness_m: input.tubus_wall_thickness_m!,
+    top_thickness_m: input.tubus_top_thickness_m!,
+    section_length_m: input.tubus_section_length_m!,
+  };
+  const phases = computeTubusPhases(geom);
+
+  // ── Technologie A/B (§2.4 — datová tabulka, obě varianty viditelné) ─────
+  let technology = decideTubusTechnology({
+    dc_count: geom.dc_count,
+    visual_concrete: input.tubus_visual_concrete,
+    internal_structures: input.tubus_internal_structures,
+  });
+  if (input.tubus_technology && input.tubus_technology !== 'auto') {
+    const forced = input.tubus_technology;
+    if (forced !== technology.choice) {
+      warnings.push(
+        `ℹ️ Technologie ${forced === 'traveler' ? 'bednící vozík' : 'konvenční'} `
+        + `vynucena vstupem — datové pravidlo doporučuje ${technology.choice === 'traveler' ? 'vozík' : 'konvenční'} `
+        + `(${technology.reasons_cs[0] ?? ''}).`,
+      );
+    }
+    technology = {
+      choice: forced,
+      phases_per_dc: forced === 'traveler' ? 2 : 3,
+      reasons_cs: [`vynuceno vstupem (tubus_technology=${forced})`, ...technology.reasons_cs],
+      alternative: forced === 'traveler' ? 'conventional' : 'traveler',
+    };
+  }
+  const pourCount = tubusPourCount(geom.dc_count, technology.phases_per_dc);
+  log.push(
+    `Tubus: ${geom.dc_count} DC × ${technology.phases_per_dc} fáze = ${pourCount} betonáží rámu `
+    + `(${technology.choice === 'traveler' ? 'bednící vozík' : 'konvenční fázová'}).`,
+  );
+  for (const r of technology.reasons_cs) log.push(`  volba technologie: ${r}`);
+
+  // ── Q10: objem — výkaz primární, geometrie cross-check, nikdy náhrada ───
+  const geometricVolume = tubusGeometricVolume(geom);
+  const ratio = geometricVolume > 0 ? input.volume_m3 / geometricVolume : 0;
+  log.push(
+    `Objem: vstup (výkaz) ${input.volume_m3} m³ vs. geometrie tubusu ${geometricVolume} m³ `
+    + `(poměr ${ratio.toFixed(2)}; výkazová položka může krýt i navazující konstrukce — schodiště).`,
+  );
+  if (ratio > 0 && ratio < 0.85) {
+    warnings.push(
+      `⚠️ Objem ze vstupu (${input.volume_m3} m³) je MENŠÍ než geometrie tubusu `
+      + `(${geometricVolume} m³) — dotaz na projektanta (§2.11): zkontrolujte výkaz vs. tvar. `
+      + 'Výkaz zůstává primární, číslo se tiše nenahrazuje.',
+    );
+  }
+
+  // ── Bednění stěn: PB2/PB3 filtr (§2.5) ──────────────────────────────────
+  let wallSystemName = profile.recommended_formwork[0] ?? 'Framax Xlife';
+  if (input.tubus_visual_concrete) {
+    wallSystemName = 'Top 50';
+    warnings.push(
+      'ℹ️ PB2/PB3 / reliéf matricí: rámové systémy vyfiltrovány — jen nosníkové '
+      + 'stěnové bednění (Top 50 / VARIO GT 24). Atypický povrch → R-položkový '
+      + 'příplatek (mimo OTSKP katalog), platí i pro pohledový soffit stropu.',
+    );
+  }
+  const fwSystem = findFormworkSystem(wallSystemName)
+    ?? findFormworkSystem('Framax Xlife')!;
+  const adjustedNorms = getAdjustedAssemblyNorm(elementType, fwSystem);
+  log.push(`Bednění stěn: ${fwSystem.name} (${adjustedNorms.assembly_h_m2} h/m²).`);
+
+  // Per-DC plochy (Σ fází) a objemy
+  const fwAreaPerDc = phases.reduce((s, p) => s + p.formwork_m2_per_dc, 0);
+  const volumePerDc = phases.reduce((s, p) => s + p.volume_m3_per_dc, 0);
+  const maxPhaseVolume = Math.max(...phases.map(p => p.volume_m3_per_dc));
+
+  // ── Zrání mezi fázemi (strop je kritický — nosný, podpěry pod ním) ──────
+  const curing = calculateCuring({
+    concrete_class: (input.concrete_class ?? 'C30/37') as ConcreteClass,
+    temperature_c: defaults.temperature,
+    cement_type: (input.cement_type ?? 'CEM_II') as CementType,
+    element_type: 'slab' as ElementType,
+    strip_strength_pct: profile.strip_strength_pct,
+    curing_class: input.curing_class ?? getDefaultCuringClass(elementType),
+    exposure_class: input.exposure_class,
+    exposure_classes: input.exposure_classes,
+  });
+  const curingDays = curing.min_curing_days;
+
+  // ── Bednění: 3-fázový model přes všechny DC (captures = DC) ─────────────
+  const threePhase = calculateThreePhaseFormwork(
+    fwAreaPerDc,
+    adjustedNorms.assembly_h_m2,
+    adjustedNorms.disassembly_h_m2,
+    crew, shift, k, wageFormwork,
+    geom.dc_count,
+  );
+
+  // ── Výztuž: celkem + per-fáze rozdělení (Q4) ────────────────────────────
+  const totalRebarKg = input.rebar_mass_kg
+    ?? Math.round(input.volume_m3 * profile.rebar_ratio_kg_m3);
+  const rebarPerPhase = phases.map((p) => {
+    const share = volumePerDc > 0 ? p.volume_m3_per_dc / volumePerDc : 0;
+    const D = profile.rebar_default_diameter_mm;
+    const norm = REBAR_RATES_MATRIX[p.rebar_category]?.[D]
+      ?? profile.rebar_norm_h_per_t;
+    return {
+      phase: p.phase,
+      mass_kg: Math.round(totalRebarKg * share),
+      category: p.rebar_category,
+      norm_h_per_t: norm,
+    };
+  });
+  const rebarResult = calculateRebarLite({
+    element_type: elementType,
+    volume_m3: input.volume_m3,
+    mass_kg: totalRebarKg,
+    crew_size: crewRebar,
+    shift_h: shift,
+    k,
+    wage_czk_h: wageRebar,
+  });
+
+  // ── Pour decision + task (DC = dilatační celky, nikdy dopočet) ──────────
+  const pourDecision = decidePourMode({
+    element_type: elementType,
+    volume_m3: input.volume_m3,
+    has_dilatacni_spary: true,
+    season: input.season,
+    use_retarder: input.use_retarder,
+    working_joints_allowed: 'yes',
+  });
+  pourDecision.num_tacts = pourCount;
+  pourDecision.tact_volume_m3 = maxPhaseVolume;
+  const pourResult = calculatePourTask({
+    element_type: elementType,
+    volume_m3: maxPhaseVolume,
+    season: input.season,
+    use_retarder: input.use_retarder,
+    crew_size: crew,
+    shift_h: shift,
+  });
+
+  // ── Harmonogram: konzervativní sekvenční horní mez ──────────────────────
+  // Fáze jednoho DC jsou sekvenční (stěny až po zrání dna, strop po zrání
+  // stěn — konstrukční nutnost §2.3); DC pipeline-ují přes sadu bednění.
+  // MVP: per-DC cyklus × DC (pipelining úspory = follow-up, savings=0 честně).
+  const perDcAsmDays = threePhase.middle_tact_count > 0
+    ? threePhase.middle_days
+    : threePhase.initial_days;
+  const perDcPourDays = technology.phases_per_dc * Math.max(0.5, pourResult.total_pour_hours / shift);
+  const perDcCuringDays = technology.phases_per_dc * curingDays;
+  const perDcRebarDays = rebarResult.duration_days / geom.dc_count;
+  const perDcCycle = perDcAsmDays + perDcRebarDays + perDcPourDays + perDcCuringDays;
+  const totalDays = Math.round(perDcCycle * geom.dc_count * 10) / 10;
+
+  const tactDetails = Array.from({ length: geom.dc_count }, (_, i) => {
+    const t0 = i * perDcCycle;
+    return {
+      tact: i + 1,
+      set: 1,
+      assembly: [t0, t0 + perDcAsmDays] as [number, number],
+      rebar: [t0, t0 + perDcAsmDays + perDcRebarDays] as [number, number],
+      concrete: [t0 + perDcAsmDays + perDcRebarDays, t0 + perDcAsmDays + perDcRebarDays + perDcPourDays] as [number, number],
+      curing: [t0 + perDcAsmDays + perDcRebarDays + perDcPourDays, t0 + perDcCycle] as [number, number],
+      stripping: [t0 + perDcCycle - 0.5, t0 + perDcCycle] as [number, number],
+    };
+  });
+  const scheduleResult: ElementScheduleOutput = {
+    total_days: totalDays,
+    sequential_days: totalDays,
+    savings_days: 0,
+    savings_pct: 0,
+    tact_details: tactDetails,
+    critical_path: ['spodni_deska', 'zrani', 'steny', 'zrani', 'stropni_deska'],
+    gantt: '',
+    utilization: { formwork_crews: 1, rebar_crews: 1, sets: [1] },
+    bottleneck: 'fázová sekvence DC (zrání mezi fázemi)',
+  };
+  log.push(
+    `Harmonogram (konzervativní sekvenční mez): ${geom.dc_count} DC × ${perDcCycle.toFixed(1)} d `
+    + `= ${totalDays} d; zrání mezi fázemi ${curingDays} d.`,
+  );
+
+  const zeroStrategies = calculateStrategiesDetailed({
+    assembly_days: threePhase.initial_days,
+    rebar_days: rebarResult.duration_days,
+    concrete_days: perDcPourDays * geom.dc_count,
+    curing_days: curingDays,
+    disassembly_days: threePhase.final_days,
+    num_captures: geom.dc_count,
+  });
+
+  // Part B validation (tz_facts) — stejné pravidlo jako main/pile cesty.
+  const flags = runValidationRules({
+    tz_facts: input.tz_facts,
+    construction_technology: input.construction_technology,
+    num_tacts: pourDecision.num_tacts,
+  });
+  for (const f of flags) warnings.push(f.message);
+
+  return {
+    element: {
+      type: elementType,
+      label_cs: profile.label_cs,
+      classification_confidence: profile.confidence,
+      profile,
+    },
+    pour_decision: pourDecision,
+    formwork: {
+      system: fwSystem,
+      assembly_days: threePhase.initial_days,
+      disassembly_days: threePhase.final_days,
+      curing_days: curingDays,
+      three_phase: threePhase,
+      strategies: zeroStrategies,
+      shape_correction: 1.0,
+    },
+    rebar: rebarResult,
+    pour: pourResult,
+    schedule: scheduleResult,
+    resources: {
+      total_formwork_workers: crew,
+      total_rebar_workers: crewRebar,
+      num_formwork_crews: 1,
+      num_rebar_crews: 1,
+      crew_size_formwork: crew,
+      crew_size_rebar: crewRebar,
+      shift_h: shift,
+      wage_formwork_czk_h: wageFormwork,
+      wage_rebar_czk_h: wageRebar,
+      wage_pour_czk_h: wagePour,
+      pour_shifts: 1,
+      pour_simultaneous_headcount: crew,
+      pour_rostered_headcount: crew,
+      pour_has_night_premium: false,
+      pour_crew_breakdown: {
+        ukladani: 0, vibrace: 0, finiseri: 0, rizeni: 0,
+        total: crew, pumps_used: 0,
+      },
+    },
+    costs: {
+      formwork_labor_czk: threePhase.total_cost_labor,
+      rebar_labor_czk: rebarResult.cost_labor,
+      pour_labor_czk: 0,
+      pour_night_premium_czk: 0,
+      total_labor_czk: threePhase.total_cost_labor + rebarResult.cost_labor,
+      formwork_rental_czk: 0,
+      props_labor_czk: 0,
+      props_rental_czk: 0,
+      is_mss_path: false,
+      mss_mobilization_czk: 0,
+      mss_demobilization_czk: 0,
+      mss_rental_czk: 0,
+    },
+    norms_sources: {
+      formwork_assembly: `${fwSystem.name}: ${adjustedNorms.assembly_h_m2} h/m² (katalog systémů; PB filtr §2.5${input.tubus_visual_concrete ? ' AKTIVNÍ' : ' neaktivní'})`,
+      formwork_disassembly: `${fwSystem.name}: ${adjustedNorms.disassembly_h_m2} h/m²`,
+      rebar: `${rebarResult.norm_h_per_t} h/t (${rebarResult.norm_source}); per-fáze kategorie Q4: dno+strop slabs_foundations, stěny walls; index ${profile.rebar_ratio_kg_m3} kg/m³ = kalibrace n=1 SO 11-20-04`,
+      curing: `zrání mezi fázemi ${curingDays} d (${input.concrete_class ?? 'C30/37'}, třída ošetřování dle TKP18)`,
+    },
+    warnings,
+    warnings_structured: structureWarnings(warnings),
+    decision_log: log,
+    resource_ceiling: applyResourceCeilingDefaults(elementType, input.resource_ceiling),
+    resource_violations: [],
+    tubus: {
+      dc_count: geom.dc_count,
+      technology,
+      phases,
+      pour_count: pourCount,
+      // AC7: pracovní výška podpěrné konstrukce = SVĚTLÁ výška rámu.
+      // Nikdy tloušťka stropu (0,45), nikdy výška pod podhledem (2,65).
+      support_height_m: geom.clear_height_m,
+      geometric_volume_m3: geometricVolume,
+      rebar_per_phase: rebarPerPhase,
+      wall_formwork_system: fwSystem.name,
+      construction_mode: constructionMode,
+    },
+  };
 }
 
 function runPilePath(
