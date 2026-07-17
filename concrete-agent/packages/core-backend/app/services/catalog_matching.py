@@ -58,6 +58,15 @@ WORK_TYPE_RULES: list[tuple[re.Pattern, str]] = [
     # Ošetřování betonu (curing) resolves BEFORE `beton` (the phrase contains
     # "beton"); OTSKP bundles it into the concrete item (CATALOG_BUNDLING).
     (re.compile(r"ošetřov|osetrov|ošetřen|osetren", re.I), "osetrovani"),
+    # NB (review 2026-07-17, finding 1): do NOT add lexical work-type rules for
+    # template-born atoms (montáž dílců, zálivka spár). This table is GLOBAL —
+    # it classifies BOTH query rows AND catalog candidates in match_catalog,
+    # where a known-vs-known mismatch is fatal; a new stem here silently
+    # re-buckets candidates on every element type (live: «TĚSNĚNÍ DILATAČ SPAR
+    # ASF ZÁLIVKOU» dropped from izolace baskets). Template atoms already carry
+    # a deterministic `vocabulary_code` — key special handling off THAT in the
+    # binding layer (confidence ladder: code 1.0 > lexika), lexika stays the
+    # fallback for code-less strings only.
     (re.compile(r"beton", re.I), "beton"),
 ]
 

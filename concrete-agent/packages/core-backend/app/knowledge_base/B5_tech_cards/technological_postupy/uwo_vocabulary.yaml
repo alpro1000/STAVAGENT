@@ -240,16 +240,20 @@ codes:
       - { name: casing_method, kind: scalar, note: "pažnice / CFA / bez pažení" }
     coverage: covered
 
-  # Montáž prefabrikovaných rámových dílců (element 24 uzavřený rám/tubus,
-  # construction_mode=prefab, AC2 «žádné bednění, žádné fáze; jen montáž +
-  # zálivky» — registration proposal doručen PR #element24 Wave 3d, 2026-07-16).
-  # Instaluje DODANÝ výrobek → nese scope (pravidlo 5). Druhá dimenze
-  # (hmotnost dílce pro jeřáb) = param, nikdy druhá jednotka (pravidlo 4).
+  # Dodávka a montáž prefabrikovaných rámových dílců (element 24 uzavřený
+  # rám/tubus, construction_mode=prefab, AC2 «žádné bednění, žádné fáze; jen
+  # montáž + zálivky» — registration proposal doručen PR Wave 3d 2026-07-16;
+  # AMENDED 2026-07-17 review findings 5+parity: unit_canonical ks → m3.
+  # OTSKP kánon cení rodinu 3891x «MOSTNÍ RÁMOVÉ KONSTR Z DÍLCŮ» za m³ dílce
+  # (dodávka + montáž + spáry v ceně) — m³ je PRIMÁRNÍ fyzikální dimenze;
+  # počet kusů i hmotnost dílce = params, nikdy druhá jednotka (pravidlo 4).
+  # Instaluje DODANÝ výrobek → nese scope (pravidlo 5).
   - code: PRECAST.FRAME.INSTALL
-    label: { cs: "Montáž prefabrikovaných rámových dílců (IZM/ZBM, propustky, tubusy)", de: null, es: null }
+    label: { cs: "Dodávka a montáž prefabrikovaných rámových dílců (IZM/ZBM, propustky, tubusy)", de: null, es: null }
     keywords: { cs: [montáž dílců, prefabrikované rámy, prefabrikát, IZM, ZBM, montáž prefabrikátů], de: [], es: [] }
-    unit_canonical: ks
+    unit_canonical: m3
     params:
+      - { name: pieces_count, kind: scalar, note: "počet dílců — druhá dimenze jako param (pravidlo 4)" }
       - { name: piece_mass_t, kind: scalar, note: "hmotnost dílce v t — dimenzuje jeřáb; druhá dimenze jako param (pravidlo 4)" }
       - { name: scope, kind: scalar, note: "supply | install | supply_install (D+M); default install — adapter volí specifikace vs montáž položku (pravidlo 5)" }
     coverage: covered

@@ -1,11 +1,13 @@
 """Element 24 Wave 3d — prefab tubus assembly plan (task v2.1 §2.6 / AC2).
 
 A prefabricated closed frame (construction_mode='prefab') must yield an
-ASSEMBLY-ONLY breakdown: montáž dílců + zálivka spár. Never bednění,
-never betonáž phases, never on-site výztuž (units arrive reinforced).
-Quantities come ONLY from explicit inputs (pieces_count / grout_volume_m3)
-— missing → honest NEPOČÍTÁNO, never an estimate (joint detail and piece
-length are vendor data).
+ASSEMBLY-ONLY breakdown. Never bednění, never betonáž phases, never on-site
+výztuž (units arrive reinforced). Shape per review 2026-07-17 finding 5:
+a CARRIER row «Dodávka a montáž prefabrikovaných rámových dílců» (m³ =
+volume_m3, OTSKP 3891x canon; pieces_count = param echoed in the formula,
+rule 4) + zálivka spár (grout_volume_m3). Quantities ONLY from explicit
+inputs — missing → honest NEPOČÍTÁNO, never an estimate (piece volume and
+joint detail are vendor data).
 
 Vocabulary codes PRECAST.FRAME.INSTALL + CONCRETE.JOINT.GROUT are the
 registration proposal delivered by this same change (vocabulary header:
@@ -40,7 +42,9 @@ async def test_prefab_explicit_mode_yields_assembly_only_plan():
     )
     descs = _descs(result)
     assert len(descs) == 2, descs
-    assert any("Montáž prefabrikovaných rámových dílců" in d for d in descs)
+    # Review 2026-07-17 finding 5: the CARRIER row (m³ — OTSKP 3891x canon)
+    # replaces the old per-ks montáž row; montáž is inside the carrier name.
+    assert any(d.startswith("Dodávka a montáž prefabrikovaných rámových dílců") for d in descs)
     assert any("Zálivka spár" in d for d in descs)
     # AC2: no formwork, no pour phases, no on-site rebar
     joined = " | ".join(descs)
@@ -73,16 +77,19 @@ async def test_prefab_quantities_from_explicit_inputs():
             "name": "Rámový propustek",
             "element_type": "uzavreny_ram_tubus",
             "construction_mode": "prefab",
+            "volume_m3": 96.5,
             "pieces_count": 12,
             "grout_volume_m3": 4.8,
         }],
         catalog="none",
     )
     by_code = {i["vocabulary_code"]: i for i in result["items"]}
-    montaz = by_code["PRECAST.FRAME.INSTALL"]
+    carrier = by_code["PRECAST.FRAME.INSTALL"]
     zalivka = by_code["CONCRETE.JOINT.GROUT"]
-    assert montaz["quantity"] == 12 and montaz["unit"] == "ks"
-    assert montaz["quantity_status"] == "from_input"
+    # Carrier = m³ of dílců from volume_m3 (rule 4: pieces = param, echoed).
+    assert carrier["quantity"] == 96.5 and carrier["unit"] == "m³"
+    assert carrier["quantity_status"] == "from_input"
+    assert "12 ks" in carrier["quantity_formula"]
     assert zalivka["quantity"] == 4.8 and zalivka["unit"] == "m³"
     assert zalivka["quantity_status"] == "from_input"
 
@@ -98,7 +105,7 @@ async def test_classifier_prefab_signal_selects_assembly_plan():
         catalog="none",
     )
     descs = _descs(result)
-    assert any("Montáž prefabrikovaných rámových dílců" in d for d in descs), descs
+    assert any("Dodávka a montáž prefabrikovaných" in d for d in descs), descs
     assert not any("Bednění" in d for d in descs)
 
 
@@ -118,7 +125,7 @@ async def test_explicit_monolit_mode_beats_prefab_name_signal():
     )
     descs = _descs(result)
     assert any(d.startswith("Beton ") for d in descs), descs
-    assert not any("Montáž prefabrikovaných" in d for d in descs)
+    assert not any("montáž prefabrikovaných" in d.lower() for d in descs)
 
 
 @pytest.mark.asyncio

@@ -205,6 +205,20 @@ async def concrete_class_delta_czk(
     from app.mcp.tools.breakdown import _canonical_query
 
     base_query = _canonical_query("beton", element_type)
+    if base_query is None:
+        # Review 2026-07-17 finding 3: _canonical_query now returns None for a
+        # polluted label-fallback type — WITHOUT this guard the f-string below
+        # would issue the literal query "None C30/37" and could fabricate a
+        # delta from a nonsense item (the exact class the floor hardening kills).
+        return {
+            "class_a": class_a,
+            "class_b": class_b,
+            "cena_delta_czk": None,
+            "reason": (
+                "typ nemá kanonické katalogové substantivum (zamusořený "
+                "label-fallback) — delta se neoceňuje, ověřte ručně"
+            ),
+        }
 
     async def _unit_price(cls: str) -> Optional[dict]:
         result = await _FIND_OTSKP(f"{base_query} {cls}", max_results=5)
