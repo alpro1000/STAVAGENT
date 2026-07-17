@@ -5,6 +5,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { planElement, UncalculatedError, PlannerInput } from './planner-orchestrator';
+import { REBAR_RATES_MATRIX, RebarCategory } from '../classifiers/element-classifier';
 
 const TURNOV_INPUT: PlannerInput = {
   element_type: 'uzavreny_ram_tubus',
@@ -146,5 +147,35 @@ describe('tubus path — AC8 SKRUŽ vs. STOJKY (oboustranné, živá čísla)', 
     expect(warn).toContain('statickým posouzením');
     // AC7 drží i tady: pracovní výška = světlá výška, ne tloušťka stropu.
     expect(plan.tubus!.support_height_m).toBe(6.5);
+  });
+});
+
+describe('tubus path — 2026-07-17 live-finding fixes (lišní pole / pravdivé dropdowny)', () => {
+  it('Průměr hlavní výztuže override: D25 řídí normy per fáze — dropdown není ignorován', () => {
+    const planDef = planElement(TURNOV_INPUT);
+    const plan25 = planElement({ ...TURNOV_INPUT, rebar_diameter_mm: 25 });
+    for (const p of plan25.tubus!.rebar_per_phase) {
+      expect(p.norm_h_per_t).toBe(
+        REBAR_RATES_MATRIX[p.category as RebarCategory][25],
+      );
+    }
+    // ... a liší se od defaultního D16 plánu (walls 12.2 vs 7.2 h/t).
+    expect(plan25.tubus!.rebar_per_phase.map(p => p.norm_h_per_t))
+      .not.toEqual(planDef.tubus!.rebar_per_phase.map(p => p.norm_h_per_t));
+  });
+
+  it('non-prismatic gate: box dims L×W×H NIKDY nefabrikují objem tubusu (dutý rám) — chybějící výkaz = typed NEPOČÍTÁNO', () => {
+    const { volume_m3: _drop, ...noVolume } = TURNOV_INPUT;
+    const withBoxDims = {
+      ...noVolume, length_m: 61.2, width_m: 6.5, height_m: 3.95,
+    } as unknown as PlannerInput;
+    expect(() => planElement(withBoxDims)).toThrowError(UncalculatedError);
+    try {
+      planElement(withBoxDims);
+    } catch (e) {
+      const u = e as UncalculatedError;
+      expect(u.uncalculated).toBe(true);
+      expect(u.missing_fields).toContain('volume_m3');
+    }
   });
 });

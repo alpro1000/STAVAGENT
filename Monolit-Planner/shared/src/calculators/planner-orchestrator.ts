@@ -3051,7 +3051,13 @@ function runTubusPath(
   }
 
   // ── Honest-blank gate (§2.10): geometrie JEN z explicitních vstupů ──────
+  // volume_m3 added 2026-07-17: the tubus is non-prismatic (element-geometry),
+  // so deriveGeometryInput no longer fabricates a solid L×W×H box volume for
+  // it — a missing výkaz volume must fail HERE, typed, not NaN-cascade below.
   const missing: string[] = [];
+  if (!(typeof input.volume_m3 === 'number' && Number.isFinite(input.volume_m3) && input.volume_m3 > 0)) {
+    missing.push('volume_m3');
+  }
   if (!dcCount || dcCount <= 0) missing.push('tubus_dc_count');
   if (!input.tubus_clear_width_m) missing.push('tubus_clear_width_m');
   if (!input.tubus_clear_height_m) missing.push('tubus_clear_height_m');
@@ -3183,10 +3189,13 @@ function runTubusPath(
   // ── Výztuž: celkem + per-fáze rozdělení (Q4) ────────────────────────────
   const totalRebarKg = input.rebar_mass_kg
     ?? Math.round(input.volume_m3 * profile.rebar_ratio_kg_m3);
+  // 2026-07-17 (Alexander live finding): honour the user's «Průměr hlavní
+  // výztuže» override — the visible dropdown was ignored by the tubus path
+  // (only profile default fired), making the UI untruthful.
+  const rebarD = input.rebar_diameter_mm ?? profile.rebar_default_diameter_mm;
   const rebarPerPhase = phases.map((p) => {
     const share = volumePerDc > 0 ? p.volume_m3_per_dc / volumePerDc : 0;
-    const D = profile.rebar_default_diameter_mm;
-    const norm = REBAR_RATES_MATRIX[p.rebar_category]?.[D]
+    const norm = REBAR_RATES_MATRIX[p.rebar_category]?.[rebarD]
       ?? profile.rebar_norm_h_per_t;
     return {
       phase: p.phase,

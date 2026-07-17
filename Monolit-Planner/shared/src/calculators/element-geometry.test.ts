@@ -33,8 +33,11 @@ describe('estimateElementVolume (pure)', () => {
     expect(g.reason).toMatch(/zadejte objem ru/i);
   });
 
-  it('non-prismatic set: deck/pilota/schodiste/nadrz/rimsa/other', () => {
-    for (const t of ['mostovkova_deska', 'pilota', 'schodiste', 'nadrz', 'rimsa', 'other']) {
+  it('non-prismatic set: deck/pilota/schodiste/nadrz/rimsa/tubus/other', () => {
+    // uzavreny_ram_tubus added 2026-07-17 (Alexander live finding): the frame
+    // is HOLLOW — a solid L×W×H box would fabricate ~3× the real volume.
+    // Tubus geometry comes exclusively from the tubus_* inputs (§2.10).
+    for (const t of ['mostovkova_deska', 'pilota', 'schodiste', 'nadrz', 'rimsa', 'uzavreny_ram_tubus', 'other']) {
       expect(isPrismaticType(t)).toBe(false);
     }
     for (const t of ['stena', 'sloup', 'stropni_deska', 'zakladovy_pas', 'opery_ulozne_prahy', 'driky_piliru']) {

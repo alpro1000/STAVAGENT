@@ -197,7 +197,13 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
               // schodiste, nadrz, other) show a VISIBLE honest-blank note so the
               // user knows why there is no D×Š×V input here.
               if (!isPrismaticType(elemType)) {
-                if (elemType === 'pilota' || elemType === 'mostovkova_deska') return null;
+                // pilota / mostovka / tubus have their OWN dedicated geometry
+                // blocks — no box widget AND no honest-blank note (it would be
+                // noise next to the dedicated block). Tubus added 2026-07-17:
+                // the frame is hollow, so it is non-prismatic in the engine too
+                // (a solid L×W×H box would fabricate ~3× the real volume).
+                if (elemType === 'pilota' || elemType === 'mostovkova_deska'
+                    || elemType === 'uzavreny_ram_tubus') return null;
                 return (
                   <div style={{
                     marginBottom: 10, padding: '6px 10px', fontSize: 12,
@@ -269,8 +275,11 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
 
             {/* 2026-04-15: hide "Plocha bednění" for piles — bored piles
                 have no system formwork, the pile geometry block below
-                takes over entirely. */}
-            {form.element_type !== 'pilota' && (
+                takes over entirely. 2026-07-17: hidden for tubus too — the
+                phase engine computes contact areas per fáze (deska/stěny/
+                strop) from the explicit tubus geometry; this generic input
+                is not consumed by runTubusPath. */}
+            {form.element_type !== 'pilota' && form.element_type !== 'uzavreny_ram_tubus' && (
             <Field label="Plocha bednění (m²)" hint="prázdné = automatický odhad z objemu a výšky">
               <NumInput style={inputStyle} value={form.formwork_area_m2} min={0}
                 onChange={v => update('formwork_area_m2', String(v))} placeholder="automatický odhad" />
@@ -580,36 +589,36 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
                     <Field label="Počet dilatačních celků" hint="vždy ze zadání — nedopočítává se">
                       <NumInput style={inputStyle} value={form.tubus_dc_count} min={1} step={1}
-                        onChange={v => update('tubus_dc_count', String(Math.max(1, Math.round(Number(v)))))} placeholder="10" />
+                        onChange={v => update('tubus_dc_count', String(Math.max(1, Math.round(Number(v)))))} placeholder="např. 10" />
                     </Field>
                     <Field label="Délka sekce (m)" hint="podél osy tubusu">
                       <NumInput style={inputStyle} value={form.tubus_section_length_m} min={1} step={0.5}
-                        onChange={v => update('tubus_section_length_m', String(v))} placeholder="12" />
+                        onChange={v => update('tubus_section_length_m', String(v))} placeholder="např. 6,1" />
                     </Field>
                   </div>
                   {!isPrefab && (<>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
                     <Field label="Světlá šířka (m)">
                       <NumInput style={inputStyle} value={form.tubus_clear_width_m} min={0.5} step={0.1}
-                        onChange={v => update('tubus_clear_width_m', String(v))} placeholder="5.5" />
+                        onChange={v => update('tubus_clear_width_m', String(v))} placeholder="např. 5,5" />
                     </Field>
                     <Field label="Světlá výška (m)" hint="= pracovní výška podpěr">
                       <NumInput style={inputStyle} value={form.tubus_clear_height_m} min={0.5} step={0.1}
-                        onChange={v => update('tubus_clear_height_m', String(v))} placeholder="3.0" />
+                        onChange={v => update('tubus_clear_height_m', String(v))} placeholder="např. 3,0" />
                     </Field>
                   </div>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6 }}>
                     <Field label="Tl. spodní desky (m)">
                       <NumInput style={inputStyle} value={form.tubus_bottom_thickness_m} min={0.1} step={0.05}
-                        onChange={v => update('tubus_bottom_thickness_m', String(v))} placeholder="0.45" />
+                        onChange={v => update('tubus_bottom_thickness_m', String(v))} placeholder="např. 0,50" />
                     </Field>
                     <Field label="Tl. stěn (m)">
                       <NumInput style={inputStyle} value={form.tubus_wall_thickness_m} min={0.1} step={0.05}
-                        onChange={v => update('tubus_wall_thickness_m', String(v))} placeholder="0.50" />
+                        onChange={v => update('tubus_wall_thickness_m', String(v))} placeholder="např. 0,50" />
                     </Field>
                     <Field label="Tl. stropu (m)">
                       <NumInput style={inputStyle} value={form.tubus_top_thickness_m} min={0.1} step={0.05}
-                        onChange={v => update('tubus_top_thickness_m', String(v))} placeholder="0.45" />
+                        onChange={v => update('tubus_top_thickness_m', String(v))} placeholder="např. 0,45" />
                     </Field>
                   </div>
                   <Field label="Technologie bednění" hint="auto = volba řízená daty (A/B)">
@@ -777,6 +786,27 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
           {/* ─── Záběry (Tacts) — wizard step 5 ─── */}
           <div className={wizardVisible.zabery ? 'r0-wizard-step' : ''} style={wizardVisible.zabery ? undefined : { display: 'none' }}>
           <Section title="Členění konstrukce">
+            {/* 2026-07-17 (Alexander live finding): the tubus carries its OWN
+                členění — dilatační celky × fáze, entered in the «Geometrie
+                uzavřeného rámu» block. The generic dilatation/manual-záběry
+                fields below are IGNORED by runTubusPath (DC count is never
+                derived, §2.10), so showing them would duplicate «Počet
+                dilatačních celků» with a dead twin. Info note instead. */}
+            {form.element_type === 'uzavreny_ram_tubus' ? (
+              <div style={{
+                padding: '8px 10px', borderRadius: 6,
+                background: 'var(--r0-info-bg, #eff6ff)',
+                border: '1px solid var(--r0-info-border, #bfdbfe)',
+                fontSize: 11, lineHeight: 1.5, color: 'var(--r0-slate-700)',
+              }}>
+                <strong>Členění tubusu = dilatační celky × fáze betonáže</strong>
+                <div style={{ marginTop: 2 }}>
+                  Zadává se v bloku „Geometrie uzavřeného rámu" (Počet dilatačních
+                  celků + technologie A/B → 2–3 fáze na celek). Obecné dilatační
+                  spáry a ruční záběry se pro tubus nepoužijí.
+                </div>
+              </div>
+            ) : (<>
             {/* Block A (2026-04): hierarchical sections × záběry per section
                 replaces the legacy two-tab UI ("Dilatační spáry" / "Počet záběrů").
                 The two layers are independent — a dilatation cell may itself
@@ -1120,6 +1150,7 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                 </div>
               )}
             </div>
+            </>)}{/* /non-tubus Členění content */}
           </Section>
 
           </div>{/* /wizard zabery */}

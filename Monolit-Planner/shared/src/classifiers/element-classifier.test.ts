@@ -1135,3 +1135,21 @@ describe('Element Classifier', () => {
     });
   });
 });
+
+describe('tubus TZ params compat (2026-07-17)', () => {
+  const TUBUS_FIELDS = [
+    'tubus_dc_count', 'tubus_section_length_m',
+    'tubus_clear_width_m', 'tubus_clear_height_m',
+    'tubus_bottom_thickness_m', 'tubus_wall_thickness_m', 'tubus_top_thickness_m',
+  ];
+
+  it('all 7 tubus geometry params are compatible ONLY with uzavreny_ram_tubus', () => {
+    for (const p of TUBUS_FIELDS) {
+      expect(isParamCompatibleWith(p, 'uzavreny_ram_tubus')).toBe(true);
+      expect(explainIncompatibility(p, 'uzavreny_ram_tubus')).toBeNull();
+      // ... and rejected everywhere else with a tubus-specific reason.
+      expect(isParamCompatibleWith(p, 'zaklady_piliru')).toBe(false);
+      expect(explainIncompatibility(p, 'mostovkova_deska')).toMatch(/tubus/);
+    }
+  });
+});

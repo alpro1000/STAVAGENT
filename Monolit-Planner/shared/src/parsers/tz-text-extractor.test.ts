@@ -969,3 +969,68 @@ Celkový objem 605 m³ dle rozpočtu.
     });
   });
 });
+
+describe('tubus geometry pack (element 24, 2026-07-17 — «подсказка не всё вытянула»)', () => {
+  const TURNOV_LIKE_TZ = `
+Konstrukce podchodu je navržena jako uzavřený železobetonový rám z betonu C30/37 XD1+XC4+XF2+XA1.
+Světlá šířka rámu je 6,10 m, světlá výška 3,00 m.
+Tloušťka spodní desky 500 mm, stěn 500 mm a stropní desky 450 mm.
+Konstrukce je rozdělena na 10 dilatačních celků délky 6,123 m.
+Celková délka podchodu je 104,0 m.
+`;
+  const tubusOpts = { element_type: 'uzavreny_ram_tubus' };
+  const get = (results: ExtractedParam[], name: string) =>
+    results.find(r => r.name === name);
+
+  it('pulls all 7 §2.10 geometry inputs from Turnov-like prose', () => {
+    const r = extractFromText(TURNOV_LIKE_TZ, tubusOpts);
+    expect(get(r, 'tubus_dc_count')?.value).toBe(10);
+    expect(get(r, 'tubus_section_length_m')?.value).toBe(6.123);
+    expect(get(r, 'tubus_clear_width_m')?.value).toBe(6.1);
+    expect(get(r, 'tubus_clear_height_m')?.value).toBe(3.0);
+    // mm → m conversion for the thickness trio (one line, three pairs)
+    expect(get(r, 'tubus_bottom_thickness_m')?.value).toBe(0.5);
+    expect(get(r, 'tubus_wall_thickness_m')?.value).toBe(0.5);
+    expect(get(r, 'tubus_top_thickness_m')?.value).toBe(0.45);
+  });
+
+  it('«celková délka 104 m» (whole object) NEVER lands in tubus_section_length_m', () => {
+    const r = extractFromText(
+      'Celková délka podchodu je 104,0 m. Konstrukce je rozdělena na 10 dilatačních celků.',
+      tubusOpts,
+    );
+    expect(get(r, 'tubus_dc_count')?.value).toBe(10);
+    expect(get(r, 'tubus_section_length_m')).toBeUndefined();
+  });
+
+  it('combined «světlé rozměry 6,10 × 3,00 m» fills width + height in one hit', () => {
+    const r = extractFromText('Rám má světlé rozměry 6,10 × 3,00 m.', tubusOpts);
+    expect(get(r, 'tubus_clear_width_m')?.value).toBe(6.1);
+    expect(get(r, 'tubus_clear_height_m')?.value).toBe(3.0);
+  });
+
+  it('thickness in metres works too («tloušťka stropní desky 0,45 m»)', () => {
+    const r = extractFromText('Tloušťka stropní desky 0,45 m, tloušťka stěn 0,50 m.', tubusOpts);
+    expect(get(r, 'tubus_top_thickness_m')?.value).toBe(0.45);
+    expect(get(r, 'tubus_wall_thickness_m')?.value).toBe(0.5);
+  });
+
+  it('gated on element_type — other types get NO tubus params from the same text', () => {
+    const rNone = extractFromText(TURNOV_LIKE_TZ, {});
+    const rStena = extractFromText(TURNOV_LIKE_TZ, { element_type: 'stena' });
+    for (const r of [rNone, rStena]) {
+      expect(r.some(p => p.name.startsWith('tubus_'))).toBe(false);
+    }
+  });
+
+  it('reuses the global dilatation-cell pattern («na 40 … konstantní délky 12,50 m»)', () => {
+    const r = extractFromText(
+      'Konstrukce je rozdělena na 40 dilatačních celků konstantní délky 12,50 m.',
+      tubusOpts,
+    );
+    expect(get(r, 'tubus_dc_count')?.value).toBe(40);
+    expect(get(r, 'tubus_section_length_m')?.value).toBe(12.5);
+    // Informational names keep emitting for the passport/audit consumers.
+    expect(get(r, 'dilatation_main_count')?.value).toBe(40);
+  });
+});

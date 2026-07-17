@@ -140,3 +140,39 @@ describe('mergeAiParams — the guard', () => {
     expect(dup.rejected[0].reason_cs).toContain('Duplicitní');
   });
 });
+
+describe('tubus manifest gating (2026-07-17 — «подсказка не всё вытянула»)', () => {
+  const TUBUS_FIELDS = [
+    'tubus_dc_count', 'tubus_section_length_m',
+    'tubus_clear_width_m', 'tubus_clear_height_m',
+    'tubus_bottom_thickness_m', 'tubus_wall_thickness_m', 'tubus_top_thickness_m',
+  ];
+
+  it('tubus manifest includes all 7 geometry fields', () => {
+    const fields = buildExtractionManifest('uzavreny_ram_tubus').map(f => f.field);
+    for (const f of TUBUS_FIELDS) expect(fields).toContain(f);
+  });
+
+  it('non-tubus manifests exclude tubus geometry (compat gate works)', () => {
+    for (const t of ['mostovkova_deska', 'stena', 'zaklady_piliru'] as const) {
+      const fields = buildExtractionManifest(t).map(f => f.field);
+      for (const f of TUBUS_FIELDS) expect(fields).not.toContain(f);
+    }
+  });
+
+  it('AI prompt for tubus names the tubus fields (server builds from SAME manifest)', () => {
+    const prompt = buildAiExtractionPrompt('uzavreny_ram_tubus', 'text');
+    expect(prompt).toContain('tubus_clear_width_m');
+    expect(prompt).toContain('Počet dilatačních celků');
+  });
+
+  it('mergeAiParams accepts a quoted tubus field for tubus, rejects it for stena', () => {
+    const raw = [{ field: 'tubus_clear_height_m', value: 3.0, quote: 'světlá výška 3,00 m', confidence: 0.9 }];
+    const ok = mergeAiParams([], raw, 'uzavreny_ram_tubus');
+    expect(ok.accepted.map(p => p.name)).toEqual(['tubus_clear_height_m']);
+    expect(ok.accepted[0].confidence).toBeLessThanOrEqual(AI_CONFIDENCE_CAP);
+    const no = mergeAiParams([], raw, 'stena');
+    expect(no.accepted).toEqual([]);
+    expect(no.rejected[0].reason_cs).toMatch(/manifestu/);
+  });
+});
