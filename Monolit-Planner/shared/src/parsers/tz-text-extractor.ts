@@ -950,6 +950,102 @@ export function extractFromText(
     });
   }
 
+  // ─── Tubus geometry pack (element 24, 2026-07-17) ──────────────────────
+  //
+  // Alexander live finding: «подсказка не всё вытянула из задания» — the
+  // extractor pulled dilatation cells only into the informational
+  // `dilatation_main_*` names, and the §2.10 tubus inputs (světlá šířka /
+  // výška, tloušťky, délka sekce) had no patterns at all, so the hint left
+  // the tubus geometry block empty. Gated on element_type — these phrases
+  // are frame-specific and the field names are only meaningful for the
+  // tubus (ELEMENT_TZ_COMPATIBILITY gates the apply side the same way).
+  if (options.element_type === 'uzavreny_ram_tubus') {
+    const seenTubus = new Set<string>();
+    const emitTubus = (
+      name: string, value: number, label: string, matched: string,
+    ) => {
+      if (seenTubus.has(name)) return; // first (most specific) pattern wins
+      seenTubus.add(name);
+      results.push({
+        name, value, label_cs: label,
+        confidence: 1.0, source: 'regex', matched_text: matched.trim(),
+      });
+    };
+
+    // DC count + section length — reuse the global dilatation-cell match
+    // («na 40 dilatačních celků konstantní délky 12,50 m») when it fired.
+    if (mainDilatMatch) {
+      emitTubus('tubus_dc_count', parseInt(mainDilatMatch[1], 10),
+        `Počet dilatačních celků: ${mainDilatMatch[1]}`, mainDilatMatch[0]);
+      emitTubus('tubus_section_length_m', parseFloat(mainDilatMatch[2].replace(',', '.')),
+        `Délka sekce: ${mainDilatMatch[2]} m`, mainDilatMatch[0]);
+    }
+    // Fallback DC count: "rozdělen na 10 dilatačních celků".
+    const dcMatch = normalized.match(/(\d+)\s+dilatacni\S*\s+celk/);
+    if (dcMatch) {
+      emitTubus('tubus_dc_count', parseInt(dcMatch[1], 10),
+        `Počet dilatačních celků: ${dcMatch[1]}`, dcMatch[0]);
+    }
+    // Section length: "délka sekce 12 m" / "sekce délky 12,0 m" /
+    // "celky (konstantní) délky 12,5 m". `celk[uy]` (not `celk\S*`) so
+    // "celková délka 104 m" — the WHOLE object length — never fires here.
+    const secLenMatch = normalized.match(/delk\S*\s+sekc\S*\s+(\d+[,.]?\d*)\s*m\b/)
+      ?? normalized.match(/sekc\S*\s+delk\S*\s+(\d+[,.]?\d*)\s*m\b/)
+      ?? normalized.match(/\bcelk[uy]\S*\s+(?:konstantni\s+)?delk\S*\s+(\d+[,.]?\d*)\s*m\b/);
+    if (secLenMatch) {
+      emitTubus('tubus_section_length_m', parseFloat(secLenMatch[1].replace(',', '.')),
+        `Délka sekce: ${secLenMatch[1]} m`, secLenMatch[0]);
+    }
+    // Combined clear cross-section: "světlé rozměry 6,10 × 3,00 m" /
+    // "světlý průřez 6,1 x 3,0" / "světlý otvor 6,1×3,0 m".
+    const clearBoth = normalized.match(
+      /svetl\S*\s+(?:rozmer\S*|prurez\S*|otvor\S*)\s*(?:\S+\s+)??(\d+[,.]?\d*)\s*[x×]\s*(\d+[,.]?\d*)\s*m?\b/,
+    );
+    if (clearBoth) {
+      emitTubus('tubus_clear_width_m', parseFloat(clearBoth[1].replace(',', '.')),
+        `Světlá šířka: ${clearBoth[1]} m`, clearBoth[0]);
+      emitTubus('tubus_clear_height_m', parseFloat(clearBoth[2].replace(',', '.')),
+        `Světlá výška: ${clearBoth[2]} m`, clearBoth[0]);
+    }
+    // Single clear width / height: "světlá šířka (tubusu) 6,10 m" — up to
+    // two intervening words tolerated (genitive noun, adjective).
+    const clearW = normalized.match(/svetl\S*\s+sirk\S*\s+(?:[a-z]\S*\s+){0,2}(\d+[,.]?\d*)\s*m\b/);
+    if (clearW) {
+      emitTubus('tubus_clear_width_m', parseFloat(clearW[1].replace(',', '.')),
+        `Světlá šířka: ${clearW[1]} m`, clearW[0]);
+    }
+    const clearH = normalized.match(/svetl\S*\s+vysk\S*\s+(?:[a-z]\S*\s+){0,2}(\d+[,.]?\d*)\s*m\b/);
+    if (clearH) {
+      emitTubus('tubus_clear_height_m', parseFloat(clearH[1].replace(',', '.')),
+        `Světlá výška: ${clearH[1]} m`, clearH[0]);
+    }
+    // Part thicknesses — per line, and per pair WITHIN a line, so
+    // "tloušťka spodní desky 450 mm, stěn 500 mm a stropní desky 450 mm"
+    // yields all three. The line must carry a tloušťka/tl. anchor; each
+    // pair = part word … number + unit (mm → m). Order: strop před desk
+    // («stropní desky» obsahuje obě), bare "desk" bez spodní/stropní se
+    // vědomě nemapuje (ambiguita).
+    for (const line of normalized.split(/\r?\n/)) {
+      if (!/tloustk|(^|\s)tl\.?\s/.test(line)) continue;
+      const pairRe = /(stropn?\S*(?:\s+desk\S*)?|spodni\s+desk\S*|\bdn[oa]\b|zakladov\S*\s+desk\S*|sten\S*)[^,;.a-z]*?(\d+[,.]?\d*)\s*(mm|m)\b/g;
+      let pm: RegExpExecArray | null;
+      while ((pm = pairRe.exec(line)) !== null) {
+        const part = pm[1];
+        const raw = parseFloat(pm[2].replace(',', '.'));
+        const val = pm[3] === 'mm' ? raw / 1000 : raw;
+        if (!(val > 0.05 && val < 3)) continue; // sanity: 5 cm – 3 m
+        const shown = `${val} m`;
+        if (/^strop/.test(part)) {
+          emitTubus('tubus_top_thickness_m', val, `Tloušťka stropní desky: ${shown}`, pm[0]);
+        } else if (/^spodni|^dn|^zakladov/.test(part)) {
+          emitTubus('tubus_bottom_thickness_m', val, `Tloušťka spodní desky: ${shown}`, pm[0]);
+        } else if (/^sten/.test(part)) {
+          emitTubus('tubus_wall_thickness_m', val, `Tloušťka stěn: ${shown}`, pm[0]);
+        }
+      }
+    }
+  }
+
   // Face-cladding material keyword: "lomovým kamenem" / "lomový kámen".
   // `\S+` instead of `\w+` because Czech diacritics (ý/ě/á) aren't in
   // ASCII `\w` (no /u flag).

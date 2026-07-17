@@ -53,6 +53,17 @@ const FIELD_DEFS: readonly Omit<AiFieldSpec, 'range'>[] = [
   { field: 'is_prestressed', label_cs: 'Předpjatý beton', type: 'boolean' },
   { field: 'bridge_deck_subtype', label_cs: 'Typ NK', type: 'string' },
   { field: 'pile_diameter_mm', label_cs: 'Průměr piloty', unit: 'mm', type: 'number' },
+  // Tubus geometry (element 24, §2.10 explicit inputs) — 2026-07-17, Alexander
+  // live finding «подсказка не всё вытянула из задания». Gated to the tubus
+  // via ELEMENT_TZ_COMPATIBILITY (explainIncompatibility filter below); field
+  // names match FormState/PlannerInput 1:1 (TzTextInput.writeParamToForm).
+  { field: 'tubus_dc_count', label_cs: 'Počet dilatačních celků', type: 'number' },
+  { field: 'tubus_section_length_m', label_cs: 'Délka sekce (dilatačního celku)', unit: 'm', type: 'number' },
+  { field: 'tubus_clear_width_m', label_cs: 'Světlá šířka rámu', unit: 'm', type: 'number' },
+  { field: 'tubus_clear_height_m', label_cs: 'Světlá výška rámu', unit: 'm', type: 'number' },
+  { field: 'tubus_bottom_thickness_m', label_cs: 'Tloušťka spodní desky', unit: 'm', type: 'number' },
+  { field: 'tubus_wall_thickness_m', label_cs: 'Tloušťka stěn', unit: 'm', type: 'number' },
+  { field: 'tubus_top_thickness_m', label_cs: 'Tloušťka stropní desky', unit: 'm', type: 'number' },
 ];
 
 const RANGE_FIELDS = ['volume_m3', 'height_m', 'formwork_area_m2'] as const;

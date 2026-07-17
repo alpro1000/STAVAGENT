@@ -120,6 +120,16 @@ function writeParamToForm(
     case 'pile_diameter_mm': update('pile_diameter_mm', String(value)); return true;
     case 'element_type': update('element_type', value as FormState['element_type']); return true;
     case 'volume_m3': update('volume_m3', Number(value)); return true;
+    // Tubus geometry (element 24, §2.10) — 2026-07-17. String slots in
+    // FormState (NumInput values); compatibility gating already filtered
+    // these to element_type === 'uzavreny_ram_tubus'.
+    case 'tubus_dc_count': update('tubus_dc_count', String(value)); return true;
+    case 'tubus_section_length_m': update('tubus_section_length_m', String(value)); return true;
+    case 'tubus_clear_width_m': update('tubus_clear_width_m', String(value)); return true;
+    case 'tubus_clear_height_m': update('tubus_clear_height_m', String(value)); return true;
+    case 'tubus_bottom_thickness_m': update('tubus_bottom_thickness_m', String(value)); return true;
+    case 'tubus_wall_thickness_m': update('tubus_wall_thickness_m', String(value)); return true;
+    case 'tubus_top_thickness_m': update('tubus_top_thickness_m', String(value)); return true;
     // Informational-only params (no direct FormState binding).
     case 'prestress_tensioning':
     case 'prestress_cables_count':

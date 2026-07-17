@@ -1890,7 +1890,17 @@ export type TzParamName =
   | 'prestress_strands_per_cable'
   | 'pile_diameter_mm'
   // Task 2 (2026-04-20): array-form exposure classes (ČSN EN 206+A2).
-  | 'exposure_classes';
+  | 'exposure_classes'
+  // 2026-07-17 (Alexander live finding «подсказка не всё вытянула»): tubus
+  // geometry params — extractable from TZ, meaningful ONLY for the closed
+  // frame (element 24). Names match FormState/PlannerInput 1:1.
+  | 'tubus_dc_count'
+  | 'tubus_section_length_m'
+  | 'tubus_clear_width_m'
+  | 'tubus_clear_height_m'
+  | 'tubus_bottom_thickness_m'
+  | 'tubus_wall_thickness_m'
+  | 'tubus_top_thickness_m';
 
 /**
  * Parameters that are meaningful for ANY structural element — always
@@ -1906,6 +1916,18 @@ const UNIVERSAL_TZ_PARAMS: readonly TzParamName[] = [
   'formwork_area_m2',
   'reinforcement_total_kg',
   'reinforcement_ratio_kg_m3',
+];
+
+/** Tubus (closed frame, element 24) geometry params — §2.10 explicit inputs.
+ *  Exported so the AI-extraction manifest and tests share the one list. */
+export const TUBUS_TZ_PARAMS: readonly TzParamName[] = [
+  'tubus_dc_count',
+  'tubus_section_length_m',
+  'tubus_clear_width_m',
+  'tubus_clear_height_m',
+  'tubus_bottom_thickness_m',
+  'tubus_wall_thickness_m',
+  'tubus_top_thickness_m',
 ];
 
 /** Bridge-deck / beam specific params (mostovky, rigely, komory). */
@@ -1942,8 +1964,9 @@ export const ELEMENT_TZ_COMPATIBILITY: Record<
   readonly TzParamName[]
 > = {
   // 24. typ: height_m = SVĚTLÁ výška rámu (AC7 — nikdy tl. stropu 0,45,
-  // nikdy výška pod podhledem 2,65); volume z výkazu (Q10).
-  uzavreny_ram_tubus: ['height_m', 'total_length_m'],
+  // nikdy výška pod podhledem 2,65); volume z výkazu (Q10). Tubus geometry
+  // params added 2026-07-17 — TZ extraction can now fill the §2.10 inputs.
+  uzavreny_ram_tubus: ['height_m', 'total_length_m', ...TUBUS_TZ_PARAMS],
   // ── Foundations (horizontal, no bridge-deck params) ──────────────────────
   zaklady_piliru: ['height_m', 'thickness_mm'],
   zaklady_oper:   ['height_m', 'thickness_mm'], // Phase 3 Gate 2a — same TZ params as zaklady_piliru
@@ -2017,6 +2040,7 @@ export function isParamCompatibleWith(
   const allKnown = new Set<string>([
     ...UNIVERSAL_TZ_PARAMS,
     ...BRIDGE_DECK_TZ_PARAMS,
+    ...TUBUS_TZ_PARAMS,
     'pile_diameter_mm',
     'height_m',
     'thickness_mm',
@@ -2042,6 +2066,9 @@ export function explainIncompatibility(
   }
   if (param_name === 'pile_diameter_mm') {
     return `Průměr piloty — nepoužije se pro „${label}".`;
+  }
+  if ((TUBUS_TZ_PARAMS as readonly string[]).includes(param_name)) {
+    return `Parametr geometrie uzavřeného rámu (tubus) — nepoužije se pro „${label}".`;
   }
   return `Parametr není relevantní pro „${label}".`;
 }
