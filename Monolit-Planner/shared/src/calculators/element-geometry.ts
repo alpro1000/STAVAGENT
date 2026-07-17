@@ -25,6 +25,9 @@ const NON_PRISMATIC_TYPES = new Set<string>([
   'schodiste',        // stairs — stepped, not a prism
   'nadrz',            // tank — hollow
   'rimsa',            // cornice — bm cross-section, not a W×H box
+  'uzavreny_ram_tubus', // closed frame — hollow; a solid box would fabricate
+                        // ~3× the real concrete volume. Geometry lives in the
+                        // explicit tubus_* inputs (§2.10), never in L×W×H.
   'other',            // unknown — never guess a box volume
 ]);
 
