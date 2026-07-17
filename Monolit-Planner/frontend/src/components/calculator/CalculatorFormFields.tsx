@@ -580,36 +580,36 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
                     <Field label="Počet dilatačních celků" hint="vždy ze zadání — nedopočítává se">
                       <NumInput style={inputStyle} value={form.tubus_dc_count} min={1} step={1}
-                        onChange={v => update('tubus_dc_count', String(Math.max(1, Math.round(Number(v)))))} placeholder="10" />
+                        onChange={v => update('tubus_dc_count', String(Math.max(1, Math.round(Number(v)))))} placeholder="např. 10" />
                     </Field>
                     <Field label="Délka sekce (m)" hint="podél osy tubusu">
                       <NumInput style={inputStyle} value={form.tubus_section_length_m} min={1} step={0.5}
-                        onChange={v => update('tubus_section_length_m', String(v))} placeholder="12" />
+                        onChange={v => update('tubus_section_length_m', String(v))} placeholder="např. 6,1" />
                     </Field>
                   </div>
                   {!isPrefab && (<>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
                     <Field label="Světlá šířka (m)">
                       <NumInput style={inputStyle} value={form.tubus_clear_width_m} min={0.5} step={0.1}
-                        onChange={v => update('tubus_clear_width_m', String(v))} placeholder="5.5" />
+                        onChange={v => update('tubus_clear_width_m', String(v))} placeholder="např. 5,5" />
                     </Field>
                     <Field label="Světlá výška (m)" hint="= pracovní výška podpěr">
                       <NumInput style={inputStyle} value={form.tubus_clear_height_m} min={0.5} step={0.1}
-                        onChange={v => update('tubus_clear_height_m', String(v))} placeholder="3.0" />
+                        onChange={v => update('tubus_clear_height_m', String(v))} placeholder="např. 3,0" />
                     </Field>
                   </div>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6 }}>
                     <Field label="Tl. spodní desky (m)">
                       <NumInput style={inputStyle} value={form.tubus_bottom_thickness_m} min={0.1} step={0.05}
-                        onChange={v => update('tubus_bottom_thickness_m', String(v))} placeholder="0.45" />
+                        onChange={v => update('tubus_bottom_thickness_m', String(v))} placeholder="např. 0,50" />
                     </Field>
                     <Field label="Tl. stěn (m)">
                       <NumInput style={inputStyle} value={form.tubus_wall_thickness_m} min={0.1} step={0.05}
-                        onChange={v => update('tubus_wall_thickness_m', String(v))} placeholder="0.50" />
+                        onChange={v => update('tubus_wall_thickness_m', String(v))} placeholder="např. 0,50" />
                     </Field>
                     <Field label="Tl. stropu (m)">
                       <NumInput style={inputStyle} value={form.tubus_top_thickness_m} min={0.1} step={0.05}
-                        onChange={v => update('tubus_top_thickness_m', String(v))} placeholder="0.45" />
+                        onChange={v => update('tubus_top_thickness_m', String(v))} placeholder="např. 0,45" />
                     </Field>
                   </div>
                   <Field label="Technologie bednění" hint="auto = volba řízená daty (A/B)">
