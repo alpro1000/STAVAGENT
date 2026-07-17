@@ -5,6 +5,32 @@ items deferred from in-flight PRs that need their own focused work.
 
 ---
 
+## otskp-binding-fallback-heads (2026-07-17) — typy vázané přes label-head fallback (sourozenec normalizer-sweep: «мусор на входе → уверенность на выходе»)
+
+**Kontext:** živý nález po merži PR1 — tubus bez `_OTSKP_QUERY_NOUN` padl na
+label-head «Uzavřený rám (tubus) — podchod» → prod přivázal výztuž na 15411
+«ZAJIŠTĚNÍ VÝRUBU TUNELU» (8,3 M Kč, conf 0.78). Micro-PR opravil tubus
+(kanonické substantivum «mostní rámové konstrukce» → 389325/389365) + přidal
+pollution-guard: znečištěný fallback (závorky/pomlčky) → honest not_verified,
+ŽÁDNÝ dotaz. **Guard má grandfather-list** — 4 staré typy se znečištěnou
+hlavou jedou DNEŠNÍ cestou dál (sekvenční kázeň: chování se nemění pod flagem
+micro-PR). Tady je jejich fix: dát každému kanonické substantivum (nom/gen)
+podle reálných OTSKP titulů, per typ golden-pin, pak grandfather-list smazat.
+
+| typ | label-head fallback dnes | stav |
+|---|---|---|
+| `sloup` | „Sloup (pozemní)“ | ⛔ grandfathered — kanonický noun chybí |
+| `zaklady` | „Základy (pozemní)“ | ⛔ grandfathered |
+| `sachta` | „Šachta (výtahová, technická)“ | ⛔ grandfathered |
+| `gabionova_zed` | „Gabionová zeď (drátokoš — nebetonová)“ | ⛔ grandfathered |
+| 15 dalších typů | čisté hlavy («Stěna», «Pilota», …) | fallback OK, noun = nice-to-have |
+
+Priorita: P2 (žádný z grandfathered typů zatím neprokázal живой nonsense-bind;
+tubus byl jediný s pomlčkovo-závorkovou hlavou И bez OTSKP rodiny v hlavě).
+Fixy = samostatný malý PR; NEdělat pod jiným flagem.
+
+---
+
 ## normalizer-sweep-findings (2026-07-16) — adversarial svip W3 klasifikátoru (element 24 Wave 5b; NÁLEZY SE NEČINÍ V PR1)
 
 **Pravidlo ratifikováno Alexandrem 2026-07-16:** svip = pouze REPORT; fixy

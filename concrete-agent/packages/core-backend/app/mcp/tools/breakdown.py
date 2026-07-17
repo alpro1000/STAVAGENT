@@ -9,6 +9,7 @@ concrete, insulation...) → OTSKP/ÚRS code matching from the database.
 """
 
 import logging
+import re
 from typing import Optional
 
 from app.models.item_schemas import CodeStatus, ItemQuantityStatus
@@ -228,6 +229,18 @@ CATALOG_BUNDLING: dict[str, set[str]] = {
     "rts": set(),
 }
 
+# Prefab tubus (element 24, §2.7-analog — catalog-TRUE per the OTSKP spec of
+# 389125, verbatim: «dodání dílce … včetně komplexní technologie výroby a
+# montáže dílců» + «výplň, těsnění a tmelení spár a spojů»): montáž dílců AND
+# zálivka spár are PRICED INSIDE the 3891x «MOSTNÍ RÁMOVÉ KONSTR Z DÍLCŮ»
+# item (per m³ of dílce). SCOPED to uzavreny_ram_tubus — a montáž/zálivka row
+# on another element type keeps the generic path (no global work-type reach).
+_TUBUS_PREFAB_BUNDLED: set[str] = {"montaz_dilcu", "zalivka"}
+_TUBUS_PREFAB_BUNDLED_NOTE = (
+    "zahrnuto v položce prefabrikovaných rámových dílců (OTSKP 3891x — "
+    "dodávka, montáž i těsnění spár v ceně dílce dle technické specifikace)"
+)
+
 # Canonical work verb per work-type axis. Used to build a clean search query
 # (work verb + element noun) instead of the slash-labelled work_description,
 # which poisons BOTH the work-type and element-family detectors.
@@ -262,18 +275,51 @@ _OTSKP_QUERY_NOUN: dict[str, dict[str, str]] = {
     "driky_piliru": {"nom": "mostní pilíře", "gen": "mostních pilířů"},
     "rimsa": {"nom": "římsy", "gen": "říms"},
     "mostovkova_deska": {"nom": "mostovka nosná konstrukce", "gen": "mostovky"},
+    # Element 24 (live find 2026-07-17): the label-head fallback «Uzavřený rám
+    # (tubus) — podchod» poisoned the fulltext — prod bound výztuž to 15411
+    # «ZAJIŠTĚNÍ VÝRUBU TUNELU…» (60 390 Kč/t) and beton to 743742 «ROZVADĚČ…»
+    # at conf 0.78. OTSKP titles the family «MOSTNÍ RÁMOVÉ KONSTRUKCE»:
+    # beton 389325 «…ZE ŽELEZOBETONU C30/37» (nominative carries the material
+    # so the monolith item outranks the prefab 3891x «Z DÍLCŮ» sibling on the
+    # code-asc tie-break); výztuž 389365 «VÝZTUŽ MOSTNÍ RÁMOVÉ KONSTRUKCE…»
+    # (genitive surface form equals the nominative stem).
+    "uzavreny_ram_tubus": {
+        "nom": "mostní rámové konstrukce ze železobetonu",
+        "gen": "mostní rámové konstrukce",
+    },
 }
 
 # Work-types whose OTSKP title governs the element GENITIVE ("VÝZTUŽ <gen>").
 _GENITIVE_WORK_TYPES = {"vyztuz", "predpinaci"}
 
 
-def _canonical_query(work_type: str, element_type: str) -> str:
+# Label-head pollution (floor hardening, ratified 2026-07-17): a fallback noun
+# carrying parenthesis / em-dash / comma noise is NOT a trustworthy catalog
+# query — fulltext over it produced the confident-nonsense class (tubus →
+# tunnel-excavation steel at conf 0.78). A polluted fallback must yield an
+# honest no-query (binding → not_verified + reason), never a confident code.
+_POLLUTED_NOUN_RE = re.compile(r"[()—,;:]")
+
+# Grandfathered polluted fallbacks (sequential discipline: their binding
+# behavior must NOT silently change under this micro-PR's flag). These four
+# OLD types ride a parenthesized label head today («Sloup (pozemní)», «Základy
+# (pozemní)», «Šachta (výtahová, technická)», «Gabionová zeď (drátokoš —
+# nebetonová)») — candidates for canonical nouns in a follow-up (BACKLOG
+# `otskp-binding-fallback-heads`, sibling of the normalizer-sweep table:
+# same defect family «мусор на входе → уверенность на выходе»).
+_POLLUTED_FALLBACK_GRANDFATHERED = frozenset({
+    "sloup", "zaklady", "sachta", "gabionova_zed",
+})
+
+
+def _canonical_query(work_type: str, element_type: str) -> Optional[str]:
     """Clean search query: canonical work verb + element noun in the catalog's
     grammatical case for this work-type (genitive for výztuž/předpětí, nominative
     otherwise). Replaces the slash-labelled work_description that mis-fires the
     work-type + element-family detectors. Falls back to the element label's head
-    (before the slash) for unmapped types.
+    (before the slash) for unmapped types; a POLLUTED fallback head (parens/
+    dashes — no canonical catalog noun exists for the type) returns None so the
+    caller degrades to an honest not_verified instead of querying garbage.
     """
     from app.mcp.tools.classifier import ELEMENT_TYPES
 
@@ -284,6 +330,11 @@ def _canonical_query(work_type: str, element_type: str) -> str:
     else:
         label = (ELEMENT_TYPES.get(element_type) or {}).get("label_cs", "")
         noun = label.split("/")[0].strip() if label else element_type.replace("_", " ")
+        if (
+            _POLLUTED_NOUN_RE.search(noun)
+            and element_type not in _POLLUTED_FALLBACK_GRANDFATHERED
+        ):
+            return None
     verb = WORK_VERB_CANON.get(work_type, work_type)
     suffix = " z oceli" if work_type == "vyztuz" else ""
     return f"{verb} {noun}{suffix}".strip()
@@ -335,8 +386,38 @@ async def _attach_catalog_codes(items: list[dict], catalog: str) -> list[dict]:
             item["code_confidence"] = 1.0
             continue
 
+        # Prefab tubus atoms: montáž dílců + zálivka spár sit INSIDE the OTSKP
+        # 3891x dílce item (spec-verbatim rule, see _TUBUS_PREFAB_BUNDLED) — a
+        # deterministic bundle at conf 1.0, never a fulltext guess (live find
+        # 2026-07-17: the guess bound «POUZDRO PRO PRŮCHOD PÁSKU» at 0.78).
+        if (
+            item.get("element_type") == "uzavreny_ram_tubus"
+            and work_type in _TUBUS_PREFAB_BUNDLED
+        ):
+            item["otskp_code"] = None
+            item["unit_price_czk"] = None
+            item["total_price_czk"] = None
+            item["code_status"] = CodeStatus.BUNDLED.value
+            item["code_note"] = _TUBUS_PREFAB_BUNDLED_NOTE
+            item["code_confidence"] = 1.0
+            continue
+
         query = _canonical_query(work_type, item.get("element_type", "jine"))
         item["code_query"] = query
+        if query is None:
+            # Floor hardening (2026-07-17): no canonical noun + polluted label
+            # fallback → there is NO trustworthy query. Honest no-bind beats a
+            # confident nonsense code (the tubus→tunnel class).
+            item["otskp_code"] = None
+            item["unit_price_czk"] = None
+            item["total_price_czk"] = None
+            item["code_status"] = CodeStatus.NOT_VERIFIED.value
+            item["code_note"] = (
+                "typ nemá kanonické katalogové substantivum a label-fallback "
+                "je zamusořený — dotaz se nevydává, kód ověřte ručně"
+            )
+            item["code_confidence"] = 0.0
+            continue
         result = await find_otskp_code(query, max_results=5)
         candidates = result.get("results", [])
         top = candidates[0] if candidates else None

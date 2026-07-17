@@ -58,6 +58,15 @@ WORK_TYPE_RULES: list[tuple[re.Pattern, str]] = [
     # Ošetřování betonu (curing) resolves BEFORE `beton` (the phrase contains
     # "beton"); OTSKP bundles it into the concrete item (CATALOG_BUNDLING).
     (re.compile(r"ošetřov|osetrov|ošetřen|osetren", re.I), "osetrovani"),
+    # Prefab-assembly atoms (element 24, live find 2026-07-17: both fell to
+    # 'ostatni' → the polluted query bound «POUZDRO PRO PRŮCHOD PÁSKU» at 0.78).
+    # DELIBERATELY NARROW stems: `montáž prefabrikovan*` only — a bare `montáž`
+    # would recapture «Římsový vozík — montáž» and silently change the římsa
+    # binding path (out of scope). Resolves after `demolice` so DEMONTÁŽ stays
+    # demolice. Zálivka after `demolice` too («ODSTRANĚNÍ ASFALTOVÉ ZÁLIVKY»
+    # stays demolice) and before `beton` (the row name carries a concrete class).
+    (re.compile(r"mont[áa]ž\w*\s+prefabrikovan", re.I), "montaz_dilcu"),
+    (re.compile(r"z[áa]livk", re.I), "zalivka"),
     (re.compile(r"beton", re.I), "beton"),
 ]
 
