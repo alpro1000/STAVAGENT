@@ -745,9 +745,17 @@ describe('Element Classifier', () => {
   describe('getAllElementTypes', () => {
     // BUG 11: +2 new types (podkladni_beton, podlozkovy_blok)
     // Phase 3 Gate 2a (2026-04-30): +1 zaklady_oper → 25 types (14 bridge + 11 building)
-    it('returns 25 element types (14 bridge + 11 building)', () => {
+    // Element24 PR1 (2026-07-16): +1 uzavreny_ram_tubus → 26 types (15 bridge + 11 building)
+    it('returns 26 element types (15 bridge + 11 building)', () => {
       const types = getAllElementTypes();
-      expect(types).toHaveLength(25);
+      expect(types).toHaveLength(26);
+    });
+
+    it('includes uzavreny_ram_tubus (24th type, task v2.1)', () => {
+      const types = getAllElementTypes();
+      const tubus = types.find(t => t.type === 'uzavreny_ram_tubus');
+      expect(tubus).toBeTruthy();
+      expect(tubus!.label_cs).toContain('tubus');
     });
 
     it('includes prechodova_deska', () => {

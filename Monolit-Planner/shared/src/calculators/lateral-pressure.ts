@@ -264,7 +264,10 @@ export function getStageCountPenalty(stageCount: number): number {
 export function filterFormworkByPressure(
   pressure_kn_m2: number,
   systems: FormworkSystemSpec[],
-  orientation: 'vertical' | 'horizontal' = 'vertical',
+  // 'special' (uzavreny_ram_tubus) sem v generické cestě nikdy nedorazí
+  // (vlastní fázová cesta, §2.10); typ ji přijímá jen kvůli ElementProfile
+  // union — chová se jako vertical (stěnová větev = pressure filtr).
+  orientation: 'vertical' | 'horizontal' | 'special' = 'vertical',
   pour_height_m?: number,
 ): FormworkFilterResult {
   const suitable: FormworkSystemSpec[] = [];

@@ -55,6 +55,12 @@ type_core:
   kridla_opery:         { orientation: vertical,   family: abutment,   w3_name: kridla_opery,       bridge_boost: true }
   mostni_zavirne_zidky: { orientation: vertical,   family: abutment,   w3_name: opery_ulozne_prahy, bridge_boost: true }
   prechodova_deska:     { orientation: horizontal, family: transition, w3_name: prechodova_deska,   bridge_boost: true }
+  # 24. typ (TASK_Element24_UzavrenyRam_Tubus_v2_1, PR1 2026-07-16): uzavřený
+  # monolitický rám — podchod/podjezd/rámový propustek/hloubený tunel/kolektor.
+  # Diskriminátor (Q9, ratifikováno): UZAVŘENÝ průřez (spodní deska spojující
+  # stěny) → tubus; otevřený rám/polorám → NENÍ tubus (mostovka-ramovy /
+  # schodiště). Názvy objektů nerozhodují (SŽ zove podchody «železniční most»).
+  uzavreny_ram_tubus:   { orientation: special,    family: frame,      w3_name: uzavreny_ram_tubus, bridge_boost: true }
   # 2026-07-07 (SO-202 Žalmanov E2E finding): W3 dostává vlastní podkladni_beton
   # — «PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU» se rolovalo do jine a MCP
   # caller ztratil rebar=0 prostý-beton profil. Family zůstává residual
@@ -85,6 +91,7 @@ type_core:
 # suite, NOT by W3 parity. Transitory: lives only until the MCP side delegates
 # typing to the engine. Invariant: type_core[t].family == w3_family[w3_name[t]].
 w3_family:
+  uzavreny_ram_tubus: frame
   zaklady_piliru: foundation
   zaklady: foundation
   zakladova_deska: foundation
@@ -140,6 +147,30 @@ object_type_aliases:
 dictionaries:
   cs:
     keywords:
+      # 24. typ — uzavřený rám (tubus). Priorita 12 > mostovka(10): golden věta
+      # TZ Turnov «nosná konstrukce je navržena jako uzavřený železobetonový rám»
+      # obsahuje OBĚ vocab («nosná konstrukce» = deck signál) — closed-frame
+      # signály MUSÍ vyhrát. Slova podchod/propustek/kolektor = sekundární
+      # potvrzení rodiny (Q9); «rámová konstrukce» bare NENÍ include (rámový
+      # most bez tubus-signálů zůstává deck — otevřený rám). Exclude: polorám /
+      # otevřený (schodišťový polorám NENÍ tubus, AC1) + kabelovod (kolektor
+      # past na SO 11-60-01).
+      # Include = literální podstring na _normalize() textu (bez diakritiky) —
+      # proto STEMY («mostni ramov» kryje ramové/rámová/rámové). Primární signál
+      # «uzavřený … rám» s adjektivem mezi slovy podstring nechytí — ten nese
+      # raw-text early-exit v klasifikátoru (zrcadlo GABION vzoru), protože
+      # head-noun normalizer řeže participiální ocas («NK je navržena jako
+      # uzavřený ŽB rám…» → canonical jen «nosná konstrukce»).
+      uzavreny_ram_tubus:
+        priority: 12
+        include: [tubus, uzavreny ram, uzavrena ramova konstrukce,
+          mostni ramov, ramova konstrukce podchodu,
+          podchod, podjezd,
+          ramovy propust, ramove propust, ramoveho propust, propustek ramovy,
+          prefabrikovane ram, prefabrikovany ram,
+          hloubeny tunel, kolektor,
+          box culvert, rahmenbauwerk, vollrahmen, marco cerrado]
+        exclude: [poloram, otevren, kabelovod]
       mostovkova_deska:
         priority: 10
         include: [mostovka, mostovkov, mostova deska, mostní deska, mostni deska,

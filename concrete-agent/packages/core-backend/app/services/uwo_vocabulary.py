@@ -31,6 +31,9 @@ LANG_SLOTS = {"cs", "de", "es"}
 BUILT_ATOM_PREFIXES = (
     "CONCRETE.POUR.STRUCTURE",
     "CONCRETE.CURING.SURFACE",
+    # element 24 prefab tubus (WORK_TEMPLATES branch uzavreny_ram_tubus__prefab)
+    "CONCRETE.JOINT.GROUT",
+    "PRECAST.FRAME.INSTALL",
     "FORMWORK.PANEL.",
     "FORMWORK.FALSEWORK.ERECT",
     "FORMWORK.TRAVELER.",

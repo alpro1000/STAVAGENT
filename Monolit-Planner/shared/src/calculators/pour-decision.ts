@@ -55,6 +55,7 @@ export type StructuralElementType =
   | 'kridla_opery'        // Křídla mostních opěr (wing walls)
   | 'mostni_zavirne_zidky'// Mostní závěrné zídky
   | 'prechodova_deska'   // Přechodová deska mostních opěr
+  | 'uzavreny_ram_tubus' // Uzavřený rám (tubus) — podchod/propustek/podjezd/tunel/kolektor (24. typ, task v2.1)
   | 'podkladni_beton'    // Podkladní beton (prostý, C12/15 X0)
   | 'podlozkovy_blok'    // Podložiskový blok (pod ložiska, C35/45)
   // ─── Building elements (pozemní stavby) ───
@@ -159,6 +160,14 @@ export interface ElementDefaults {
 }
 
 export const ELEMENT_DEFAULTS: Record<StructuralElementType, ElementDefaults> = {
+  // 24. typ (task v2.1 §2.2): počet DC je VSTUP z projektu — dilatační spáry
+  // jsou definičním znakem tubusu; kalkulátor je NIKDY nedopočítává z objemu.
+  uzavreny_ram_tubus: {
+    typical_has_spary: true,
+    typical_sub_mode: 'independent',
+    typical_spara_spacing_m: null,
+    description_cs: 'Uzavřený rám (tubus) — dilatační celky = vstup z projektu, každý DC se betonuje ve fázích (spodní deska → stěny → strop)',
+  },
   zaklady_piliru: {
     typical_has_spary: true,
     typical_sub_mode: 'independent',
