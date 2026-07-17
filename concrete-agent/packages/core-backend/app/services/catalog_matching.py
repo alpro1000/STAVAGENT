@@ -58,15 +58,15 @@ WORK_TYPE_RULES: list[tuple[re.Pattern, str]] = [
     # Ošetřování betonu (curing) resolves BEFORE `beton` (the phrase contains
     # "beton"); OTSKP bundles it into the concrete item (CATALOG_BUNDLING).
     (re.compile(r"ošetřov|osetrov|ošetřen|osetren", re.I), "osetrovani"),
-    # Prefab-assembly atoms (element 24, live find 2026-07-17: both fell to
-    # 'ostatni' → the polluted query bound «POUZDRO PRO PRŮCHOD PÁSKU» at 0.78).
-    # DELIBERATELY NARROW stems: `montáž prefabrikovan*` only — a bare `montáž`
-    # would recapture «Římsový vozík — montáž» and silently change the římsa
-    # binding path (out of scope). Resolves after `demolice` so DEMONTÁŽ stays
-    # demolice. Zálivka after `demolice` too («ODSTRANĚNÍ ASFALTOVÉ ZÁLIVKY»
-    # stays demolice) and before `beton` (the row name carries a concrete class).
-    (re.compile(r"mont[áa]ž\w*\s+prefabrikovan", re.I), "montaz_dilcu"),
-    (re.compile(r"z[áa]livk", re.I), "zalivka"),
+    # NB (review 2026-07-17, finding 1): do NOT add lexical work-type rules for
+    # template-born atoms (montáž dílců, zálivka spár). This table is GLOBAL —
+    # it classifies BOTH query rows AND catalog candidates in match_catalog,
+    # where a known-vs-known mismatch is fatal; a new stem here silently
+    # re-buckets candidates on every element type (live: «TĚSNĚNÍ DILATAČ SPAR
+    # ASF ZÁLIVKOU» dropped from izolace baskets). Template atoms already carry
+    # a deterministic `vocabulary_code` — key special handling off THAT in the
+    # binding layer (confidence ladder: code 1.0 > lexika), lexika stays the
+    # fallback for code-less strings only.
     (re.compile(r"beton", re.I), "beton"),
 ]
 

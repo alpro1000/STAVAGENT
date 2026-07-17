@@ -58,13 +58,18 @@ WORK_TEMPLATES = {
     ],
     # Prefabrikovaný uzavřený rám / tubus (element 24, task v2.1 §2.6 / AC2):
     # ŽÁDNÉ bednění, žádné betonářské fáze, žádná on-site výztuž (dílce jsou
-    # vyztužené z výroby) — jen montáž dílců + zálivky spár. Selected by
-    # construction_mode='prefab' (explicit input > classifier signal), NOT by
-    # element type alone — monolitický tubus keeps the "default" template with
-    # the §2.10 honest-blank guards. Vocabulary codes registered v1.3+
-    # (registration-proposal-as-PR per the vocabulary header, 2026-07-16).
+    # vyztužené z výroby). Selected by construction_mode='prefab' (explicit
+    # input > classifier signal) — monolitický tubus keeps the "default"
+    # template with the §2.10 honest-blank guards.
+    #
+    # Review 2026-07-17 finding 5 (Alexander GO): the CARRIER atom «Dodávka a
+    # montáž dílců» (m³ — OTSKP 3891x canon, pieces = param per rule 4) holds
+    # the dominant cost; the zálivka note points to THIS in-list row, never
+    # into the void. Names deliberately carry NO «— {element}» suffix — the
+    # polluted label («Uzavřený rám (tubus) — …») was the root of the
+    # confident-nonsense binds on BOTH catalog branches (finding 4).
     "uzavreny_ram_tubus__prefab": [
-        {"work": "Montáž prefabrikovaných rámových dílců — {element}", "unit": "ks", "qty_factor": "pieces_count", "hsv": "HSV2", "vocabulary_code": "PRECAST.FRAME.INSTALL"},
+        {"work": "Dodávka a montáž prefabrikovaných rámových dílců", "unit": "m³", "qty_factor": "dilce_volume", "hsv": "HSV2", "vocabulary_code": "PRECAST.FRAME.INSTALL"},
         {"work": "Zálivka spár mezi prefabrikovanými dílci {concrete_class}", "unit": "m³", "qty_factor": "grout_volume", "hsv": "HSV2", "vocabulary_code": "CONCRETE.JOINT.GROUT"},
     ],
 }
@@ -231,14 +236,25 @@ CATALOG_BUNDLING: dict[str, set[str]] = {
 
 # Prefab tubus (element 24, §2.7-analog — catalog-TRUE per the OTSKP spec of
 # 389125, verbatim: «dodání dílce … včetně komplexní technologie výroby a
-# montáže dílců» + «výplň, těsnění a tmelení spár a spojů»): montáž dílců AND
-# zálivka spár are PRICED INSIDE the 3891x «MOSTNÍ RÁMOVÉ KONSTR Z DÍLCŮ»
-# item (per m³ of dílce). SCOPED to uzavreny_ram_tubus — a montáž/zálivka row
-# on another element type keeps the generic path (no global work-type reach).
-_TUBUS_PREFAB_BUNDLED: set[str] = {"montaz_dilcu", "zalivka"}
-_TUBUS_PREFAB_BUNDLED_NOTE = (
-    "zahrnuto v položce prefabrikovaných rámových dílců (OTSKP 3891x — "
-    "dodávka, montáž i těsnění spár v ceně dílce dle technické specifikace)"
+# montáže dílců» + «výplň, těsnění a tmelení spár a spojů»).
+#
+# Review 2026-07-17 (findings 1/2/7, Alexander GO): keyed off the item's
+# deterministic `vocabulary_code` + element_type + construction_mode — NEVER
+# off a lexical re-derivation of the rendered Czech string (the retired
+# global WORK_TYPE_RULES stems silently re-bucketed candidates on every
+# element type). Confidence ladder: code 1.0 > lexika. The construction_mode
+# key keeps a FUTURE monolithic-tubus grout atom (working joint) out of this
+# bundle — a monolith pour has no dílce item to hide costs in.
+_TUBUS_PREFAB_CARRIER_CODE = "PRECAST.FRAME.INSTALL"
+_TUBUS_PREFAB_GROUT_CODE = "CONCRETE.JOINT.GROUT"
+# Deterministic carrier query (live-ranked 38912 «MOSTNÍ RÁMOVÉ KONSTRUKCE
+# Z DÍLCŮ ŽELEZOBETONOVÝCH» @0.9) — the carrier row CARRIES the price the
+# grout note points to.
+_TUBUS_PREFAB_CARRIER_QUERY = "mostní rámové konstrukce z dílců železobetonových"
+_TUBUS_PREFAB_GROUT_NOTE = (
+    "zahrnuto v položce „Dodávka a montáž prefabrikovaných rámových dílců“ "
+    "(OTSKP 3891x — výplň, těsnění a tmelení spár v ceně dílce dle "
+    "technické specifikace)"
 )
 
 # Canonical work verb per work-type axis. Used to build a clean search query
@@ -294,11 +310,17 @@ _GENITIVE_WORK_TYPES = {"vyztuz", "predpinaci"}
 
 
 # Label-head pollution (floor hardening, ratified 2026-07-17): a fallback noun
-# carrying parenthesis / em-dash / comma noise is NOT a trustworthy catalog
+# carrying parenthesis / dash / comma noise is NOT a trustworthy catalog
 # query — fulltext over it produced the confident-nonsense class (tubus →
 # tunnel-excavation steel at conf 0.78). A polluted fallback must yield an
 # honest no-query (binding → not_verified + reason), never a confident code.
-_POLLUTED_NOUN_RE = re.compile(r"[()—,;:]")
+# Review finding 6: ALL dash forms (ASCII '-', en '–', em '—') — the first
+# cut caught only the em-dash. Deliberately NOT delegated to
+# element_name_normalizer._strip_modifiers: its tail-cut neither handles
+# parentheticals nor is signal-safe (BACKLOG normalizer-sweep-findings —
+# tail-cut swallows «prostý beton» class signals); a second normalization
+# vocabulary here is accepted with this note.
+_POLLUTED_NOUN_RE = re.compile(r"[()–—,;:-]")
 
 # Grandfathered polluted fallbacks (sequential discipline: their binding
 # behavior must NOT silently change under this micro-PR's flag). These four
@@ -340,14 +362,39 @@ def _canonical_query(work_type: str, element_type: str) -> Optional[str]:
     return f"{verb} {noun}{suffix}".strip()
 
 
+def _mark_binding(
+    item: dict, *, status: str, note: Optional[str] = None,
+    confidence: float = 0.0,
+) -> None:
+    """One terminal shape for a no-code binding outcome (review 2026-07-17
+    finding 10 — was 3 copy-pasted blocks; a 4th sibling lives in
+    catalog_binding_adapter.attach_urs_codes, out of this module's scope)."""
+    item["otskp_code"] = None
+    item["unit_price_czk"] = None
+    item["total_price_czk"] = None
+    item["code_status"] = status
+    if note is not None:
+        item["code_note"] = note
+    item["code_confidence"] = confidence
+
+
+_POLLUTED_QUERY_NOTE = (
+    "typ nemá kanonické katalogové substantivum a label-fallback "
+    "je zamusořený — dotaz se nevydává, kód ověřte ručně"
+)
+
+
 async def _attach_catalog_codes(items: list[dict], catalog: str) -> list[dict]:
     """Catalog-binding step, DECOUPLED from work decomposition.
 
     Mutates each item in place. Runs only in mode=work_with_catalog (work_first
-    ends on the frozen code-less list). Two binding outcomes per row:
+    ends on the frozen code-less list). Binding outcomes per row:
 
       * bundled work-type (per CATALOG_BUNDLING) → deterministic None +
         "zahrnuto v betonu dle OTSKP" (code_status="bundled" — a RULE, not a miss);
+      * prefab-tubus grout atom (keyed by vocabulary_code + construction_mode)
+        → deterministic bundle pointing to the IN-LIST carrier row;
+      * polluted fallback query (None) → honest not_verified, no query issued;
       * otherwise → a clean canonical query routed through the SAME chain as
         find_otskp_code (retrieve → match_catalog two-axis gate → honest
         confidence), bound only when the top candidate clears
@@ -358,15 +405,29 @@ async def _attach_catalog_codes(items: list[dict], catalog: str) -> list[dict]:
     / lawn care / roof formwork for abutment concrete (the SO-206 regression).
     """
     # ── ÚRS branch (gap closure, FINDINGS §4 / CONTRACT §5) ──────────────────
-    # Previously this early-returned for catalog != otskp/both — so catalog='urs'
-    # produced a work-first list with NO binding (find_urs_code was never called
-    # from the atomizer). The catalog-binding adapter now binds each work-atom to
-    # ÚRS (privátní zakázka) via find_urs_code, deriving the status-enum from
-    # match_kind. Signatures untouched; the adapter is internal (design.md §5.3).
+    # The catalog-binding adapter binds each work-atom to ÚRS (privátní
+    # zakázka) via find_urs_code, deriving the status-enum from match_kind.
+    #
+    # Review 2026-07-17 finding 4: the pollution guard applies HERE TOO (it
+    # used to sit below this early-return, leaving the confident-nonsense
+    # class wide open on ÚRS). Catalog-aware discipline (Alexander verdict):
+    # the OTSKP prefab bundle is an OTSKP-spec rule (389125) and is NOT
+    # inherited by ÚRS — prefab atoms go through the honest per-row search
+    # (their names carry no polluted «— {element}» suffix since this review).
     if catalog == "urs":
         from app.mcp.tools.catalog_binding_adapter import attach_urs_codes
 
-        await attach_urs_codes(items, procurement_mode="privatni")
+        searchable: list[dict] = []
+        for item in items:
+            wt = classify_work_type(item.get("work_description", ""))
+            if _canonical_query(wt, item.get("element_type", "jine")) is None:
+                _mark_binding(
+                    item, status=CodeStatus.NOT_VERIFIED.value,
+                    note=_POLLUTED_QUERY_NOTE, confidence=0.0,
+                )
+            else:
+                searchable.append(item)
+        await attach_urs_codes(searchable, procurement_mode="privatni")
         return items
 
     if catalog not in ("otskp", "both"):
@@ -378,45 +439,45 @@ async def _attach_catalog_codes(items: list[dict], catalog: str) -> list[dict]:
     for item in items:
         work_type = classify_work_type(item.get("work_description", ""))
         if work_type in bundled:
-            item["otskp_code"] = None
-            item["unit_price_czk"] = None
-            item["total_price_czk"] = None
-            item["code_status"] = CodeStatus.BUNDLED.value
-            item["code_note"] = "zahrnuto v betonu dle OTSKP"
-            item["code_confidence"] = 1.0
+            _mark_binding(
+                item, status=CodeStatus.BUNDLED.value,
+                note="zahrnuto v betonu dle OTSKP", confidence=1.0,
+            )
             continue
 
-        # Prefab tubus atoms: montáž dílců + zálivka spár sit INSIDE the OTSKP
-        # 3891x dílce item (spec-verbatim rule, see _TUBUS_PREFAB_BUNDLED) — a
-        # deterministic bundle at conf 1.0, never a fulltext guess (live find
-        # 2026-07-17: the guess bound «POUZDRO PRO PRŮCHOD PÁSKU» at 0.78).
-        if (
+        # ── Prefab tubus — vocabulary-code-keyed handling (review findings
+        # 1/2/5/7): the atom's deterministic vocabulary_code decides, never a
+        # lexical re-derivation of the rendered string. construction_mode in
+        # the key keeps monolithic-tubus grout atoms OUT of the prefab bundle.
+        tubus_prefab_atom = (
             item.get("element_type") == "uzavreny_ram_tubus"
-            and work_type in _TUBUS_PREFAB_BUNDLED
-        ):
-            item["otskp_code"] = None
-            item["unit_price_czk"] = None
-            item["total_price_czk"] = None
-            item["code_status"] = CodeStatus.BUNDLED.value
-            item["code_note"] = _TUBUS_PREFAB_BUNDLED_NOTE
-            item["code_confidence"] = 1.0
+            and item.get("construction_mode") == "prefab"
+        )
+        if tubus_prefab_atom and item.get("vocabulary_code") == _TUBUS_PREFAB_GROUT_CODE:
+            # Zálivka sits INSIDE the dílce item per the 389125 spec — the
+            # note points at the CARRIER row, which exists in this list
+            # (finding 5: a note must never point into the void).
+            _mark_binding(
+                item, status=CodeStatus.BUNDLED.value,
+                note=_TUBUS_PREFAB_GROUT_NOTE, confidence=1.0,
+            )
             continue
 
-        query = _canonical_query(work_type, item.get("element_type", "jine"))
+        if tubus_prefab_atom and item.get("vocabulary_code") == _TUBUS_PREFAB_CARRIER_CODE:
+            # The carrier row PRICES the element — deterministic query into
+            # the 3891x family (live-ranked @0.9), then the normal floor flow.
+            query: Optional[str] = _TUBUS_PREFAB_CARRIER_QUERY
+        else:
+            query = _canonical_query(work_type, item.get("element_type", "jine"))
         item["code_query"] = query
         if query is None:
             # Floor hardening (2026-07-17): no canonical noun + polluted label
             # fallback → there is NO trustworthy query. Honest no-bind beats a
             # confident nonsense code (the tubus→tunnel class).
-            item["otskp_code"] = None
-            item["unit_price_czk"] = None
-            item["total_price_czk"] = None
-            item["code_status"] = CodeStatus.NOT_VERIFIED.value
-            item["code_note"] = (
-                "typ nemá kanonické katalogové substantivum a label-fallback "
-                "je zamusořený — dotaz se nevydává, kód ověřte ručně"
+            _mark_binding(
+                item, status=CodeStatus.NOT_VERIFIED.value,
+                note=_POLLUTED_QUERY_NOTE, confidence=0.0,
             )
-            item["code_confidence"] = 0.0
             continue
         result = await find_otskp_code(query, max_results=5)
         candidates = result.get("results", [])
@@ -439,12 +500,11 @@ async def _attach_catalog_codes(items: list[dict], catalog: str) -> list[dict]:
             item["code_status"] = CodeStatus.CANDIDATE.value
             item["code_confidence"] = top.get("confidence")
         else:
-            item["otskp_code"] = None
-            item["unit_price_czk"] = None
-            item["total_price_czk"] = None
-            item["code_status"] = CodeStatus.NOT_VERIFIED.value  # F3: was "no_match"
-            item["code_note"] = "v OTSKP nenalezena spolehlivá shoda"
-            item["code_confidence"] = top.get("confidence") if top else 0.0
+            _mark_binding(
+                item, status=CodeStatus.NOT_VERIFIED.value,  # F3: was "no_match"
+                note="v OTSKP nenalezena spolehlivá shoda",
+                confidence=top.get("confidence") if top else 0.0,
+            )
     return items
 
 
@@ -489,9 +549,13 @@ async def create_work_breakdown(
             - rebar_tons: Rebar mass in tons (estimated from volume if missing)
             - construction_mode: 'monolit' (default) | 'prefab' — for
               uzavreny_ram_tubus a 'prefab' element yields an assembly-only
-              plan (montáž dílců + zálivky spár), never concrete-pour atoms
-            - pieces_count: Number of precast units (prefab tubus only;
-              missing → honest NEPOČÍTÁNO, never estimated)
+              plan, never concrete-pour atoms: a CARRIER row «Dodávka a
+              montáž prefabrikovaných dílců» (m³ = volume_m3, the OTSKP 3891x
+              pricing canon; missing → honest NEPOČÍTÁNO) + a zálivka row
+              bundled into the carrier per the 389125 spec
+            - pieces_count: Number of precast units (prefab tubus only) —
+              second dimension per vocabulary rule 4: echoed in the carrier's
+              quantity_formula, never a substitute for volume_m3
             - grout_volume_m3: Joint-grout volume in m³ (prefab tubus only;
               missing → honest NEPOČÍTÁNO — joint detail is vendor-specific)
 
@@ -766,11 +830,12 @@ async def create_work_breakdown(
             # wins over the classifier's prefab signal (_TUBUS_PREFAB_RE);
             # default is monolit (cast-in-place keeps the default template
             # with the §2.10 honest-blank guards above).
-            tubus_prefab = tubus and (
+            tubus_mode = (
                 elem.get("construction_mode")
                 or classification.get("construction_mode")
                 or "monolit"
-            ) == "prefab"
+            ) if tubus else None
+            tubus_prefab = tubus_mode == "prefab"
             if tubus_prefab:
                 templates = WORK_TEMPLATES["uzavreny_ram_tubus__prefab"]
             else:
@@ -840,20 +905,29 @@ async def create_work_breakdown(
                         q_formula = f"{rebar_tons} t výztuže (vstup) × 0.3"
                     else:
                         q_formula = f"odhad: {round(rebar_tons, 2)} t výztuže (default) × 0.3"
-                elif factor == "pieces_count":
-                    # Prefab tubus (AC2): počet dílců JEN ze vstupu — počet se
-                    # nedopočítává z geometrie (délka dílce je výrobní údaj).
+                elif factor == "dilce_volume":
+                    # Prefab tubus CARRIER (review finding 5): objem dílců v m³
+                    # (OTSKP 3891x kánon) JEN ze vstupu volume_m3; počet kusů =
+                    # druhá dimenze → echo ve formuli (pravidlo 4), nikdy
+                    # náhrada objemu (objem dílce je výrobní údaj dodavatele).
                     pieces = elem.get("pieces_count")
-                    if pieces and pieces > 0:
-                        qty = pieces
+                    pieces_note = f"; {pieces} ks dílců (vstup pieces_count)" if pieces else ""
+                    if volume and volume > 0:
+                        qty = volume
                         q_status = ItemQuantityStatus.FROM_INPUT.value
-                        q_formula = f"počet dílců z podkladu: {pieces} ks (vstup pieces_count)"
+                        q_formula = (
+                            f"objem dílců z podkladu: {volume} m³ (vstup volume_m3)"
+                            + pieces_note
+                        )
                     else:
                         qty = None
                         q_status = ItemQuantityStatus.nepocitano(
-                            "chybí počet prefabrikovaných dílců — vstup pieces_count"
+                            "chybí objem prefabrikovaných dílců — vstup volume_m3"
                         )
-                        q_formula = "počet dílců = výrobní údaj dodavatele, neodhaduje se"
+                        q_formula = (
+                            "objem dílců = výrobní údaj dodavatele, neodhaduje se"
+                            + pieces_note
+                        )
                 elif factor == "grout_volume":
                     # Zálivka spár: objem JEN ze vstupu (závisí na detailu spáry
                     # dle výrobce dílců) — žádný V/geometrie odhad.
@@ -924,6 +998,12 @@ async def create_work_breakdown(
                     "calc_status": "not_calculated",
                     "calc_warnings": [],
                 }
+                # Tubus rows carry the resolved construction mode — the
+                # vocabulary-keyed prefab handling in the binding stage keys
+                # on it (review finding 7: a monolithic-tubus grout atom must
+                # never be swallowed into the prefab-dílce bundle).
+                if tubus_mode is not None:
+                    item["construction_mode"] = tubus_mode
                 all_items.append(item)
 
         # Work-first decoupling (Pattern 15): the breakdown ends on the frozen
