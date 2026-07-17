@@ -403,6 +403,11 @@ export const ELEMENT_TYPES: { value: StructuralElementType; label: string; group
   { value: 'prechodova_deska', label: 'Přechodová deska', group: 'Mostní prvky' },
   { value: 'podkladni_beton', label: 'Podkladní beton', group: 'Mostní prvky' },
   { value: 'podlozkovy_blok', label: 'Podložiskový blok', group: 'Mostní prvky' },
+  // 2026-07-17 live finding (Alexander, TŘETÍ výskyt třídy engine-only typu):
+  // element 24 existoval v enginu + MCP, ale ne v tomto ručním seznamu —
+  // stejná díra jako kridla_opery/zaklady_oper výše. Od teď to hlídá
+  // completeness pin v elementTypesList.test.ts (seznam ≡ ELEMENT_CATALOG).
+  { value: 'uzavreny_ram_tubus', label: 'Uzavřený rám (tubus) — podchod/propustek', group: 'Mostní prvky' },
   { value: 'other', label: 'Jiný typ', group: '' },
 ];
 
