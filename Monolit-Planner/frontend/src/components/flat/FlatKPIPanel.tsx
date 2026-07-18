@@ -13,6 +13,7 @@
  * ≤70px height. Uses calculateHeaderKPI from shared.
  */
 
+import { isMonolithGroup } from '@stavagent/monolit-shared';
 import type { HeaderKPI, Position } from '@stavagent/monolit-shared';
 
 interface Props {
@@ -28,7 +29,21 @@ function fmt(n: number | undefined, d = 0): string {
 export default function FlatKPIPanel({ kpi, positions = [] }: Props) {
   if (!kpi) return null;
 
-  const betonCount = positions.filter(p => p.subtype === 'beton').length;
+  // «Prvků» = monolith element groups by THE shared predicate (bug
+  // monolit-jen-monolity-predicate) — same isMonolithGroup as the «Jen
+  // monolity» filter and the export, so the count matches what the filter
+  // shows (incl. groups promoted via the ✓ toggle without a beton row yet).
+  const betonCount = (() => {
+    const byPart = new Map<string, Position[]>();
+    for (const p of positions) {
+      const rows = byPart.get(p.part_name) ?? [];
+      rows.push(p);
+      byPart.set(p.part_name, rows);
+    }
+    let n = 0;
+    for (const rows of byPart.values()) if (isMonolithGroup(rows)) n++;
+    return n;
+  })();
   const formworkArea = positions.filter(p => p.subtype === 'bednění').reduce((s, p) => s + (p.qty || 0), 0);
   const rebarMass = positions.filter(p => p.subtype === 'výztuž').reduce((s, p) => s + (p.qty || 0), 0);
 

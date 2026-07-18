@@ -13,7 +13,7 @@ import { calculatePositions, calculateKPI } from '../services/calculator.js';
 import { exportToXLSX, getExportsList, getExportFile, deleteExportFile } from '../services/exporter.js';
 import { logger } from '../utils/logger.js';
 import { optionalAuth } from '../middleware/auth.js';
-import { isMonolithicElement } from '@stavagent/monolit-shared';
+import { isMonolithGroup } from '@stavagent/monolit-shared';
 
 const router = express.Router();
 
@@ -31,33 +31,30 @@ class NotFoundError extends Error {
 /**
  * Apply the "Jen monolity" filter on the server side.
  *
- * The frontend filter operates on element groups (shared part_name); we mirror
- * that here by deciding per part_name based on the BETON position, then
- * keeping/dropping ALL positions of that part_name (so a kept beton row also
- * keeps its bednění / výztuž / podpěry siblings).
+ * Bug monolit-jen-monolity-predicate (verdict 2026-07-18): this filter used
+ * to RE-classify each part's beton row from the ORIGINAL import text/code
+ * (`isMonolithicElement`) — so a row the user manually re-designated as
+ * beton was silently dropped from the export while the table showed it.
+ * It now delegates to THE shared group predicate `isMonolithGroup` (manual
+ * designation = truth: override veto-first, else a subtype='beton' row) —
+ * the identical function the frontend filter and the KPI count use, so the
+ * three surfaces can never disagree again. Whole parts are kept/dropped so
+ * a kept beton row keeps its bednění / výztuž / podpěry siblings.
+ *
+ * Exported for the hermetic route test.
  */
-function filterMonolithicPositions(positions) {
-  const partsToKeep = new Set();
-  const partsSeen = new Set();
-
+export function filterMonolithicPositions(positions) {
+  const byPart = new Map();
   for (const p of positions) {
-    if (p.subtype !== 'beton') continue;
-    partsSeen.add(p.part_name);
-    if (isMonolithicElement({
-      item_name: p.item_name,
-      otskp_code: p.otskp_code,
-      metadata: p.metadata,
-    })) {
-      partsToKeep.add(p.part_name);
-    }
+    const rows = byPart.get(p.part_name) ?? [];
+    rows.push(p);
+    byPart.set(p.part_name, rows);
   }
-
-  return positions.filter(p => {
-    // Beton-less elements have no monolith decision to make — drop them
-    // (they'd never appear in the FE filter either).
-    if (!partsSeen.has(p.part_name)) return false;
-    return partsToKeep.has(p.part_name);
-  });
+  const partsToKeep = new Set();
+  for (const [partName, rows] of byPart) {
+    if (isMonolithGroup(rows)) partsToKeep.add(partName);
+  }
+  return positions.filter(p => partsToKeep.has(p.part_name));
 }
 
 // Helper function to fetch and calculate positions
