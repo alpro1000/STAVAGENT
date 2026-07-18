@@ -3474,6 +3474,20 @@ flat `severity` column, so the table schema does not change again.
 
 ---
 
+## 2026-07-18 — Session: таблица баги №3/№1 (merged) + PR2 recon + SDD №2 (design-first)
+
+**Rozhodnuto (merged):** #1523 bug monolit-jen-monolity-predicate — единый `isMonolithGroup` в shared (override veto-first, иначе subtype=beton; НИКАКОЙ re-классификации текста при чтении); фронт-фильтр «Jen monolity» + бекенд-экспорт + KPI «Prvků» на одной функции (было три расходящихся). #1524 bug monolit-oznacit-beton-subtype (вариант «а») — `buildMonolithOverridePatch`: promote ВСЕГДА ставит subtype='beton' независимо от единицы + открывает «Vypočítat»; m³-гейт удалён; работы только из движка, второго генератора нет.
+
+**Recon (design-first, кода нет):** PR2 breakdown geometry parity (спека `docs/tasks/TASK_PR2_Breakdown_Geometry_Parity.md`) — 2 разведчика. Карта: 3 heuristiky (breakdown.py 779/791/871 + curing 814), константы 0.25/0.3 не читают ни одного вход-поля; TS-канон element-geometry.ts 2(L+W)·H + estimateFormworkArea; skruž НЕ в CATALOG_BUNDLING → нафухлое кол-во идёт своей строкой на обе ветки; ÚRS эмитит опалубку per-line → в приватные офферты. **КРИТИЧЕСКАЯ находка Q-A: derived-ветка недостижима большинству реальных вызовов** — soupis join + TZ extraktor кладут только volume, height/width/area/length НЕ на elements[]; фронт endpoint не дёргает; passport не вызывает; `BreakdownElement` не имеет `width_m` (test_row11) → TS-правило неприменимо без контракта. → recon+interview `docs/tasks/TASK_PR2_recon_and_interview.md`, STOP на интервью (носная развилка Q-A1: honest NEPOČÍTÁNO сначала vs расширить входы сначала).
+
+**SDD №2 (дни, design-first):** `docs/bugs/monolit-dny-dve-aritmetiky/` (report/analyze/interview Q1–Q6). Замороженный `schedule_info` от «Aplikovat» никогда не инвалидируется ручной правкой; 6 точек расхождения (Celkem dní / KPI Čas / деньги-vs-срок / Gantt / export / Celk.hod); 3 носителя зрания. Предв. позиции из вердикта: ручная правка = инвалидация + stale-бейдж «ručně upraveno — přepočítat?»; zrání = календарь (не Nh); один носитель + проекции.
+
+**Klíčové pozorování (перенесено из пред. сессии, остаётся в силе):** golden-ловушки живут поимённо — «2,65 vs 3,0» переродилась в новом слое (экстракции), запинена и там (#1522).
+
+**Co dál:** ЖДУ ответов Alexandra на интервью PR2 (Q-A1 носная) и №2 (Q1–Q6) — без них кода не пишу. Порядок после ответов: PR2 impl → SDD №2 design→tasks→impl. PR2.5 (multi-DC) — отдельная спека потом.
+
+---
+
 ## 10. Document metadata
 
 | Field | Value |
