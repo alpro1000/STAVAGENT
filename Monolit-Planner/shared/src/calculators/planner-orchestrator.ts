@@ -3066,9 +3066,11 @@ function runTubusPath(
   if (!input.tubus_top_thickness_m) missing.push('tubus_top_thickness_m');
   if (!input.tubus_section_length_m) missing.push('tubus_section_length_m');
   if (missing.length > 0) {
+    // Review PR #1521 finding 6: the reason names the ACTUAL missing fields —
+    // the old static geometry enumeration misled the caller when only
+    // volume_m3 was absent (it listed seven fields the caller had filled).
     throw new UncalculatedError(
-      'chybí explicitní geometrie tubusu (§2.10 — počet DC, světlé rozměry, '
-      + 'tloušťky, délka sekce se NIKDY nedefaultují)',
+      `chybí povinné vstupy tubusu (§2.10 — nikdy se nedefaultují): ${missing.join(', ')}`,
       missing,
     );
   }

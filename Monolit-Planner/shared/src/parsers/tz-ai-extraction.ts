@@ -66,7 +66,15 @@ const FIELD_DEFS: readonly Omit<AiFieldSpec, 'range'>[] = [
   { field: 'tubus_top_thickness_m', label_cs: 'Tloušťka stropní desky', unit: 'm', type: 'number' },
 ];
 
-const RANGE_FIELDS = ['volume_m3', 'height_m', 'formwork_area_m2'] as const;
+// Review PR #1521 finding 3: tubus fields added — without them the
+// mergeAiParams range guard was skipped for the whole §2.10 geometry and an
+// AI hallucination (tubus_wall_thickness_m=99) landed in the form unchecked.
+const RANGE_FIELDS = [
+  'volume_m3', 'height_m', 'formwork_area_m2',
+  'tubus_dc_count', 'tubus_section_length_m',
+  'tubus_clear_width_m', 'tubus_clear_height_m',
+  'tubus_bottom_thickness_m', 'tubus_wall_thickness_m', 'tubus_top_thickness_m',
+] as const;
 
 /** Per-element extraction manifest: applicable fields + element-specific
  *  labels (REQUIRED_FIELDS wording, e.g. «Výška pilíře») + sanity ranges. */

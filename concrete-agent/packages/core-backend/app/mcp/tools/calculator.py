@@ -297,6 +297,10 @@ def _build_planner_payload(
     # already forwarded above; add the box length/width. The width_m hint
     # translation below only fires when volume_m3 is truthy, so it does not
     # collide with the volume-0 derive path.
+    # NB 2026-07-17: uzavreny_ram_tubus is NON-prismatic (the frame is hollow;
+    # a solid box would fabricate ~3× the real volume) — box dims never derive
+    # its volume. A tubus without volume_m3 fails typed (§2.10 honest gate,
+    # missing_fields names volume_m3) instead of returning a silent-wrong plan.
     if length_m and length_m > 0:
         payload["length_m"] = float(length_m)
     if width_m and width_m > 0 and element_type != "mostovkova_deska":
@@ -574,8 +578,10 @@ async def calculate_concrete_works(
             given for a PRISMATIC type (wall/slab/column/beam/foundation/
             abutment/pier), the shared engine derives volume = L·W·H +
             formwork area = 2(L+W)·H — the same rule the frontend uses
-            (§4 parity). Non-prismatic types (deck/pile/cornice/stairs/tank)
-            ignore it and keep their own quantity source.
+            (§4 parity). Non-prismatic types (deck/pile/cornice/stairs/tank/
+            closed frame uzavreny_ram_tubus) ignore it and keep their own
+            quantity source — a tubus without volume_m3 fails typed per
+            §2.10 (the hollow frame must never get a solid-box volume).
 
         formwork_area_m2: Formwork contact area in m². If omitted,
             estimated from volume_m3, width_m, and orientation.

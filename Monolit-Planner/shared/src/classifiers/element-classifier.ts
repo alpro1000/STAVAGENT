@@ -1527,6 +1527,20 @@ export interface SanityRanges {
    * 0.3–2.5 deck-thickness range).
    */
   deck_thickness_m?: [number, number];
+  /**
+   * Tubus §2.10 geometry (2026-07-17, review of PR #1521 finding 3): the AI
+   * extraction path («Doplnit pomocí AI») validates numeric fields ONLY when
+   * a sanity range exists — without these keys an AI hallucination like
+   * tubus_wall_thickness_m=99 sailed through. Ranges from the §2.1 subtype
+   * table + Turnov golden (DC 6,123 m / světlá 5,5×3,0 / tl. 0,45–0,50).
+   */
+  tubus_dc_count?: [number, number];
+  tubus_section_length_m?: [number, number];
+  tubus_clear_width_m?: [number, number];
+  tubus_clear_height_m?: [number, number];
+  tubus_bottom_thickness_m?: [number, number];
+  tubus_wall_thickness_m?: [number, number];
+  tubus_top_thickness_m?: [number, number];
 }
 
 // A6 (2026-04-15): widened ranges to fit real bridge + foundation jobs.
@@ -1543,7 +1557,16 @@ export const SANITY_RANGES: Record<StructuralElementType, SanityRanges> = {
   // 24. typ: volume horní mez 3000 (SO 11-20-04 celý rám = 1 046,8 m³; kolektor
   // desítek sekcí jde výš); height_m = světlá výška rámu (Turnov 3,0 m;
   // podtypová rozpětí 1–15+ m dle §2.1 tabulky podtypů).
-  uzavreny_ram_tubus: { volume_m3: [5, 3000], height_m: [1.0, 16.0], rebar_kg_m3: [90, 160] },
+  uzavreny_ram_tubus: {
+    volume_m3: [5, 3000], height_m: [1.0, 16.0], rebar_kg_m3: [90, 160],
+    tubus_dc_count: [1, 200],
+    tubus_section_length_m: [1, 60],
+    tubus_clear_width_m: [0.5, 20],
+    tubus_clear_height_m: [0.5, 16],
+    tubus_bottom_thickness_m: [0.1, 3],
+    tubus_wall_thickness_m: [0.1, 3],
+    tubus_top_thickness_m: [0.1, 3],
+  },
   zaklady_piliru:   { volume_m3: [10, 800],  height_m: [0.8, 3.0],  rebar_kg_m3: [60, 150] },
   zaklady_oper:     { volume_m3: [10, 800],  height_m: [0.8, 3.0],  rebar_kg_m3: [60, 150] }, // Phase 3 Gate 2a — same ranges as zaklady_piliru
   driky_piliru:     { volume_m3: [1, 800],   height_m: [3.0, 30.0], rebar_kg_m3: [80, 220] },
@@ -1601,6 +1624,13 @@ export function checkSanity(
     rebar_kg_m3: 'Výztuž',
     formwork_area_m2: 'Plocha bednění',
     deck_thickness_m: 'Tloušťka desky',
+    tubus_dc_count: 'Počet dilatačních celků',
+    tubus_section_length_m: 'Délka sekce',
+    tubus_clear_width_m: 'Světlá šířka',
+    tubus_clear_height_m: 'Světlá výška',
+    tubus_bottom_thickness_m: 'Tloušťka spodní desky',
+    tubus_wall_thickness_m: 'Tloušťka stěn',
+    tubus_top_thickness_m: 'Tloušťka stropní desky',
   };
   for (const key of Object.keys(ranges) as (keyof SanityRanges)[]) {
     const range = ranges[key];

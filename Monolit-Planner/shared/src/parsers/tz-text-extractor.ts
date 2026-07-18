@@ -15,6 +15,7 @@
  * and the VP4 opěrná zeď smeta excerpt (2026-04-17 live bug).
  */
 
+import { SANITY_RANGES, type SanityRanges } from '../classifiers/element-classifier.js';
 import {
   detectCatalog,
   detectWorkType,
@@ -961,10 +962,17 @@ export function extractFromText(
   // tubus (ELEMENT_TZ_COMPATIBILITY gates the apply side the same way).
   if (options.element_type === 'uzavreny_ram_tubus') {
     const seenTubus = new Set<string>();
+    // Review PR #1521: every emit is range-gated against the SAME
+    // SANITY_RANGES the AI path uses (single source) — an out-of-window
+    // value (unconverted mm, wrong subject, «0 celků») is SKIPPED without
+    // claiming the slot, so a later correct pattern can still fill it.
+    const tubusRanges = SANITY_RANGES.uzavreny_ram_tubus;
     const emitTubus = (
-      name: string, value: number, label: string, matched: string,
+      name: keyof SanityRanges, value: number, label: string, matched: string,
     ) => {
       if (seenTubus.has(name)) return; // first (most specific) pattern wins
+      const range = tubusRanges[name];
+      if (range && (value < range[0] || value > range[1])) return;
       seenTubus.add(name);
       results.push({
         name, value, label_cs: label,
@@ -972,15 +980,11 @@ export function extractFromText(
       });
     };
 
-    // DC count + section length — reuse the global dilatation-cell match
-    // («na 40 dilatačních celků konstantní délky 12,50 m») when it fired.
-    if (mainDilatMatch) {
-      emitTubus('tubus_dc_count', parseInt(mainDilatMatch[1], 10),
-        `Počet dilatačních celků: ${mainDilatMatch[1]}`, mainDilatMatch[0]);
-      emitTubus('tubus_section_length_m', parseFloat(mainDilatMatch[2].replace(',', '.')),
-        `Délka sekce: ${mainDilatMatch[2]} m`, mainDilatMatch[0]);
-    }
-    // Fallback DC count: "rozdělen na 10 dilatačních celků".
+    // DC count: "rozdělen na 10 dilatačních celků" — also covers the full
+    // «na 40 dilatačních celků konstantní délky 12,50 m» phrasing (review
+    // finding 9: the old mainDilatMatch-reuse block was fully shadowed by
+    // this pattern + the third secLen alternative, so it was removed; the
+    // informational dilatation_main_* emits above are untouched).
     const dcMatch = normalized.match(/(\d+)\s+dilatacni\S*\s+celk/);
     if (dcMatch) {
       emitTubus('tubus_dc_count', parseInt(dcMatch[1], 10),
@@ -997,24 +1001,36 @@ export function extractFromText(
         `Délka sekce: ${secLenMatch[1]} m`, secLenMatch[0]);
     }
     // Combined clear cross-section: "světlé rozměry 6,10 × 3,00 m" /
-    // "světlý průřez 6,1 x 3,0" / "světlý otvor 6,1×3,0 m".
+    // "světlý průřez 6,1 x 3,0" / "světlý otvor 6100 × 3000 mm".
+    // Review finding 2: unit captured and mm converted — and the range gate
+    // kills an unconverted-nonsense pair (6100 m) instead of locking it in.
     const clearBoth = normalized.match(
-      /svetl\S*\s+(?:rozmer\S*|prurez\S*|otvor\S*)\s*(?:\S+\s+)??(\d+[,.]?\d*)\s*[x×]\s*(\d+[,.]?\d*)\s*m?\b/,
+      /svetl\S*\s+(?:rozmer\S*|prurez\S*|otvor\S*)\s*(?:\S+\s+)??(\d+[,.]?\d*)\s*[x×]\s*(\d+[,.]?\d*)\s*(mm|m)?\b/,
     );
     if (clearBoth) {
-      emitTubus('tubus_clear_width_m', parseFloat(clearBoth[1].replace(',', '.')),
-        `Světlá šířka: ${clearBoth[1]} m`, clearBoth[0]);
-      emitTubus('tubus_clear_height_m', parseFloat(clearBoth[2].replace(',', '.')),
-        `Světlá výška: ${clearBoth[2]} m`, clearBoth[0]);
+      const div = clearBoth[3] === 'mm' ? 1000 : 1;
+      const w = parseFloat(clearBoth[1].replace(',', '.')) / div;
+      const h = parseFloat(clearBoth[2].replace(',', '.')) / div;
+      emitTubus('tubus_clear_width_m', w, `Světlá šířka: ${w} m`, clearBoth[0]);
+      emitTubus('tubus_clear_height_m', h, `Světlá výška: ${h} m`, clearBoth[0]);
     }
-    // Single clear width / height: "světlá šířka (tubusu) 6,10 m" — up to
-    // two intervening words tolerated (genitive noun, adjective).
-    const clearW = normalized.match(/svetl\S*\s+sirk\S*\s+(?:[a-z]\S*\s+){0,2}(\d+[,.]?\d*)\s*m\b/);
+    // Single clear width / height. Review finding 1 (AC7 trap): the old
+    // any-word skip «(?:[a-z]\S*\s+){0,2}» happily captured a DIFFERENT
+    // subject's dimension («světlá výška pod podhledem 2,65 m», «světlá
+    // šířka vozovky 7,5 m») with conf 1.0. Only frame-subject genitives and
+    // copulas may stand between the label and the number now — anything
+    // else (pod, vozovky, …) honestly fails to extract.
+    const FRAME_WORDS = '(?:ramu|tubusu|podchodu|podjezdu|propustku|otvoru|konstrukce|je|cini)';
+    const clearW = normalized.match(
+      new RegExp(`svetl\\S*\\s+sirk\\S*\\s+(?:${FRAME_WORDS}\\s+){0,2}(\\d+[,.]?\\d*)\\s*m\\b`),
+    );
     if (clearW) {
       emitTubus('tubus_clear_width_m', parseFloat(clearW[1].replace(',', '.')),
         `Světlá šířka: ${clearW[1]} m`, clearW[0]);
     }
-    const clearH = normalized.match(/svetl\S*\s+vysk\S*\s+(?:[a-z]\S*\s+){0,2}(\d+[,.]?\d*)\s*m\b/);
+    const clearH = normalized.match(
+      new RegExp(`svetl\\S*\\s+vysk\\S*\\s+(?:${FRAME_WORDS}\\s+){0,2}(\\d+[,.]?\\d*)\\s*m\\b`),
+    );
     if (clearH) {
       emitTubus('tubus_clear_height_m', parseFloat(clearH[1].replace(',', '.')),
         `Světlá výška: ${clearH[1]} m`, clearH[0]);
@@ -1022,18 +1038,20 @@ export function extractFromText(
     // Part thicknesses — per line, and per pair WITHIN a line, so
     // "tloušťka spodní desky 450 mm, stěn 500 mm a stropní desky 450 mm"
     // yields all three. The line must carry a tloušťka/tl. anchor; each
-    // pair = part word … number + unit (mm → m). Order: strop před desk
-    // («stropní desky» obsahuje obě), bare "desk" bez spodní/stropní se
-    // vědomě nemapuje (ambiguita).
+    // pair = part word [optional tloušťky/tl. label — review finding 4:
+    // «stěny tl. 500 mm» has the label AFTER the part] … number + unit
+    // (mm → m via the emit range gate window 0.1–3 m). Order: strop před
+    // desk («stropní desky» obsahuje obě); bare «spodní» with elided
+    // «deska» covered (review finding 10); bare "desk" bez spodní/stropní
+    // se vědomě nemapuje (ambiguita).
     for (const line of normalized.split(/\r?\n/)) {
       if (!/tloustk|(^|\s)tl\.?\s/.test(line)) continue;
-      const pairRe = /(stropn?\S*(?:\s+desk\S*)?|spodni\s+desk\S*|\bdn[oa]\b|zakladov\S*\s+desk\S*|sten\S*)[^,;.a-z]*?(\d+[,.]?\d*)\s*(mm|m)\b/g;
+      const pairRe = /(strop\S*(?:\s+desk\S*)?|spodni(?:\s+desk\S*)?|\bdn[oa]\b|zakladov\S*\s+desk\S*|sten\S*)[^,;.a-z]*?(?:(?:tloustk\S*|tl\.?)\s*)?(\d+[,.]?\d*)\s*(mm|m)\b/g;
       let pm: RegExpExecArray | null;
       while ((pm = pairRe.exec(line)) !== null) {
         const part = pm[1];
         const raw = parseFloat(pm[2].replace(',', '.'));
         const val = pm[3] === 'mm' ? raw / 1000 : raw;
-        if (!(val > 0.05 && val < 3)) continue; // sanity: 5 cm – 3 m
         const shown = `${val} m`;
         if (/^strop/.test(part)) {
           emitTubus('tubus_top_thickness_m', val, `Tloušťka stropní desky: ${shown}`, pm[0]);

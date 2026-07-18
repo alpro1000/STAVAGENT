@@ -18,6 +18,7 @@ import {
   isParamCompatibleWith,
   explainIncompatibility,
   ELEMENT_TZ_COMPATIBILITY,
+  TUBUS_TZ_PARAMS,
 } from './element-classifier.js';
 
 describe('Element Classifier', () => {
@@ -1137,11 +1138,8 @@ describe('Element Classifier', () => {
 });
 
 describe('tubus TZ params compat (2026-07-17)', () => {
-  const TUBUS_FIELDS = [
-    'tubus_dc_count', 'tubus_section_length_m',
-    'tubus_clear_width_m', 'tubus_clear_height_m',
-    'tubus_bottom_thickness_m', 'tubus_wall_thickness_m', 'tubus_top_thickness_m',
-  ];
+  // Review PR #1521 finding 8: iterate the exported single source.
+  const TUBUS_FIELDS: readonly string[] = TUBUS_TZ_PARAMS;
 
   it('all 7 tubus geometry params are compatible ONLY with uzavreny_ram_tubus', () => {
     for (const p of TUBUS_FIELDS) {
