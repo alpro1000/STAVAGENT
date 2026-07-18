@@ -29,6 +29,7 @@ import {
   isMonolithGroup,
   readMonolithOverride,
 } from '@stavagent/monolit-shared';
+import { buildMonolithOverridePatch } from './monolithOverride';
 import { useUI } from '../../context/UIContext';
 import { useProjectPositions } from '../../hooks/useProjectPositions';
 import { otskpAPI } from '../../services/api';
@@ -343,32 +344,14 @@ export default function FlatPositionsTable() {
   ) => {
     if (isLocked) return;
     // Store on the representative position (beton row if present, else the main
-    // one) so a group WITHOUT a beton row can be promoted too.
-    const rep = elementRepPos(element);
-    if (!rep?.id) return;
-    let meta: Record<string, any> = {};
-    if (rep.metadata) {
-      try {
-        meta = typeof rep.metadata === 'string'
-          ? JSON.parse(rep.metadata)
-          : (rep.metadata as Record<string, any>);
-      } catch {
-        meta = {};
-      }
-    }
-    if (override === null) {
-      delete meta.is_monolith_override;
-    } else {
-      meta.is_monolith_override = override;
-    }
-    const patch: Record<string, any> = { id: rep.id, metadata: JSON.stringify(meta) };
-    // Promote to monolith: if the group has no beton row yet but the rep is an
-    // m³ concrete line mis-tagged 'jiné' at import, flip it to 'beton' so the
-    // full monolith pipeline (Vypočítat, concrete_m3) activates. Non-m³ rows
-    // keep their subtype — promoting is only meaningful for concrete volumes.
-    if (override === true && rep.subtype !== 'beton' && /m3|m³/i.test(rep.unit || '')) {
-      patch.subtype = 'beton';
-    }
+    // one) so a group WITHOUT a beton row can be promoted too. Bug
+    // monolit-oznacit-beton-subtype (verdict 2026-07-18, variant (а)): the
+    // patch-builder now ALWAYS flips the promoted rep to subtype='beton'
+    // regardless of unit — the old m³-only gate produced a green ✓ with no
+    // beton row, so «Vypočítat» never appeared and beton works could never
+    // be generated. Pure logic lives in monolithOverride.ts (named test).
+    const patch = buildMonolithOverridePatch(elementRepPos(element), override);
+    if (!patch) return;
     await updatePositions([patch]);
   }, [isLocked, updatePositions]);
 
