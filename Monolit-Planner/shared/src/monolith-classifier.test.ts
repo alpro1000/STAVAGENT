@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { isMonolithicElement, readMonolithOverride } from './monolith-classifier.js';
+import { isMonolithicElement, isMonolithGroup, readMonolithOverride } from './monolith-classifier.js';
 
 describe('isMonolithicElement', () => {
   describe('aggregate / kamenivo (live bug from screenshot)', () => {
@@ -251,5 +251,49 @@ describe('classifyMonolithRow — ADR-007 signal ladder', () => {
       expect(r.is_monolith).toBe(true);
       expect(r.decided_by).toBe('code_monolithic');
     });
+  });
+});
+
+describe('isMonolithGroup — THE single predicate (bug monolit-jen-monolity-predicate)', () => {
+  it('subtype=beton is TRUTH — aggregate import text never re-classifies the group out', () => {
+    // The live bug: user re-designated a kamenivo-текст row to beton; the
+    // export re-ran the text classifier and dropped it. subtype wins now.
+    const rows = [
+      { subtype: 'beton', metadata: null },      // item_name irrelevant — not consulted
+      { subtype: 'bednění', metadata: null },
+    ];
+    expect(isMonolithGroup(rows)).toBe(true);
+  });
+
+  it('no beton row + no override → not a monolith (standalone výztuž/jiné lines)', () => {
+    expect(isMonolithGroup([{ subtype: 'výztuž' }])).toBe(false);
+    expect(isMonolithGroup([{ subtype: 'jiné' }, { subtype: 'bednění' }])).toBe(false);
+    expect(isMonolithGroup([])).toBe(false);
+  });
+
+  it('override=true promotes a beton-less group (the ✓ toggle on a non-m³ rep row)', () => {
+    const rows = [{ subtype: 'jiné', metadata: { is_monolith_override: true } }];
+    expect(isMonolithGroup(rows)).toBe(true);
+  });
+
+  it('override=false vetoes a group WITH a beton row (explicit demote wins)', () => {
+    const rows = [
+      { subtype: 'beton', metadata: { is_monolith_override: false } },
+      { subtype: 'výztuž', metadata: null },
+    ];
+    expect(isMonolithGroup(rows)).toBe(false);
+  });
+
+  it('veto beats promote when conflicting overrides exist on sibling rows', () => {
+    const rows = [
+      { subtype: 'jiné', metadata: { is_monolith_override: true } },
+      { subtype: 'jiné', metadata: { is_monolith_override: false } },
+    ];
+    expect(isMonolithGroup(rows)).toBe(false);
+  });
+
+  it('metadata as JSON string (backend DB row shape) parses the override', () => {
+    const rows = [{ subtype: 'jiné', metadata: '{"is_monolith_override": true}' }];
+    expect(isMonolithGroup(rows)).toBe(true);
   });
 });

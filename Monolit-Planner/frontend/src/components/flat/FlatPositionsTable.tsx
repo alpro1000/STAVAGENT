@@ -26,7 +26,7 @@ import {
   SUBTYPE_LABELS, UNIT_LABELS,
   sortPartsBySequence,
   calculatePositionFields,
-  isMonolithicElement,
+  isMonolithGroup,
   readMonolithOverride,
 } from '@stavagent/monolit-shared';
 import { useUI } from '../../context/UIContext';
@@ -109,28 +109,16 @@ function elementRepPos(el: ElementGroup): Position | undefined {
   return el.positions.find(p => p.subtype === 'beton') || el.positions[0];
 }
 
-/** Whether a group counts as a monolith (respects the manual
- *  is_monolith_override stored on its representative position).
- *
- *  A monolith is only a monolith the calculator can actually COMPUTE: the
- *  group must have a concrete row (subtype='beton'), or a representative row
- *  in m³ that can be promoted to one. The Registry import lands each smeta
- *  line as its OWN group, so a standalone reinforcement ("VÝZTUŽ … 10505", t),
- *  formwork (m²) or "jiné" line has no beton and no calculator — the OTSKP
- *  prefix classifier alone still called it monolithic (code 3xx), dangling a
- *  green ✓ with no «Vypočítat» button. Such lines default to NOT-monolith so
- *  they drop out of "Jen monolity" and show a red ✗; the manual override
- *  still lets the user force either state. */
+/** Whether a group counts as a monolith — THE shared single predicate
+ *  (bug monolit-jen-monolity-predicate, verdict 2026-07-18): manual
+ *  designation is truth (override veto-first, else subtype='beton' row).
+ *  The same `isMonolithGroup` runs in the backend export filter and the
+ *  KPI element count, so the table, the export and the KPI can never
+ *  disagree again. The former text/OTSKP re-classification
+ *  (`isMonolithicElement` at read time) is gone — classification happens
+ *  at import and via the toggle, never here. */
 function elementIsMonolith(el: ElementGroup): boolean {
-  const rep = elementRepPos(el);
-  if (!rep) return false;
-  const base = isMonolithicElement({ item_name: rep.item_name, otskp_code: rep.otskp_code, metadata: rep.metadata });
-  // Manual override is absolute — honour it even for a non-beton line.
-  if (readMonolithOverride(rep.metadata) !== null) return base;
-  if (!base) return false;
-  const hasBeton = el.positions.some(p => p.subtype === 'beton');
-  const repIsM3 = (rep.unit || '').toString().trim().toLowerCase() === 'm3';
-  return hasBeton || repIsM3;
+  return isMonolithGroup(el.positions);
 }
 
 /* ── MAIN COMPONENT ──────────────────────────────────────────── */

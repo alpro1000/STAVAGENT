@@ -198,6 +198,45 @@ export function readMonolithOverride(
   return null;
 }
 
+/** One row of an element group as the group-membership predicate sees it. */
+export interface MonolithGroupRow {
+  subtype?: string | null;
+  metadata?: MonolithCandidate['metadata'];
+}
+
+/**
+ * THE single «is this element group a monolith» predicate (bug
+ * monolit-jen-monolity-predicate, Alexander verdict 2026-07-18).
+ *
+ * Used by ALL three consumers — the frontend «Jen monolity» table filter,
+ * the backend export `?only_monoliths=true` filter, and the KPI element
+ * count — so a group can never be visible in the table yet missing from
+ * the export (the live bug: the export re-ran `isMonolithicElement` on the
+ * ORIGINAL import text/code and dropped rows the user had manually
+ * re-designated as beton).
+ *
+ * Manual designation is TRUTH:
+ *   1. an explicit `metadata.is_monolith_override` on any row decides —
+ *      veto-first (any `false` → excluded, else any `true` → included);
+ *   2. otherwise: the group is a monolith iff it has a `subtype='beton'`
+ *      row. `subtype` already encodes the import-time classification AND
+ *      every later manual re-designation, so it is the current truth.
+ *
+ * Deliberately NO re-classification of item_name / otskp_code here —
+ * `classifyMonolithRow` runs at IMPORT (and via the toggle), never at
+ * read/export time.
+ */
+export function isMonolithGroup(rows: readonly MonolithGroupRow[]): boolean {
+  let promoted = false;
+  for (const r of rows) {
+    const ov = readMonolithOverride(r.metadata);
+    if (ov === false) return false; // explicit veto wins over everything
+    if (ov === true) promoted = true;
+  }
+  if (promoted) return true;
+  return rows.some(r => r.subtype === 'beton');
+}
+
 /** Normalize a unit string for tie-breaks: `M3`/`m³`/`m 3` → `m3`, `m²` → `m2`
  *  (inner whitespace stripped — the Excel extractor met `m 3` in the wild). */
 function normalizeUnit(unit: MonolithCandidate['unit']): string {
