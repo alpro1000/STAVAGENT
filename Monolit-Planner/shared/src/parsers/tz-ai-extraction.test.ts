@@ -16,6 +16,9 @@ import {
   mergeAiParams,
 } from './tz-ai-extraction.js';
 import type { ExtractedParam } from './tz-text-extractor.js';
+// Review PR #1521 finding 8: iterate the EXPORTED single source, never a
+// frozen literal copy — an 8th tubus param must fail here if dropped.
+import { TUBUS_TZ_PARAMS } from '../classifiers/element-classifier.js';
 
 const det = (name: string, value: ExtractedParam['value']): ExtractedParam => ({
   name, value, label_cs: name, confidence: 1.0, source: 'regex', matched_text: 'x',
@@ -142,11 +145,7 @@ describe('mergeAiParams — the guard', () => {
 });
 
 describe('tubus manifest gating (2026-07-17 — «подсказка не всё вытянула»)', () => {
-  const TUBUS_FIELDS = [
-    'tubus_dc_count', 'tubus_section_length_m',
-    'tubus_clear_width_m', 'tubus_clear_height_m',
-    'tubus_bottom_thickness_m', 'tubus_wall_thickness_m', 'tubus_top_thickness_m',
-  ];
+  const TUBUS_FIELDS: readonly string[] = TUBUS_TZ_PARAMS;
 
   it('tubus manifest includes all 7 geometry fields', () => {
     const fields = buildExtractionManifest('uzavreny_ram_tubus').map(f => f.field);
@@ -174,5 +173,23 @@ describe('tubus manifest gating (2026-07-17 — «подсказка не всё
     const no = mergeAiParams([], raw, 'stena');
     expect(no.accepted).toEqual([]);
     expect(no.rejected[0].reason_cs).toMatch(/manifestu/);
+  });
+});
+
+describe('review PR #1521 finding 3 — AI tubus values are range-gated', () => {
+  it('out-of-range tubus values rejected, in-range accepted; manifest carries ranges', () => {
+    const raw = [
+      { field: 'tubus_wall_thickness_m', value: 99, quote: 'tl. stěn 99 m', confidence: 0.9 },
+      { field: 'tubus_dc_count', value: 10000, quote: '10000 dilatačních celků', confidence: 0.9 },
+      { field: 'tubus_clear_height_m', value: 3.0, quote: 'světlá výška 3,00 m', confidence: 0.9 },
+    ];
+    const res = mergeAiParams([], raw, 'uzavreny_ram_tubus');
+    expect(res.accepted.map(p => p.name)).toEqual(['tubus_clear_height_m']);
+    expect(res.rejected.map(r => r.field).sort())
+      .toEqual(['tubus_dc_count', 'tubus_wall_thickness_m']);
+    // Ranges come from the SAME SANITY_RANGES the deterministic gate uses.
+    const m = buildExtractionManifest('uzavreny_ram_tubus');
+    expect(m.find(f => f.field === 'tubus_wall_thickness_m')?.range).toEqual([0.1, 3]);
+    expect(m.find(f => f.field === 'tubus_dc_count')?.range).toEqual([1, 200]);
   });
 });

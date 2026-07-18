@@ -123,7 +123,12 @@ function writeParamToForm(
     // Tubus geometry (element 24, §2.10) — 2026-07-17. String slots in
     // FormState (NumInput values); compatibility gating already filtered
     // these to element_type === 'uzavreny_ram_tubus'.
-    case 'tubus_dc_count': update('tubus_dc_count', String(value)); return true;
+    // Review PR #1521 finding 5: mirror the NumInput clamp (min 1, integer) —
+    // a programmatic update() bypasses the widget's onChange, so an AI value
+    // of 0 / 10.5 would otherwise reach the engine raw.
+    case 'tubus_dc_count':
+      update('tubus_dc_count', String(Math.max(1, Math.round(Number(value)))));
+      return true;
     case 'tubus_section_length_m': update('tubus_section_length_m', String(value)); return true;
     case 'tubus_clear_width_m': update('tubus_clear_width_m', String(value)); return true;
     case 'tubus_clear_height_m': update('tubus_clear_height_m', String(value)); return true;

@@ -179,3 +179,18 @@ describe('tubus path — 2026-07-17 live-finding fixes (lišní pole / pravdivé
     }
   });
 });
+
+describe('tubus path — review PR #1521 finding 6 (honest §2.10 message)', () => {
+  it('chybí jen volume_m3 → zpráva jmenuje volume_m3, ne sedm vyplněných polí geometrie', () => {
+    const { volume_m3: _v, ...noVol } = TURNOV_INPUT;
+    try {
+      planElement(noVol as PlannerInput);
+      throw new Error('měl vyhodit UncalculatedError');
+    } catch (e) {
+      const u = e as UncalculatedError;
+      expect(u.uncalculated).toBe(true);
+      expect(u.message).toContain('volume_m3');
+      expect(u.message).not.toMatch(/světlé rozměry/);
+    }
+  });
+});

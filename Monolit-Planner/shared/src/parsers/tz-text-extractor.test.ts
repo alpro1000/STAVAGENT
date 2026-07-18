@@ -1034,3 +1034,59 @@ Celková délka podchodu je 104,0 m.
     expect(get(r, 'dilatation_main_count')?.value).toBe(40);
   });
 });
+
+describe('tubus pack — review PR #1521 adversarial pins (findings 1/2/4/10 + range gate)', () => {
+  const tubusOpts = { element_type: 'uzavreny_ram_tubus' };
+  const get = (results: ExtractedParam[], name: string) =>
+    results.find(r => r.name === name);
+
+  it('finding 1 (AC7 trap): cizí subjekt se nechytá — «pod podhledem» / «vozovky»', () => {
+    const r1 = extractFromText('Světlá výška pod podhledem 2,65 m.', tubusOpts);
+    expect(get(r1, 'tubus_clear_height_m')).toBeUndefined();
+    const r2 = extractFromText('Světlá šířka vozovky 7,5 m.', tubusOpts);
+    expect(get(r2, 'tubus_clear_width_m')).toBeUndefined();
+    // Distraktor PŘED pravou hodnotou slot nezablokuje — vyhraje rám.
+    const r3 = extractFromText(
+      'Světlá výška pod podhledem 2,65 m.\nSvětlá výška rámu 3,00 m.', tubusOpts,
+    );
+    expect(get(r3, 'tubus_clear_height_m')?.value).toBe(3.0);
+  });
+
+  it('finding 2: kombinovaný průřez v mm se konvertuje — «6100 × 3000 mm» → 6,1 / 3,0', () => {
+    const r = extractFromText('Světlý otvor 6100 × 3000 mm.', tubusOpts);
+    expect(get(r, 'tubus_clear_width_m')?.value).toBe(6.1);
+    expect(get(r, 'tubus_clear_height_m')?.value).toBe(3.0);
+  });
+
+  it('finding 2b: bezjednotková nesmyslná dvojice se poctivě zahodí a NEblokuje slot', () => {
+    const r = extractFromText(
+      'Světlé rozměry 6100 x 3000.\nSvětlá šířka rámu 6,10 m.', tubusOpts,
+    );
+    expect(get(r, 'tubus_clear_width_m')?.value).toBe(6.1);
+    expect(get(r, 'tubus_clear_height_m')).toBeUndefined();
+  });
+
+  it('finding 4: pořadí «část + tl./tloušťky + číslo» se extrahuje', () => {
+    const r = extractFromText(
+      'Stěny tl. 500 mm. Spodní deska tl. 450 mm. Stropní deska tloušťky 450 mm.',
+      tubusOpts,
+    );
+    expect(get(r, 'tubus_wall_thickness_m')?.value).toBe(0.5);
+    expect(get(r, 'tubus_bottom_thickness_m')?.value).toBe(0.45);
+    expect(get(r, 'tubus_top_thickness_m')?.value).toBe(0.45);
+  });
+
+  it('finding 10: eliptické «spodní 0,50 m» (bez «deska») se chytá', () => {
+    const r = extractFromText('Tl. stropní desky 0,45 m a spodní 0,50 m.', tubusOpts);
+    expect(get(r, 'tubus_top_thickness_m')?.value).toBe(0.45);
+    expect(get(r, 'tubus_bottom_thickness_m')?.value).toBe(0.5);
+  });
+
+  it('range gate (SANITY_RANGES single source): «0 celků» a sekce 1250 m se zahodí', () => {
+    const r = extractFromText(
+      'Konstrukce je rozdělena na 0 dilatačních celků, sekce délky 1250 m.', tubusOpts,
+    );
+    expect(get(r, 'tubus_dc_count')).toBeUndefined();
+    expect(get(r, 'tubus_section_length_m')).toBeUndefined();
+  });
+});
