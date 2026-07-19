@@ -6,6 +6,7 @@
 import express from 'express';
 import { getDatabase } from '../../db/init.js';
 import { logger } from '../../utils/logger.js';
+import { requireApiKey } from '../middleware/requireApiKey.js';
 
 const router = express.Router();
 
@@ -310,7 +311,7 @@ async function runHarvest(categories, apiKey, model, delayMs) {
 }
 
 // POST /api/urs-catalog/harvest — Start Perplexity URS harvest
-router.post('/harvest', async (req, res) => {
+router.post('/harvest', requireApiKey, async (req, res) => {
   const apiKey = process.env.PPLX_API_KEY || process.env.PERPLEXITY_API_KEY;
   if (!apiKey) {
     return res.status(503).json({ error: 'PPLX_API_KEY not configured', hint: 'Available on Cloud Run via Secret Manager' });
@@ -382,7 +383,7 @@ router.get('/harvest/status', (req, res) => {
 });
 
 // POST /api/urs-catalog/harvest/cancel — Cancel running harvest
-router.post('/harvest/cancel', (req, res) => {
+router.post('/harvest/cancel', requireApiKey, (req, res) => {
   if (!harvestState || harvestState.status !== 'running') {
     return res.json({ message: 'No harvest running' });
   }
@@ -406,7 +407,8 @@ router.get('/', async (req, res) => {
     }
 
     query += ' LIMIT ?';
-    params.push(parseInt(limit) || 100);
+    // Audit: clamp so ?limit=99999999 can't dump the whole ~40k-row catalog in one call.
+    params.push(Math.min(Math.max(parseInt(limit) || 100, 1), 500));
 
     const items = await db.all(query, params);
 

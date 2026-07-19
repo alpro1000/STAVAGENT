@@ -17,6 +17,7 @@
 
 import express from 'express';
 import { logger } from '../../utils/logger.js';
+import { requireApiKey } from '../middleware/requireApiKey.js';
 import {
   findPrice,
   uploadCommercialOffer,
@@ -79,8 +80,10 @@ router.get('/find', async (req, res) => {
 
     const result = await findPrice(category, code, {
       projectId,
+      // Audit P0-4: default OFF. A plain anonymous GET must not trigger a paid web
+      // search and persist the result into the shared price DB. Opt-in via ?searchWeb=true.
       region: region || 'Praha',
-      searchWeb: searchWeb !== 'false',
+      searchWeb: searchWeb === 'true',
       includeHistory: includeHistory === 'true'
     });
 
@@ -136,7 +139,7 @@ router.get('/category/:category', async (req, res) => {
  * - items: Array of price items [{ materialCode, category, price, unit, quantity }]
  * - notes: Optional notes
  */
-router.post('/offer', async (req, res) => {
+router.post('/offer', requireApiKey, async (req, res) => {
   try {
     const { projectId, supplier, offerNumber, validUntil, items, notes } = req.body;
 
@@ -356,7 +359,7 @@ router.post('/project', async (req, res) => {
  * - prices: Array of price objects
  * - source: Source name
  */
-router.post('/import', async (req, res) => {
+router.post('/import', requireApiKey, async (req, res) => {
   try {
     const { prices, source } = req.body;
 
@@ -399,7 +402,7 @@ router.post('/import', async (req, res) => {
  * - projectId: Optional project ID
  * - notes: Optional notes
  */
-router.post('/manual', async (req, res) => {
+router.post('/manual', requireApiKey, async (req, res) => {
   try {
     const { category, materialCode, price, unit, supplier, projectId, notes } = req.body;
 
