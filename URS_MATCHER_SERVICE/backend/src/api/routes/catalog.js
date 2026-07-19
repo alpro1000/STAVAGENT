@@ -10,8 +10,11 @@ import { requireApiKey } from '../middleware/requireApiKey.js';
 
 const router = express.Router();
 
-// URS detail page URL pattern
-const URS_DETAIL_URL = process.env.URS_BASE_URL || 'https://podminky.urs.cz/item/CS_URS_2026_01';
+// URS detail page URL pattern. The version segment (CS_URS_YYYY_NN) MUST track the
+// current CS ÚRS release on podminky.urs.cz — when ÚRS publishes a new version the old
+// path 404s and detail fetching silently "stops working" (worked-then-stopped class).
+// Override without a redeploy via URS_BASE_URL. (Current live catalog: CS ÚRS 2026/02.)
+const URS_DETAIL_URL = process.env.URS_BASE_URL || 'https://podminky.urs.cz/item/CS_URS_2026_02';
 
 /**
  * Fetch full description from podminky.urs.cz for a given URS code.
@@ -69,6 +72,13 @@ async function fetchUrsDetail(code) {
     // Extract unit (MJ)
     const unitMatch = html.match(/(?:Měrná jednotka|MJ)[^<]*<\/[^>]+>\s*(?:<[^>]+>)*\s*([^<]{1,10})/i);
     const unit = unitMatch ? unitMatch[1].trim() : null;
+
+    // Diagnostic (audit — "fungovalo, pak přestalo"): a 200 with nothing parseable almost
+    // always means the site HTML changed (regex selectors rotted) or the page is now a
+    // login/paywall stub. Previously this returned a silent empty object with no log.
+    if (!title && !fullDescription) {
+      logger.warn(`[CATALOG] Fetched ${url} (200) but parsed no title/description — HTML shape changed or access gated? (scraper selectors may need update)`);
+    }
 
     return {
       title: title || null,
