@@ -75,6 +75,69 @@ async function getJson(url, fetchImpl = globalThis.fetch) {
   }
 }
 
+// --- versionId resolution -------------------------------------------------
+// The catalog release id can be pinned via env, or auto-resolved from
+// GET /v1/version/metadata/<human-version>. We don't hardcode the metadata field
+// name (unknown/unstable) — we scan the small body for the opaque token shape and
+// always fall back to the configured VERSION_ID, so a schema change degrades, never breaks.
+const VERSION_TOKEN_RE = /^[A-Za-z0-9]{16,32}$/;
+let _versionIdPromise = null;
+
+/** Extract a versionId from a /v1/version/metadata body without knowing the field name. */
+function extractVersionId(meta) {
+  if (!meta || typeof meta !== 'object') return null;
+  const entries = Object.entries(meta);
+  // 1) a key that names a version id, holding a token value.
+  for (const [k, v] of entries) {
+    if (
+      typeof v === 'string' &&
+      /version/i.test(k) &&
+      /id/i.test(k) &&
+      VERSION_TOKEN_RE.test(v) &&
+      v !== CATALOG_VERSION
+    ) {
+      return v;
+    }
+  }
+  // 2) any string value shaped like the opaque token (never the human version string).
+  for (const v of Object.values(meta)) {
+    if (typeof v === 'string' && VERSION_TOKEN_RE.test(v) && v !== CATALOG_VERSION) return v;
+  }
+  return null;
+}
+
+async function doResolveVersionId(fetchImpl) {
+  try {
+    const url = `${FRONTOFFICE_BASE}/v1/version/metadata/${encodeURIComponent(CATALOG_VERSION)}`;
+    const meta = await getJson(url, fetchImpl);
+    const found = extractVersionId(meta);
+    if (found) {
+      if (found !== VERSION_ID) {
+        logger.info(`[Frontoffice] versionId for ${CATALOG_VERSION} resolved from metadata: ${found}`);
+      }
+      return found;
+    }
+  } catch {
+    /* fall through to the configured default */
+  }
+  return VERSION_ID;
+}
+
+/**
+ * Resolve the active catalog versionId (metadata auto-resolve, cached; env fallback).
+ * @param {{fetchImpl?: typeof fetch}} [opts]
+ * @returns {Promise<string>}
+ */
+export function resolveVersionId(opts = {}) {
+  if (!_versionIdPromise) _versionIdPromise = doResolveVersionId(opts.fetchImpl);
+  return _versionIdPromise;
+}
+
+/** Test hook: clear the cached versionId resolution. */
+export function __resetVersionCache() {
+  _versionIdPromise = null;
+}
+
 /** Case/space-insensitive equality for catalog codes. */
 function codeEquals(a, b) {
   if (!a || !b) return false;
@@ -139,8 +202,9 @@ export async function searchCatalog(query, opts = {}) {
   const { limit = 20, fetchImpl } = opts;
   if (!query || typeof query !== 'string' || !query.trim()) return [];
 
+  const versionId = await resolveVersionId({ fetchImpl });
   const params = new URLSearchParams({
-    versionId: VERSION_ID,
+    versionId,
     query: query.trim(),
     textsPage: '1',
     categoriesPage: '1',

@@ -5,7 +5,15 @@
  * (GET /v1/search?...&query=711113127 and GET /v1/autocomplete?query=711113127).
  * `fetch` is injected via opts.fetchImpl — no network, no DB.
  */
-import { searchCatalog, autocomplete } from '../src/services/frontofficeClient.js';
+import {
+  searchCatalog,
+  autocomplete,
+  resolveVersionId,
+  __resetVersionCache,
+} from '../src/services/frontofficeClient.js';
+
+// The versionId is cached module-side; reset before each test for determinism.
+beforeEach(() => __resetVersionCache());
 
 // Verbatim /v1/search body for query "711113127" (3 items: 1 REFERENTIAL + 2 COMMERCIAL).
 const SEARCH_BODY = {
@@ -106,9 +114,8 @@ describe('searchCatalog', () => {
   test('sends versionId + query + paging to /v1/search', async () => {
     const spy = fetchSpy(SEARCH_BODY);
     await searchCatalog('beton C25/30', { fetchImpl: spy.impl });
-    expect(spy.calls).toHaveLength(1);
-    const url = spy.calls[0];
-    expect(url).toContain('/v1/search?');
+    const url = spy.calls.find((u) => u.includes('/v1/search?'));
+    expect(url).toBeDefined();
     expect(url).toContain('versionId=');
     expect(url).toContain('query=beton+C25%2F30');
     expect(url).toContain('itemsPage=1');
@@ -130,6 +137,42 @@ describe('searchCatalog', () => {
     expect(await searchCatalog('   ', { fetchImpl: spy.impl })).toEqual([]);
     expect(await searchCatalog(null, { fetchImpl: spy.impl })).toEqual([]);
     expect(spy.calls).toHaveLength(0);
+  });
+});
+
+describe('resolveVersionId', () => {
+  test('auto-resolves the token from /v1/version/metadata (field-name agnostic)', async () => {
+    const meta = { versionId: 'NEWVERSIONID12345678', code: 'CS_URS_2026_02', name: 'CS ÚRS 2026/II' };
+    const v = await resolveVersionId({ fetchImpl: fetchReturning(meta) });
+    expect(v).toBe('NEWVERSIONID12345678');
+  });
+
+  test('scans for a token value even under an unexpected key name', async () => {
+    const meta = { id: 'ABCdef1234567890XY', label: 'CS_URS_2026_02' };
+    const v = await resolveVersionId({ fetchImpl: fetchReturning(meta) });
+    expect(v).toBe('ABCdef1234567890XY');
+  });
+
+  test('falls back to the configured default on metadata failure', async () => {
+    const throwing = async () => {
+      throw new Error('metadata down');
+    };
+    const v = await resolveVersionId({ fetchImpl: throwing });
+    expect(v).toBe('dsdCAHQZh6lFvriEi3aB'); // env default
+  });
+
+  test('falls back to the default when no token is present in the body', async () => {
+    const v = await resolveVersionId({ fetchImpl: fetchReturning({ note: 'CS_URS_2026_02' }) });
+    expect(v).toBe('dsdCAHQZh6lFvriEi3aB');
+  });
+
+  test('caches the resolution (one metadata request across calls)', async () => {
+    const spy = fetchSpy({ versionId: 'CACHED0000000000AAAA' });
+    const a = await resolveVersionId({ fetchImpl: spy.impl });
+    const b = await resolveVersionId({ fetchImpl: spy.impl });
+    expect(a).toBe('CACHED0000000000AAAA');
+    expect(b).toBe('CACHED0000000000AAAA');
+    expect(spy.calls).toHaveLength(1);
   });
 });
 
