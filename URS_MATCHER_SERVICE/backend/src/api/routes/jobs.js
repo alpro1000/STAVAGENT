@@ -33,7 +33,6 @@ import { validateDocumentCompleteness, getDocumentRequirements } from '../../ser
 import { getCachedDocumentParsing, cacheDocumentParsing, initCache } from '../../services/cacheService.js';
 import { extractWorksFromDocument } from '../../services/documentExtractionService.js';
 import { validateFileContent } from '../../utils/fileValidator.js';
-import { Orchestrator } from '../../services/roleIntegration/orchestrator.js';
 import {
   getCachedBlockAnalysis,
   setCachedBlockAnalysis,
