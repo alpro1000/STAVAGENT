@@ -347,6 +347,7 @@ router.get('/diagnostics', async (req, res) => {
     const { PERPLEXITY_CONFIG, BRAVE_SEARCH_CONFIG, CATALOG_MODE, getAvailableProviders, getTaskTypes } = await import('../../config/llmConfig.js');
     const { searchUrsSite } = await import('../../services/perplexityClient.js');
     const { searchUrsSiteViaBrave } = await import('../../services/braveSearchClient.js');
+    const { searchCatalog, __config: frontofficeConfig } = await import('../../services/frontofficeClient.js');
 
     const diagnostics = {
       timestamp: new Date().toISOString(),
@@ -413,6 +414,38 @@ router.get('/diagnostics', async (req, res) => {
       diagnostics.testResults.perplexity = {
         status: 'DISABLED',
         reason: 'PPLX_API_KEY not set'
+      };
+    }
+
+    // Test the ÚRS frontoffice catalog API — the deterministic direct search (real
+    // catalog JSON, not a web guess). A known code must return >=1 item on a healthy
+    // API; this is the path that fixes the Perplexity EMPTY_RESULT for exact lookups.
+    try {
+      const testQuery = '711113127';
+      logger.info(`[BatchAPI] Testing ÚRS frontoffice with: "${testQuery}"`);
+      const testStartTime = Date.now();
+      const testResult = await searchCatalog(testQuery, { limit: 5 });
+      const testElapsed = Date.now() - testStartTime;
+      diagnostics.testResults.frontoffice = {
+        status: testResult.length > 0 ? 'OK' : 'EMPTY_RESULT',
+        candidatesFound: testResult.length,
+        timeMs: testElapsed,
+        query: testQuery,
+        base: frontofficeConfig.FRONTOFFICE_BASE,
+        catalogVersion: frontofficeConfig.CATALOG_VERSION,
+        firstCandidate: testResult.length > 0 ? {
+          code: testResult[0].urs_code,
+          name: testResult[0].urs_name,
+          unit: testResult[0].unit,
+          confidence: testResult[0].confidence,
+          match_kind: testResult[0].match_kind
+        } : null
+      };
+    } catch (error) {
+      diagnostics.testResults.frontoffice = {
+        status: 'ERROR',
+        error: error.message,
+        timeMs: Date.now() - startTime
       };
     }
 
