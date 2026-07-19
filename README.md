@@ -15,7 +15,7 @@ Upload a 200-page *Technická zpráva* (TZ / technical specification) → get an
 1. **OCR** extracts structured data from PDF drawings via MinerU
 2. **Deterministic classifier** tags 24 element types from OTSKP codes with confidence `1.0`
 3. **LLM** only handles ambiguous cases as fallback (confidence `0.7`)
-4. **Professional pricing catalog lookup** joins 17,904 OTSKP entries with commercial civil-construction catalogs
+4. **Professional pricing catalog lookup** joins 17,940 OTSKP entries with commercial civil-construction catalogs
 5. **Calculator** produces pour schedules, formwork systems, rebar masses, and a work breakdown structure
 
 Built as SaaS for *přípraváři* (cost estimators) in Czech and Slovak civil construction, then exposed via MCP so Claude Code users get the same domain intelligence.
@@ -110,7 +110,7 @@ Mounted at `/mcp` on the `concrete-agent` Cloud Run service:
 
 | Tool | Purpose |
 |---|---|
-| `find_otskp_code` | 17,904 entries of the Czech transport infrastructure price catalog |
+| `find_otskp_code` | 17,940 entries of the Czech transport infrastructure price catalog |
 | `find_urs_code` | Professional civil-construction pricing catalog lookup |
 | `classify_construction_element` | 24 element types (13 bridge + 11 building) |
 | `calculate_concrete_works` | 7-engine calculator: pour, formwork, props, rebar, curing, schedule, cost |
@@ -266,7 +266,7 @@ The domain is Czech/Slovak civil construction. Key terms kept untranslated (Engl
 | **stavbyvedoucí** | Site manager |
 | **ČSN** | Czech national standards |
 | **TKP** | Technical specifications for infrastructure (33 published documents) |
-| **OTSKP** | Public transport-infrastructure price catalog (17,904 items, maintained by ŘSD) |
+| **OTSKP** | Public transport-infrastructure price catalog (17,940 items, maintained by ŘSD) |
 | **Civil-construction pricing catalogs** | Commercial catalogs covering building and civil works, parallel to OTSKP |
 | **mostovka** | Bridge deck |
 | **pilíř / opěra** | Bridge pier / abutment |

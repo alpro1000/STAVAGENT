@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 
 _otskp_cache: dict[str, dict] | None = None
 
-OTSKP_XML_PATH = Path(__file__).parent.parent / "knowledge_base" / "B1_otkskp_codes" / "2025_03_otskp.xml"
+OTSKP_XML_PATH = Path(__file__).parent.parent / "knowledge_base" / "B1_otkskp_codes" / "2026_otskp.xml"
 
 
 def _load_otskp_catalog() -> dict[str, dict]:

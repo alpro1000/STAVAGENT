@@ -40,7 +40,8 @@ def _resolve_catalog_version(row_version: Optional[str]) -> str:
 
 
 def _get_catalog():
-    """Lazy-load OTSKP catalog from XML (17MB, ~17,904 items)."""
+    """Lazy-load OTSKP catalog: otskp.db (built from GCS 2026) if present, else the
+    committed 2026 XML fallback (~17,940 items)."""
     global _catalog
     if _catalog is not None:
         return _catalog
@@ -58,10 +59,10 @@ def _get_catalog():
         return _catalog
 
     # No SQLite DB — parse XML into memory
-    xml_path = base / "app" / "knowledge_base" / "B1_otkskp_codes" / "2025_03_otskp.xml"
+    xml_path = base / "app" / "knowledge_base" / "B1_otkskp_codes" / "2026_otskp.xml"
     if not xml_path.exists():
         # Try relative to app dir
-        xml_path = base.parent / "app" / "knowledge_base" / "B1_otkskp_codes" / "2025_03_otskp.xml"
+        xml_path = base.parent / "app" / "knowledge_base" / "B1_otkskp_codes" / "2026_otskp.xml"
 
     _catalog = _InMemoryOTSKP(xml_path)
     return _catalog
