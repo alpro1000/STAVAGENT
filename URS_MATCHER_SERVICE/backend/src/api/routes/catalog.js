@@ -7,6 +7,7 @@ import express from 'express';
 import { getDatabase } from '../../db/init.js';
 import { logger } from '../../utils/logger.js';
 import { requireApiKey } from '../middleware/requireApiKey.js';
+import { extractJson } from '../../utils/jsonExtract.js';
 
 const router = express.Router();
 
@@ -184,17 +185,16 @@ async function callPerplexity(userPrompt, apiKey, model) {
 }
 
 function parsePerplexityResponse(text) {
-  const jsonMatch = text.match(/```json\s*([\s\S]*?)```/) || text.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) return null;
-  const jsonStr = jsonMatch[1] || jsonMatch[0];
+  // audit M7: balanced-brace extraction (handles ```json fences + prose/citations)
+  const parsed = extractJson(text);
+  if (parsed) return parsed;
+  // legacy leniency fallback: trailing-comma cleanup on the greedy span
+  const greedy = text.match(/\{[\s\S]*\}/);
+  if (!greedy) return null;
   try {
-    return JSON.parse(jsonStr);
+    return JSON.parse(greedy[0].replace(/,\s*}/g, '}').replace(/,\s*]/g, ']'));
   } catch {
-    try {
-      return JSON.parse(jsonStr.replace(/,\s*}/g, '}').replace(/,\s*]/g, ']'));
-    } catch {
-      return null;
-    }
+    return null;
   }
 }
 

@@ -3,6 +3,8 @@
  * System and user prompts for searching ÚRS codes on podminky.urs.cz
  */
 
+import { extractJson } from '../utils/jsonExtract.js';
+
 export const SYSTEM_PROMPT_URS_SEARCH = `Jsi asistent-rozpočtář, který hledá položky ÚRS VÝHRADNĚ na webu podminky.urs.cz.
 
 TVŮJ ÚKOL:
@@ -67,12 +69,10 @@ export function parsePerplexityResponse(responseText) {
   if (!responseText) {return null;}
 
   try {
-    // Try to find JSON object in the response
-    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {return null;}
-
-    const jsonText = jsonMatch[0];
-    return JSON.parse(jsonText);
+    // Audit M7: balanced-brace extraction. The old greedy /\{[\s\S]*\}/ grabbed
+    // first-'{'-to-last-'}', which fails to parse once Perplexity wraps the JSON in
+    // prose/citations — the exact "search worked then stopped" failure.
+    return extractJson(responseText);
   } catch (error) {
     return null;
   }

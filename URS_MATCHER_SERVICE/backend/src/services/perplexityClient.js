@@ -5,6 +5,7 @@
 
 import { logger } from '../utils/logger.js';
 import { PERPLEXITY_CONFIG } from '../config/llmConfig.js';
+import { extractJson } from '../utils/jsonExtract.js';
 import {
   SYSTEM_PROMPT_URS_SEARCH,
   buildPerplexityPrompt,
@@ -317,11 +318,10 @@ Vrať výsledek jako platný JSON.`;
 
       // Parse JSON from response
       try {
-        const jsonMatch = response.match(/\{[\s\S]*\}/);
-        if (!jsonMatch) {
+        const parsed = extractJson(response); // audit M7: balanced-brace, not greedy
+        if (!parsed) {
           return { norms: [], technical_conditions: [], methodology_notes: null };
         }
-        const parsed = JSON.parse(jsonMatch[0]);
 
         logger.info(`[Perplexity] Found ${parsed.norms?.length || 0} norms, ${parsed.technical_conditions?.length || 0} tech conditions`);
 
@@ -409,12 +409,11 @@ Vyber JEDNOHO nejlepšího kandidáta. Vrať POUZE JSON:
 
       // Parse JSON response
       try {
-        const jsonMatch = response.match(/\{[\s\S]*\}/);
-        if (!jsonMatch) {
+        const parsed = extractJson(response); // audit M7: balanced-brace, not greedy
+        if (!parsed) {
           return { urs_code: candidates[0].urs_code, urs_name: candidates[0].urs_name,
             unit: candidates[0].unit, explanation_cs: 'Fallback', related_items: [], source: 'fallback_parse_error' };
         }
-        const parsed = JSON.parse(jsonMatch[0]);
         const validCandidate = candidates.find(c => c.urs_code === parsed.selected_code);
         return {
           urs_code: parsed.selected_code || candidates[0].urs_code,

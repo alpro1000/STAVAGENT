@@ -9,6 +9,7 @@
  */
 
 import { logger } from '../../utils/logger.js';
+import { extractJson } from '../../utils/jsonExtract.js';
 import { ROLES, getRole, getRolesForTask, formatRoleResponse } from './roles.js';
 import { callLLMForTask, TASKS } from '../llmClient.js';
 import { getRuntimeModel } from '../../config/llmConfig.js';
@@ -412,12 +413,11 @@ function consolidateForTask(taskType, results, projectContext) {
  */
 function extractStructuredData(response) {
   // Try to find JSON in response
-  const jsonMatch = response.match(/```json\s*([\s\S]*?)\s*```/) ||
-                    response.match(/\{[\s\S]*\}/);
+  const parsed = extractJson(response); // audit M7 (handles ```json fences too)
 
-  if (jsonMatch) {
+  if (parsed) {
     try {
-      return JSON.parse(jsonMatch[1] || jsonMatch[0]);
+      return parsed;
     } catch (e) {
       // Not valid JSON
     }

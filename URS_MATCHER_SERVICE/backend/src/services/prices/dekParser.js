@@ -12,6 +12,7 @@
  */
 
 import { logger } from '../../utils/logger.js';
+import { extractJson } from '../../utils/jsonExtract.js';
 import { searchWithTavily, searchWithBrave } from '../norms/webSearchClient.js';
 import { callLLMForTask, TASKS } from '../llmClient.js';
 
@@ -241,9 +242,8 @@ Vrať JSON v tomto formátu:
       30000
     );
 
-    const jsonMatch = response.match(/\{[\s\S]*\}/);
-    if (jsonMatch) {
-      const parsed = JSON.parse(jsonMatch[0]);
+    const parsed = extractJson(response); // audit M7
+    if (parsed) {
       if (parsed.found && parsed.price > 0) {
         return {
           price: parsed.price,
