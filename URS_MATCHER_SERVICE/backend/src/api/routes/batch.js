@@ -383,6 +383,21 @@ router.get('/diagnostics', async (req, res) => {
       };
     }
 
+    // Make Gemini routing observable. llmClient calls Vertex AI first whenever a project
+    // is configured (ADC token permitting, which holds on Cloud Run) and only falls back
+    // to the direct generativelanguage.googleapis.com API key otherwise. Surfacing this
+    // lets ops confirm a Vertex + newest-model switch actually took effect.
+    if (diagnostics.llmProviders.gemini) {
+      const vertexProject = process.env.VERTEX_PROJECT || process.env.GOOGLE_CLOUD_PROJECT || null;
+      diagnostics.llmProviders.gemini.routing = {
+        activePath: vertexProject ? 'vertex_ai' : 'api_key',
+        vertexProject,
+        vertexLocation: process.env.VERTEX_LOCATION || process.env.GOOGLE_CLOUD_LOCATION || 'europe-west3',
+        useVertexFlag: process.env.GOOGLE_GENAI_USE_VERTEXAI === 'true',
+        model: diagnostics.llmProviders.gemini.model
+      };
+    }
+
     // Test Perplexity with a simple query (if enabled)
     if (PERPLEXITY_CONFIG.enabled) {
       try {
