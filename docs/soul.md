@@ -3474,6 +3474,29 @@ flat `severity` column, so the table schema does not change again.
 
 ---
 
+## 2026-07-19 — Session: аудит + ремедиация URS_MATCHER (Klasifikátor) + диагностика «клиент каталога работал, потом перестал»
+
+**Kontext:** старт — фриланс-кейс Vidímova (утепление фасада: сверка R3-soupis против всей PD, ÚRS-коды, ответы на 26 вопросов Šimka, «миллиардная» ошибка = дневная ставка лешения / kg↔t). Затем пивот на аудит сервиса **URS_MATCHER_SERVICE** (Klasifikátor).
+
+**Rozhodnuto (6 коммитов на ветке `claude/facade-insulation-docs-analysis-3y8nba`, все `src` парсятся, hermetic-тесты зелёные, полный jest — на CI: sqlite3 нативно не собирается в песочнице):**
+- Аудит 4 параллельными агентами (matching / security / reliability+DB / architecture) + прямая проверка данных → отчёт `AUDIT_URS_MATCHER.md`.
+- `2a71799` reliability: WAL + busy_timeout + `foreign_keys=ON`; `unhandledRejection`→log-and-continue; in-memory cache eviction.
+- `1236f54` matching: folding диакритики + token-overlap similarity (max() с legacy, без регрессий, +10 тестов); сохранены числа/юниты (tř.3/DN100/m²); OTSKP помечен `is_cross_catalog` (не выдаётся как ÚRS); авто-заучивание только детерминированных local-хитов (стоп KB-poisoning); validate кодов Perplexity; local OTSKP до веба; LLM-reranker не понижает детерминированный exact.
+- `2c42973` security: admin-gate на `harvest`/`*import`/`*collect`/`rebuild-index`/`import-xlsx`/`work-packages/build`; `prices/find` searchWeb→opt-in (нет платного поиска/записи в БД на анон-GET); zip-bomb size-guard в `fileParser`; `multer`→2.x; license→UNLICENSED.
+- `052ca47` dead code: −2350 LOC (`roleIntegration/*` + `multiRole*Client` + `mappingCacheService`, все 0-импортёров).
+- `712b434` detail-клиент podminky.urs.cz: `fetchUrsDetail` — версия `CS_URS_2026_01→2026_02` + диагностика scraper-rot (200-но-пусто больше не молчит).
+- `d632032` M7 robust JSON: `utils/jsonExtract.js` (balanced-brace, longest-span) вместо жадного `/{…}/` во всех 10 местах + тесты → **вероятный корень «поиск перестал»** (дрейф формата ответа Perplexity ломал жадный парсер).
+
+**Klíčové pozorování (Alexander):** (1) «залить CS ÚRS 2026 в `urs_items`» противоречит канонической архитектуре (сервис = HTTP-клиент онлайн-каталога, не БД-каталог) + лицензия ÚRS → **не делать**, решение владельца; (2) прямого HTTP-search каталога **не было никогда** (проверено по 4737 коммитам) — поиск = Perplexity/Brave-прокси, целящийся в podminky.urs.cz; (3) «клиент, который ищет и предлагает коды с рассуждением» = именно Perplexity-путь (`searchUrsSite`), а `fetchUrsDetail` = обогащение-по-коду; «работал потом перестал» = M7 (дрейф формата) + возможно ключ/бюджет Perplexity.
+
+**Odmítnuto (решения владельца, не агента):** массовая заливка каталога ÚRS; консолидация 4 матчеров и миграция парсинга на exceljs (рискованно без локальных интеграционных тестов); Cloud SQL Postgres для write-state; глобальный `URS_REQUIRE_API_KEY` (route-level gating уже снял главную cost-abuse дыру — anon `harvest` жёг $5k Perplexity + отравлял каталог).
+
+**Otevřené otázky:** (a) стратегия каталога ÚRS — есть ли легальный программный доступ к podminky.urs.cz (иначе Perplexity/Brave = вынужденный обход); (b) изоляция 6 коммитов на чистую ветку от `main` (cherry-pick) — предложено, ждёт go (на `facade-…` ветке 162 чужих файла из других сессий); (c) ops-проверка `PPLX_API_KEY`/бюджета после деплоя.
+
+**Co dál:** после деплоя — живьём URS-поиск (эффект M7) + `GET /api/urs-catalog/274313811/detail` → по логам различить 404 (версия) / 200-unparsed (scraper-rot) / 401/403 (paywall). Vidímova-deliverables отданы файлами (`Vidimova_R3_AUDIT_KOMPLET.xlsx`), в репо не коммичены.
+
+---
+
 ## 10. Document metadata
 
 | Field | Value |
