@@ -10,6 +10,7 @@ import { logger } from '../utils/logger.js';
 import { calculateSimilarity } from '../utils/similarity.js';
 import { CATALOG_MODE } from '../config/llmConfig.js';
 import { searchUrsSite } from './perplexityClient.js';
+import { searchCatalog } from './frontofficeClient.js';
 import { lookupLearnedMapping, learnMapping } from './concreteAgentKB.js';
 import otskpCatalogService from './otskpCatalogService.js';
 
@@ -38,9 +39,13 @@ export async function matchUrsItems(text, quantity = 0, unit = 'ks') {
 
     logger.debug(`[URSMatcher] Matching (${CATALOG_MODE}): "${text.substring(0, 50)}..."`);
 
-    // Route to appropriate matcher based on catalog mode
-    let results;
-    if (CATALOG_MODE === 'perplexity_only') {
+    // Deterministic-first (Determinismus před AI): read the REAL ÚRS catalog directly
+    // via the frontoffice JSON API. A catalog hit outranks any web guess; on any
+    // failure searchCatalog returns [] and we fall back to the existing route below.
+    let results = await matchUrsItemsFrontoffice(text);
+    if (results.length > 0) {
+      logger.info(`[URSMatcher] Frontoffice catalog: ${results.length} item(s), best conf ${results[0].confidence.toFixed(2)}`);
+    } else if (CATALOG_MODE === 'perplexity_only') {
       results = await matchUrsItemsPerplexity(text);
     } else {
       results = await matchUrsItemsLocal(text);
@@ -228,6 +233,25 @@ async function matchUrsItemsLocal(text) {
 
   } catch (error) {
     logger.error(`[URSMatcher] Local matching error: ${error.message}`);
+    return [];
+  }
+}
+
+/**
+ * Match URS items against the real ÚRS catalog via the frontoffice JSON API.
+ * Deterministic, non-web (confidence 1.0 on an exact code). Fails soft to [].
+ * @private
+ */
+async function matchUrsItemsFrontoffice(text) {
+  // Ops kill-switch (no redeploy): URS_FRONTOFFICE_SEARCH=0 disables the direct path.
+  if (process.env.URS_FRONTOFFICE_SEARCH === '0' || process.env.URS_FRONTOFFICE_SEARCH === 'false') {
+    return [];
+  }
+  try {
+    const items = await searchCatalog(text, { limit: 20 });
+    return items.slice(0, 5);
+  } catch (error) {
+    logger.error(`[URSMatcher] Frontoffice matching error: ${error.message}`);
     return [];
   }
 }
