@@ -2,7 +2,7 @@
 STAVAGENT — OTSKP Price Engine v4.4
 
 Real OTSKP codes (1/2025) + mapping from XxxParams → SoupisPolozka with prices.
-Database: otskp.db (SQLite, 17904 items, source: 2025_03_OTSKP.xml)
+Database: otskp.db (SQLite, 17940 items, source: 2026 OTSKP SFDI open format)
 
 ARCHITECTURE:
   OTSKPDatabase  — SQLite wrapper, search and variant selector
