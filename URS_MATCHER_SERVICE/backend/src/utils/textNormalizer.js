@@ -9,14 +9,17 @@ export function normalizeText(text) {
   return text
     .toLowerCase()
     .trim()
+    // Preserve area/volume units as ASCII (m² -> m2, m³ -> m3) before stripping specials
+    .replace(/²/g, '2')
+    .replace(/³/g, '3')
     // Remove common Czech stop words
-    .replace(/\b(a|v|na|do|z|se|se|pro|jsou|být|mít)\b/g, '')
+    .replace(/\b(a|v|na|do|z|se|pro|jsou|být|mít)\b/g, '')
     // Remove extra spaces
     .replace(/\s+/g, ' ')
     // Remove special characters except numbers and Czech letters
     .replace(/[^a-záčďéěíňóřšťúůýž0-9\s/-]/gi, '')
-    // Remove numbers (keep structural dimensions like C25/30)
-    .replace(/\b\d+(?!\/)\b/g, '')
+    // Audit M5: KEEP numbers — dimensions and classes (tř. 3, DN 100, tl. 100 mm,
+    // C25/30) are highly discriminative for ÚRS matching and must not be stripped.
     .trim();
 }
 

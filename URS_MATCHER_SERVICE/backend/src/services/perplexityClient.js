@@ -88,16 +88,27 @@ export async function searchUrsSite(inputText) {
         return [];
       }
 
-      const candidates = parsed.candidates.map(c => ({
-        code: c.code,
-        name: c.name,
-        unit: c.unit || null,
-        url: c.url,
-        confidence: c.confidence ?? 0.7,
-        reason: c.reason || ''
-      }));
+      const candidates = parsed.candidates
+        .map(c => ({
+          code: c.code,
+          name: c.name,
+          unit: c.unit || null,
+          url: c.url,
+          confidence: c.confidence ?? 0.7,
+          reason: c.reason || ''
+        }))
+        // Audit M6: format-validate the returned code. Perplexity prose frequently
+        // yields non-code strings / hallucinated fragments; these must not reach the
+        // user as catalog codes. validateUrsCode() was defined but never called.
+        .filter(c => {
+          if (!validateUrsCode(c.code)) {
+            logger.warn(`[Perplexity] Dropping candidate with invalid code format: ${JSON.stringify(c.code)}`);
+            return false;
+          }
+          return true;
+        });
 
-      logger.info(`[Perplexity] Found ${candidates.length} candidates for: "${inputText}"`);
+      logger.info(`[Perplexity] Found ${candidates.length} valid candidates for: "${inputText}"`);
       return candidates;
     });
 

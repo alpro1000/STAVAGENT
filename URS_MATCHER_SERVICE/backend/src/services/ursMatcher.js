@@ -67,9 +67,16 @@ export async function matchUrsItems(text, quantity = 0, unit = 'ks') {
       }
     }
 
-    // Auto-learn high-confidence matches
-    if (results.length > 0 && results[0].confidence >= 0.85) {
-      learnMapping(text, results[0], 'auto');
+    // Auto-learn ONLY genuine deterministic local hits. Audit M3: auto-learning a
+    // Perplexity/Brave web guess or a cross-catalog OTSKP road code poisons the KB
+    // permanently — lookupLearnedMapping returns it first, unconditionally, on every
+    // future run, short-circuiting all deterministic logic.
+    const top = results[0];
+    const learnable = top && top.confidence >= 0.85 &&
+      top.source !== 'perplexity' && top.source !== 'brave_search' &&
+      top.source !== 'otskp' && !top.is_cross_catalog;
+    if (learnable) {
+      learnMapping(text, top, 'auto');
     }
 
     // Honest provenance flag: web-search-sourced results are suggestions
@@ -276,14 +283,20 @@ async function matchUrsItemsOTSKP(text) {
       minConfidence: 0.3
     });
 
+    // Audit P0-3: OTSKP is the road/transport catalog (dopravní stavby). It must
+    // NEVER be presented silently as an ÚRS building code. Tag every OTSKP result as
+    // cross-catalog so consumers/UI can flag it and it is excluded from auto-learn.
     return results.map(r => ({
       urs_code: r.code,
       urs_name: r.name,
       unit: r.unit,
-      description: `OTSKP: ${r.name}`,
+      description: `OTSKP (dopravní stavby): ${r.name}`,
       confidence: r.confidence,
       price: r.price,
-      source: 'otskp'
+      source: 'otskp',
+      catalog: 'otskp',
+      is_cross_catalog: true,
+      note: 'OTSKP = katalog dopravních staveb; pro pozemní stavbu ověřit ekvivalent v ÚRS/TSKP',
     }));
   } catch (error) {
     logger.error(`[URSMatcher] OTSKP matching error: ${error.message}`);
