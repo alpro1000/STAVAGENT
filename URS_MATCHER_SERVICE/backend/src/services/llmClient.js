@@ -7,6 +7,7 @@
 import axios from 'axios';
 import { logger } from '../utils/logger.js';
 import { getSystemPrompt, createMatchUrsItemPrompt } from '../prompts/ursMatcher.prompt.js';
+import { extractJson } from '../utils/jsonExtract.js';
 import { getLLMConfig, createLLMClient, getAvailableProviders, getFallbackChain, getModelForTask, getTaskTypes, onModelChange } from '../config/llmConfig.js';
 import {
   markProviderFailed as cacheMarkProviderFailed,
@@ -654,14 +655,12 @@ export { TASKS };
  */
 function parseMatchResponse(response) {
   try {
-    // Try to find JSON block in response (in case of extra text)
-    const jsonMatch = response.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
+    // Audit M7: balanced-brace extraction (not greedy first-'{'-to-last-'}').
+    const parsed = extractJson(response);
+    if (!parsed) {
       logger.warn('[LLMClient] No JSON found in LLM response');
       return null;
     }
-
-    const parsed = JSON.parse(jsonMatch[0]);
 
     // Validate structure
     if (!Array.isArray(parsed.matches)) {

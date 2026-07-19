@@ -7,6 +7,7 @@
 
 import express from 'express';
 import { logger } from '../../utils/logger.js';
+import { requireApiKey } from '../middleware/requireApiKey.js';
 import { buildCooccurrence, getCooccurring, getCooccurrenceStats } from '../../services/cooccurrenceBuilder.js';
 import { buildWorkPackages, searchWorkPackages, getAllWorkPackages, getWorkPackage } from '../../services/workPackageBuilder.js';
 
@@ -65,7 +66,7 @@ router.get('/:id', async (req, res) => {
  * Rebuild work packages from co-occurrence data.
  * Body: { minClusterSize?: number, minFrequency?: number }
  */
-router.post('/build', async (req, res) => {
+router.post('/build', requireApiKey, async (req, res) => {
   try {
     const { minClusterSize, minFrequency, expansionThreshold } = req.body || {};
 

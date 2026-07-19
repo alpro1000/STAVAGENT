@@ -12,6 +12,7 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import { logger } from '../../utils/logger.js';
+import { requireApiKey } from '../middleware/requireApiKey.js';
 import { startCollection, getCollectionStatus, cancelCollection, getCollectionStats, ensureSchema } from '../../services/smlouvyCollector.js';
 import { parsePlainTextContent, detectCodeSystem, classifyWorkType, normalizeMJ } from '../../services/smlouvyParser.js';
 import { parseExcelFile } from '../../services/fileParser.js';
@@ -43,7 +44,7 @@ const router = express.Router();
  * Start a new collection run.
  * Body: { query?: string, maxPages?: number, skipExisting?: boolean }
  */
-router.post('/collect', async (req, res) => {
+router.post('/collect', requireApiKey, async (req, res) => {
   try {
     const { query, maxPages, skipExisting } = req.body || {};
     const result = await startCollection({ query, maxPages, skipExisting });
@@ -72,7 +73,7 @@ router.get('/collect/status', (req, res) => {
  * POST /api/smlouvy/collect/cancel
  * Cancel running collection.
  */
-router.post('/collect/cancel', (req, res) => {
+router.post('/collect/cancel', requireApiKey, (req, res) => {
   const cancelled = cancelCollection();
   res.json({ cancelled });
 });
@@ -282,7 +283,7 @@ router.get('/search', async (req, res) => {
  * Import a local xlsx/xls/ods/csv file into rozpocet_source + rozpocet_polozky.
  * Multipart form-data: file (required), nazev (optional), rok (optional)
  */
-router.post('/import-xlsx', upload.single('file'), async (req, res) => {
+router.post('/import-xlsx', requireApiKey, upload.single('file'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'Soubor (file) je povinný' });
   }
@@ -359,7 +360,7 @@ import VvzClient from '../../services/vvzClient.js';
  * Start VZ metadata collection from vvz.nipez.cz.
  * Body: { cpv?: string, maxPages?: number }
  */
-router.post('/vz/collect', async (req, res) => {
+router.post('/vz/collect', requireApiKey, async (req, res) => {
   try {
     const { cpv, maxPages } = req.body || {};
     const result = await startVzCollection({ cpv, maxPages });

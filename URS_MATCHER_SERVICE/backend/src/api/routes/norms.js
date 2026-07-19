@@ -16,6 +16,7 @@
 
 import express from 'express';
 import { logger } from '../../utils/logger.js';
+import { requireApiKey } from '../middleware/requireApiKey.js';
 import {
   findNorms,
   fetchNorm,
@@ -317,7 +318,7 @@ router.get('/stats', async (req, res) => {
 // POST /api/norms/import - Импорт норм
 // ============================================================================
 
-router.post('/import', async (req, res) => {
+router.post('/import', requireApiKey, async (req, res) => {
   const startTime = Date.now();
 
   try {
@@ -354,7 +355,7 @@ router.post('/import', async (req, res) => {
 // POST /api/norms/rebuild-index - Перестроить индекс
 // ============================================================================
 
-router.post('/rebuild-index', async (req, res) => {
+router.post('/rebuild-index', requireApiKey, async (req, res) => {
   const startTime = Date.now();
 
   try {

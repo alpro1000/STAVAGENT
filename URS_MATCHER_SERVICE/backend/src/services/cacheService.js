@@ -48,12 +48,45 @@ const CACHE_CONFIG = {
  * Used for development/testing
  */
 class InMemoryCache {
-  constructor() {
+  constructor({ maxEntries = 5000, sweepIntervalMs = 5 * 60 * 1000 } = {}) {
     this.store = new Map();
     this.timestamps = new Map();
+    this.maxEntries = maxEntries;
+
+    // Audit R5: without an active sweep, entries that are never re-read stay forever
+    // (lazy expiry only fires on get). With 7-day TTLs this grows for the instance
+    // lifetime. Periodically drop expired keys; unref() so it never blocks shutdown.
+    if (sweepIntervalMs > 0 && typeof setInterval === 'function') {
+      this._sweepTimer = setInterval(() => this.sweep(), sweepIntervalMs);
+      if (this._sweepTimer.unref) this._sweepTimer.unref();
+    }
+  }
+
+  sweep() {
+    const now = Date.now();
+    for (const [key, expireTime] of this.timestamps) {
+      if (expireTime && expireTime < now) {
+        this.store.delete(key);
+        this.timestamps.delete(key);
+      }
+    }
   }
 
   async set(key, value, ttl = 3600) {
+    // Hard cap so a burst of unique keys can't grow memory without bound.
+    // Sweep first (cheap), then evict the soonest-to-expire entries if still over.
+    if (this.store.size >= this.maxEntries) {
+      this.sweep();
+      if (this.store.size >= this.maxEntries) {
+        const oldest = [...this.timestamps.entries()]
+          .sort((a, b) => a[1] - b[1])
+          .slice(0, Math.ceil(this.maxEntries * 0.1));
+        for (const [k] of oldest) {
+          this.store.delete(k);
+          this.timestamps.delete(k);
+        }
+      }
+    }
     this.store.set(key, JSON.stringify(value));
     this.timestamps.set(key, Date.now() + (ttl * 1000));
     return true;

@@ -41,25 +41,29 @@ export async function retrieve(subWork, searchDepth = 'normal', options = {}) {
     logger.debug(`[CandidateRetriever] Keywords: ${JSON.stringify(subWork.keywords)}`);
     logger.debug(`[CandidateRetriever] Search depth: ${searchDepth}`);
 
-    // OTSKP catalog: local search (fast, no API calls)
-    if (catalog === 'otskp' || catalog === 'both') {
+    // Local OTSKP index: fast, no API calls. Audit P0-2: run this on EVERY path
+    // (including the default 'urs'), so the pipeline always has deterministic local
+    // candidates before falling to paid web search. On the 'urs' path OTSKP results
+    // are cross-catalog (road/transport) — tagged as such so they are never presented
+    // as ÚRS silently, but still available when the web returns nothing.
+    {
       const otskpCandidates = await searchOTSKPCatalog(subWork);
-      if (otskpCandidates.length > 0 && catalog === 'otskp') {
-        const elapsed = Date.now() - startTime;
-        logger.info(`[CandidateRetriever] OTSKP: ${otskpCandidates.length} candidates in ${elapsed}ms`);
-        return {
-          subWork,
-          candidates: otskpCandidates.slice(0, 30),
-          queriesUsed: [`OTSKP local: ${subWork.text}`],
-          timing: { totalMs: elapsed },
-          catalog: 'otskp'
-        };
-      }
-
-      // In 'both' mode, OTSKP results will be merged with ÚRS results below
-      if (catalog === 'both' && otskpCandidates.length > 0) {
-        // We'll merge these after the ÚRS search
-        subWork._otskpCandidates = otskpCandidates;
+      if (otskpCandidates.length > 0) {
+        if (catalog === 'otskp') {
+          const elapsed = Date.now() - startTime;
+          logger.info(`[CandidateRetriever] OTSKP: ${otskpCandidates.length} candidates in ${elapsed}ms`);
+          return {
+            subWork,
+            candidates: otskpCandidates.slice(0, 30),
+            queriesUsed: [`OTSKP local: ${subWork.text}`],
+            timing: { totalMs: elapsed },
+            catalog: 'otskp'
+          };
+        }
+        // 'urs' or 'both': stash for the merge below. Flag cross-catalog for 'urs'.
+        subWork._otskpCandidates = catalog === 'urs'
+          ? otskpCandidates.map(c => ({ ...c, is_cross_catalog: true, catalog: 'otskp' }))
+          : otskpCandidates;
       }
     }
 

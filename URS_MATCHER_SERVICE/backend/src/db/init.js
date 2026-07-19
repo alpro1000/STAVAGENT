@@ -34,7 +34,14 @@ export async function initializeDatabase() {
       driver: sqlite3.Database
     });
 
-    logger.info(`[DB] Connected to: ${filename}`);
+    // Reliability pragmas (audit R3): WAL enables concurrent readers during writes,
+    // busy_timeout avoids SQLITE_BUSY under the shared single connection + 5-min cron,
+    // foreign_keys=ON so declared ON DELETE CASCADE actually fires (SQLite defaults OFF).
+    await db.exec('PRAGMA journal_mode = WAL;');
+    await db.exec('PRAGMA busy_timeout = 5000;');
+    await db.exec('PRAGMA foreign_keys = ON;');
+
+    logger.info(`[DB] Connected to: ${filename} (WAL, busy_timeout=5000, foreign_keys=ON)`);
 
     // Create tables
     const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf-8');

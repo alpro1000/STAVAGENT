@@ -5,6 +5,7 @@
 
 import { logger } from '../utils/logger.js';
 import { PERPLEXITY_CONFIG } from '../config/llmConfig.js';
+import { extractJson } from '../utils/jsonExtract.js';
 import {
   SYSTEM_PROMPT_URS_SEARCH,
   buildPerplexityPrompt,
@@ -88,16 +89,27 @@ export async function searchUrsSite(inputText) {
         return [];
       }
 
-      const candidates = parsed.candidates.map(c => ({
-        code: c.code,
-        name: c.name,
-        unit: c.unit || null,
-        url: c.url,
-        confidence: c.confidence ?? 0.7,
-        reason: c.reason || ''
-      }));
+      const candidates = parsed.candidates
+        .map(c => ({
+          code: c.code,
+          name: c.name,
+          unit: c.unit || null,
+          url: c.url,
+          confidence: c.confidence ?? 0.7,
+          reason: c.reason || ''
+        }))
+        // Audit M6: format-validate the returned code. Perplexity prose frequently
+        // yields non-code strings / hallucinated fragments; these must not reach the
+        // user as catalog codes. validateUrsCode() was defined but never called.
+        .filter(c => {
+          if (!validateUrsCode(c.code)) {
+            logger.warn(`[Perplexity] Dropping candidate with invalid code format: ${JSON.stringify(c.code)}`);
+            return false;
+          }
+          return true;
+        });
 
-      logger.info(`[Perplexity] Found ${candidates.length} candidates for: "${inputText}"`);
+      logger.info(`[Perplexity] Found ${candidates.length} valid candidates for: "${inputText}"`);
       return candidates;
     });
 
@@ -306,11 +318,10 @@ Vrať výsledek jako platný JSON.`;
 
       // Parse JSON from response
       try {
-        const jsonMatch = response.match(/\{[\s\S]*\}/);
-        if (!jsonMatch) {
+        const parsed = extractJson(response); // audit M7: balanced-brace, not greedy
+        if (!parsed) {
           return { norms: [], technical_conditions: [], methodology_notes: null };
         }
-        const parsed = JSON.parse(jsonMatch[0]);
 
         logger.info(`[Perplexity] Found ${parsed.norms?.length || 0} norms, ${parsed.technical_conditions?.length || 0} tech conditions`);
 
@@ -398,12 +409,11 @@ Vyber JEDNOHO nejlepšího kandidáta. Vrať POUZE JSON:
 
       // Parse JSON response
       try {
-        const jsonMatch = response.match(/\{[\s\S]*\}/);
-        if (!jsonMatch) {
+        const parsed = extractJson(response); // audit M7: balanced-brace, not greedy
+        if (!parsed) {
           return { urs_code: candidates[0].urs_code, urs_name: candidates[0].urs_name,
             unit: candidates[0].unit, explanation_cs: 'Fallback', related_items: [], source: 'fallback_parse_error' };
         }
-        const parsed = JSON.parse(jsonMatch[0]);
         const validCandidate = candidates.find(c => c.urs_code === parsed.selected_code);
         return {
           urs_code: parsed.selected_code || candidates[0].urs_code,

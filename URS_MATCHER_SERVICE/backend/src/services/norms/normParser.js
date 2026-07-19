@@ -12,6 +12,7 @@
  */
 
 import { logger } from '../../utils/logger.js';
+import { extractJson } from '../../utils/jsonExtract.js';
 import { searchNorms, searchCSNNorm, searchBuildingLaw } from './webSearchClient.js';
 import { callLLMForTask, TASKS } from '../llmClient.js';
 
@@ -276,9 +277,9 @@ Vrať JSON v tomto formátu:
     );
 
     // Parse JSON from response
-    const jsonMatch = response.match(/\{[\s\S]*\}/);
-    if (jsonMatch) {
-      return JSON.parse(jsonMatch[0]);
+    const parsed = extractJson(response); // audit M7
+    if (parsed) {
+      return parsed;
     }
 
     logger.warn(`[NormParser] Could not parse LLM response for ${normCode}`);

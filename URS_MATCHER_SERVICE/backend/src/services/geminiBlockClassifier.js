@@ -15,6 +15,7 @@
  */
 
 import { logger } from '../utils/logger.js';
+import { extractJson } from '../utils/jsonExtract.js';
 import { getRuntimeModel, getAvailableProviders } from '../config/llmConfig.js';
 
 // ============================================================================
@@ -363,10 +364,10 @@ function parseGeminiJsonResponse(text) {
     }
 
     // Last resort: find JSON object in response
-    const objectMatch = text.match(/\{[\s\S]*\}/);
+    const objectMatch = extractJson(text); // audit M7
     if (objectMatch) {
       try {
-        return JSON.parse(objectMatch[0]);
+        return objectMatch;
       } catch (e3) {
         logger.warn('[GEMINI-CLASSIFIER] Failed to extract JSON object');
       }

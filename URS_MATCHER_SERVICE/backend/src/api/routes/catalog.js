@@ -6,11 +6,16 @@
 import express from 'express';
 import { getDatabase } from '../../db/init.js';
 import { logger } from '../../utils/logger.js';
+import { requireApiKey } from '../middleware/requireApiKey.js';
+import { extractJson } from '../../utils/jsonExtract.js';
 
 const router = express.Router();
 
-// URS detail page URL pattern
-const URS_DETAIL_URL = process.env.URS_BASE_URL || 'https://podminky.urs.cz/item/CS_URS_2026_01';
+// URS detail page URL pattern. The version segment (CS_URS_YYYY_NN) MUST track the
+// current CS ÚRS release on podminky.urs.cz — when ÚRS publishes a new version the old
+// path 404s and detail fetching silently "stops working" (worked-then-stopped class).
+// Override without a redeploy via URS_BASE_URL. (Current live catalog: CS ÚRS 2026/02.)
+const URS_DETAIL_URL = process.env.URS_BASE_URL || 'https://podminky.urs.cz/item/CS_URS_2026_02';
 
 /**
  * Fetch full description from podminky.urs.cz for a given URS code.
@@ -68,6 +73,13 @@ async function fetchUrsDetail(code) {
     // Extract unit (MJ)
     const unitMatch = html.match(/(?:Měrná jednotka|MJ)[^<]*<\/[^>]+>\s*(?:<[^>]+>)*\s*([^<]{1,10})/i);
     const unit = unitMatch ? unitMatch[1].trim() : null;
+
+    // Diagnostic (audit — "fungovalo, pak přestalo"): a 200 with nothing parseable almost
+    // always means the site HTML changed (regex selectors rotted) or the page is now a
+    // login/paywall stub. Previously this returned a silent empty object with no log.
+    if (!title && !fullDescription) {
+      logger.warn(`[CATALOG] Fetched ${url} (200) but parsed no title/description — HTML shape changed or access gated? (scraper selectors may need update)`);
+    }
 
     return {
       title: title || null,
@@ -173,17 +185,16 @@ async function callPerplexity(userPrompt, apiKey, model) {
 }
 
 function parsePerplexityResponse(text) {
-  const jsonMatch = text.match(/```json\s*([\s\S]*?)```/) || text.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) return null;
-  const jsonStr = jsonMatch[1] || jsonMatch[0];
+  // audit M7: balanced-brace extraction (handles ```json fences + prose/citations)
+  const parsed = extractJson(text);
+  if (parsed) return parsed;
+  // legacy leniency fallback: trailing-comma cleanup on the greedy span
+  const greedy = text.match(/\{[\s\S]*\}/);
+  if (!greedy) return null;
   try {
-    return JSON.parse(jsonStr);
+    return JSON.parse(greedy[0].replace(/,\s*}/g, '}').replace(/,\s*]/g, ']'));
   } catch {
-    try {
-      return JSON.parse(jsonStr.replace(/,\s*}/g, '}').replace(/,\s*]/g, ']'));
-    } catch {
-      return null;
-    }
+    return null;
   }
 }
 
@@ -310,7 +321,7 @@ async function runHarvest(categories, apiKey, model, delayMs) {
 }
 
 // POST /api/urs-catalog/harvest — Start Perplexity URS harvest
-router.post('/harvest', async (req, res) => {
+router.post('/harvest', requireApiKey, async (req, res) => {
   const apiKey = process.env.PPLX_API_KEY || process.env.PERPLEXITY_API_KEY;
   if (!apiKey) {
     return res.status(503).json({ error: 'PPLX_API_KEY not configured', hint: 'Available on Cloud Run via Secret Manager' });
@@ -382,7 +393,7 @@ router.get('/harvest/status', (req, res) => {
 });
 
 // POST /api/urs-catalog/harvest/cancel — Cancel running harvest
-router.post('/harvest/cancel', (req, res) => {
+router.post('/harvest/cancel', requireApiKey, (req, res) => {
   if (!harvestState || harvestState.status !== 'running') {
     return res.json({ message: 'No harvest running' });
   }
@@ -406,7 +417,8 @@ router.get('/', async (req, res) => {
     }
 
     query += ' LIMIT ?';
-    params.push(parseInt(limit) || 100);
+    // Audit: clamp so ?limit=99999999 can't dump the whole ~40k-row catalog in one call.
+    params.push(Math.min(Math.max(parseInt(limit) || 100, 1), 500));
 
     const items = await db.all(query, params);
 

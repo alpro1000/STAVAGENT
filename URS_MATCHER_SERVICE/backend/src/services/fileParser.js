@@ -10,15 +10,39 @@ import XLSX from 'xlsx';
 import fs from 'fs';
 import { logger } from '../utils/logger.js';
 
+// Audit P0-5: XLSX/ODS are ZIP containers; a small "zip bomb" can inflate to GBs
+// inside XLSX.read and OOM the instance. Cap the on-disk size (a real BOQ is small)
+// and bound the parser (limit parsed rows, disable expensive cell features) so a
+// crafted workbook cannot exhaust memory/CPU.
+const MAX_SPREADSHEET_BYTES = 25 * 1024 * 1024; // 25 MB
+const MAX_PARSED_ROWS = 100000;
+const XLSX_READ_OPTS = {
+  type: 'buffer',
+  sheetRows: MAX_PARSED_ROWS,
+  cellFormula: false,
+  cellHTML: false,
+  cellNF: false,
+  cellStyles: false,
+  bookVBA: false
+};
+
 export async function parseExcelFile(filePath) {
   try {
     logger.info(`[FileParser] Parsing file: ${filePath}`);
 
+    // Guard against oversized / zip-bomb uploads before reading into memory.
+    const { size } = fs.statSync(filePath);
+    if (size > MAX_SPREADSHEET_BYTES) {
+      throw new Error(
+        `Soubor je příliš velký (${(size / 1048576).toFixed(1)} MB, limit ${MAX_SPREADSHEET_BYTES / 1048576} MB)`
+      );
+    }
+
     // Read file
     const fileBuffer = fs.readFileSync(filePath);
 
-    // Parse workbook
-    const workbook = XLSX.read(fileBuffer, { type: 'buffer' });
+    // Parse workbook (bounded options — see MAX_PARSED_ROWS / XLSX_READ_OPTS)
+    const workbook = XLSX.read(fileBuffer, XLSX_READ_OPTS);
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
 
     // Convert to JSON

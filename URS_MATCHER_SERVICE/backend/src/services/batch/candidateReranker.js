@@ -90,6 +90,28 @@ export async function rerank(subWork, candidates, topN = 4) {
     // Validate: ensure all returned codes exist in candidates
     const validatedCandidates = validateCandidates(parsedResult.topCandidates, candidates);
 
+    // Audit M2: never let the LLM band DEMOTE a high-confidence deterministic hit.
+    // Re-attach each pick to its source candidate; if that candidate was a strong
+    // local/exact match (numeric conf ≥ 0.9, not web, not cross-catalog), FLOOR its
+    // band to 'high'. Upgrade-only — this can never lower an LLM assessment, it only
+    // stops the reranker from overwriting a deterministic result with a lower band.
+    const bandOrder = { low: 0, medium: 1, high: 2 };
+    const byCode = new Map(candidates.map((c) => [String(c.code), c]));
+    for (const vc of validatedCandidates) {
+      const orig = byCode.get(String(vc.code));
+      if (!orig) continue;
+      const detConf = typeof orig.confidence === 'number' ? orig.confidence : 0;
+      const src = orig.source || '';
+      const isDeterministic =
+        detConf >= 0.9 && src !== 'perplexity' && src !== 'brave_search' && !orig.is_cross_catalog;
+      if (isDeterministic && (bandOrder[vc.confidence] ?? 0) < bandOrder.high) {
+        vc.confidence = 'high';
+        vc.score = Math.max(vc.score || 0, Math.round(detConf * 100));
+        vc.needsReview = false;
+        vc.reason = `${vc.reason || ''} [deterministický katalogový hit ${detConf.toFixed(2)} — nepodhodnoceno LLM]`.trim();
+      }
+    }
+
     const elapsed = Date.now() - startTime;
 
     const result = {
