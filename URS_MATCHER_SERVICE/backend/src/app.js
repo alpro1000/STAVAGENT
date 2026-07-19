@@ -284,16 +284,20 @@ async function startServer() {
   }
 }
 
-// Handle unhandled promise rejections
+// Handle unhandled promise rejections.
+// Audit R4: do NOT exit the whole instance on a stray rejection — one un-awaited
+// .catch()-less path (e.g. background auto-load) would otherwise take down every
+// in-flight request and risk losing un-flushed SQLite writes. Log and continue.
 process.on('unhandledRejection', (reason, promise) => {
-  logger.error('Unhandled Rejection at:', promise, 'reason:', reason);
-  process.exit(1);
+  logger.error('Unhandled Rejection (continuing):', promise, 'reason:', reason);
 });
 
-// Handle uncaught exceptions
+// Handle uncaught exceptions. An uncaught *synchronous* exception can leave the
+// process in an undefined state, so we still exit — but only after attempting a
+// graceful cache close, and only for genuinely uncaught exceptions (not rejections).
 process.on('uncaughtException', (error) => {
-  logger.error('Uncaught Exception:', error);
-  process.exit(1);
+  logger.error('Uncaught Exception (exiting):', error);
+  closeCache().catch(() => {}).finally(() => process.exit(1));
 });
 
 // Start the server
