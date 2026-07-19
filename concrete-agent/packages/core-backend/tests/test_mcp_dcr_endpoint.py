@@ -312,6 +312,28 @@ def test_register_authenticated_dcr_binds_user(client):
     assert client.state["registered"][0]["created_by_user_id"] == 42
 
 
+def test_register_chatgpt_refresh_token_grant_returns_201(client):
+    """ChatGPT's connector DCR request lists grant_types=[authorization_code,
+    refresh_token] (no client_credentials) so it can refresh a stale
+    OAuth session without re-prompting the user for consent. Before this
+    fix, refresh_token wasn't in mcp_auth.SUPPORTED_GRANT_TYPES, so this
+    exact payload returned 400 invalid_client_metadata and ChatGPT's
+    connector setup failed with "Unsupported grant_types: ['refresh_token']".
+    """
+    resp = client.post(
+        "/api/v1/mcp/oauth/register",
+        json={
+            "client_name": "ChatGPT",
+            "redirect_uris": ["https://chatgpt.com/connector_platform_oauth_redirect"],
+            "grant_types": ["authorization_code", "refresh_token"],
+            "response_types": ["code"],
+            "token_endpoint_auth_method": "none",
+        },
+    )
+    assert resp.status_code == 201, resp.text
+    assert resp.json()["grant_types"] == ["authorization_code", "refresh_token"]
+
+
 def test_register_full_payload_echoes_optional_fields(client):
     resp = client.post(
         "/api/v1/mcp/oauth/register",
