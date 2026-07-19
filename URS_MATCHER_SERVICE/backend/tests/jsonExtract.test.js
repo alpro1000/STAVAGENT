@@ -7,9 +7,10 @@ import { extractJson } from '../src/utils/jsonExtract.js';
 
 describe('extractJson', () => {
   test('extracts object from Perplexity prose with [n] citations (the regression that broke search)', () => {
-    const s = 'Podle podminky.urs.cz [1] jsem našel: {"candidates":[{"code":"274313811","name":"Beton"}]}. Zdroj [2].';
+    const s = 'Podle podminky.urs.cz [1] jsem našel {"candidates":[{"code":"274313811","name":"Beton"}]}, ale {pozn.: ověřit} [2].';
     expect(extractJson(s)).toEqual({ candidates: [{ code: '274313811', name: 'Beton' }] });
-    // and prove the old greedy regex would have thrown on this input
+    // ...and prove the OLD greedy /\{[\s\S]*\}/ breaks here: first-'{' to last-'}' spans the
+    // trailing "{pozn.: ověřit}" prose group, so the captured text is not valid JSON and throws.
     expect(() => JSON.parse(s.match(/\{[\s\S]*\}/)[0])).toThrow();
   });
 
