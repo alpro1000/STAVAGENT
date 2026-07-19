@@ -57,7 +57,7 @@ export function buildPerplexityPrompt(inputText) {
 
 "${inputText}"
 
-Vrať výsledek výhradně jako platný JSON podle výše uvedeného schématu. Pokud jsi nejistý, raději vrať prázdný seznam candidates.`;
+Vrať výsledek výhradně jako platný JSON podle výše uvedeného schématu. Vrať své nejlepší REÁLNÉ kandidáty (až 3), které jsi skutečně našel na podminky.urs.cz — u méně jistých sniž "confidence". Prázdný seznam vracej jen tehdy, když na podminky.urs.cz opravdu nic relevantního není. NIKDY nevymýšlej kódy.`;
 }
 
 /**
