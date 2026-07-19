@@ -557,6 +557,14 @@ async function callGeminiAPIWithClient(client, systemPrompt, userPrompt, control
   const vertexProject = process.env.VERTEX_PROJECT || process.env.GOOGLE_CLOUD_PROJECT;
   const vertexLocation = process.env.VERTEX_LOCATION || process.env.GOOGLE_CLOUD_LOCATION || 'europe-west3';
 
+  // Vertex host: newer Gemini (e.g. gemini-3.5-flash) is served ONLY from the global
+  // endpoint (aiplatform.googleapis.com/.../locations/global/...), not a regional host —
+  // set VERTEX_LOCATION=global to select it. Regional locations keep the {location}- prefix.
+  const vertexHost =
+    vertexLocation === 'global' ? 'aiplatform.googleapis.com' : `${vertexLocation}-aiplatform.googleapis.com`;
+  const vertexModelUrl = (model) =>
+    `https://${vertexHost}/v1/projects/${vertexProject}/locations/${vertexLocation}/publishers/google/models/${model}:generateContent`;
+
   let apiUrl;
   let headers = { 'content-type': 'application/json' };
   let isVertexPath = false;
@@ -564,10 +572,10 @@ async function callGeminiAPIWithClient(client, systemPrompt, userPrompt, control
   // Always try Vertex AI first (ADC, GCP credits)
   const token = vertexProject ? await fetchGCPAccessToken() : null;
   if (token && vertexProject) {
-    apiUrl = `https://${vertexLocation}-aiplatform.googleapis.com/v1/projects/${vertexProject}/locations/${vertexLocation}/publishers/google/models/${client.model}:generateContent`;
+    apiUrl = vertexModelUrl(client.model);
     headers['Authorization'] = `Bearer ${token}`;
     isVertexPath = true;
-    logger.debug(`[Gemini] Using Vertex AI endpoint (ADC): ${vertexLocation}`);
+    logger.debug(`[Gemini] Using Vertex AI endpoint (ADC): ${vertexLocation} / ${client.model}`);
   } else if (client.apiKey) {
     // Fallback: direct API (local dev only, no GCP credits)
     logger.warn('[Gemini] Vertex AI unavailable (no ADC token), falling back to direct API key (local dev)');
@@ -594,11 +602,14 @@ async function callGeminiAPIWithClient(client, systemPrompt, userPrompt, control
     if (error.response?.data) {
       logger.error(`[Gemini] API error ${error.response.status}: ${JSON.stringify(error.response.data).substring(0, 500)}`);
     }
-    const FALLBACK_MODEL = 'gemini-2.5-flash';
+    // Fallback model on a 404 (unknown/retired primary). Env-overridable — the default
+    // gemini-2.5-* line retires 2026-10-16, so set GEMINI_FALLBACK_MODEL to a current
+    // model (matching the primary's endpoint/region) once the primary is on Gemini 3.x.
+    const FALLBACK_MODEL = process.env.GEMINI_FALLBACK_MODEL || 'gemini-2.5-flash';
     if (error.response?.status === 404 && client.model !== FALLBACK_MODEL) {
       logger.warn(`[Gemini] Model "${client.model}" 404 — retrying with ${FALLBACK_MODEL}`);
       if (isVertexPath) {
-        const fallbackUrl = `https://${vertexLocation}-aiplatform.googleapis.com/v1/projects/${vertexProject}/locations/${vertexLocation}/publishers/google/models/${FALLBACK_MODEL}:generateContent`;
+        const fallbackUrl = vertexModelUrl(FALLBACK_MODEL);
         const fallbackResponse = await axios.post(fallbackUrl, body, axiosConfig);
         return fallbackResponse.data.candidates[0].content.parts[0].text;
       } else {
