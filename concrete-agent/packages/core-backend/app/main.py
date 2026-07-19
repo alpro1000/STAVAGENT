@@ -382,7 +382,7 @@ def _oauth_discovery_payload(request) -> dict:
         # because brokers have no path to obtain a client_id /
         # client_secret on their own.
         "registration_endpoint": f"{base}/api/v1/mcp/oauth/register",
-        "grant_types_supported": ["authorization_code", "client_credentials"],
+        "grant_types_supported": ["authorization_code", "refresh_token", "client_credentials"],
         "response_types_supported": ["code"],
         "code_challenge_methods_supported": ["S256"],
         # RFC 8707 — clients SHOULD include `resource` parameter to bind

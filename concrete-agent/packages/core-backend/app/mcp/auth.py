@@ -334,7 +334,7 @@ def generate_refresh_token() -> str:
 # imports the FastAPI app — and so a single source of truth lives next to
 # the validation that enforces it. main.py mirrors this list as a literal
 # in _oauth_discovery_payload().
-SUPPORTED_GRANT_TYPES = frozenset({"authorization_code", "client_credentials"})
+SUPPORTED_GRANT_TYPES = frozenset({"authorization_code", "refresh_token", "client_credentials"})
 
 
 def _resolve_initial_access_user_id(api_key: str) -> Optional[int]:
