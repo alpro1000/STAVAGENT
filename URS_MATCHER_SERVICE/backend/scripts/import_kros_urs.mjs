@@ -10,7 +10,8 @@
  *
  * This script:
  *   1. Loads URS201801.csv (39,742 URS codes with keywords)
- *   2. Cross-references with OTSKP XML (17,904 items with FULL descriptions + prices)
+ *   2. Cross-references with the configured OTSKP XML (default 2025_03 / 17 904;
+ *      2026 SFDI / ~17 940 via env — filename from config/otskpCatalog.js) for FULL descriptions + prices
  *   3. Imports everything into SQLite urs_items table
  *   4. Builds word index for fuzzy search
  *
@@ -23,6 +24,11 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { open } from 'sqlite';
 import sqlite3 from 'sqlite3';
+import {
+  OTSKP_CATALOG_FILENAME,
+  OTSKP_KB_SUBPATH,
+  OTSKP_DOCKER_XML_PATH,
+} from '../src/config/otskpCatalog.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.join(__dirname, '../data');
@@ -36,12 +42,13 @@ const CENEKON_CSV = path.join(DATA_DIR, 'CENEKON201801.csv');
 const TSP_CSV = path.join(DATA_DIR, 'TSP201801.csv');
 const TSKP_FULL_CSV = path.join(DATA_DIR, 'TSKP_KROS_full.csv');
 const OTSKP_XML = (() => {
-  // Docker path (copied at build time)
-  const dockerPath = '/app/concrete-agent/packages/core-backend/app/knowledge_base/B1_otkskp_codes/2025_03_otskp.xml';
-  // Local dev path (monorepo)
-  const localPath = path.resolve(__dirname, '../../../concrete-agent/packages/core-backend/app/knowledge_base/B1_otkskp_codes/2025_03_otskp.xml');
-  // Fallback: data dir
-  const dataPath = path.join(DATA_DIR, '2025_03_otskp.xml');
+  // Filename + sub-path from the single source of truth (config/otskpCatalog.js).
+  // Docker path (KB copied at build time)
+  const dockerPath = OTSKP_DOCKER_XML_PATH;
+  // Local dev path (monorepo root = 3 up from scripts)
+  const localPath = path.resolve(__dirname, '../../..', OTSKP_KB_SUBPATH);
+  // Fallback: data dir copy
+  const dataPath = path.join(DATA_DIR, OTSKP_CATALOG_FILENAME);
 
   if (fs.existsSync(dockerPath)) return dockerPath;
   if (fs.existsSync(localPath)) return localPath;
