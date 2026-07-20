@@ -10,7 +10,8 @@
  *
  * This script:
  *   1. Loads URS201801.csv (39,742 URS codes with keywords)
- *   2. Cross-references with OTSKP XML (~17,940 items, 2026 SFDI, with FULL descriptions + prices)
+ *   2. Cross-references with the configured OTSKP XML (default 2025_03 / 17 904;
+ *      2026 SFDI / ~17 940 via env — filename from config/otskpCatalog.js) for FULL descriptions + prices
  *   3. Imports everything into SQLite urs_items table
  *   4. Builds word index for fuzzy search
  *

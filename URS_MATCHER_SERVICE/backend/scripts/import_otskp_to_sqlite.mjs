@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Import OTSKP XML catalog (~17,940 items, 2026 SFDI) into SQLite urs_items table.
+ * Import the configured OTSKP XML catalog into the SQLite urs_items table.
+ * Default catalog = 2025_03 (17 904 items); 2026 SFDI (~17 940) via env.
  *
  * Usage:
  *   node scripts/import_otskp_to_sqlite.mjs
