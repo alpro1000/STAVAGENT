@@ -77,5 +77,25 @@
 ## 4. Прочие открытые (не срочно)
 - Оптимизация 17с в text-match (LLM-объяснение опционально/async).
 - Проверить файловые модули (block-match/document/batch) на реальном файле.
-- Миграция OTSKP 2026 в URS_MATCHER (`otskpCatalogService.js`) + portal (`import-otskp.js`) — свои копии, тоже 17 904.
+- ~~Миграция OTSKP 2026 в URS_MATCHER~~ → сделано в §5 (URS-часть). Portal/Monolit — см. §5 follow-up.
 - metadata-body для точного golden versionId-авторезолва; live-Gemini-проба в `/diagnostics`.
+
+## 5. 2026-07-20 — OTSKP-фасад в URS_MATCHER (реализация reviewer #1)
+
+**Сделано (commit `c33a0bb9`, ветка `claude/facade-insulation-docs-analysis-3y8nba`, реализует §3b п.1 «фасад, не быстрая синхронизация»):**
+
+Разрыв воспроизводимости закрыт для ЖИВОЙ matching-двери киоска. Новый единый источник истины `URS_MATCHER_SERVICE/backend/src/config/otskpCatalog.js` — экспортит `OTSKP_CATALOG_FILENAME` (default `2026_otskp.xml`), `OTSKP_CATALOG_VERSION` (default `OTSKP 2026`, = ядру), `OTSKP_KB_SUBPATH`, `OTSKP_DOCKER_XML_PATH`, `OTSKP_CATALOG_EXPECTED_ITEMS=17940`; всё env-overridable. Все 4 потребителя резолвят ЧЕРЕЗ него (было — хардкод `2025_03_otskp.xml` в каждом):
+- `src/services/otskpCatalogService.js` (runtime in-memory поиск) → 2026; `catalogVersion` на инстансе, штампуется в `getStats()` + load-баннер.
+- `scripts/import_otskp_to_sqlite.mjs` (build-time SQLite-импортер) → пути из фасада.
+- `scripts/import_kros_urs.mjs` (KROS+ÚRS merge, берёт OTSKP-описания) → пути из фасада.
+- `src/services/unifiedMatchingPipeline.js` `getCatalogInfo()` provenance-лейбл → живая версия+файл (был хардкод `2025_03_otskp.xml (1/2025)`). = reviewer #5 (версия каталога в записи результата).
+
+Файл физически в KB ядра, бандлится в контейнер киоска (`Dockerfile.backend:43`) → ядро и киоск читают ОДИН файл. Env-override (`OTSKP_CATALOG_FILENAME`/`OTSKP_CATALOG_VERSION`) = клапан отката: сдвиг 17 904→17 940 меняет пул кандидатов, а **корпус-50 (замер качества матчинга) ещё не снят** — можно вернуть 2025 без правки кода. Верифицировано локально: default резолвит в РЕАЛЬНО существующий `2026_otskp.xml` обоими путями (service `../../../..`, importer `../../..`), env-override пинит назад в 2025. MCP-контракты (`find_otskp_code`/`find_urs_code`) не тронуты.
+
+**НЕ сделано — Portal + Monolit runtime OTSKP (осознанно отложено, infra-gated):** их живой каталог кормится НЕ ручным `import-otskp.js`, а:
+- Monolit `backend/src/services/otskpAutoImport.js:18-23` (`XML_SEARCH_PATHS`, авто-импорт при пустой `otskp_codes`), `backend/src/db/migrations.js:1839-1843`, `backend/src/routes/otskp.js:302-307/342`, `backend/Dockerfile:20` (`COPY "Monolit-Planner/2025_03 OTSKP.xml"`).
+- Portal `backend/src/db/migrations.js:1385-1389`, `backend/src/routes/otskp.js:275-280/315`.
+
+Все на 2025, имя с пробелом `2025_03 OTSKP.xml`, часть — Render-era legacy-пути. Блокер: перевод на 2026 требует ФИЗИЧЕСКИ положить `2026_otskp.xml` в build-context каждого репо (Portal/Monolit НЕ бандлят KB ядра, как URS_MATCHER) — Docker-сборку здесь не проверить, 17 МБ XML не создать (deny-list). Правка ТОЛЬКО ручного `import-otskp.js` дала бы раскол (ручной на 2026, runtime на 2025) = та самая «быстрая синхронизация», которую reviewer отверг → откачено, оставлено как ОДИН связный infra-gated тикет. Порядок работ: (1) положить 2026 XML в build-context Portal+Monolit (или бандлить KB ядра, как URS); (2) перецелить перечисленные пути через свой config-фасад в каждом репо; (3) снести Render-era кандидаты; (4) обновить Dockerfile COPY.
+
+**Порядок из §3b без правового шага (Alexander: «правовой режим опускаем, важно реализовать технологию»):** ~~фасад версий OTSKP (URS-часть)~~ ✓ → **корпус-50 (следующий замер, снимает и delta 17 904→17 940)** → Portal/Monolit фасад (infra-gated ↑) → side-by-side документ.
