@@ -1,7 +1,9 @@
 /**
  * OTSKP Catalog Service
- * Parses 2025_03_otskp.xml (Cenová soustava OTSKP) and provides search/lookup.
- * 17,904 items with codes, names, units, prices, and technical specifications.
+ * Parses the canonical OTSKP catalog XML (Cenová soustava OTSKP) and provides
+ * search/lookup. ~17,940 items (2026 SFDI) with codes, names, units, prices,
+ * and technical specifications. Catalog filename + version come from the single
+ * source of truth in config/otskpCatalog.js (env-overridable).
  *
  * Structure: XC4 → CenoveSoustavy → Polozky → Polozka[]
  * Each Polozka: { znacka (code), nazev (name), MJ (unit), jedn_cena (price), technicka_specifikace }
@@ -15,18 +17,20 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { logger } from '../utils/logger.js';
 import { calculateSimilarity } from '../utils/similarity.js';
+import {
+  OTSKP_CATALOG_VERSION,
+  OTSKP_KB_SUBPATH,
+  OTSKP_DOCKER_XML_PATH,
+} from '../config/otskpCatalog.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Path to OTSKP catalog in concrete-agent knowledge base
-// Docker: /app/concrete-agent/..., Local dev: ../../../../concrete-agent/...
-const DOCKER_OTSKP_PATH = '/app/concrete-agent/packages/core-backend/app/knowledge_base/B1_otkskp_codes/2025_03_otskp.xml';
-const LOCAL_OTSKP_PATH = path.join(
-  __dirname,
-  '../../../..',
-  'concrete-agent/packages/core-backend/app/knowledge_base/B1_otkskp_codes/2025_03_otskp.xml'
-);
+// Path to OTSKP catalog in concrete-agent knowledge base (single source of
+// truth = config/otskpCatalog.js). Docker: /app/concrete-agent/...,
+// Local dev: repo root computed from __dirname (src/services → 4 up).
+const DOCKER_OTSKP_PATH = OTSKP_DOCKER_XML_PATH;
+const LOCAL_OTSKP_PATH = path.join(__dirname, '../../../..', OTSKP_KB_SUBPATH);
 
 // Use Docker path if it exists (production), otherwise local dev path
 import fsSync from 'fs';
@@ -39,6 +43,7 @@ class OTSKPCatalogService {
     this.loading = null;          // Loading promise for concurrent access
     this.codeIndex = new Map();   // prefix → Set<code> for fast prefix lookup
     this.wordIndex = new Map();   // word → Set<code> for fast text search
+    this.catalogVersion = OTSKP_CATALOG_VERSION;  // stamped into provenance
   }
 
   /**
@@ -130,7 +135,7 @@ class OTSKPCatalogService {
       }
 
       const elapsed = Date.now() - startTime;
-      logger.info(`[OTSKP] ✓ Loaded ${this.items.size} OTSKP items in ${elapsed}ms`);
+      logger.info(`[OTSKP] ✓ Loaded ${this.items.size} OTSKP items (${this.catalogVersion}) in ${elapsed}ms`);
       logger.info(`[OTSKP] Word index: ${this.wordIndex.size} keys, Code index: ${this.codeIndex.size} prefixes`);
       this.loaded = true;
 
@@ -298,6 +303,7 @@ class OTSKPCatalogService {
   getStats() {
     return {
       loaded: this.loaded,
+      catalogVersion: this.catalogVersion,
       totalItems: this.items.size,
       wordIndexSize: this.wordIndex.size,
       codeIndexSize: this.codeIndex.size

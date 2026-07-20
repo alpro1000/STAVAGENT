@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 /**
- * Import OTSKP XML catalog (17,904 items) into SQLite urs_items table.
+ * Import OTSKP XML catalog (~17,940 items, 2026 SFDI) into SQLite urs_items table.
  *
  * Usage:
  *   node scripts/import_otskp_to_sqlite.mjs
  *   node scripts/import_otskp_to_sqlite.mjs --truncate   # clear existing items first
  *
- * Source: concrete-agent/packages/core-backend/app/knowledge_base/B1_otkskp_codes/2025_03_otskp.xml
+ * Source (single source of truth = config/otskpCatalog.js, env-overridable):
+ *   concrete-agent/packages/core-backend/app/knowledge_base/B1_otkskp_codes/<OTSKP_CATALOG_FILENAME>
  */
 
 import { parseStringPromise } from 'xml2js';
@@ -15,17 +16,17 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
+import { OTSKP_KB_SUBPATH, OTSKP_DOCKER_XML_PATH } from '../src/config/otskpCatalog.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Paths to OTSKP XML
+// Paths to OTSKP XML (filename from config/otskpCatalog.js).
 // __dirname = URS_MATCHER_SERVICE/backend/scripts
 // Monorepo root = 3 dirs up from scripts (scripts → backend → URS_MATCHER_SERVICE → STAVAGENT)
 const MONOREPO_ROOT = path.resolve(__dirname, '../../..');
-const KB_SUBPATH = 'concrete-agent/packages/core-backend/app/knowledge_base/B1_otkskp_codes/2025_03_otskp.xml';
 
-const DOCKER_PATH = `/app/${KB_SUBPATH}`;
-const LOCAL_PATH = path.join(MONOREPO_ROOT, KB_SUBPATH);
+const DOCKER_PATH = OTSKP_DOCKER_XML_PATH;
+const LOCAL_PATH = path.join(MONOREPO_ROOT, OTSKP_KB_SUBPATH);
 
 const OTSKP_PATH = [DOCKER_PATH, LOCAL_PATH].find(p => fs.existsSync(p));
 

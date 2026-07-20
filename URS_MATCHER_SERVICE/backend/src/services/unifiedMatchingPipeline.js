@@ -18,6 +18,7 @@ import tskpParserService from './tskpParserService.js';
 import otskpCatalogService from './otskpCatalogService.js';
 import { searchUrsSite } from './perplexityClient.js';
 import { searchUrsSiteViaBrave } from './braveSearchClient.js';
+import { OTSKP_CATALOG_FILENAME } from '../config/otskpCatalog.js';
 
 // ============================================================================
 // TYPES (JSDoc for reference)
@@ -334,7 +335,7 @@ export function getCatalogInfo() {
     otskp: {
       name: 'OTSKP (Oborový třídník stavebních konstrukcí a prací)',
       type: 'local',
-      source: '2025_03_otskp.xml (Cenová soustava 1/2025)',
+      source: `${otskpCatalogService.catalogVersion} (${OTSKP_CATALOG_FILENAME})`,
       available: otskpCatalogService.loaded && otskpCatalogService.items.size > 0,
       stats: otskpCatalogService.getStats()
     },
