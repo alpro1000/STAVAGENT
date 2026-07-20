@@ -21,6 +21,15 @@ const CONFIDENCE_THRESHOLDS = {
   LOW: 0.3
 };
 
+// Kill-switch for the learned-mappings layer (lookup + auto-learn together).
+// Default ON (unchanged behaviour). URS_LEARNING=0 disables BOTH directions —
+// needed by measurement runs (eval harness): the lookup short-circuit would
+// answer from cache instead of the catalog, and the auto-learn write would
+// let run A poison run B via the persistent learned_mappings.json.
+function learningEnabled() {
+  return !(process.env.URS_LEARNING === '0' || process.env.URS_LEARNING === 'false');
+}
+
 export async function matchUrsItems(text, quantity = 0, unit = 'ks') {
   try {
     // Filter out non-work items before sending to Perplexity
@@ -31,10 +40,12 @@ export async function matchUrsItems(text, quantity = 0, unit = 'ks') {
     }
 
     // Check learned mappings first (knowledge accumulation)
-    const learnedMapping = lookupLearnedMapping(text);
-    if (learnedMapping) {
-      logger.info(`[URSMatcher] Using learned mapping for: "${text.substring(0, 30)}..."`);
-      return [learnedMapping];
+    if (learningEnabled()) {
+      const learnedMapping = lookupLearnedMapping(text);
+      if (learnedMapping) {
+        logger.info(`[URSMatcher] Using learned mapping for: "${text.substring(0, 30)}..."`);
+        return [learnedMapping];
+      }
     }
 
     logger.debug(`[URSMatcher] Matching (${CATALOG_MODE}): "${text.substring(0, 50)}..."`);
@@ -80,7 +91,7 @@ export async function matchUrsItems(text, quantity = 0, unit = 'ks') {
     const learnable = top && top.confidence >= 0.85 &&
       top.source !== 'perplexity' && top.source !== 'brave_search' &&
       top.source !== 'otskp' && !top.is_cross_catalog;
-    if (learnable) {
+    if (learnable && learningEnabled()) {
       learnMapping(text, top, 'auto');
     }
 
@@ -101,7 +112,7 @@ export async function matchUrsItems(text, quantity = 0, unit = 'ks') {
  * Check if text should be skipped (not sent to Perplexity)
  * Returns skip reason or null if should process
  */
-function shouldSkipText(text) {
+export function shouldSkipText(text) {
   if (!text || typeof text !== 'string') {
     return 'empty';
   }

@@ -1,113 +1,157 @@
 # Stage 0 — corpus & measurement (catalog matching)
 
-Measurement only. Nothing here changes the matching pipeline. Purpose: a
-reproducible baseline so every later change is judged against numbers, not
-guessed (SPEC §13).
+Measurement infrastructure for SPEC §13. The harness (`run-corpus.mjs`) drives
+the live matcher over a corpus of human-confirmed lines and reports the five
+metrics per catalog. **This file is the single source for the protocol** — the
+harness header deliberately repeats none of it.
+
+> **Instrument rule:** after ANY edit to `run-corpus.mjs`, run
+> `node eval/selfcheck.mjs` (dependency-free) and get PASS before trusting
+> numbers. The self-check feeds synthetic lines with known outcomes through the
+> harness and asserts the exact metrics — it verifies the meter, not the system.
 
 ## Why two baselines, not one
 
-The task originally said "take a baseline on the current code". The catalog
-version is now a single env knob, which changes what that means: there must be
-**two** baselines, on the **same code**, differing only by env —
+The OTSKP catalog version is a single env knob (facade
+`src/config/otskpCatalog.js`), so the Stage-0 baseline is **two runs on the
+same code**, differing only by catalog version:
 
-- **2025** (`OTSKP_CATALOG_VERSION="OTSKP 2025"`, `2025_03_otskp.xml`) — what is
-  in production today. The reference point.
-- **2026** (`OTSKP_CATALOG_VERSION="OTSKP 2026"`, `2026_otskp.xml`) — where we
-  intend to go.
+- **2025** (`2025_03_otskp.xml`, default) — what production serves today.
+- **2026** (`2026_otskp.xml` via env) — where we intend to go.
 
-The delta between them is the only answer to "what did the 36 new 2026 catalog
-positions do". Every result records the catalog version it was produced under
-(harness `run.otskp_catalog_version`) — otherwise the two runs are
-indistinguishable. This is *why* the version sits next to each result here, and
-is independent of the Stage-6 "version in the persisted product record" work.
+The delta between them is the only answer to "what did the 36 new 2026
+positions do". Every run records both catalog axes + every behaviour knob, so
+two runs are never confused.
+
+## Isolation (built in, not operator discipline)
+
+A measurement run must not touch production-adjacent state, and production
+state must not leak into the measurement. The harness enforces:
+
+- **Own DB file, explicit.** `--db` is required and must point at an eval DB
+  built by the importer (below). The run records the resolved path + row count
+  and **aborts below 1000 rows** (the runtime auto-seeds a 36-item toy DB on a
+  missing file — that floor is what catches it). The service's working
+  `data/urs_matcher.db` is never touched.
+- **Learned-mappings layer off.** The harness sets `URS_LEARNING=0`
+  (kill-switch in `matchUrsItems`): no cache answers (a learned hit would
+  bypass the catalog), no store writes (run A cannot poison run B).
+- **stdout = pure JSON.** Pipeline logs are forced to ERROR (stderr); prefer
+  `--out <file>` anyway.
+
+## Explicit measurement mode
+
+- `--mode otskp` — sets `URS_FRONTOFFICE_SEARCH=0`. The frontoffice ÚRS door
+  otherwise runs FIRST and any hit ≥ 0.7 suppresses the local + OTSKP layers —
+  the 2025-vs-2026 delta would measure the network, not the catalog (and
+  offline, every line would burn a 12 s timeout).
+- `--mode urs` — frontoffice stays on (it IS the ÚRS door being measured).
+  Needs network egress. The run records `urs_catalog_version`
+  (`CS_URS_...`), whether the version-id is env-set, and the catalog mode.
+
+The mode is stamped into the run record; `--compare` refuses cross-mode and
+cross-corpus comparisons.
 
 ## The corpus (`corpus.otskp.jsonl`, `corpus.urs.jsonl`)
 
-One JSON object per line. Separate file per catalog (OTSKP vs ÚRS) — they are
-measured separately.
+One JSON object per line; `//` lines are comments (this dialect is understood
+by this harness only — don't feed the files to `jq` etc.). Separate file per
+catalog.
 
 ```json
-{ "id": "otskp-001", "catalog": "otskp", "description": "…", "unit": "m3", "quantity": 12.5, "expected_code": "801361…", "category": "plain", "source": "…" }
+{ "id": "otskp-001", "catalog": "otskp", "description": "…", "unit": "m3", "quantity": 12.5, "expected_code": "801361…", "category": "plain", "source": "real estimate: SO-201 Žihle, řádek 43" }
 ```
 
 | field | meaning |
 |---|---|
-| `id` | stable unique id |
-| `catalog` | `otskp` \| `urs` |
+| `id` | stable unique id (duplicates are rejected) |
+| `catalog` | `otskp` \| `urs` — validated against `--mode` (catches wrong-file mixups) |
 | `description` | the work line as it appears in a real estimate (verbatim) |
-| `unit` | unit from the výměra row (m², m³, t, ks …) |
-| `quantity` | quantity if present, else 0 |
-| `expected_code` | the confirmed correct code, or **`null`** for a "nonexistent" line |
-| `category` | one of the five below |
-| `source` | **mandatory** — where the ground truth came from |
+| `unit`, `quantity` | from the výměra row. **Collected, not measured**: the current matcher ignores both (no unit gate exists yet — that is Stage 2 work). They are recorded so the corpus survives Stage 2 unchanged; nothing today validates units. |
+| `expected_code` | the confirmed correct code, or **`null`** (requires `category: "nonexistent"` — enforced both directions) |
+| `category` | one of the five below (typos are rejected) |
+| `source` | **mandatory** — ground-truth provenance |
 
 ### Ground-truth rule (non-negotiable)
 
-`expected_code` and `source` must come from a **real estimate or a human**, never
-from this system's own output. Otherwise the corpus measures the system's
-agreement with itself. `source` records that provenance per line (e.g.
-`"real estimate: SO-201 Žihle, řádek 43"` or `"human-confirmed: Alexander"`).
+`expected_code` + `source` come from a **real estimate or a human**, never from
+this system's own output (that would measure self-agreement). Note: generated
+artifacts like an auto-built `master_soupis` are system output — only
+human/estimate-confirmed codes qualify.
 
 ### Categories (four are mandatory, not decorative)
 
 | `category` | why it must be present |
 |---|---|
-| `nodiacritics` | real estimates are often written without diacritics — this is normal input, not an error |
-| `spec` | lines carrying a class / diameter / thickness (`C30/37`, `DN 100`, `tř. 3`) — the numeric differentiators must survive normalization |
-| `supply_volume` | lines that differ **only** by scope of supply (with material / assembly only). This is the case the whole podmínky-included design exists for — without it, Stage 4 has nothing to test. |
-| `nonexistent` | a work for which **no correct code exists** → `expected_code: null`. The **only** way to measure fabrication. Without it, the fabrication metric is undefined. |
-| `plain` | ordinary lines (fills out the ≥50) |
+| `nodiacritics` | real estimates are often written without diacritics — normal input, not an error |
+| `spec` | class / diameter / thickness lines (`C30/37`, `DN 100`, `tř. 3`) — numeric differentiators must survive normalization |
+| `supply_volume` | lines differing **only** by scope of supply — the case the podmínky design exists for; without it Stage 4 has nothing to test |
+| `nonexistent` | no correct code exists (`expected_code: null`) — the **only** way to measure fabrication; a run without such lines is refused (override: `--allow-incomplete`) |
+| `plain` | ordinary lines (fills out the ~50) |
 
-Keep it to **~50 honest lines with confirmed codes**. Do not inflate to 100–200
-"for robustness" — 50 confirmed lines are worth more than 200 gathered in haste.
+Keep to **~50 honest lines**. Fifty confirmed lines beat two hundred gathered
+in haste.
 
-## The five metrics (SPEC §13), per catalog
+## Metric semantics (exact)
 
-| metric | diagnoses |
-|---|---|
-| `top1_hit_rate` | overall quality |
-| `candidate_recall` | candidate generation (stage 2) |
-| `fabrication_rate` | safety — measurable **only** via `nonexistent` lines |
-| `honest_skip_rate` | honesty |
-| `online_calls_per_position` | cost (online ÚRS door; offline it is ~0) |
+| metric | denominator | notes |
+|---|---|---|
+| `top1_hit_rate` | non-error lines with a code | `top_code` = the pipeline's OWN first candidate (no re-sort — ordering is part of what is measured) |
+| `candidate_recall` | non-error lines with a code | expected code anywhere in the returned list |
+| `fabrication_rate` | non-error, non-filtered `nonexistent` lines | a returned code where none exists |
+| `honest_skip_rate` | same pool | empty result on a `nonexistent` line |
+| `online_calls_per_position` | all lines | **resolved** fetches to the exact online hosts (frontoffice / Perplexity / Brave); failed attempts are recorded separately as `run.online_attempts`. Note: the one-shot frontoffice versionId lookup lands on the first line's counter. |
 
-Diagnostic rule: low recall ⇒ candidate generation is broken; high recall + low
-top-1 ⇒ selection is broken. Target function = **minimum fabrication at high
-recall**, never "maximize top-1" (that trains guessing).
+- **Errors** (pipeline threw): excluded from every denominator, surfaced as
+  `n_errors`; `--compare` warns when nonzero — infra noise must not read as a
+  catalog regression.
+- **Input-filtered lines** (the matcher's pre-filter dropped them): counted as
+  real quality misses (production drops them too) but excluded from the honesty
+  pool (the matcher never judged them). Surfaced as `n_input_filtered`.
+- A metric with an empty denominator is `null` and `--compare` calls it out as
+  **UNMEASURABLE** — it never masquerades as "no change".
+- STOP directions are per-metric (in the compare output): fabrication regresses
+  by **rising**; quality/honesty regress by dropping.
 
-## Running the two baselines
-
-The local OTSKP door reads the SQLite `urs_items` built by the importer, so the
-DB must be rebuilt under each version before its run:
+## Protocol
 
 ```bash
 cd URS_MATCHER_SERVICE/backend
 npm ci
-mkdir -p eval/results
+node eval/selfcheck.mjs                  # instrument sane?
+mkdir -p eval/data eval/results
 
-# 2025 (current prod) — default env
-node scripts/import_otskp_to_sqlite.mjs --truncate
-node eval/run-corpus.mjs eval/corpus.otskp.jsonl > eval/results/otskp_2025.json
+# Build per-version eval DBs (isolated files — the working DB is not touched):
+node scripts/import_otskp_to_sqlite.mjs --db eval/data/otskp_2025.db --truncate
+OTSKP_CATALOG_FILENAME=2026_otskp.xml OTSKP_CATALOG_VERSION="OTSKP 2026" \
+  node scripts/import_otskp_to_sqlite.mjs --db eval/data/otskp_2026.db --truncate
 
-# 2026 — same code, only env differs
-export OTSKP_CATALOG_FILENAME=2026_otskp.xml OTSKP_CATALOG_VERSION="OTSKP 2026"
-node scripts/import_otskp_to_sqlite.mjs --truncate
-node eval/run-corpus.mjs eval/corpus.otskp.jsonl > eval/results/otskp_2026.json
-unset OTSKP_CATALOG_FILENAME OTSKP_CATALOG_VERSION
+# Baseline 2025 (current prod):
+node eval/run-corpus.mjs --mode otskp --db eval/data/otskp_2025.db \
+  --out eval/results/otskp_2025.json eval/corpus.otskp.jsonl
 
-# the delta (no pipeline needed)
+# Baseline 2026 — same code, env flips the in-memory OTSKP layer, --db flips SQLite:
+OTSKP_CATALOG_FILENAME=2026_otskp.xml OTSKP_CATALOG_VERSION="OTSKP 2026" \
+  node eval/run-corpus.mjs --mode otskp --db eval/data/otskp_2026.db \
+  --out eval/results/otskp_2026.json eval/corpus.otskp.jsonl
+
+# The delta (no pipeline needed):
 node eval/run-corpus.mjs --compare eval/results/otskp_2025.json eval/results/otskp_2026.json
 ```
 
-Reproducibility: the harness is deterministic; a re-run on the same corpus,
-cache state and catalog version yields the same numbers (SPEC §12).
+The ÚRS corpus runs with `--mode urs` against a DB built from the KROS/ÚRS
+importers (`import_kros_urs.mjs` — needs a `--db`-capable invocation or a copy
+of the working DB; it must contain the ÚRS rows, not OTSKP) and needs egress
+for the frontoffice door. Take the ÚRS baseline on the CURRENT channel first —
+that is the "before" for the frontoffice-routing fix.
 
-The ÚRS corpus runs the same way but exercises the online frontoffice door,
-which needs network egress; measure it where that door is reachable.
+Results land in `eval/results/` (gitignored — run artifacts are machine-local;
+share them in the PR description, not as commits).
 
-## Note on where numbers get produced
+## Reproducibility
 
-The online ÚRS door needs egress; the local OTSKP door + SQLite DB run offline.
-The 2025-vs-2026 delta is an **OTSKP-door** measurement (the ÚRS frontoffice
-catalog is a different catalog, unaffected by the OTSKP version), so it is
-fully measurable without the online door.
+With `URS_LEARNING=0`, a fixed corpus, a fixed eval DB, and the same catalog
+env, a re-run yields the same numbers for the deterministic doors. `--mode urs`
+additionally depends on the live frontoffice release (recorded as
+`urs_catalog_version`) and web-search nondeterminism — compare ÚRS runs only
+with matching run records.
