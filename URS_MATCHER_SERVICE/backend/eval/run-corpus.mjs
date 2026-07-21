@@ -36,7 +36,10 @@ import {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-export const CATEGORIES = ['plain', 'nodiacritics', 'spec', 'supply_volume', 'nonexistent'];
+// work_vs_material: montáž ↔ dodávka pairs (different descriptions, different codes).
+// supply_volume stays RESERVED for the Stage-4 case (SAME description, different
+// code by scope of supply) — the Vidímova source contained 0 such lines.
+export const CATEGORIES = ['plain', 'nodiacritics', 'spec', 'work_vs_material', 'supply_volume', 'nonexistent'];
 
 // The five §13 metrics — single list shared by computeMetrics and compare so a
 // new metric cannot silently drop out of the go/no-go comparison.

@@ -84,8 +84,9 @@ human/estimate-confirmed codes qualify.
 | `category` | why it must be present |
 |---|---|
 | `nodiacritics` | real estimates are often written without diacritics — normal input, not an error |
-| `spec` | class / diameter / thickness lines (`C30/37`, `DN 100`, `tř. 3`) — numeric differentiators must survive normalization |
-| `supply_volume` | lines differing **only** by scope of supply — the case the podmínky design exists for; without it Stage 4 has nothing to test |
+| `spec` | class / diameter / thickness / size-band lines (`C30/37`, `DN 100`, `do 800 mm`, `přes 4 m2`) — numeric differentiators must survive normalization |
+| `work_vs_material` | montáž ↔ dodávka pairs (K line + its M sibling, different descriptions) — work must not be answered with a material code and vice versa |
+| `supply_volume` | **0 строк — в источнике (Vidímova) не встретилось; проверка уедет на Этап 4.** Reserved for the hard case the podmínky design exists for: the SAME description carrying different codes by scope of supply. Do not fabricate such lines — they must come from a real estimate. |
 | `nonexistent` | no correct code exists (`expected_code: null`) — the **only** way to measure fabrication; a run without such lines is refused (override: `--allow-incomplete`) |
 | `plain` | ordinary lines (fills out the ~50) |
 
