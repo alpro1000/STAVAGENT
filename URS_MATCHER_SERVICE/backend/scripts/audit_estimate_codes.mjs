@@ -16,17 +16,23 @@
  *
  * Usage:
  *   node scripts/audit_estimate_codes.mjs <smeta.xlsx> [--out report.json]
- *        [--delay 400] [--limit N] [--dry]
+ *        [--delay 6500] [--limit N] [--dry]
  *   --dry    jen parsování, žádné síťové dotazy (kontrola extrakce)
- *   --delay  pauza mezi dotazy v ms (default 400 — konzervativně, cizí endpoint)
+ *   --delay  pauza mezi dotazy v ms (default 6500 — frontoffice limituje
+ *            ~10 požadavků/min; živý běh 2026-07-22 s 400 ms prošel prvních 10
+ *            lookupů a pak dostával prázdné odpovědi, které se BEZ rozlišení
+ *            statusu tvářily jako "kód nenalezen")
  *   --limit  jen prvních N kódovaných řádků (zkušební běh)
  *
- * Síť: potřebuje egress na frontoffice (z CI/sandboxu bývá blokován) — spouštět
- * z prostředí s přístupem. Selhání dotazu = status NEDOSTUPNE, nikdy ne závěr.
+ * Poctivost měření (mlčení ≠ úspěch): HTTP status každého dotazu se zachytává
+ * přes injektovaný fetchImpl. Prázdná odpověď s non-200 (429/5xx/síť) se hlásí
+ * jako OMEZENO (+1 retry po pauze), NIKDY jako KOD_NENALEZEN — throttling nesmí
+ * vypadat jako verdikt o smetě.
  */
 
 import fs from 'fs';
 import path from 'path';
+import { pathToFileURL } from 'url';
 import xlsx from 'xlsx';
 import { searchCatalog, CATALOG_VERSION } from '../src/services/frontofficeClient.js';
 import { calculateSimilarity } from '../src/utils/similarity.js';
@@ -68,18 +74,39 @@ export function parseKrosExport(file) {
   return rows;
 }
 
-async function auditRow(row, { delayMs }) {
-  if (!row.kod) return { ...row, status: 'BEZ_KODU' };
-  if (!CATALOG_CODE_RE.test(row.kod)) return { ...row, status: 'MIMO_KATALOG' };
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// One catalog lookup with HTTP-status capture. searchCatalog is fail-soft ([]),
+// so without the injected fetchImpl an outage/throttle is indistinguishable
+// from "code absent" — the exact confusion the 2026-07-22 live run produced.
+async function lookupWithStatus(kod) {
+  let httpStatus = null;
+  const spy = (url, opts) => globalThis.fetch(url, opts).then((res) => { httpStatus = res.status; return res; });
   let items;
   try {
-    items = await searchCatalog(row.kod, { limit: 5 });
+    items = await searchCatalog(kod, { limit: 5, fetchImpl: spy });
   } catch {
-    items = null;
+    items = [];
   }
-  await new Promise((r) => setTimeout(r, delayMs));
-  if (items === null) return { ...row, status: 'NEDOSTUPNE' };
-  const exact = (items || []).find((i) => i.urs_code === row.kod);
+  return { items: items || [], httpStatus };
+}
+
+export async function auditRow(row, { delayMs, retryBackoffMs = 65000 }) {
+  if (!row.kod) return { ...row, status: 'BEZ_KODU' };
+  if (!CATALOG_CODE_RE.test(row.kod)) return { ...row, status: 'MIMO_KATALOG' };
+  let { items, httpStatus } = await lookupWithStatus(row.kod);
+  await sleep(delayMs);
+  if (items.length === 0 && httpStatus !== 200) {
+    // throttled / server error / network — wait out the rate window, retry once
+    console.error(`  … ${row.kod}: HTTP ${httpStatus ?? 'síť'} — čekám ${Math.round(retryBackoffMs / 1000)}s a zkouším znovu`);
+    await sleep(retryBackoffMs);
+    ({ items, httpStatus } = await lookupWithStatus(row.kod));
+    await sleep(delayMs);
+    if (items.length === 0 && httpStatus !== 200) {
+      return { ...row, status: 'OMEZENO', http_status: httpStatus, catalog_version: CATALOG_VERSION };
+    }
+  }
+  const exact = items.find((i) => i.urs_code === row.kod);
   if (!exact) return { ...row, status: 'KOD_NENALEZEN', catalog_version: CATALOG_VERSION };
   const nameSim = +calculateSimilarity(row.popis, exact.urs_name || exact.description || '').toFixed(3);
   const mjOk = !normMj(exact.unit) || !normMj(row.mj) ? null : normMj(exact.unit) === normMj(row.mj);
@@ -97,54 +124,57 @@ async function auditRow(row, { delayMs }) {
   };
 }
 
-const argv = process.argv.slice(2);
-const file = argv.find((a) => !a.startsWith('--'));
-const flag = (n, d) => { const i = argv.indexOf(n); return i !== -1 ? argv[i + 1] : d; };
-const DRY = argv.includes('--dry');
-const DELAY = Number(flag('--delay', 400));
-const LIMIT = flag('--limit') ? Number(flag('--limit')) : Infinity;
-const OUT = flag('--out');
+const isMain = process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href;
+if (isMain) {
+  const argv = process.argv.slice(2);
+  const file = argv.find((a) => !a.startsWith('--'));
+  const flag = (n, d) => { const i = argv.indexOf(n); return i !== -1 ? argv[i + 1] : d; };
+  const DRY = argv.includes('--dry');
+  const DELAY = Number(flag('--delay', 6500));
+  const LIMIT = flag('--limit') ? Number(flag('--limit')) : Infinity;
+  const OUT = flag('--out');
 
-if (!file) {
-  console.error('usage: audit_estimate_codes.mjs <smeta.xlsx> [--out report.json] [--delay ms] [--limit N] [--dry]');
-  process.exit(2);
+  if (!file) {
+    console.error('usage: audit_estimate_codes.mjs <smeta.xlsx> [--out report.json] [--delay ms] [--limit N] [--dry]');
+    process.exit(2);
+  }
+
+  const rows = parseKrosExport(file);
+  const coded = rows.filter((r) => r.kod && CATALOG_CODE_RE.test(r.kod));
+  const working = rows.filter((r) => r.kod && !CATALOG_CODE_RE.test(r.kod));
+  console.error(`parsed: ${rows.length} položek (${coded.length} katalogových kódů, ${working.length} pracovních)`);
+
+  if (DRY) {
+    console.log(JSON.stringify({
+      file: path.basename(file), dry: true,
+      n_rows: rows.length, n_catalog_coded: coded.length, n_working: working.length,
+      working_codes: working.map((w) => w.kod),
+      sample: rows.slice(0, 5),
+    }, null, 2));
+    process.exit(0);
+  }
+
+  const results = [];
+  let done = 0;
+  for (const row of rows) {
+    if (row.kod && CATALOG_CODE_RE.test(row.kod) && done >= LIMIT) break;
+    const res = await auditRow(row, { delayMs: DELAY });
+    if (res.status !== 'MIMO_KATALOG' && res.status !== 'BEZ_KODU') done++;
+    results.push(res);
+  }
+  const counts = {};
+  for (const r of results) counts[r.status] = (counts[r.status] || 0) + 1;
+  const report = {
+    file: path.basename(file),
+    checked_against: `frontoffice ${CATALOG_VERSION} (živý katalog; lokální 2018 data VĚDOMĚ nepoužita)`,
+    audited_at: new Date().toISOString(),
+    counts,
+    problems: results.filter((r) => !['OK', 'MIMO_KATALOG'].includes(r.status)),
+    working_codes: results.filter((r) => r.status === 'MIMO_KATALOG').map((r) => ({ kod: r.kod, popis: r.popis.slice(0, 60) })),
+    results,
+  };
+  const json = JSON.stringify(report, null, 2);
+  if (OUT) { fs.writeFileSync(path.resolve(OUT), json + '\n'); console.error(`written: ${OUT}`); }
+  else console.log(json);
+  console.error('souhrn:', JSON.stringify(counts));
 }
-
-const rows = parseKrosExport(file);
-const coded = rows.filter((r) => r.kod && CATALOG_CODE_RE.test(r.kod));
-const working = rows.filter((r) => r.kod && !CATALOG_CODE_RE.test(r.kod));
-console.error(`parsed: ${rows.length} položek (${coded.length} katalogových kódů, ${working.length} pracovních)`);
-
-if (DRY) {
-  console.log(JSON.stringify({
-    file: path.basename(file), dry: true,
-    n_rows: rows.length, n_catalog_coded: coded.length, n_working: working.length,
-    working_codes: working.map((w) => w.kod),
-    sample: rows.slice(0, 5),
-  }, null, 2));
-  process.exit(0);
-}
-
-const results = [];
-let done = 0;
-for (const row of rows) {
-  if (row.kod && CATALOG_CODE_RE.test(row.kod) && done >= LIMIT) break;
-  const res = await auditRow(row, { delayMs: DELAY });
-  if (res.status !== 'MIMO_KATALOG' && res.status !== 'BEZ_KODU') done++;
-  results.push(res);
-}
-const counts = {};
-for (const r of results) counts[r.status] = (counts[r.status] || 0) + 1;
-const report = {
-  file: path.basename(file),
-  checked_against: `frontoffice ${CATALOG_VERSION} (živý katalog; lokální 2018 data VĚDOMĚ nepoužita)`,
-  audited_at: new Date().toISOString(),
-  counts,
-  problems: results.filter((r) => !['OK', 'MIMO_KATALOG'].includes(r.status)),
-  working_codes: results.filter((r) => r.status === 'MIMO_KATALOG').map((r) => ({ kod: r.kod, popis: r.popis.slice(0, 60) })),
-  results,
-};
-const json = JSON.stringify(report, null, 2);
-if (OUT) { fs.writeFileSync(path.resolve(OUT), json + '\n'); console.error(`written: ${OUT}`); }
-else console.log(json);
-console.error('souhrn:', JSON.stringify(counts));
