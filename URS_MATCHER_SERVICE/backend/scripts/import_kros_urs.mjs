@@ -54,7 +54,13 @@ const OTSKP_XML = (() => {
   if (fs.existsSync(localPath)) return localPath;
   return dataPath;
 })();
-const DB_PATH = path.join(DATA_DIR, 'urs_matcher.db');
+// Default = the service's working DB (unchanged). --db <path> targets a DIFFERENT
+// file — the eval protocol builds its isolated per-source ÚRS DB this way
+// (mirror of the same flag in import_otskp_to_sqlite.mjs).
+const dbFlagIdx = process.argv.indexOf('--db');
+const DB_PATH = dbFlagIdx !== -1 && process.argv[dbFlagIdx + 1]
+  ? path.resolve(process.argv[dbFlagIdx + 1])
+  : path.join(DATA_DIR, 'urs_matcher.db');
 
 // KROS type mapping
 const TYPE_MAP = {

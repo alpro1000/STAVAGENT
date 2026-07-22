@@ -31,8 +31,14 @@ const LOCAL_PATH = path.join(MONOREPO_ROOT, OTSKP_KB_SUBPATH);
 
 const OTSKP_PATH = [DOCKER_PATH, LOCAL_PATH].find(p => fs.existsSync(p));
 
-// DB path
-const DB_PATH = path.join(__dirname, '../data/urs_matcher.db');
+// DB path. Default = the service's working DB (unchanged). --db <path> targets a
+// DIFFERENT file — used by the eval protocol to build per-catalog-version DBs in
+// isolation instead of truncating the shared working table (which also holds the
+// KROS/ÚRS rows the ÚRS door reads — a bare --truncate here deletes those too).
+const dbFlagIdx = process.argv.indexOf('--db');
+const DB_PATH = dbFlagIdx !== -1 && process.argv[dbFlagIdx + 1]
+  ? path.resolve(process.argv[dbFlagIdx + 1])
+  : path.join(__dirname, '../data/urs_matcher.db');
 
 const TRUNCATE = process.argv.includes('--truncate');
 const BATCH_SIZE = 500;

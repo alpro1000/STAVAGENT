@@ -27,7 +27,9 @@
 
 import { logger } from '../utils/logger.js';
 
-const FRONTOFFICE_BASE =
+// Exported so consumers (eval harness run-record + fetch-spy host list) read the
+// SAME value instead of re-hardcoding it — one source, no drift.
+export const FRONTOFFICE_BASE =
   process.env.URS_FRONTOFFICE_URL || 'https://frontoffice-vqysm7dnza-ez.a.run.app';
 
 // The catalog-release version id, scoped as a query param (not a session token).
@@ -36,7 +38,9 @@ const FRONTOFFICE_BASE =
 // catalog.js). Auto-resolving it from GET /v1/version/metadata/<human-version> is a
 // documented follow-up. Current live release: CS ÚRS 2026/II.
 const VERSION_ID = process.env.URS_FRONTOFFICE_VERSION_ID || 'dsdCAHQZh6lFvriEi3aB';
-const CATALOG_VERSION = process.env.URS_CATALOG_VERSION || 'CS_URS_2026_02';
+// Exported: the ÚRS catalog version belongs in every measurement run-record
+// (two runs under different releases must be distinguishable).
+export const CATALOG_VERSION = process.env.URS_CATALOG_VERSION || 'CS_URS_2026_02';
 
 const REQUEST_TIMEOUT_MS = 12000;
 

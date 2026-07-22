@@ -45,3 +45,8 @@ logs/
 # OS
 .DS_Store
 Thumbs.db
+
+# Eval harness: run artifacts + per-version eval DBs are machine-local, never committed
+eval/results/*
+!eval/results/.gitkeep
+eval/data/

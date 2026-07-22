@@ -1,0 +1,4 @@
+// OTSKP corpus — one confirmed {description → expected_code} per line. See README.md.
+// Ground truth MUST come from a real estimate or a human, NEVER system output.
+// Mandatory categories: nodiacritics, spec, supply_volume, nonexistent (expected_code:null).
+// Keep to ~50 honest lines. TO BE FILLED (no fabricated rows are committed here).
