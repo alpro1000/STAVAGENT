@@ -107,7 +107,14 @@ export async function auditRow(row, { delayMs, retryBackoffMs = 65000 }) {
     }
   }
   const exact = items.find((i) => i.urs_code === row.kod);
-  if (!exact) return { ...row, status: 'KOD_NENALEZEN', catalog_version: CATALOG_VERSION };
+  if (!exact) {
+    // Materials (typ M, specifikace) are NOT in the frontoffice search index —
+    // live evidence 2026-07-22 (Vidímova, properly paced run): 0 of 38 M codes
+    // found vs 129 of 129 K work codes answered. An M miss is therefore a
+    // COVERAGE limit of this verification channel, not a verdict on the code.
+    if (row.typ === 'M') return { ...row, status: 'MATERIAL_NELZE_OVERIT', catalog_version: CATALOG_VERSION };
+    return { ...row, status: 'KOD_NENALEZEN', catalog_version: CATALOG_VERSION };
+  }
   const nameSim = +calculateSimilarity(row.popis, exact.urs_name || exact.description || '').toFixed(3);
   const mjOk = !normMj(exact.unit) || !normMj(row.mj) ? null : normMj(exact.unit) === normMj(row.mj);
   let status = 'OK';
