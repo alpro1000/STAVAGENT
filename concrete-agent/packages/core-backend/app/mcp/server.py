@@ -168,6 +168,15 @@ from app.mcp.tools.walk_drawings import validate_drawing_element  # noqa: E402
 mcp.tool()(validate_drawing_element)
 
 
+# ── Tool 20: Railway works (Zeleznice kiosk — svršek + spodek) ───────────────
+# Delegates to the canonical TS engine (planRailSection) over HTTP —
+# zeleznice_delegate mirrors the monolit_delegate fail-mode contract.
+
+from app.mcp.tools.railway_works import calculate_railway_works  # noqa: E402
+
+mcp.tool()(calculate_railway_works)
+
+
 # ── Startup policy-registry validation (PR2 — AC4) ──────────────────────────
 # Every registered workflow tool MUST have a manifest. Validation runs at import
 # (server startup) and raises RegistryValidationError on drift, so the server
@@ -218,6 +227,7 @@ _REGISTERED_TOOL_NAMES = {
     "export_soupis",
     "extract_tz_fields",
     "validate_drawing_element",
+    "calculate_railway_works",
 }
 
 validate_registry(

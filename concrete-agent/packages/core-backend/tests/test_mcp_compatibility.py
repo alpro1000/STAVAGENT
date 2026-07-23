@@ -84,6 +84,10 @@ EXPECTED_TOOLS = [
     "extract_tz_fields",
     # Part B (DXF-First roadmap) — host-vision validation gate (Tool 19).
     "validate_drawing_element",
+    # Zeleznice kiosk (Tool 20) — railway svršek+spodek decomposition,
+    # delegates to the canonical TS engine (planRailSection) via
+    # zeleznice_delegate (monolit_delegate fail-mode contract).
+    "calculate_railway_works",
 ]
 
 
