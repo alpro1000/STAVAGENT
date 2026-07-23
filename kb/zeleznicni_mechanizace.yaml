@@ -1,0 +1,224 @@
+# ============================================================================
+# Kolejová mechanizace — single-source registr strojů (Zeleznice-Planner kiosk)
+#
+# TASK §3.7: výkon stroje NENÍ konstanta — závisí na režimu nasazení. Každý
+# stroj: typy prací, výkonové normy PODLE REŽIMU, obsazení, omezení, ztrátové
+# časy. AI odhad výkonu ZAKÁZÁN — chybějící hodnota = null (honest-blank,
+# duration NEPOČÍTÁNO), dokud ji nedodá firemní norma nebo nahraný
+# technologický list (S8/3 přílohy).
+#
+# Priorita zdrojů výkonů (TASK §3.7):
+#   1. uživatelská norma firmy   0.99  (vstup user_machine_norms, ne YAML)
+#   2. technologický list / S8/3 0.85
+#   3. katalogový údaj           0.80  ← orientační hodnoty níže
+#   4. AI odhad                  ZAKÁZÁNO
+#
+# rate.unit: 'm/h' (metr koleje za hodinu) | 'h/ks' (hodin na kus)
+# Codegen: scripts/gen-knowledge.mjs →
+#   Zeleznice-Planner/shared/src/kb-generated/zeleznice-mechanizace.ts
+# ============================================================================
+
+version: 1
+
+source_citation:
+  primary: >-
+    Technologické listy strojů (přílohy předpisu S8/3 — nenahráno) +
+    katalogové listy provozovatelů kolejové mechanizace; řádové výkony
+    převzaty z TASK §3.7 tabulky jako ORIENTAČNÍ (confidence 0.80).
+  discipline: >-
+    Chybějící výkon = null → engine vrací NEPOČÍTÁNO s důvodem, nikdy
+    odhad. Uživatelská norma firmy má vždy přednost (0.99).
+
+machines:
+  - id: 'asp_kontinualni_16'
+    name_cs: 'Kontinuální ASP, 16 pěchů'
+    work_types: ['podbiti_trate']
+    crew_size: 4
+    crew_source: 'TASK §3.7 — obsazení kontinuálních ASP typicky ~4 zaměstnanci (orientační)'
+    modes:
+      - { id: 'propracovani', name_cs: 'Propracování tratě', rate: { value: 600, unit: 'm/h' }, confidence: 0.8 }
+      - { id: 'dva_zabery', name_cs: '2 záběry (s daty APK)', rate: { value: 400, unit: 'm/h' }, confidence: 0.8 }
+      - { id: 'po_pokladce', name_cs: 'Po pokládce (novostavba)', rate: { value: 350, unit: 'm/h' }, confidence: 0.8 }
+    restrictions:
+      min_curve_radius_m: 150
+      excluded_sleeper_types: ['ocelovy_Y']
+      needs_track_possession: true
+      note_cs: 'Pražce Y vyžadují dvoucestnou podbíječku (TASK §3.7)'
+    setup_min_to_work: null        # honest-blank — z technologického listu S8/3
+    setup_min_to_transport: null
+  - id: 'asp_kontinualni_32'
+    name_cs: 'Kontinuální ASP, 32 pěchů (2 pražce naráz)'
+    work_types: ['podbiti_trate']
+    crew_size: 4
+    crew_source: 'TASK §3.7 — orientační'
+    modes:
+      - { id: 'tratove_podbiti', name_cs: 'Traťové podbíjení', rate: { value: 800, unit: 'm/h' }, confidence: 0.8 }
+    restrictions:
+      min_curve_radius_m: 180
+      excluded_sleeper_types: ['ocelovy_Y']
+      needs_track_possession: true
+      note_cs: null
+    setup_min_to_work: null
+    setup_min_to_transport: null
+  - id: 'asp_kontinualni_3prazce'
+    name_cs: 'Kontinuální ASP, 3 pražce naráz'
+    work_types: ['podbiti_trate']
+    crew_size: 4
+    crew_source: 'TASK §3.7 — orientační'
+    modes:
+      - { id: 'tratove_podbiti_zdvih_2cm', name_cs: 'Traťové podbíjení, zdvih ~2 cm', rate: { value: 1600, unit: 'm/h' }, confidence: 0.8, note_cs: 'horní mez („až ~1600 m/h")' }
+    restrictions:
+      min_curve_radius_m: 250
+      excluded_sleeper_types: ['ocelovy_Y']
+      needs_track_possession: true
+      note_cs: 'Vhodná pro dlouhé rovné úseky; malý zdvih'
+    setup_min_to_work: null
+    setup_min_to_transport: null
+  - id: 'asp_tratova_16_dvounapravova'
+    name_cs: 'Traťová ASP, 16 pěchů, dvounápravová'
+    work_types: ['podbiti_trate']
+    crew_size: 4
+    crew_source: 'TASK §3.7 — orientační'
+    modes:
+      - { id: 'propracovani', name_cs: 'Propracování tratě', rate: { value: 300, unit: 'm/h' }, confidence: 0.8, note_cs: 'rozsah ~250–350 m/h, střed' }
+      - { id: 's_apk', name_cs: 'Jeden záběr s daty APK', rate: { value: 400, unit: 'm/h' }, confidence: 0.8 }
+    restrictions:
+      min_curve_radius_m: 120
+      excluded_sleeper_types: ['ocelovy_Y']
+      needs_track_possession: true
+      note_cs: null
+    setup_min_to_work: null
+    setup_min_to_transport: null
+  - id: 'asp_vyhybkova'
+    name_cs: 'ASP pro výhybky'
+    work_types: ['podbiti_vyhybek']
+    crew_size: 4
+    crew_source: 'TASK §3.7 — orientační'
+    modes:
+      - { id: 'jednoducha_vyhybka', name_cs: 'Jednoduchá výhybka', rate: { value: 0.67, unit: 'h/ks' }, confidence: 0.8, note_cs: '~35–45 min/ks, střed' }
+      - { id: 'slozita_vyhybka', name_cs: 'Složitější tvary', rate: { value: 2.75, unit: 'h/ks' }, confidence: 0.8, note_cs: '1–4,5 h/ks, střed; přesněji per tvar (zeleznice-vyhybky)' }
+    restrictions:
+      min_curve_radius_m: null
+      excluded_sleeper_types: []
+      needs_track_possession: true
+      note_cs: null
+    setup_min_to_work: null
+    setup_min_to_transport: null
+  - id: 'podbijecka_dvoucestna'
+    name_cs: 'Dvoucestná podbíječka'
+    work_types: ['podbiti_trate', 'podbiti_vyhybek']
+    crew_size: 2
+    crew_source: 'katalogový list provozovatele — orientační'
+    modes:
+      - { id: 'propracovani', name_cs: 'Propracování tratě', rate: { value: 150, unit: 'm/h' }, confidence: 0.8 }
+      - { id: 's_apk', name_cs: 'S daty APK', rate: { value: 200, unit: 'm/h' }, confidence: 0.8 }
+      - { id: 'prazce_y', name_cs: 'Pražce tvaru Y', rate: { value: 120, unit: 'm/h' }, confidence: 0.8 }
+    restrictions:
+      min_curve_radius_m: null
+      excluded_sleeper_types: []
+      needs_track_possession: true
+      note_cs: 'Jediná kategorie v registru pro podbíjení pražců Y (TASK §3.7)'
+    setup_min_to_work: null
+    setup_min_to_transport: null
+  - id: 'pluh_uprava_loze'
+    name_cs: 'Pluh pro úpravu kolejového lože (SSP)'
+    work_types: ['uprava_loze']
+    crew_size: null
+    crew_source: 'technologický list S8/3 — nenahráno (honest-blank)'
+    modes:
+      - { id: 'uprava_do_profilu', name_cs: 'Úprava lože do profilu', rate: { value: null, unit: 'm/h' }, confidence: 0, note_cs: 'výkon doplnit z S8/3 nebo firemní normou — do té doby NEPOČÍTÁNO' }
+    restrictions:
+      min_curve_radius_m: null
+      excluded_sleeper_types: []
+      needs_track_possession: true
+      note_cs: null
+    setup_min_to_work: null
+    setup_min_to_transport: null
+  - id: 'dynamicky_stabilizator'
+    name_cs: 'Dynamický stabilizátor (DGS)'
+    work_types: ['stabilizace']
+    crew_size: null
+    crew_source: 'technologický list S8/3 — nenahráno (honest-blank)'
+    modes:
+      - { id: 'stabilizace', name_cs: 'Dynamická stabilizace', rate: { value: null, unit: 'm/h' }, confidence: 0, note_cs: 'výkon doplnit z S8/3 nebo firemní normou — do té doby NEPOČÍTÁNO' }
+    restrictions:
+      min_curve_radius_m: null
+      excluded_sleeper_types: []
+      needs_track_possession: true
+      note_cs: null
+    setup_min_to_work: null
+    setup_min_to_transport: null
+  - id: 'cisticka_loze'
+    name_cs: 'Čistička kolejového lože'
+    work_types: ['cisteni_loze']
+    crew_size: null
+    crew_source: 'technologický list S8/3 — nenahráno (honest-blank)'
+    modes:
+      - { id: 'cisteni', name_cs: 'Čištění lože', rate: { value: null, unit: 'm/h' }, confidence: 0, note_cs: 'výkon doplnit z S8/3 nebo firemní normou — do té doby NEPOČÍTÁNO' }
+    restrictions:
+      min_curve_radius_m: null
+      excluded_sleeper_types: []
+      needs_track_possession: true
+      note_cs: null
+    setup_min_to_work: null
+    setup_min_to_transport: null
+  - id: 'pokladac_kolejovych_poli'
+    name_cs: 'Pokladač kolejových polí (UK apod.)'
+    work_types: ['pokladka_rostu']
+    crew_size: null
+    crew_source: 'technologický list S8/3 — nenahráno (honest-blank)'
+    modes:
+      - { id: 'pokladka', name_cs: 'Pokládka kolejového roštu', rate: { value: null, unit: 'm/h' }, confidence: 0, note_cs: 'výkon doplnit z S8/3 nebo firemní normou — do té doby NEPOČÍTÁNO' }
+    restrictions:
+      min_curve_radius_m: null
+      excluded_sleeper_types: []
+      needs_track_possession: true
+      note_cs: null
+    setup_min_to_work: null
+    setup_min_to_transport: null
+  - id: 'svarecka_kolejnicova'
+    name_cs: 'Svařovací souprava (odtavovací stykové sváření / aluminotermické svary)'
+    work_types: ['svarovani_kolejnic']
+    crew_size: null
+    crew_source: 'S3/5 svářečské práce — nenahráno (honest-blank); svářeč s platným oprávněním'
+    modes:
+      - { id: 'svar', name_cs: 'Svar kolejnice', rate: { value: null, unit: 'h/ks' }, confidence: 0, note_cs: 'norma doplnit z S3/5 / firemní normou — do té doby NEPOČÍTÁNO' }
+    restrictions:
+      min_curve_radius_m: null
+      excluded_sleeper_types: []
+      needs_track_possession: true
+      note_cs: null
+    setup_min_to_work: null
+    setup_min_to_transport: null
+  - id: 'jerab_montaz_vyhybek'
+    name_cs: 'Kolejový jeřáb / souprava pro montáž výhybek'
+    work_types: ['montaz_vyhybek']
+    crew_size: null
+    crew_source: 'technologický list S8/3 — nenahráno (honest-blank)'
+    modes:
+      - { id: 'montaz', name_cs: 'Montáž výhybky', rate: { value: null, unit: 'h/ks' }, confidence: 0, note_cs: 'norma doplnit — do té doby NEPOČÍTÁNO' }
+    restrictions:
+      min_curve_radius_m: null
+      excluded_sleeper_types: []
+      needs_track_possession: true
+      note_cs: null
+    setup_min_to_work: null
+    setup_min_to_transport: null
+
+# ── Čety a bezpečnostní role (TASK §3.8, Pattern 50) ────────────────────────
+# Četa na trati je omezena KAPACITOU PRACOVNÍ FRONTY (délkou výlukového
+# úseku), ne objemem prací. Osádka stroje je vázaná na stroj (výše).
+# Bezpečnostní role jsou POVINNOU součástí osádky, ne režií.
+track_gang:
+  base_size: 8
+  base_size_source: 'montéři tratí / traťoví dělníci — ORIENTAČNÍ výchozí četa; nahradit firemní normou'
+  workspace_m_per_worker: 50
+  workspace_source: 'Pattern 50 front-capacity — ORIENTAČNÍ kapacita fronty na pracovníka; kalibrovat golden objektem'
+  confidence: 0.7
+
+safety_roles:
+  - { id: 'bezpecnostni_hlidka', name_cs: 'Bezpečnostní hlídka (hlásná služba)', count_per_gang: 1, mandatory: true }
+  - { id: 'dozor_provozovatele', name_cs: 'Dozor / odpovědný zástupce (OZOV)', count_per_gang: 1, mandatory: true }
+safety_roles_source:
+  document: 'předpisy provozovatele dráhy pro práce za provozu — nenahráno; role povinné dle TASK §3.8'
+  note: 'počty orientační; role se objevují v osádce, nikdy v režii'

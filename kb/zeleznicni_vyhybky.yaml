@@ -1,0 +1,100 @@
+# ============================================================================
+# Výhybky — single-source KB data (Zeleznice-Planner kiosk)
+#
+# TASK §3.6: výhybka není metr koleje — je to KUSOVÁ konstrukce s pracností
+# v hodinách na kus podle tvaru. Metrické a kusové metriky se nemíchají.
+#
+# tamping_h_per_unit: pracnost podbití výhybkovou ASP (TASK §3.7 tabulka:
+#   jednoduchá výhybka ~35–45 min/ks; složitější tvary 1–4,5 h/ks) — ORIENTAČNÍ.
+# installation_h_per_unit: null = honest-blank (montážní norma není v KB;
+#   doplní uživatelská norma firmy nebo nahraný technologický list).
+# bk_welds_per_unit: počet svarů při vevaření do bezstykové koleje —
+#   deterministicky z počtu kolejnicových konců (jednoduchá výhybka: 3 připojení
+#   × 2 kolejnicové pásy = 6), u křížení/spojek více. Orientační do nahrání S3/2.
+#
+# Codegen: scripts/gen-knowledge.mjs →
+#   Zeleznice-Planner/shared/src/kb-generated/zeleznice-vyhybky.ts
+# ============================================================================
+
+version: 1
+
+source_citation:
+  primary: >-
+    Technologické listy ASP pro výhybky (přílohy S8/3) + katalogové listy
+    provozovatelů — pracnosti ORIENTAČNÍ dle TASK §3.6/§3.7; nahradit
+    firemními normami (priorita zdrojů TASK §3.7).
+  geometry: >-
+    Tvary výhybek dle běžné řady SŽ (poměr × poloměr). Délky konstrukcí
+    záměrně neuvedeny (v1 je nepotřebuje; doplnit z S3 dílu IX po nahrání).
+
+turnout_forms:
+  - id: 'J60_1_9_300'
+    name_cs: 'J60 1:9-300'
+    complexity: 'jednoducha'
+    tamping_h_per_unit: { min: 0.58, max: 0.75 }
+    installation_h_per_unit: null
+    bk_welds_per_unit: 6
+    confidence: 0.8
+  - id: 'J60_1_11_300'
+    name_cs: 'J60 1:11-300'
+    complexity: 'jednoducha'
+    tamping_h_per_unit: { min: 0.58, max: 0.75 }
+    installation_h_per_unit: null
+    bk_welds_per_unit: 6
+    confidence: 0.8
+  - id: 'J60_1_12_500'
+    name_cs: 'J60 1:12-500'
+    complexity: 'slozita'
+    tamping_h_per_unit: { min: 1.0, max: 2.0 }
+    installation_h_per_unit: null
+    bk_welds_per_unit: 6
+    confidence: 0.8
+  - id: 'J60_1_14_760'
+    name_cs: 'J60 1:14-760'
+    complexity: 'slozita'
+    tamping_h_per_unit: { min: 1.5, max: 3.0 }
+    installation_h_per_unit: null
+    bk_welds_per_unit: 6
+    confidence: 0.8
+  - id: 'J60_1_18_5_1200'
+    name_cs: 'J60 1:18,5-1200'
+    complexity: 'slozita'
+    tamping_h_per_unit: { min: 2.0, max: 4.0 }
+    installation_h_per_unit: null
+    bk_welds_per_unit: 6
+    confidence: 0.8
+  - id: 'J60_1_26_5_2500'
+    name_cs: 'J60 1:26,5-2500'
+    complexity: 'slozita'
+    tamping_h_per_unit: { min: 3.0, max: 4.5 }
+    installation_h_per_unit: null
+    bk_welds_per_unit: 6
+    confidence: 0.8
+  - id: 'J49_1_9_300'
+    name_cs: 'J49 1:9-300'
+    complexity: 'jednoducha'
+    tamping_h_per_unit: { min: 0.58, max: 0.75 }
+    installation_h_per_unit: null
+    bk_welds_per_unit: 6
+    confidence: 0.8
+  - id: 'J49_1_11_300'
+    name_cs: 'J49 1:11-300'
+    complexity: 'jednoducha'
+    tamping_h_per_unit: { min: 0.58, max: 0.75 }
+    installation_h_per_unit: null
+    bk_welds_per_unit: 6
+    confidence: 0.8
+  - id: 'dvojita_kolejova_spojka'
+    name_cs: 'Dvojitá kolejová spojka'
+    complexity: 'velmi_slozita'
+    tamping_h_per_unit: { min: 3.5, max: 4.5 }
+    installation_h_per_unit: null
+    bk_welds_per_unit: 12
+    confidence: 0.7
+  - id: 'vyhybkove_krizeni'
+    name_cs: 'Výhybkové křížení (křižovatková výhybka)'
+    complexity: 'velmi_slozita'
+    tamping_h_per_unit: { min: 3.0, max: 4.5 }
+    installation_h_per_unit: null
+    bk_welds_per_unit: 8
+    confidence: 0.7
