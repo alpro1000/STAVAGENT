@@ -21,6 +21,25 @@ const CONFIDENCE_THRESHOLDS = {
   LOW: 0.3
 };
 
+// Honest-refusal floor for the FUZZY local door (ratified «go floor» 2026-07-23).
+// A Levenshtein-scored candidate below MEDIUM is noise, not an answer — before
+// this floor the door returned top-5 whatever the score, which on the ÚRS corpus
+// fabricated codes for 5 of 6 confirmed-nonexistent lines (conf 0.23–0.41).
+// SCOPE: the local fuzzy scale ONLY. Other doors (OTSKP in-memory service,
+// frontoffice, web) run their own confidence scales — one number across
+// different scales is exactly the miscalibration this service must not bake in
+// (cross-scale calibration = Etapa 3). The threshold is the service's own
+// pre-existing MEDIUM constant, not a corpus-fitted value.
+// Rollback valve: URS_LOCAL_CONF_FLOOR overrides (e.g. '0' disables).
+function localConfFloor() {
+  const env = process.env.URS_LOCAL_CONF_FLOOR;
+  if (env !== undefined && env !== '') {
+    const v = Number(env);
+    if (Number.isFinite(v)) {return v;}
+  }
+  return CONFIDENCE_THRESHOLDS.MEDIUM;
+}
+
 // Kill-switch for the learned-mappings layer (lookup + auto-learn together).
 // Default ON (unchanged behaviour). URS_LEARNING=0 disables BOTH directions —
 // needed by measurement runs (eval harness): the lookup short-circuit would
@@ -227,8 +246,16 @@ async function matchUrsItemsLocal(text) {
       };
     });
 
+    // Honest-refusal floor (see localConfFloor): sub-MEDIUM fuzzy scores are
+    // dropped; an empty list here is an honest «no code», not a failure.
+    const floor = localConfFloor();
+    const aboveFloor = scored.filter(item => item.confidence >= floor);
+    if (aboveFloor.length < scored.length) {
+      logger.debug(`[URSMatcher] Floor ${floor}: dropped ${scored.length - aboveFloor.length} sub-floor fuzzy candidates for "${text.substring(0, 40)}"`);
+    }
+
     // Sort by score descending
-    const sorted = scored.sort((a, b) => b.score - a.score);
+    const sorted = aboveFloor.sort((a, b) => b.score - a.score);
 
     // Return top 5 matches
     return sorted.slice(0, 5).map(item => ({
