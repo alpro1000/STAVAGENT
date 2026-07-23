@@ -82,25 +82,38 @@ export async function matchUrsItems(text, quantity = 0, unit = 'ks') {
       results = await matchUrsItemsLocal(text);
     }
 
-    // Supplement with OTSKP catalog if local results are weak or empty
-    const bestLocalConf = results.length > 0 ? results[0].confidence : 0;
-    if (bestLocalConf < 0.7) {
-      const otskpResults = await matchUrsItemsOTSKP(text);
-      if (otskpResults.length > 0) {
-        logger.info(`[URSMatcher] OTSKP supplement: ${otskpResults.length} items (best conf: ${otskpResults[0].confidence.toFixed(2)})`);
-        // Merge: deduplicate by code, keep higher confidence
-        const seen = new Map();
-        for (const r of [...results, ...otskpResults]) {
-          const key = r.urs_code || r.code;
-          const existing = seen.get(key);
-          if (!existing || r.confidence > existing.confidence) {
-            seen.set(key, r);
-          }
+    // OTSKP supplement runs ALWAYS (in-memory, no network). The old
+    // `bestLocalConf < 0.7` gate was a first-responder-wins relic: a barely-
+    // above-threshold local fuzzy hit (live case: 0.712) silenced the catalog
+    // door that held the correct answer at 0.9. Per SPEC §5 all sources run in
+    // parallel and the MERGE decides — a conditional call keyed on another
+    // door's confidence is exactly the pattern the spec removes.
+    const otskpResults = await matchUrsItemsOTSKP(text);
+    if (otskpResults.length > 0) {
+      logger.info(`[URSMatcher] OTSKP supplement: ${otskpResults.length} items (best conf: ${otskpResults[0].confidence.toFixed(2)})`);
+      // Fuzzy vs catalog-natured sources live on DIFFERENT confidence scales
+      // (full calibration = Etapa 3). Minimal rule until then: a catalog-
+      // natured source at equal-or-greater confidence always outranks fuzzy —
+      // the spec's «a model never demotes a deterministic match», extended to
+      // fuzzy. At strictly greater fuzzy confidence, fuzzy still wins.
+      const isFuzzy = r => r.source === 'local' || r.source === 'perplexity' || r.source === 'brave_search';
+      // Merge: deduplicate by code — higher confidence wins; on a tie the
+      // catalog-natured entry replaces the fuzzy one.
+      const seen = new Map();
+      for (const r of [...results, ...otskpResults]) {
+        const key = r.urs_code || r.code;
+        const existing = seen.get(key);
+        if (!existing || r.confidence > existing.confidence ||
+            (r.confidence === existing.confidence && isFuzzy(existing) && !isFuzzy(r))) {
+          seen.set(key, r);
         }
-        results = Array.from(seen.values())
-          .sort((a, b) => b.confidence - a.confidence)
-          .slice(0, 5);
       }
+      results = Array.from(seen.values())
+        .sort((a, b) => {
+          if (b.confidence !== a.confidence) {return b.confidence - a.confidence;}
+          return Number(isFuzzy(a)) - Number(isFuzzy(b));
+        })
+        .slice(0, 5);
     }
 
     // Auto-learn ONLY genuine deterministic local hits. Audit M3: auto-learning a
