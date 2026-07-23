@@ -34,6 +34,10 @@ STAVAGENT/
 │   │   └── kb-generated/         # GENEROVÁNO z kb/*.yaml přes scripts/gen-knowledge.mjs — needit ručně
 │   ├── backend/                  # Node/Express (SQLite dev / Postgres prod)
 │   └── frontend/                 # React + Vite (Vercel)
+├── Zeleznice-Planner/            # Kiosk: železniční svršek+spodek (v4.43.0; deploy pending → zeleznice.stavagent.cz)
+│   ├── shared/src/               # planRailSection engine + kb-generated/ (z kb/zeleznicni_*.yaml, outAbs codegen)
+│   ├── backend/                  # Node/Express thin wrapper (:3004, service-key fail-closed)
+│   └── frontend/                 # React + Vite (in-browser engine)
 ├── URS_MATCHER_SERVICE/          # Klasifikátor (Node + SQLite) → klasifikator.stavagent.cz
 ├── rozpocet-registry/            # Registr frontend (React/Vite + Vercel serverless) → registry.stavagent.cz
 ├── rozpocet-registry-backend/    # Registry backend (Node + Cloud SQL Postgres)
@@ -221,3 +225,4 @@ Registr DB (Cloud SQL)
 | 19.05.2026 | 1.0 | Initial structure steering. |
 | 19.05.2026 | 1.1 | §5 doplněn: zákaz orphaned project files v root + zákaz ad-hoc `data/`. |
 | 06.06.2026 | 2.0 | **C1 fix** (knowledge-architecture audit): §1 repo layout přepsán z aspiračního `app/`+`apps/`+`catalogs/`+`tests/` na **skutečný** monorepo layout (`concrete-agent/packages/core-backend/app/…` + per-service složky + `kb/` codegen). §2/§4/§5/§7 paths sjednoceny se skutečností a s root `CLAUDE.md` Quick Reference. Engines opraveny: 7-engine pipeline je v `Monolit-Planner/shared/src/`, ne v Core. |
+| 23.07.2026 | 2.1 | §1 +`Zeleznice-Planner/` (šestý kiosk — železniční svršek+spodek, v4.43.0); `gen-knowledge.mjs` umí per-integration `outAbs` (kb/zeleznicni_*.yaml → Zeleznice shared kb-generated, vlastní index per output-dir). |
