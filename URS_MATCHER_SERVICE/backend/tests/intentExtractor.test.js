@@ -110,6 +110,63 @@ describe('extractIntent — no defaults (criterion 4)', () => {
   });
 });
 
+describe('production-method modifiers (ratified 2026-07-23, KROS family 174)', () => {
+  // Live case: a «ručně» query was answered with the REAL code 174151101
+  // «strojně» — one digit apart, plausible name. The modifier fields make the
+  // differentiator structural; Etapa 2 turns them into hard gates.
+  const RUCNE =
+    'Zásyp sypaninou z jakékoliv horniny ručně s uložením výkopku ve vrstvách se zhutněním jam, šachet, rýh nebo kolem objektů v těchto vykopávkách';
+  const STROJNE =
+    'Zásyp sypaninou z jakékoliv horniny strojně s uložením výkopku ve vrstvách se zhutněním jam, šachet, rýh nebo kolem objektů v těchto vykopávkách';
+
+  test('ručně / strojně extracted as execution_method with source+confidence', () => {
+    const a = extractIntent(RUCNE);
+    const b = extractIntent(STROJNE);
+    expect(a.execution_method).toEqual({ value: 'rucne', source: 'rule', confidence: 1.0 });
+    expect(b.execution_method).toEqual({ value: 'strojne', source: 'rule', confidence: 1.0 });
+  });
+
+  test('the 174111101/174151101 pair differs ONLY in execution_method', () => {
+    const a = extractIntent(RUCNE);
+    const b = extractIntent(STROJNE);
+    expect(a.execution_method.value).not.toBe(b.execution_method.value);
+    expect(a.compaction).toEqual(b.compaction);
+    expect(a.action).toEqual(b.action);
+    expect(a.material_specs).toEqual(b.material_specs);
+    expect(a.dimensions).toEqual(b.dimensions);
+  });
+
+  test('se zhutněním / bez zhutnění extracted as compaction', () => {
+    expect(extractIntent(RUCNE).compaction)
+      .toEqual({ value: 'se_zhutnenim', source: 'rule', confidence: 1.0 });
+    expect(extractIntent('Zásyp jam bez zhutnění').compaction)
+      .toEqual({ value: 'bez_zhutneni', source: 'rule', confidence: 1.0 });
+    expect(extractIntent('Obsyp potrubí vč. zhutnění').compaction.value)
+      .toBe('se_zhutnenim');
+  });
+
+  test('inflected adjective form («ruční výkop») matches at lower confidence', () => {
+    const i = extractIntent('Ruční výkop jam v hornině tř. 3');
+    expect(i.execution_method.value).toBe('rucne');
+    expect(i.execution_method.confidence).toBe(0.8);
+  });
+
+  test('absence stays null — never read as either value (no defaults)', () => {
+    const i = extractIntent('Zásyp sypaninou z jakékoliv horniny s uložením výkopku');
+    expect(i.execution_method).toBeNull();
+    expect(i.compaction).toBeNull();
+  });
+
+  test('contradictory signals in one line yield null, not a guess', () => {
+    expect(extractIntent('Zásyp ručně i strojně dle podmínek').execution_method).toBeNull();
+  });
+
+  test('«strojovna» and «ručník» do not false-positive the method', () => {
+    expect(extractIntent('Vybavení strojovny výtahu').execution_method).toBeNull();
+    expect(extractIntent('Držák ručníků nerezový').execution_method).toBeNull();
+  });
+});
+
 describe('search_name DB round-trip — folding both ways (criterion 3)', () => {
   // Mirrors the door's candidate SQL (SEARCH_EXPR in ursMatcher.js) against an
   // in-memory DB whose search_name is written exactly like the importers write

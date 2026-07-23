@@ -40,6 +40,11 @@
  * poplach na každém příplatku. v2: katalogový název začínající „Příplatek" →
  * najít souseda se shodným 6místným prefixem v témže dílu a validovat PÁR
  * (rodič existuje? MJ kus? počet vs rodič?); flag jen když pár chybí.
+ * UPŘESNĚNÍ MJ (KROS 2026 screenshot, rodina 174, ověřeno 2026-07-23):
+ * příplatky jsou plnohodnotné katalogové pozice s VLASTNÍ jednotkou, která
+ * sleduje rodinu — 174111109 «Příplatek k ceně za prohození sypaniny sítem»
+ * je za m³, klempířské příplatky za kus. v2 tedy validuje MJ proti
+ * KATALOGOVÉ jednotce daného příplatkového kódu, nikdy proti napevno «kus».
  */
 
 import fs from 'fs';
