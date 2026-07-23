@@ -60,15 +60,23 @@ structure.md; `cloudbuild-zeleznice.yaml` + `triggers/zeleznice.yaml` +
 
 ---
 
-## Gate 7 — NEXT (blokováno na Alexandrovi)
+## Gate 7 — NEXT (blokováno na Alexandrovi; první dodávka podkladů 2026-07-23)
 
-- [ ] **Golden reálný objekt (AC 17)** — nahrát TZ + situaci/podélný profil +
-      vzorový příčný řez + reálný soupis (Příloha B) → `test-data/{objekt}/` +
-      golden test celého řetězce; kalibrace čety/workspace.
-- [ ] **Nahrát zdroje Přílohy A** (S3 díly, S3/1, S3/2, S3/5, S4, S8/3 přílohy,
-      TKP kap. 8, ÚRS 824-1 vč. přílohy „Rozdělení pražců", ÚOŽI, třídník ŽS)
-      → nahradit orientační hodnoty + doplnit honest-blank výkony/montáže/
-      ztrátové časy; golden tabulky přepnout na ceníkovou přílohu.
+- [~] **Golden reálný objekt (AC 17)** — ✅ PŘIJATO 2026-07-23:
+      `test-data/pzs-p137-sokolov-kraslice/` (PZS P137 km 13,250 Sokolov–Kraslice,
+      SŽ/VIAMONT 06/2025) — TZ (SO 02-10-01 svršek + SO 02-11-01 spodek) +
+      vzorové příčné řezy 1:50 + **reálný soupis FORMULÁŘ SO/PS** (klasifikace
+      824, R-položky, vzorce množství) + geotechnika/ZKPP. ⏳ ZBÝVÁ: situace +
+      podélný profil („это еще не все") → pak golden test celého řetězce +
+      kalibrace (soupis číst jako etalon, řez VISION per Pattern 39).
+- [~] **Nahrát zdroje Přílohy A** — ✅ PŘIJATO: **Sborník ÚOŽI 2026**
+      (`concrete-agent/.../knowledge_base/B1_uozi_codes/sbornik_2026/` —
+      TH matice `Číslo položky|Popis|MJ|Cena`, metodika, změny) → zdroj pro
+      catalog-binding upgrade not_verified→candidate/exact. ⏳ ZBÝVÁ: S3 díly,
+      S3/1, S3/2, S3/5, S4, S8/3 přílohy (technologické listy strojů!), TKP
+      kap. 8, **ÚRS 824-1 příloha „Rozdělení pražců"** (web cs-urs.cz vrací
+      403 anti-bot — stáhnout ručně a nahrát), třídník ŽS → nahradit orientační
+      hodnoty + doplnit honest-blank výkony/montáže/ztrátové časy.
 - [ ] **Deploy**: secret SERVICE_API_KEY ověřit → `gcloud builds triggers import
       --source=triggers/zeleznice.yaml --region=europe-west3` → Cloud Run
       `zeleznice-planner-api` → Vercel frontend + `zeleznice.stavagent.cz` →
