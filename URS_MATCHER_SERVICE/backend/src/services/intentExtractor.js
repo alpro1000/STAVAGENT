@@ -53,6 +53,45 @@ const DIMENSION_RES = [
   /\b(?:do|přes|pres|nad)\s+\d+(?:[.,]\d+)?\s*(?:mm|cm|m2|m3|m|kg|t)\b/gi, // ÚRS bands «do 600 mm»
 ];
 
+// Production-method modifiers (ratified 2026-07-23, KROS family 174 live case:
+// a «ručně» query was answered with the REAL code 174151101 «strojně» — one
+// digit apart, plausible name, passes eyeball review; caught only because the
+// model's own justification claimed exact-name match, which the catalog text
+// disproved). More dangerous than fabrication: an existence check cannot catch
+// it. These are mandatory differentiators on par with DN / třída / thickness.
+// Etapa 2 consumes them as HARD GATES — a candidate whose method contradicts
+// the intent is cut regardless of text similarity (gates, not scores).
+// Bounded suffix alternation on purpose: «ručník» (towel) and «strojovna»
+// (machine room) must NOT match. Contradictory signals in one line → null
+// (no guess); absence → null and is NEVER read as either value.
+const EXECUTION_METHOD_RULES = [
+  { re: /\brucn(?:e|i|im|iho|ich)\b/, value: 'rucne' },
+  { re: /\bstrojn(?:e|i|im|iho|ich)\b/, value: 'strojne' },
+];
+const COMPACTION_RULES = [
+  { re: /\bse zhutnenim\b/, value: 'se_zhutnenim' },
+  { re: /\b(?:vc\.?|vcetne)\s+zhutneni\b/, value: 'se_zhutnenim' },
+  { re: /\bbez zhutneni\b/, value: 'bez_zhutneni' },
+];
+
+// First distinct match wins; two DIFFERENT values in one line = contradiction
+// → null. Exact adverb («rucne»/«strojne», explicit phrase) = conf 1.0;
+// inflected adjective forms («ruční výkop») = conf 0.8.
+function extractModifier(foldedLower, rules, exactValues) {
+  const hits = new Set();
+  let first = null;
+  for (const r of rules) {
+    const m = foldedLower.match(r.re);
+    if (m) {
+      hits.add(r.value);
+      if (!first) {first = { value: r.value, matched: m[0] };}
+    }
+  }
+  if (!first || hits.size > 1) {return null;}
+  const conf = exactValues.includes(first.matched) ? 1.0 : 0.8;
+  return field(first.value, 'rule', conf);
+}
+
 // Explicit supply-scope markers (folded). Bare «montaz» is NOT here on purpose.
 const SUPPLY_SCOPE_RULES = [
   { re: /\bdodavka a montaz/, value: 'dodavka_a_montaz' },
@@ -132,6 +171,12 @@ export function extractIntent(text, opts = {}) {
   const scopeRule = SUPPLY_SCOPE_RULES.find((r) => r.re.test(foldedLower));
   const supply_scope = scopeRule ? field(scopeRule.value, 'rule', 1.0) : null;
 
+  // --- production-method modifiers (Etapa 2 hard-gate inputs) ---
+  const execution_method = extractModifier(foldedLower, EXECUTION_METHOD_RULES,
+    ['rucne', 'strojne']);
+  const compaction = extractModifier(foldedLower, COMPACTION_RULES,
+    ['se zhutnenim', 'bez zhutneni', 'vcetne zhutneni', 'vc. zhutneni', 'vc zhutneni']);
+
   // --- search feed for the local SQL door -------------------------------
   // Phrases first (most discriminative: «dn 100» LIKE-matches search_name as a
   // unit), then plain words. Both sides of the comparison pass through the SAME
@@ -149,6 +194,8 @@ export function extractIntent(text, opts = {}) {
     unit,
     context,
     supply_scope,
+    execution_method,
+    compaction,
     normalized_text: normalized,
     search_phrases,
     search_words,
