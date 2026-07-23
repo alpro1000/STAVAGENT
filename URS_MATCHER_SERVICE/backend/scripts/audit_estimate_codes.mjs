@@ -28,6 +28,18 @@
  * přes injektovaný fetchImpl. Prázdná odpověď s non-200 (429/5xx/síť) se hlásí
  * jako OMEZENO (+1 retry po pauze), NIKDY jako KOD_NENALEZEN — throttling nesmí
  * vypadat jako verdikt o smetě.
+ *
+ * ZNÁMÉ OMEZENÍ — požadavek na v2 (ratifikováno Alexandrem 2026-07-22):
+ * PŘÍPLATKOVÉ položky NELZE kontrolovat po řádcích. Správnost příplatku určuje
+ * VAZBA, ne řádek: (1) rodičovská hlavní pozice musí existovat ve stejném dílu
+ * (živý vzor Vidímova: rodič 764215608 „Oplechování atiky" 399 m + příplatek
+ * 764215646 hned pod ním — sdílejí 6místný prefix kódu; dtto 764216644/-665);
+ * (2) MJ příplatku má být kus × počet rohů/uzlů — „1 soubor" skrývá základ
+ * doplatku; (3) množství se má vázat na geometrii rodiče. Dnešní řádková
+ * kontrola takový korektní pár flaguje jako OVERIT/MJ_NESOUHLASI — falešný
+ * poplach na každém příplatku. v2: katalogový název začínající „Příplatek" →
+ * najít souseda se shodným 6místným prefixem v témže dílu a validovat PÁR
+ * (rodič existuje? MJ kus? počet vs rodič?); flag jen když pár chybí.
  */
 
 import fs from 'fs';
