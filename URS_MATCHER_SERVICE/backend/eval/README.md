@@ -146,6 +146,15 @@ of the working DB; it must contain the ÚRS rows, not OTSKP) and needs egress
 for the frontoffice door. Take the ÚRS baseline on the CURRENT channel first —
 that is the "before" for the frontoffice-routing fix.
 
+> **ÚRS-axis caveat (read before interpreting recall):** the local ÚRS DB is
+> built from the 2018-vintage KROS export — **35 of 41 expected codes in the
+> corpus do not exist in that data at all**, and the frontoffice `/v1/search`
+> returns empty for long verbatim descriptions. Local-door ÚRS quality metrics
+> therefore measure against dead data: `recall 0` reads as "the 2018 DB cannot
+> contain the answer", NOT "the algorithm is broken" (see
+> `docs/bugs/urs-local-door-2018-vintage/`). The honesty metrics (fabrication /
+> honest_skip) remain fully meaningful on this axis.
+
 Results land in `eval/results/` (gitignored — run artifacts are machine-local;
 share them in the PR description, not as commits).
 

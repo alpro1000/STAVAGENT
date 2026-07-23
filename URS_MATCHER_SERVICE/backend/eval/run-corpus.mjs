@@ -360,6 +360,7 @@ async function cliRun(argv) {
       urs_frontoffice_version_id: process.env.URS_FRONTOFFICE_VERSION_ID ? 'env-set' : 'default',
       urs_catalog_mode: process.env.URS_CATALOG_MODE || '(default: local)',
       urs_learning: 'disabled',
+      urs_local_conf_floor: process.env.URS_LOCAL_CONF_FLOOR || '(default: MEDIUM 0.6)',
       db: { path: dbPath, urs_items_count: count },
       online_attempts: attempts,
     },
