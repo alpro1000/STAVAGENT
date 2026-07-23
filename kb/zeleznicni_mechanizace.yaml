@@ -22,9 +22,11 @@ version: 1
 
 source_citation:
   primary: >-
-    Technologické listy strojů (přílohy předpisu S8/3 — nenahráno) +
-    katalogové listy provozovatelů kolejové mechanizace; řádové výkony
-    převzaty z TASK §3.7 tabulky jako ORIENTAČNÍ (confidence 0.80).
+    Technologické listy strojů (přílohy předpisu S8/3) + katalogové listy
+    provozovatelů kolejové mechanizace; řádové výkony převzaty z TASK §3.7
+    tabulky jako ORIENTAČNÍ (confidence 0.80). První reálná příloha S8/3
+    nahrána 2026-07-23: III/15 SVM 1000 CZ (confidence 0.85) — zdroj v KB
+    `B9_Equipment_Specs/sz_s8_3_technologicke_listy/`.
   discipline: >-
     Chybějící výkon = null → engine vrací NEPOČÍTÁNO s důvodem, nikdy
     odhad. Uživatelská norma firmy má vždy přednost (0.99).
@@ -160,6 +162,24 @@ machines:
       excluded_sleeper_types: []
       needs_track_possession: true
       note_cs: null
+    setup_min_to_work: null
+    setup_min_to_transport: null
+  - id: 'svm_1000_cz'
+    name_cs: 'Obnovovací stroj SVM 1000 CZ (kontinuální obnova roštu)'
+    work_types: ['pokladka_rostu', 'snimani_rostu']
+    crew_size: 12
+    crew_source: 'S8/3 příloha III/15 (účinnost 1.9.2016) — vedoucí stroje + 11 obsluh dle pracovního zařazení (kladení/vybírání pražců 1, ramena kleští 2, manipulátor 1, podložky 2, zalomené pražce 2, řezání kolejnic 1, proklady 2)'
+    modes:
+      - id: 'obnova_kontinualni'
+        name_cs: 'Kontinuální obnova roštu (snímání + kladení vystrojených pražců)'
+        rate: { value: 400, unit: 'm/h' }
+        confidence: 0.85
+        note_cs: 'S8/3 příloha III/15: průměrná pracovní rychlost 400 m/hod; technologický výkon 11 pražců/min. Vlivy: povolování upevňovadel, oblouky < 300 m, překážky, kázeň doprovodných prací.'
+    restrictions:
+      min_curve_radius_m: 300
+      excluded_sleeper_types: []
+      needs_track_possession: true
+      note_cs: 'Napěťová výluka a výluka koleje při práci nutná (S8/3 příloha III/15); přejezd R ≥ 150 m (max. rychlost) / 100 m (omezená). Kladení do podkladnic i pružného bezpodkladnicového upevnění; návaznost S3/1 + Zam1.'
     setup_min_to_work: null
     setup_min_to_transport: null
   - id: 'pokladac_kolejovych_poli'

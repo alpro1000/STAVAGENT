@@ -72,11 +72,20 @@ structure.md; `cloudbuild-zeleznice.yaml` + `triggers/zeleznice.yaml` +
 - [~] **Nahrát zdroje Přílohy A** — ✅ PŘIJATO: **Sborník ÚOŽI 2026**
       (`concrete-agent/.../knowledge_base/B1_uozi_codes/sbornik_2026/` —
       TH matice `Číslo položky|Popis|MJ|Cena`, metodika, změny) → zdroj pro
-      catalog-binding upgrade not_verified→candidate/exact. ⏳ ZBÝVÁ: S3 díly,
-      S3/1, S3/2, S3/5, S4, S8/3 přílohy (technologické listy strojů!), TKP
-      kap. 8, **ÚRS 824-1 příloha „Rozdělení pražců"** (web cs-urs.cz vrací
-      403 anti-bot — stáhnout ručně a nahrát), třídník ŽS → nahradit orientační
-      hodnoty + doplnit honest-blank výkony/montáže/ztrátové časy.
+      catalog-binding upgrade not_verified→candidate/exact. ✅ PŘIJATO
+      2026-07-23 (2. dávka): **S8/3 příloha III/15 SVM 1000 CZ** (první
+      technologický list! → stroj `svm_1000_cz` v KB s předpisovou normou
+      400 m/h conf 0.85, osádka 12, R≥300 m — `B9_Equipment_Specs/
+      sz_s8_3_technologicke_listy/`), Výjimka č. 45 z S3 díl XVI čl. 17
+      (`B7_regulations/sz_s3/` — precedens hierarchie ZTP/výjimka > předpis),
+      svářečský postup P-NA-M-04/2021 navařování srdcovek
+      (`B7_regulations/sz_s3_5_svarovani/`, sken — vision), skriptum Plášek
+      VUT Úvod do železničních staveb (`B6_research_papers/`). ⏳ ZBÝVÁ:
+      S3 díly I–XVII, S3/1, S3/2, S3/5, S4, další přílohy S8/3 (ASP,
+      čističky, stabilizátory, pluhy), TKP kap. 8 (typdok.tudc.cz), **ÚRS
+      824-1 příloha „Rozdělení pražců"** (web cs-urs.cz vrací 403 anti-bot —
+      stáhnout ručně a nahrát), třídník ŽS → nahradit orientační hodnoty +
+      doplnit zbylé honest-blank výkony/montáže/ztrátové časy.
 - [ ] **Deploy**: secret SERVICE_API_KEY ověřit → `gcloud builds triggers import
       --source=triggers/zeleznice.yaml --region=europe-west3` → Cloud Run
       `zeleznice-planner-api` → Vercel frontend + `zeleznice.stavagent.cz` →
