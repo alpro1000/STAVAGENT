@@ -18,6 +18,10 @@ CREATE TABLE IF NOT EXISTS urs_items (
   -- matched a diacritic-folded query word — this column makes the SQL candidate
   -- pre-filter fold-symmetric with the query side (same normalizeText both sides).
   search_name TEXT,
+  -- Row provenance ('kros' = URS201801/2018 import, 'otskp' = OTSKP XML import,
+  -- NULL = seed/manual). The 2018-vintage quarantine (db/catalogVintage.js)
+  -- excludes source='kros' from every code-proposing door by default.
+  source TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
