@@ -1251,6 +1251,15 @@ TOOL_DESCRIPTIONS = {
         "confidence (vision+DXF+TZ=0.95 … vision-only=0.60+OVĚŘIT); bez _source = "
         "REJECTED. Sama nedělá vidění — jen skóruje. Bez jazykového modelu."
     ),
+    "calculate_railway_works": (
+        "Deterministický rozklad železničního úseku (svršek + spodek): z délky "
+        "a sestavy svršku odvodí rozdělení pražců, kolejnice (t), upevnění, "
+        "svary BK / styky, objem lože z příčného profilu (bez profilu poctivé "
+        "NEPOČÍTÁNO), výhybky kusově (h/ks), technologickou posloupnost se "
+        "závislostmi, nasazení strojní linky (výkon dle režimu, firemní norma "
+        "0.99 > katalog) a osádky vč. povinných bezpečnostních rolí. "
+        "catalog_only=true vrátí registr sestav/strojů/výhybek."
+    ),
 }
 
 # Canonical tool order (matches app/mcp/server.py registration order).
@@ -1277,6 +1286,7 @@ TOOL_ORDER = [
     "export_soupis",
     "extract_tz_fields",
     "validate_drawing_element",
+    "calculate_railway_works",
 ]
 
 
@@ -1735,6 +1745,31 @@ async def rest_extract_tz_fields(
     from app.mcp.tools.extract_tz_fields import extract_tz_fields
     return await extract_tz_fields(
         text=body.text, file_base64=body.file_base64, filename=body.filename
+    )
+
+
+class RailwayWorksRequest(BaseModel):
+    # The whole RailPlannerInput JSON is the payload (schema single-source =
+    # the TS engine in Zeleznice-Planner/shared; the engine validates and
+    # answers 400/422 with allowed values). catalog_only=true skips the input.
+    rail_input: Optional[dict] = None
+    catalog_only: bool = False
+
+
+@router.post("/tools/calculate-railway-works")
+async def rest_calculate_railway_works(
+    body: RailwayWorksRequest,
+    authorization: Optional[str] = Header(None),
+):
+    """Decompose a railway section (svršek+spodek) via the Zeleznice engine (10 credits)."""
+    api_key = _extract_bearer(authorization)
+    credit_check = mcp_auth.check_credits(api_key or "", "calculate_railway_works")
+    if not credit_check["ok"]:
+        raise HTTPException(status_code=402, detail=credit_check["error"])
+
+    from app.mcp.tools.railway_works import calculate_railway_works
+    return await calculate_railway_works(
+        rail_input=body.rail_input, catalog_only=body.catalog_only
     )
 
 

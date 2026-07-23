@@ -1,0 +1,78 @@
+###############################################################
+# zeleznice-planner-api — triggered only on changes in Zeleznice-Planner/**
+# Mirror of cloudbuild-monolit.yaml (guard → build → push → deploy).
+# NOTE: secret SERVICE_API_KEY must exist in Secret Manager BEFORE the first
+# deploy (same shared ecosystem key as Monolit compute — HOTFIX-2).
+###############################################################
+substitutions:
+  _REGION: europe-west3
+  _AR_REPO: stavagent
+  _TAG: latest
+  _FORCE_DEPLOY: 'false'
+
+steps:
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    id: guard
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        if [ "${_FORCE_DEPLOY}" = "true" ]; then
+          echo "Force deploy requested — skipping guard"
+          exit 0
+        fi
+        if ! git rev-parse --git-dir >/dev/null 2>&1; then
+          echo "No git repo (manual submit) — skipping guard"
+          exit 0
+        fi
+        git fetch --depth=2 2>/dev/null || true
+        CHANGED=$$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git show --name-only --format="" HEAD)
+        echo "Changed files: $$CHANGED"
+        if ! echo "$$CHANGED" | grep -q "^Zeleznice-Planner/"; then
+          echo "No changes in Zeleznice-Planner/ — cancelling build"
+          exit 1
+        fi
+        echo "Changes detected in Zeleznice-Planner/ — proceeding"
+
+  - name: gcr.io/cloud-builders/docker
+    id: build-zeleznice
+    waitFor: [guard]
+    args:
+      - build
+      - -f
+      - Zeleznice-Planner/Dockerfile
+      - -t
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/zeleznice-planner-api:${_TAG}
+      - -t
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/zeleznice-planner-api:latest
+      - Zeleznice-Planner
+
+  - name: gcr.io/cloud-builders/docker
+    id: push-zeleznice
+    waitFor: [build-zeleznice]
+    args:
+      - push
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/zeleznice-planner-api
+      - --all-tags
+
+  - name: gcr.io/cloud-builders/gcloud
+    id: deploy-zeleznice
+    waitFor: [push-zeleznice]
+    args:
+      - run
+      - deploy
+      - zeleznice-planner-api
+      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/zeleznice-planner-api:${_TAG}
+      - --region=$_REGION
+      - --platform=managed
+      - --allow-unauthenticated
+      - --port=3004
+      - --update-secrets=SERVICE_API_KEY=SERVICE_API_KEY:latest
+      - --set-env-vars=NODE_ENV=production,CORS_ORIGIN=https://zeleznice.stavagent.cz
+
+images:
+  - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/zeleznice-planner-api:${_TAG}
+
+timeout: 1200s
+options:
+  logging: CLOUD_LOGGING_ONLY

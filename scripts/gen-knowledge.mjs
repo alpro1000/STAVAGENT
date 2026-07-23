@@ -3,7 +3,9 @@
  * Knowledge codegen — reads kb/*.yaml, writes typed TS modules.
  *
  * Source of truth: kb/<name>.yaml
- * Output: Monolit-Planner/shared/src/kb-generated/<name>.ts
+ * Output: Monolit-Planner/shared/src/kb-generated/<name>.ts (default), or a
+ *         per-integration `outAbs` dir (Zeleznice-Planner shared) — each
+ *         output dir gets its own index.ts over ITS integrations only.
  *
  * Usage:
  *   node scripts/gen-knowledge.mjs            # generate all
@@ -22,6 +24,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, '..');
 const KB_DIR = resolve(REPO_ROOT, 'kb');
 const OUT_DIR = resolve(REPO_ROOT, 'Monolit-Planner/shared/src/kb-generated');
+const ZELEZNICE_OUT_DIR = resolve(REPO_ROOT, 'Zeleznice-Planner/shared/src/kb-generated');
 
 // ─── CLI args ──────────────────────────────────────────────────────────────
 
@@ -116,15 +119,42 @@ const INTEGRATIONS = [
     validate: validateBridgePassportElementMap,
     render: renderBridgePassportElementMap,
   },
+  {
+    // Zeleznice-Planner kiosk — railway superstructure single-source data
+    // (rail profiles, sleepers, fastenings, sestavy, rozdělení pražců,
+    // ballast profiles, BK params). `outAbs` routes the artifact into the
+    // railway kiosk's shared package; the Monolit kb-generated/ dir and its
+    // index stay byte-identical.
+    name: 'zeleznice-svrsek',
+    yaml: 'zeleznicni_svrsek.yaml',
+    outAbs: ZELEZNICE_OUT_DIR,
+    validate: validateZelezniceSvrsek,
+    render: renderZelezniceSvrsek,
+  },
+  {
+    name: 'zeleznice-vyhybky',
+    yaml: 'zeleznicni_vyhybky.yaml',
+    outAbs: ZELEZNICE_OUT_DIR,
+    validate: validateZelezniceVyhybky,
+    render: renderZelezniceVyhybky,
+  },
+  {
+    name: 'zeleznice-mechanizace',
+    yaml: 'zeleznicni_mechanizace.yaml',
+    outAbs: ZELEZNICE_OUT_DIR,
+    validate: validateZelezniceMechanizace,
+    render: renderZelezniceMechanizace,
+  },
 ];
 
 // ─── Index re-export ──────────────────────────────────────────────────────
 
-function renderIndex() {
+function renderIndex(integrations) {
   // Namespace each module re-export to avoid SOURCE_CITATION name collision
   // across integrations. Consumers can either `import { TKP18_MATURITY }`
   // or `import { CURING_DAYS_TABLE } from '../kb-generated/tkp18-maturity.js'`.
-  const lines = INTEGRATIONS.map(i => {
+  // One index per OUTPUT DIR — each dir re-exports only its own modules.
+  const lines = integrations.map(i => {
     const ns = i.name.replace(/-/g, '_').toUpperCase();
     return `export * as ${ns} from './${i.name}.js';`;
   });
@@ -542,6 +572,282 @@ export const BRIDGE_PASSPORT_ELEMENT_MAP: Record<string, BridgePassportElementRu
 `;
 }
 
+// ─── Zeleznice validators + renderers ─────────────────────────────────────
+
+function validateZelezniceSvrsek(data) {
+  for (const key of [
+    'version', 'source_citation', 'rail_profiles', 'sleeper_types',
+    'fastening_systems', 'spacing_table', 'assemblies', 'ballast', 'bk', 'technology',
+  ]) {
+    if (!(key in data)) throw new Error(`zeleznicni_svrsek.yaml missing top-level key: ${key}`);
+  }
+  const profileIds = new Set();
+  for (const p of data.rail_profiles) {
+    if (!p.id || !p.name_cs) throw new Error(`rail_profile missing id/name_cs: ${JSON.stringify(p)}`);
+    if (p.mass_kg_per_m !== null && typeof p.mass_kg_per_m !== 'number') {
+      throw new Error(`rail_profile ${p.id}: mass_kg_per_m must be number or null (honest-blank)`);
+    }
+    profileIds.add(p.id);
+  }
+  const sleeperIds = new Set();
+  for (const s of data.sleeper_types) {
+    if (!['table', 'spacing'].includes(s.count_mode)) {
+      throw new Error(`sleeper_type ${s.id}: count_mode must be 'table'|'spacing'`);
+    }
+    if (typeof s.fastening_nodes_per_sleeper !== 'number') {
+      throw new Error(`sleeper_type ${s.id}: fastening_nodes_per_sleeper must be a number`);
+    }
+    if (typeof s.twin_at_joints !== 'boolean') {
+      throw new Error(`sleeper_type ${s.id}: twin_at_joints must be boolean`);
+    }
+    sleeperIds.add(s.id);
+  }
+  const fasteningIds = new Set();
+  for (const f of data.fastening_systems) {
+    if (!Array.isArray(f.components_per_node) || f.components_per_node.length === 0) {
+      throw new Error(`fastening ${f.id}: components_per_node must be non-empty`);
+    }
+    fasteningIds.add(f.id);
+  }
+  // Rozdělení pražců — internal consistency: ks/km == ks/pole × (1000 / délka pole)
+  const spacingKeys = new Set();
+  for (const row of data.spacing_table) {
+    const expected = row.sleepers_per_field * (1000 / row.field_length_m);
+    if (expected !== row.sleepers_per_km) {
+      throw new Error(
+        `spacing_table (${row.code}, ${row.field_length_m} m): per_km=${row.sleepers_per_km} != per_field×(1000/L)=${expected}`,
+      );
+    }
+    spacingKeys.add(`${row.code}|${row.field_length_m}`);
+  }
+  for (const a of data.assemblies) {
+    if (!profileIds.has(a.rail_profile)) throw new Error(`assembly ${a.id}: unknown rail_profile '${a.rail_profile}'`);
+    if (!sleeperIds.has(a.sleeper_type)) throw new Error(`assembly ${a.id}: unknown sleeper_type '${a.sleeper_type}'`);
+    if (!fasteningIds.has(a.fastening)) throw new Error(`assembly ${a.id}: unknown fastening '${a.fastening}'`);
+    if (!['stykovana', 'bezstykova'].includes(a.track_form)) {
+      throw new Error(`assembly ${a.id}: track_form must be 'stykovana'|'bezstykova'`);
+    }
+    for (const code of a.allowed_spacings) {
+      for (const fl of a.allowed_field_lengths_m) {
+        if (!spacingKeys.has(`${code}|${fl}`)) {
+          throw new Error(`assembly ${a.id}: spacing '${code}' @ ${fl} m not in spacing_table`);
+        }
+      }
+    }
+    if (a.default_spacing !== null && !a.allowed_spacings.includes(a.default_spacing)) {
+      throw new Error(`assembly ${a.id}: default_spacing '${a.default_spacing}' not in allowed_spacings`);
+    }
+  }
+  for (const preset of data.ballast.profile_presets) {
+    for (const k of ['thickness_under_sleeper_m', 'crown_width_m', 'slope_ratio']) {
+      if (typeof preset[k] !== 'number') throw new Error(`ballast preset ${preset.id}: ${k} must be a number`);
+    }
+  }
+  if (!Array.isArray(data.bk.rail_delivery_lengths_m) || !data.bk.rail_delivery_lengths_m.length) {
+    throw new Error('bk.rail_delivery_lengths_m must be non-empty array');
+  }
+  for (const kind of ['novostavba', 'rekonstrukce', 'udrzba']) {
+    if (typeof data.technology.tamping_passes_by_project_kind[kind] !== 'number') {
+      throw new Error(`technology.tamping_passes_by_project_kind.${kind} required`);
+    }
+    if (typeof data.technology.dynamic_stabilization_by_project_kind[kind] !== 'boolean') {
+      throw new Error(`technology.dynamic_stabilization_by_project_kind.${kind} required`);
+    }
+  }
+}
+
+function renderZelezniceSvrsek(data) {
+  return banner('zeleznicni_svrsek.yaml') + `\
+/** Provenance tag — every railway KB record carries its source. */
+export interface RailSourceRef { document: string; note?: string | null; }
+
+export interface RailProfileSpec {
+  id: string; name_cs: string;
+  /** null = honest-blank (hmotnost NEPOČÍTÁNA, dokud zdroj není v KB). */
+  mass_kg_per_m: number | null;
+  source: RailSourceRef; confidence: number;
+}
+
+export interface SleeperTypeSpec {
+  id: string; name_cs: string;
+  /** 'table' = rozdělení pražců; 'spacing' = rozteč upevňovacích bodů (Y). */
+  count_mode: 'table' | 'spacing';
+  default_spacing_m?: number; spacing_source?: RailSourceRef;
+  mass_kg: number | null; mass_source: RailSourceRef;
+  fastening_nodes_per_sleeper: number;
+  /** Dvojčitý pražec u styku stykované koleje se počítá jako DVA (ÚRS 824-1 příloha). */
+  twin_at_joints: boolean;
+  confidence: number;
+}
+
+export interface FasteningComponentSpec { name_cs: string; qty: number; }
+export interface FasteningSystemSpec {
+  id: string; name_cs: string; kind: 'bezpodkladnicove' | 'podkladnicove';
+  components_per_node: FasteningComponentSpec[];
+  source: RailSourceRef; confidence: number;
+}
+
+/** Rozdělení pražců — (kód, délka pole) → ks/pole, ks/km. Průměr vč. zhuštění u styků. */
+export interface SleeperSpacingRow {
+  code: string; field_length_m: number;
+  sleepers_per_field: number; sleepers_per_km: number;
+}
+
+export interface TrackAssemblySpec {
+  id: string; name_cs: string;
+  rail_profile: string; sleeper_type: string; fastening: string;
+  track_form: 'stykovana' | 'bezstykova';
+  allowed_field_lengths_m: number[]; default_field_length_m: number;
+  allowed_spacings: string[]; default_spacing: string | null;
+  note_cs: string | null;
+}
+
+export interface BallastProfilePreset {
+  id: string; name_cs: string;
+  thickness_under_sleeper_m: number; crown_width_m: number; slope_ratio: number;
+  source: RailSourceRef; confidence: number;
+}
+
+export const RAIL_PROFILES = (${jsonLit(data.rail_profiles)} as unknown) as RailProfileSpec[];
+export const SLEEPER_TYPES = (${jsonLit(data.sleeper_types)} as unknown) as SleeperTypeSpec[];
+export const FASTENING_SYSTEMS = (${jsonLit(data.fastening_systems)} as unknown) as FasteningSystemSpec[];
+export const SLEEPER_SPACING_TABLE = (${jsonLit(data.spacing_table)} as unknown) as SleeperSpacingRow[];
+export const SPACING_TABLE_SOURCE = ${jsonLit(data.spacing_table_source)} as const;
+export const SPACING_TABLE_CONFIDENCE = ${data.spacing_table_confidence};
+export const TRACK_ASSEMBLIES = (${jsonLit(data.assemblies)} as unknown) as TrackAssemblySpec[];
+export const ASSEMBLIES_SOURCE = ${jsonLit(data.assemblies_source)} as const;
+export const ASSEMBLIES_CONFIDENCE = ${data.assemblies_confidence};
+export const BALLAST_FRACTION_DEFAULT = ${jsonLit(data.ballast.fraction_default)};
+export const BALLAST_FRACTION_SOURCE = ${jsonLit(data.ballast.fraction_source)} as const;
+export const BALLAST_PROFILE_PRESETS = (${jsonLit(data.ballast.profile_presets)} as unknown) as BallastProfilePreset[];
+export const BK_PARAMS = ${jsonLit(data.bk)} as const;
+export const TECHNOLOGY_PARAMS = ${jsonLit(data.technology)} as const;
+export const SOURCE_CITATION = ${jsonLit(data.source_citation)} as const;
+`;
+}
+
+function validateZelezniceVyhybky(data) {
+  if (!Array.isArray(data.turnout_forms) || data.turnout_forms.length === 0) {
+    throw new Error('turnout_forms must be a non-empty array');
+  }
+  for (const t of data.turnout_forms) {
+    if (!t.id || !t.name_cs) throw new Error(`turnout form missing id/name_cs: ${JSON.stringify(t)}`);
+    if (!['jednoducha', 'slozita', 'velmi_slozita'].includes(t.complexity)) {
+      throw new Error(`turnout ${t.id}: unknown complexity '${t.complexity}'`);
+    }
+    if (typeof t.tamping_h_per_unit?.min !== 'number' || typeof t.tamping_h_per_unit?.max !== 'number') {
+      throw new Error(`turnout ${t.id}: tamping_h_per_unit needs numeric min/max`);
+    }
+    if (t.installation_h_per_unit !== null && typeof t.installation_h_per_unit !== 'number') {
+      throw new Error(`turnout ${t.id}: installation_h_per_unit must be number or null (honest-blank)`);
+    }
+    if (typeof t.bk_welds_per_unit !== 'number') {
+      throw new Error(`turnout ${t.id}: bk_welds_per_unit must be a number`);
+    }
+  }
+}
+
+function renderZelezniceVyhybky(data) {
+  return banner('zeleznicni_vyhybky.yaml') + `\
+/** Výhybka = KUSOVÁ konstrukce; pracnost v h/ks podle tvaru (nikdy m/h). */
+export interface TurnoutFormSpec {
+  id: string; name_cs: string;
+  complexity: 'jednoducha' | 'slozita' | 'velmi_slozita';
+  /** Podbití výhybkovou ASP — ORIENTAČNÍ rozsah h/ks (S8/3 tech. listy). */
+  tamping_h_per_unit: { min: number; max: number };
+  /** null = honest-blank (montážní norma není v KB — doplní firemní norma). */
+  installation_h_per_unit: number | null;
+  /** Svary při vevaření do BK (kolejnicové konce × pásy) — orientační. */
+  bk_welds_per_unit: number;
+  confidence: number;
+}
+
+export const TURNOUT_FORMS = (${jsonLit(data.turnout_forms)} as unknown) as TurnoutFormSpec[];
+export const SOURCE_CITATION = ${jsonLit(data.source_citation)} as const;
+`;
+}
+
+function validateZelezniceMechanizace(data) {
+  if (!Array.isArray(data.machines) || data.machines.length === 0) {
+    throw new Error('machines must be a non-empty array');
+  }
+  for (const m of data.machines) {
+    if (!m.id || !m.name_cs) throw new Error(`machine missing id/name_cs: ${JSON.stringify(m)}`);
+    if (!Array.isArray(m.work_types) || m.work_types.length === 0) {
+      throw new Error(`machine ${m.id}: work_types must be non-empty`);
+    }
+    if (m.crew_size !== null && typeof m.crew_size !== 'number') {
+      throw new Error(`machine ${m.id}: crew_size must be number or null (honest-blank)`);
+    }
+    if (!Array.isArray(m.modes) || m.modes.length === 0) {
+      throw new Error(`machine ${m.id}: modes must be non-empty (výkon závisí na režimu — TASK §3.7)`);
+    }
+    for (const mode of m.modes) {
+      if (!mode.rate || !('value' in mode.rate) || !['m/h', 'h/ks'].includes(mode.rate.unit)) {
+        throw new Error(`machine ${m.id} mode ${mode.id}: rate must be {value, unit:'m/h'|'h/ks'}`);
+      }
+      if (mode.rate.value !== null && typeof mode.rate.value !== 'number') {
+        throw new Error(`machine ${m.id} mode ${mode.id}: rate.value must be number or null (AI odhad zakázán)`);
+      }
+    }
+    if (!m.restrictions || typeof m.restrictions.needs_track_possession !== 'boolean') {
+      throw new Error(`machine ${m.id}: restrictions.needs_track_possession required`);
+    }
+    if (!Array.isArray(m.restrictions.excluded_sleeper_types)) {
+      throw new Error(`machine ${m.id}: restrictions.excluded_sleeper_types must be an array`);
+    }
+  }
+  if (typeof data.track_gang?.base_size !== 'number' || typeof data.track_gang?.workspace_m_per_worker !== 'number') {
+    throw new Error('track_gang.base_size + workspace_m_per_worker required (Pattern 50)');
+  }
+  if (!Array.isArray(data.safety_roles) || data.safety_roles.length === 0) {
+    throw new Error('safety_roles must be non-empty (povinná součást osádky — TASK §3.8)');
+  }
+}
+
+function renderZelezniceMechanizace(data) {
+  return banner('zeleznicni_mechanizace.yaml') + `\
+/** Výkonová norma stroje — závisí na REŽIMU nasazení (TASK §3.7). */
+export interface MachineModeSpec {
+  id: string; name_cs: string;
+  /** value null = honest-blank (NEPOČÍTÁNO; AI odhad výkonu zakázán). */
+  rate: { value: number | null; unit: 'm/h' | 'h/ks' };
+  confidence: number;
+  note_cs?: string | null;
+}
+
+export interface MachineRestrictions {
+  min_curve_radius_m: number | null;
+  excluded_sleeper_types: string[];
+  needs_track_possession: boolean;
+  note_cs: string | null;
+}
+
+export interface RailMachineSpec {
+  id: string; name_cs: string;
+  work_types: string[];
+  /** Osádka je vázaná na STROJ, ne na objem práce (TASK §3.8). */
+  crew_size: number | null;
+  crew_source: string;
+  modes: MachineModeSpec[];
+  restrictions: MachineRestrictions;
+  /** Ztrátové časy (min) — null dokud S8/3 technologické listy nejsou v KB. */
+  setup_min_to_work: number | null;
+  setup_min_to_transport: number | null;
+}
+
+export interface SafetyRoleSpec {
+  id: string; name_cs: string; count_per_gang: number; mandatory: boolean;
+}
+
+export const RAIL_MACHINES = (${jsonLit(data.machines)} as unknown) as RailMachineSpec[];
+export const TRACK_GANG = ${jsonLit(data.track_gang)} as const;
+export const SAFETY_ROLES = (${jsonLit(data.safety_roles)} as unknown) as SafetyRoleSpec[];
+export const SAFETY_ROLES_SOURCE = ${jsonLit(data.safety_roles_source)} as const;
+export const SOURCE_CITATION = ${jsonLit(data.source_citation)} as const;
+`;
+}
+
 // ─── Main ─────────────────────────────────────────────────────────────────
 
 function sha256(s) {
@@ -557,26 +863,30 @@ function run() {
     console.error(`✖ kb/ directory missing at ${KB_DIR}`);
     process.exit(2);
   }
-  if (!existsSync(OUT_DIR)) {
-    mkdirSync(OUT_DIR, { recursive: true });
-  }
 
   const drift = [];
   let okCount = 0;
   let skipCount = 0;
+  // Output dir → integrations written there (each dir gets its own index.ts).
+  const byOutDir = new Map();
 
   for (const integration of INTEGRATIONS) {
     // Most integrations source from kb/<name>.yaml; an integration may set
-    // `yamlAbs` to source from elsewhere in the monorepo (e.g. concrete-agent).
+    // `yamlAbs` to source from elsewhere in the monorepo (e.g. concrete-agent)
+    // and `outAbs` to write elsewhere (e.g. Zeleznice-Planner shared).
     const yamlPath = integration.yamlAbs ?? resolve(KB_DIR, integration.yaml);
     const srcLabel = integration.sourceLabel ?? integration.yaml;
-    const tsPath = resolve(OUT_DIR, `${integration.name}.ts`);
+    const outDir = integration.outAbs ?? OUT_DIR;
+    if (!existsSync(outDir)) mkdirSync(outDir, { recursive: true });
+    const tsPath = resolve(outDir, `${integration.name}.ts`);
 
     if (!existsSync(yamlPath)) {
       console.warn(`⚠ ${srcLabel} missing — skipping ${integration.name}.ts`);
       skipCount++;
       continue;
     }
+    if (!byOutDir.has(outDir)) byOutDir.set(outDir, []);
+    byOutDir.get(outDir).push(integration);
 
     const raw = readFileSync(yamlPath, 'utf8');
     let parsed;
@@ -607,17 +917,19 @@ function run() {
     }
   }
 
-  // Index file
-  const indexPath = resolve(OUT_DIR, 'index.ts');
-  const indexOut = renderIndex();
-  const indexPrev = readExisting(indexPath);
+  // One index per output dir, listing only that dir's integrations.
+  for (const [outDir, integrations] of byOutDir) {
+    const indexPath = resolve(outDir, 'index.ts');
+    const indexOut = renderIndex(integrations);
+    const indexPrev = readExisting(indexPath);
 
-  if (isCheck) {
-    if (indexPrev === null || sha256(indexPrev) !== sha256(indexOut)) {
-      drift.push('index');
+    if (isCheck) {
+      if (indexPrev === null || sha256(indexPrev) !== sha256(indexOut)) {
+        drift.push(`index (${outDir === OUT_DIR ? 'monolit' : basename(dirname(dirname(dirname(outDir))))})`);
+      }
+    } else {
+      writeFileSync(indexPath, indexOut, 'utf8');
     }
-  } else {
-    writeFileSync(indexPath, indexOut, 'utf8');
   }
 
   if (isCheck) {
@@ -630,7 +942,7 @@ function run() {
     return;
   }
 
-  console.log(`✓ Generated ${okCount} module(s) into Monolit-Planner/shared/src/kb-generated/`);
+  console.log(`✓ Generated ${okCount} module(s) (Monolit-Planner + Zeleznice-Planner kb-generated/)`);
   if (skipCount > 0) console.log(`  (${skipCount} skipped — YAML missing)`);
 }
 

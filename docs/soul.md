@@ -3559,6 +3559,16 @@ flat `severity` column, so the table schema does not change again.
 
 **Co dál:** после деплоя — живьём URS-поиск (эффект M7) + `GET /api/urs-catalog/274313811/detail` → по логам различить 404 (версия) / 200-unparsed (scraper-rot) / 401/403 (paywall). Vidímova-deliverables отданы файлами (`Vidimova_R3_AUDIT_KOMPLET.xlsx`), в репо не коммичены.
 
+## 2026-07-23 — Session: Zeleznice kiosk — železniční svršek+spodek end-to-end (v4.43.0)
+
+**Rozhodnuto:** (1) Alexander přímým pokynem («хочу отдельный киоск для ЖД … сделай за раз») ratifikoval DRAFT TASK_Zeleznicni_Svrsek_Spodek_v1 + přebil jeho §0.2 ve prospěch **samostatného kiosku** `Zeleznice-Planner/` (shared+backend+frontend, zrcadlí Monolit layout) + autorizoval autonomní zodpovězení PRE-IMPLEMENTATION INTERVIEW (6 odpovědí v `docs/specs/zeleznicni-svrsek-spodek/design.md §0` — celá vertikála v tenkém řezu / ruční geometrie / routing sz→OTSKP_ZS+ÚOŽI, vlečka→824-1 / user normy 0.99 > KB / v1 okno h/den místo plné výluky / metr koleje base; **veto vítáno**). (2) KB single-source: `kb/zeleznicni_{svrsek,vyhybky,mechanizace}.yaml` + `gen-knowledge.mjs` rozšířen o `outAbs` + per-dir index (Monolit artefakty byte-identické, `--check` zelený); hodnoty ORIENTAČNÍ z TASK §3.3/§3.7 se zdrojem, nejisté = null honest-blank (tvar T hmotnost, montáž výhybek, výkony pokládky/čištění/stabilizace/svařování, ztrátové časy). (3) Engine `planRailSection` (70 vitest): golden tabulka rozdělení 1:1 vč. dvojčitého (+polí−1) a Y-vzorce z rozteče; lože jen z profilu (paušál zakázán); BK řetězec s ověřením polohy PŘED upnutím; výhybky h/ks; stroje výkon-dle-režimu; Pattern 50 četa; Catalog-LAST not_verified; vrstvy se nemíchají; replay guarantee. (4) Backend thin wrapper (Monolit engine.js parity vč. 400 human-text-in-error; service-key fail-closed, prod bez klíče 503) + frontend in-browser (flat stone, noindex). (5) **MCP tools 22→23**: `calculate_railway_works` (credits 10, catalog_only) + `zeleznice_delegate` (mirror monolit fail-mode, sdílený SERVICE_API_KEY, `ZELEZNICE_API_URL`); 6 counter-souborů; testy 7 pytest + compat 29/29 + stage-gating zelené. (6) Infra: cloudbuild-zeleznice + triggers/zeleznice + zeleznice-ci workflow (lockfiles committed pro npm ci).
+
+**Odmítnuto:** rozšíření Monolit 7-engine pipeline o železnici (jiná osa dekompozice — délka×sestava, ne m³; user chtěl kiosk); fabrikace nejistých hodnot (délky výhybek, hmotnost T, montážní normy → null/omitted); paušál lože na metr; AI odhad výkonů (TASK §3.7 zákaz — honest-blank); druhý retry-mechanismus (zeleznice_delegate sdílí typed exceptions + _err_text importem z monolit_delegate).
+
+**Otevřené otázky:** golden reálný objekt (AC 17, Příloha B — TZ+situace+řez+soupis od Alexandra); nahrání zdrojů Přílohy A (S3/S3-2/S8-3 listy → nahradit orientační + doplnit blank výkony; 824-1 příloha → golden na ceníkovou přílohu); interview odpovědi čekají případné veto; deploy (secret SERVICE_API_KEY → trigger import → Cloud Run + Vercel + doména).
+
+**Co dál:** Gate 7 dle `docs/specs/zeleznicni-svrsek-spodek/tasks.md` — deploy → živý MCP test → golden objekt → katalogové kódy (824-1/ÚOŽI/OTSKP ŽS) → TZ-extraction vstup → spodek deterministika z příčných řezů → RCPSP/Portal integrace.
+
 ---
 
 ## 10. Document metadata

@@ -153,6 +153,24 @@ TOOL_MANIFESTS: dict[str, ToolManifest] = {
         version="1.0.0",
     ),
 
+    # Railway sibling of calculate_from_passport — deterministic whole-section
+    # decomposition (svršek+spodek) delegating to the canonical Zeleznice TS
+    # engine (planRailSection). Read-only, replayable, honest-blank on missing
+    # inputs/norms (never a fabricated number).
+    "calculate_railway_works": ToolManifest(
+        tool_name="calculate_railway_works",
+        category=ToolCategory.DETERMINISTIC_CALCULATION,
+        side_effect_level=SideEffectLevel.NONE,
+        requires_session=False,
+        writes_state=False,
+        audit_required=True,
+        replayable=True,
+        billable=True,
+        credits=10,
+        requires_confirmation=False,
+        version="1.0.0",
+    ),
+
     # half-B sibling: documents (TZ + soupis + verified note fragment) →
     # bridge passport. Deterministic extraction + assembly. When passport_id is
     # given it PERSISTS the passport to the bridge-passport store (durable JSON) —

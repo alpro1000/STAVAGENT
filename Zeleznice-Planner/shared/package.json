@@ -1,0 +1,28 @@
+{
+  "name": "@stavagent/zeleznice-shared",
+  "version": "1.0.0",
+  "description": "Shared types, KB-generated data and deterministic engine for the Zeleznice (railway svršek+spodek) kiosk",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./src/*": {
+      "types": "./src/*.ts",
+      "import": "./src/*.ts",
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "vitest": "^4.0.16"
+  }
+}

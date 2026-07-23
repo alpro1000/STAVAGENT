@@ -1,0 +1,29 @@
+{
+  "name": "@stavagent/zeleznice-backend",
+  "version": "1.0.0",
+  "description": "Backend API for the Zeleznice (railway svršek+spodek) kiosk — thin HTTP wrapper over @stavagent/zeleznice-shared",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "prepare:shared": "node ./scripts/ensure-shared-build.js",
+    "predev": "npm run prepare:shared",
+    "dev": "node server.js",
+    "prestart": "npm run prepare:shared",
+    "start": "node server.js",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+  },
+  "dependencies": {
+    "@stavagent/zeleznice-shared": "file:../shared",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0",
+    "supertest": "^7.1.4"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

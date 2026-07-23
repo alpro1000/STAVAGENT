@@ -1,0 +1,64 @@
+name: Zeleznice Planner CI
+
+on:
+  push:
+    branches: [ main, claude/** ]
+    paths:
+      - 'Zeleznice-Planner/**'
+      - '.github/workflows/zeleznice-ci.yml'
+      - 'kb/zeleznicni_*.yaml'
+      - 'scripts/gen-knowledge.mjs'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'Zeleznice-Planner/**'
+      - 'kb/zeleznicni_*.yaml'
+      - 'scripts/gen-knowledge.mjs'
+
+jobs:
+  test:
+    name: Codegen drift + Shared + Backend + Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Install root dependencies (codegen)
+        run: npm ci || npm install
+
+      - name: Knowledge codegen drift check
+        run: npm run gen:knowledge:check
+
+      - name: Install shared dependencies
+        working-directory: ./Zeleznice-Planner/shared
+        run: npm ci
+
+      - name: Type check + build shared
+        working-directory: ./Zeleznice-Planner/shared
+        run: npx tsc --noEmit && npm run build
+
+      - name: Test shared (vitest)
+        working-directory: ./Zeleznice-Planner/shared
+        run: npm test
+
+      - name: Install backend dependencies
+        working-directory: ./Zeleznice-Planner/backend
+        run: npm ci
+
+      - name: Test backend (jest)
+        working-directory: ./Zeleznice-Planner/backend
+        run: npm test
+
+      - name: Install frontend dependencies
+        working-directory: ./Zeleznice-Planner/frontend
+        run: npm ci
+
+      - name: Build frontend (tsc + vite)
+        working-directory: ./Zeleznice-Planner/frontend
+        run: npm run build
