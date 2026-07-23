@@ -29,6 +29,7 @@ import {
   OTSKP_KB_SUBPATH,
   OTSKP_DOCKER_XML_PATH,
 } from '../src/config/otskpCatalog.js';
+import { normalizeText } from '../src/utils/textNormalizer.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.join(__dirname, '../data');
@@ -50,8 +51,8 @@ const OTSKP_XML = (() => {
   // Fallback: data dir copy
   const dataPath = path.join(DATA_DIR, OTSKP_CATALOG_FILENAME);
 
-  if (fs.existsSync(dockerPath)) return dockerPath;
-  if (fs.existsSync(localPath)) return localPath;
+  if (fs.existsSync(dockerPath)) {return dockerPath;}
+  if (fs.existsSync(localPath)) {return localPath;}
   return dataPath;
 })();
 // Default = the service's working DB (unchanged). --db <path> targets a DIFFERENT
@@ -107,19 +108,19 @@ function parseSemicolonCSV(filePath) {
 
   for (const line of lines) {
     const trimmed = line.trim().replace(/\r$/, '');
-    if (!trimmed) continue;
+    if (!trimmed) {continue;}
 
     const parts = trimmed.split(';');
-    if (parts.length < 3) continue;
+    if (parts.length < 3) {continue;}
 
     const code = parts[0].trim();
     const type = parts[1].trim();
     const keywords = parts.slice(2).join(';').trim();
 
     // Skip scientific notation codes (Excel corruption)
-    if (code.includes('E+') || code.includes('e+')) continue;
+    if (code.includes('E+') || code.includes('e+')) {continue;}
     // Skip non-numeric codes
-    if (!/^\d+$/.test(code)) continue;
+    if (!/^\d+$/.test(code)) {continue;}
 
     items.push({ code, type, keywords });
   }
@@ -148,11 +149,11 @@ function getUnitFromType(type) {
 
 function loadTSKPHierarchy() {
   if (!fs.existsSync(TSKP_FULL_CSV)) {
-    log(`⚠ TSKP_KROS_full.csv not found — run: mdb-export KROS.MDB TSKP > TSKP_KROS_full.csv`);
+    log('⚠ TSKP_KROS_full.csv not found — run: mdb-export KROS.MDB TSKP > TSKP_KROS_full.csv');
     return new Map();
   }
 
-  log(`Loading TSKP hierarchy from KROS.MDB export...`);
+  log('Loading TSKP hierarchy from KROS.MDB export...');
   const content = fs.readFileSync(TSKP_FULL_CSV, 'utf-8');
   const lines = content.split('\n');
 
@@ -164,7 +165,7 @@ function loadTSKPHierarchy() {
   const urovenIdx = header.indexOf('Uroven');
 
   if (kodIdx === -1 || popisIdx === -1) {
-    log(`⚠ TSKP CSV missing Kod or PopisSkrateny columns`);
+    log('⚠ TSKP CSV missing Kod or PopisSkrateny columns');
     return new Map();
   }
 
@@ -172,7 +173,7 @@ function loadTSKPHierarchy() {
 
   for (let i = 1; i < lines.length; i++) {
     const line = lines[i].trim();
-    if (!line) continue;
+    if (!line) {continue;}
 
     // Simple CSV parse (TSKP has no commas in values, so split works)
     // But values may be quoted
@@ -186,7 +187,7 @@ function loadTSKPHierarchy() {
     }
     parts.push(current.trim());
 
-    if (parts.length <= Math.max(kodIdx, popisIdx)) continue;
+    if (parts.length <= Math.max(kodIdx, popisIdx)) {continue;}
 
     const kod = parts[kodIdx] || '';
     const popisFull = parts[popisIdx] || '';
@@ -209,7 +210,7 @@ function buildDescriptionFromTSKP(code, tskpMap) {
   for (let len = Math.min(code.length, 6); len >= 2; len--) {
     const prefix = code.substring(0, len);
     const desc = tskpMap.get(prefix);
-    if (desc) return desc;
+    if (desc) {return desc;}
   }
   return null;
 }
@@ -224,7 +225,7 @@ function loadOTSKPXml() {
     return new Map();
   }
 
-  log(`Loading OTSKP XML for cross-reference...`);
+  log('Loading OTSKP XML for cross-reference...');
   const content = fs.readFileSync(OTSKP_XML, 'utf-8');
 
   const items = new Map();
@@ -394,6 +395,14 @@ async function main() {
     // Column exists
   }
 
+  // Add search_name column if missing (Etapa 1 — folded search text; see schema.sql)
+  try {
+    await db.exec('ALTER TABLE urs_items ADD COLUMN search_name TEXT');
+    log('Added search_name column');
+  } catch (e) {
+    // Column exists
+  }
+
   if (truncate) {
     log('⚠ Truncating existing imported items...');
     await db.run('DELETE FROM urs_items WHERE is_imported = 1');
@@ -416,8 +425,8 @@ async function main() {
         try {
           await db.run(
             `INSERT INTO urs_items
-             (urs_code, urs_name, unit, description, section_code, category_path, is_imported, price, source, updated_at)
-             VALUES (?, ?, ?, ?, ?, ?, 1, ?, 'kros', datetime('now'))
+             (urs_code, urs_name, unit, description, section_code, category_path, is_imported, price, source, search_name, updated_at)
+             VALUES (?, ?, ?, ?, ?, ?, 1, ?, 'kros', ?, datetime('now'))
              ON CONFLICT(urs_code) DO UPDATE SET
                urs_name = CASE WHEN excluded.urs_name != '' AND length(excluded.urs_name) > length(urs_items.urs_name) THEN excluded.urs_name ELSE urs_items.urs_name END,
                unit = CASE WHEN excluded.unit != '' THEN excluded.unit ELSE urs_items.unit END,
@@ -426,9 +435,11 @@ async function main() {
                category_path = COALESCE(excluded.category_path, urs_items.category_path),
                price = CASE WHEN excluded.price > 0 THEN excluded.price ELSE urs_items.price END,
                is_imported = 1,
+               search_name = CASE WHEN excluded.urs_name != '' AND length(excluded.urs_name) > length(urs_items.urs_name) THEN excluded.search_name ELSE COALESCE(urs_items.search_name, excluded.search_name) END,
                updated_at = datetime('now')`,
             [item.code, item.name, item.unit, item.description,
-             item.section_code, item.category_path, item.price]
+              item.section_code, item.category_path, item.price,
+              normalizeText(`${item.name} ${item.description || ''}`)]
           );
           imported++;
         } catch (e) {

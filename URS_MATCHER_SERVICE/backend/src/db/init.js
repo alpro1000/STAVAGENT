@@ -9,6 +9,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { logger } from '../utils/logger.js';
+import { normalizeText } from '../utils/textNormalizer.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 let db = null;
@@ -183,6 +184,38 @@ async function runMigrations(db) {
       }
     } catch (error) {
       logger.warn(`[DB] Migration 2 error: ${error.message}`);
+    }
+
+    // Migration 3: search_name column (Etapa 1 — folded search text, see
+    // schema.sql). The runtime MUST own this baseline: the local door's
+    // SEARCH_EXPR references the column, and a DB that predates the new
+    // importers would otherwise error on every query — caught upstream and
+    // read as "0 candidates", i.e. the local door dies SILENTLY. Old rows
+    // stay NULL (COALESCE falls back to the legacy ASCII comparison) until
+    // an importer backfills them.
+    try {
+      const cols = await db.all("PRAGMA table_info(urs_items)");
+      if (!cols.some(c => c.name === 'search_name')) {
+        await db.exec('ALTER TABLE urs_items ADD COLUMN search_name TEXT');
+        logger.info('[DB] ✓ Migration 3: Added search_name to urs_items');
+      }
+      // Backfill NULL rows (one-time; importers write the column themselves).
+      // Without this, a pre-Etapa-1 DB would serve folded query words against
+      // raw accented names — for end-accented words («potrubí» vs folded
+      // «potrubi») that MISSES where the old mangling accidentally hit, i.e.
+      // the legacy fallback alone is NOT "no worse than before".
+      const nullRows = await db.all('SELECT id, urs_name, description FROM urs_items WHERE search_name IS NULL');
+      if (nullRows.length > 0) {
+        await db.exec('BEGIN TRANSACTION');
+        for (const r of nullRows) {
+          await db.run('UPDATE urs_items SET search_name = ? WHERE id = ?',
+            [normalizeText(`${r.urs_name || ''} ${r.description || ''}`), r.id]);
+        }
+        await db.exec('COMMIT');
+        logger.info(`[DB] ✓ Migration 3: backfilled search_name for ${nullRows.length} rows`);
+      }
+    } catch (error) {
+      logger.warn(`[DB] Migration 3 error: ${error.message}`);
     }
 
     logger.info('[DB] Migrations completed');

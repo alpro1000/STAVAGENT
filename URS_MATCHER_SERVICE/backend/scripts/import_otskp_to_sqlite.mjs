@@ -18,6 +18,7 @@ import { fileURLToPath } from 'url';
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
 import { OTSKP_KB_SUBPATH, OTSKP_DOCKER_XML_PATH } from '../src/config/otskpCatalog.js';
+import { normalizeText } from '../src/utils/textNormalizer.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -95,6 +96,10 @@ async function main() {
   } catch { /* column already exists */ }
   try {
     await db.exec('ALTER TABLE urs_items ADD COLUMN source TEXT DEFAULT "otskp"');
+  } catch { /* column already exists */ }
+  try {
+    // Etapa 1 — folded search text (see schema.sql)
+    await db.exec('ALTER TABLE urs_items ADD COLUMN search_name TEXT');
   } catch { /* column already exists */ }
 
   if (TRUNCATE) {
@@ -183,8 +188,8 @@ async function main() {
 
       try {
         await db.run(
-          `INSERT INTO urs_items (urs_code, urs_name, unit, description, section_code, category_path, price, is_imported, source, updated_at)
-           VALUES (?, ?, ?, ?, ?, ?, ?, 1, 'otskp', datetime('now'))
+          `INSERT INTO urs_items (urs_code, urs_name, unit, description, section_code, category_path, price, is_imported, source, search_name, updated_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, 1, 'otskp', ?, datetime('now'))
            ON CONFLICT(urs_code) DO UPDATE SET
              urs_name = excluded.urs_name,
              unit = excluded.unit,
@@ -194,8 +199,10 @@ async function main() {
              price = excluded.price,
              is_imported = 1,
              source = 'otskp',
+             search_name = excluded.search_name,
              updated_at = datetime('now')`,
-          [code, name, unit, spec || null, section, categoryPath, price]
+          [code, name, unit, spec || null, section, categoryPath, price,
+            normalizeText(`${name} ${spec || ''}`)]
         );
         inserted++;
       } catch (err) {

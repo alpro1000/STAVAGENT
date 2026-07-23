@@ -13,6 +13,11 @@ CREATE TABLE IF NOT EXISTS urs_items (
   section_code TEXT,                          -- Třídník prefix, e.g. '31', '32', '27'
   category_path TEXT,                         -- Hierarchy path, e.g. '3 > 31 > Zdivo'
   is_imported INTEGER DEFAULT 0,              -- 1 = from official catalog, 0 = sample/manual
+  -- Folded search text = normalizeText(urs_name + ' ' + description), written by the
+  -- importers (Etapa 1). SQLite LOWER() is ASCII-only, so LIKE on raw urs_name never
+  -- matched a diacritic-folded query word — this column makes the SQL candidate
+  -- pre-filter fold-symmetric with the query side (same normalizeText both sides).
+  search_name TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
