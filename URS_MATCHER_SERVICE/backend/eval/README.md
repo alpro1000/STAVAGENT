@@ -16,8 +16,10 @@ The OTSKP catalog version is a single env knob (facade
 `src/config/otskpCatalog.js`), so the Stage-0 baseline is **two runs on the
 same code**, differing only by catalog version:
 
-- **2025** (`2025_03_otskp.xml`, default) — what production serves today.
-- **2026** (`2026_otskp.xml` via env) — where we intend to go.
+- **2026** (`2026_otskp.xml`, default since the measured flip — +7.7 pp,
+  numbers in the facade header) — what production serves.
+- **2025** (`2025_03_otskp.xml` via env) — the previous catalog, kept as the
+  rollback/reference axis.
 
 The delta between them is the only answer to "what did the 36 new 2026
 positions do". Every run records both catalog axes + every behaviour knob, so
@@ -122,18 +124,21 @@ npm ci
 node eval/selfcheck.mjs                  # instrument sane?
 mkdir -p eval/data eval/results
 
-# Build per-version eval DBs (isolated files — the working DB is not touched):
-node scripts/import_otskp_to_sqlite.mjs --db eval/data/otskp_2025.db --truncate
-OTSKP_CATALOG_FILENAME=2026_otskp.xml OTSKP_CATALOG_VERSION="OTSKP 2026" \
-  node scripts/import_otskp_to_sqlite.mjs --db eval/data/otskp_2026.db --truncate
+# Build per-version eval DBs (isolated files — the working DB is not touched).
+# NOTE: since Etapa 1 the importers also write the folded search_name column —
+# after pulling a change to textNormalizer/importers, REBUILD the eval DBs
+# (stale DBs silently fall back to the legacy ASCII comparison via COALESCE).
+OTSKP_CATALOG_FILENAME=2025_03_otskp.xml OTSKP_CATALOG_VERSION="OTSKP 2025" \
+  node scripts/import_otskp_to_sqlite.mjs --db eval/data/otskp_2025.db --truncate
+node scripts/import_otskp_to_sqlite.mjs --db eval/data/otskp_2026.db --truncate  # 2026 = default
 
-# Baseline 2025 (current prod):
-node eval/run-corpus.mjs --mode otskp --db eval/data/otskp_2025.db \
+# Run 2025 (rollback/reference axis — env pins BOTH the importer above and the run):
+OTSKP_CATALOG_FILENAME=2025_03_otskp.xml OTSKP_CATALOG_VERSION="OTSKP 2025" \
+  node eval/run-corpus.mjs --mode otskp --db eval/data/otskp_2025.db \
   --out eval/results/otskp_2025.json eval/corpus.otskp.jsonl
 
-# Baseline 2026 — same code, env flips the in-memory OTSKP layer, --db flips SQLite:
-OTSKP_CATALOG_FILENAME=2026_otskp.xml OTSKP_CATALOG_VERSION="OTSKP 2026" \
-  node eval/run-corpus.mjs --mode otskp --db eval/data/otskp_2026.db \
+# Run 2026 (default) — same code, --db flips SQLite:
+node eval/run-corpus.mjs --mode otskp --db eval/data/otskp_2026.db \
   --out eval/results/otskp_2026.json eval/corpus.otskp.jsonl
 
 # The delta (no pipeline needed):

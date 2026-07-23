@@ -13,6 +13,7 @@ import { searchUrsSite } from './perplexityClient.js';
 import { searchCatalog } from './frontofficeClient.js';
 import { lookupLearnedMapping, learnMapping } from './concreteAgentKB.js';
 import otskpCatalogService from './otskpCatalogService.js';
+import { extractIntent } from './intentExtractor.js';
 
 const CONFIDENCE_THRESHOLDS = {
   EXACT: 0.95,
@@ -173,44 +174,62 @@ export function shouldSkipText(text) {
   return null; // Should process
 }
 
+// Folded search column with legacy fallback. search_name is written by the
+// importers via the SAME normalizeText as the query side (fold-symmetric by
+// construction — Etapa 1). Rows imported before the column existed fall back
+// to the old ASCII-only comparison (no worse than the previous behaviour).
+const SEARCH_EXPR =
+  "COALESCE(search_name, LOWER(urs_name) || ' ' || LOWER(COALESCE(description, '')))";
+
 /**
  * Match URS items using local SQLite database (39K+ items).
  * Uses SQL LIKE pre-filtering to avoid scoring all items in JS.
+ * Etapa 1: the query side is an intent structure (extractIntent) — spec/dimension
+ * phrases («dn 100», «tl 100 mm», «tr 3») run as a dedicated selective pass so
+ * generic words can never crowd their matches out of the candidate LIMIT.
  * @private
  */
 async function matchUrsItemsLocal(text) {
   try {
-    const normalized = normalizeText(text);
+    const intent = extractIntent(text);
+    const normalized = intent.normalized_text;
     const db = await getDatabase();
 
-    // Extract meaningful words (>2 chars) for SQL pre-filtering
-    const words = normalized.split(/\s+/).filter(w => w.length > 2);
+    const words = intent.search_words;
 
-    let items;
-    if (words.length > 0) {
-      // Build WHERE clause: urs_name or description LIKE %word%
-      // Use top 4 longest words for best selectivity
-      const searchWords = words
-        .sort((a, b) => b.length - a.length)
-        .slice(0, 4);
+    let items = [];
+    if (words.length > 0 || intent.search_phrases.length > 0) {
+      // Pass 1 — spec/dimension phrases (highly selective, guaranteed inclusion)
+      if (intent.search_phrases.length > 0) {
+        const phrases = intent.search_phrases.slice(0, 3);
+        const condP = phrases.map(() => `(${SEARCH_EXPR} LIKE ?)`);
+        items = await db.all(
+          `SELECT * FROM urs_items WHERE ${condP.join(' OR ')} LIMIT 200`,
+          phrases.map(p => `%${p}%`)
+        );
+      }
 
-      const conditions = searchWords.map(
-        () => '(LOWER(urs_name) LIKE ? OR LOWER(COALESCE(description, \'\')) LIKE ?)'
-      );
-      const params = searchWords.flatMap(w => [`%${w}%`, `%${w}%`]);
+      // Pass 2 — top 4 longest words (the pre-existing selectivity heuristic)
+      if (words.length > 0) {
+        const searchWords = [...words]
+          .sort((a, b) => b.length - a.length)
+          .slice(0, 4);
 
-      // Match items containing ANY of the search words, limit to 500 candidates
-      items = await db.all(
-        `SELECT * FROM urs_items WHERE ${conditions.join(' OR ')} LIMIT 500`,
-        params
-      );
+        const conditions = searchWords.map(() => `(${SEARCH_EXPR} LIKE ?)`);
+        const wordItems = await db.all(
+          `SELECT * FROM urs_items WHERE ${conditions.join(' OR ')} LIMIT 500`,
+          searchWords.map(w => `%${w}%`)
+        );
+        const seen = new Set(items.map(i => i.urs_code));
+        for (const e of wordItems) {
+          if (!seen.has(e.urs_code)) {items.push(e);}
+        }
+      }
 
       // If too few results, try broader search with shorter words
       if (items.length < 5 && words.length > 1) {
         const shortWords = words.slice(0, 2);
-        const cond2 = shortWords.map(
-          () => 'LOWER(urs_name) LIKE ?'
-        );
+        const cond2 = shortWords.map(() => `${SEARCH_EXPR} LIKE ?`);
         const params2 = shortWords.map(w => `%${w}%`);
         const extra = await db.all(
           `SELECT * FROM urs_items WHERE ${cond2.join(' OR ')} LIMIT 200`,
@@ -218,7 +237,7 @@ async function matchUrsItemsLocal(text) {
         );
         const seen = new Set(items.map(i => i.urs_code));
         for (const e of extra) {
-          if (!seen.has(e.urs_code)) items.push(e);
+          if (!seen.has(e.urs_code)) {items.push(e);}
         }
       }
     } else {
