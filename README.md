@@ -1,6 +1,6 @@
 # STAVAGENT
 
-AI-powered construction cost estimation platform for Czech and Slovak markets. Five production services on Google Cloud Run and Vercel, with an MCP Server exposing 20 tools (15 work + 5 introspection) to Claude and ChatGPT.
+AI-powered construction cost estimation platform for Czech and Slovak markets. Five production services on Google Cloud Run and Vercel, with an MCP Server exposing 24 tools (19 work + 5 introspection) to Claude and ChatGPT.
 
 **Status:** Production — active development
 **Last updated:** 2026-04-19
@@ -36,7 +36,7 @@ Built as SaaS for *přípraváři* (cost estimators) in Czech and Slovak civil c
 | `URS_MATCHER_SERVICE` | Klasifikátor stavebních prací (AI classifier kiosk) | https://klasifikator.stavagent.cz |
 | `rozpocet-registry-backend` | Registr — backend (BOQ + TOV storage) | https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app |
 | `rozpocet-registry` frontend | Registr — UI (skupiny + TOV + multi-supplier kalkulátory) | https://registry.stavagent.cz |
-| MCP Server | 20 tools (15 work + 5 ops), mounted on `concrete-agent` | `https://concrete-agent-3uxelthc4q-ey.a.run.app/mcp` |
+| MCP Server | 24 tools (19 work + 5 ops), mounted on `concrete-agent` | `https://concrete-agent-3uxelthc4q-ey.a.run.app/mcp` |
 
 All backends run on Google Cloud Run (`europe-west3`) with independent per-service CI/CD via Cloud Build. Cloud SQL PostgreSQL 15 is the single shared database host (three logical databases). Frontends deploy to Vercel.
 
@@ -57,7 +57,7 @@ All backends run on Google Cloud Run (`europe-west3`) with independent per-servi
 │ │ concrete-agent   │  │ stavagent-portal │                     │
 │ │ (core API,       │◀─│ (auth, billing,  │                     │
 │ │  MCP server,     │  │  dispatcher)     │                     │
-│ │  20 MCP tools)   │  └──────────────────┘                     │
+│ │  24 MCP tools)   │  └──────────────────┘                     │
 │ └────▲─────────────┘                                           │
 │      │ HTTP                                                    │
 │ ┌────┴─────────────┐  ┌──────────────────┐  ┌───────────────┐  │
@@ -104,7 +104,7 @@ Result: reproducible pricing that accountants and site managers can defend.
 
 STAVAGENT was designed with long-context and agentic models as first-class citizens, not a retrofit.
 
-### MCP Server — 20 tools (15 work + 5 ops)
+### MCP Server — 24 tools (19 work + 5 ops)
 
 Mounted at `/mcp` on the `concrete-agent` Cloud Run service:
 
@@ -160,7 +160,7 @@ Provider selected per task based on cost and accuracy tradeoff. Same code path f
 STAVAGENT/
 ├── concrete-agent/         # Core API + MCP server (Python FastAPI)
 │   └── packages/
-│       ├── core-backend/     # ~187 endpoints, 112 test files, 20 MCP tools (15 work + 5 ops)
+│       ├── core-backend/     # ~187 endpoints, 112 test files, 24 MCP tools (19 work + 5 ops)
 │       ├── core-frontend/    # React admin UI
 │       └── core-shared/      # TypeScript types
 ├── stavagent-portal/       # Auth + billing (Node.js + React)

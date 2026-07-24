@@ -177,6 +177,16 @@ from app.mcp.tools.railway_works import calculate_railway_works  # noqa: E402
 mcp.tool()(calculate_railway_works)
 
 
+# ── Tool 21: document→soupis pipeline (the chain as ONE deterministic call) ──
+# Runs structure → plan → decompose → export in a fixed order and returns a
+# content-addressed run_id + per-stage manifest, so a whole run is replayable
+# instead of being re-composed by whichever agent is driving.
+
+from app.mcp.tools.pipeline import run_document_to_soupis  # noqa: E402
+
+mcp.tool()(run_document_to_soupis)
+
+
 # ── Startup policy-registry validation (PR2 — AC4) ──────────────────────────
 # Every registered workflow tool MUST have a manifest. Validation runs at import
 # (server startup) and raises RegistryValidationError on drift, so the server
@@ -228,6 +238,7 @@ _REGISTERED_TOOL_NAMES = {
     "extract_tz_fields",
     "validate_drawing_element",
     "calculate_railway_works",
+    "run_document_to_soupis",
 }
 
 validate_registry(

@@ -262,6 +262,22 @@ TOOL_MANIFESTS: dict[str, ToolManifest] = {
     # First deliverable export (soupis prací). Deterministic render. writes_state
     # so it drives COMMITTED → EXPORTED; allowed in the terminal COMMITTED state
     # only via RE_EXPORT_ALLOW_LIST (policy_gateway).
+    # The pipeline runner. Not a document→export STAGE — it drives them, in a
+    # fixed order, and emits the replay manifest. Marked replayable because a
+    # run is content-addressed (same inputs + engine + catalog ⇒ same run_id).
+    "run_document_to_soupis": ToolManifest(
+        tool_name="run_document_to_soupis",
+        category=ToolCategory.RENDER,
+        side_effect_level=SideEffectLevel.DRAFT_ONLY,
+        requires_session=False,
+        writes_state=True,
+        audit_required=True,
+        replayable=True,
+        billable=True,
+        credits=40,
+        requires_confirmation=False,
+        version="1.0.0",
+    ),
     "export_soupis": ToolManifest(
         tool_name="export_soupis",
         category=ToolCategory.RENDER,

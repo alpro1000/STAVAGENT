@@ -88,6 +88,10 @@ EXPECTED_TOOLS = [
     # delegates to the canonical TS engine (planRailSection) via
     # zeleznice_delegate (monolit_delegate fail-mode contract).
     "calculate_railway_works",
+    # Tool 21 — the document→soupis pipeline as ONE deterministic call
+    # (structure → plan → decompose → export) with a content-addressed
+    # run_id + per-stage replay manifest.
+    "run_document_to_soupis",
 ]
 
 

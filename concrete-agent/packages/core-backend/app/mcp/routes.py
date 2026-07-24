@@ -1260,6 +1260,17 @@ TOOL_DESCRIPTIONS = {
         "0.99 > katalog) a osádky vč. povinných bezpečnostních rolí. "
         "catalog_only=true vrátí registr sestav/strojů/výhybek."
     ),
+    "run_document_to_soupis": (
+        "Celá pipeline dokumenty → soupis JEDNÍM voláním, v pevném pořadí: "
+        "pasport (build_bridge_passport) → plán celého SO (calculate_from_passport, "
+        "kanonický engine) → rozklad prací (create_work_breakdown, work-first) → "
+        "soupis prací XLSX (export_soupis). Vrací obsahově adresovaný `run_id` a "
+        "manifest po stadiích (sha256 vstupu/výstupu každého stadia), takže stejné "
+        "vstupy + stejný engine + stejná verze katalogu dají stejný výsledek a běh "
+        "je přehratelný. Přeskočené i selhané stadium je v manifestu vždy uvedeno "
+        "s důvodem — nikdy tiše nechybí. Rozklad a export jsou volitelné "
+        "(with_breakdown / with_export)."
+    ),
 }
 
 # Canonical tool order (matches app/mcp/server.py registration order).
@@ -1287,6 +1298,7 @@ TOOL_ORDER = [
     "extract_tz_fields",
     "validate_drawing_element",
     "calculate_railway_works",
+    "run_document_to_soupis",
 ]
 
 

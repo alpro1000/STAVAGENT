@@ -35,7 +35,7 @@ export const OTSKP_CATALOG_VERSION =
 
 // Informational expected item count for the DEFAULT (2026 SFDI) catalog. Not
 // enforced — only sanity logging; the real count comes from the parsed XML.
-// (2025_03 was 17 940.)
+// (2025_03 was 17 904.)
 export const OTSKP_CATALOG_EXPECTED_ITEMS = Number(
   process.env.OTSKP_CATALOG_EXPECTED_ITEMS || 17940
 );
