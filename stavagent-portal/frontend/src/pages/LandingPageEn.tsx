@@ -33,7 +33,7 @@ import {
   ArrowRight, LogIn, User, Calculator, HardHat, Building2, Landmark,
   TableProperties, FileSearch, Link, Cpu, Upload,
   FileOutput, Database, Brain, ChevronDown, ChevronUp,
-  Check, Mail, Code, Info,
+  Check, Mail, Code, Info, Train,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useHeadMeta } from '../hooks/useHeadMeta';
@@ -163,6 +163,17 @@ const MODULES = [
       '30 formwork systems (DOKA, PERI, ULMA, NOE, traditional), 24 element types, ČSN EN 13670 + TKP 18 + DIN 18218 compliant',
     ],
     cta: 'Open Kalkulátor', href: 'https://kalkulator.stavagent.cz', external: true,
+  },
+  {
+    icon: Train,
+    title: 'Železnice — railway track & subgrade',
+    desc: 'A standalone domain kiosk. Decomposes a railway section from track length × superstructure assembly — not from concrete volume. Sleeper spacing table, rails and fastenings, turnouts, continuous welded rail, ballast from the cross-profile, machinery deployment by working mode.',
+    bullets: [
+      'Sleeper distribution per ÚRS 824-1, rails per EN 13674-1, fastening sets per node',
+      'Continuous welded rail as a chain (prep → welding → clamping at 17–23 °C → closure welds → survey), turnouts counted per piece',
+      'Machine output by working mode from SŽ technical sheets; no norm = honestly NOT CALCULATED (no AI guessing)',
+    ],
+    cta: 'Open Železnice', href: 'https://zeleznice.stavagent.cz', external: true,
   },
 ];
 
@@ -442,7 +453,7 @@ export default function LandingPageEn() {
       <section id="modules" style={sectionStyle()}>
         <h2 style={h2Style}>What StavAgent does</h2>
         <p style={subtitleStyle}>
-          Three connected tools for the entire estimator workflow.
+          Three connected tools for the estimator workflow — plus a standalone railway kiosk.
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           {MODULES.map((m, i) => (
