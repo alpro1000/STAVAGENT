@@ -309,8 +309,54 @@ async function matchUrsItemsLocal(text) {
 }
 
 /**
+ * Build the SHORT frontoffice query from intent fields (SPEC §5.2 Level 1).
+ *
+ * The live frontoffice /v1/search answers EMPTY for long verbatim estimate
+ * lines (measured: 0/47 corpus lines answered, all calls resolved 200) — the
+ * engine indexes catalog names, not whole-sentence queries. The intent
+ * structure names WHAT to ask: action + object head words + the production-
+ * method token (ručně/strojně — the differentiator that separates whole code
+ * families). RAW tokens (with diacritics) are sent — the catalog server is the
+ * authority on Czech, folding is OUR internal convention only.
+ *
+ * Returns null when the text is already short (≤5 significant tokens — the
+ * legacy full-text call behaves identically) or when the intent is too empty
+ * to build a meaningful query (< 2 tokens) — callers then use the full text,
+ * i.e. exact-code lookups and short lines are untouched.
+ *
+ * Exported for tests (pure).
+ */
+export function buildFrontofficeQuery(text, intent) {
+  const rawTokens = String(text || '').split(/\s+/).filter(Boolean);
+  const significant = rawTokens.filter(t => normalizeText(t).length > 2);
+  if (significant.length <= 5) {return null;}
+
+  const actionStem = intent.action?.value || null;
+  const objectWords = new Set(intent.object ? intent.object.value.split(' ') : []);
+  const methodRe = /^(?:rucn|strojn)(?:e|i|im|iho|ich)$/;
+
+  const picked = [];
+  for (const raw of rawTokens) {
+    const folded = normalizeText(raw);
+    if (!folded || folded.length < 2) {continue;}
+    const isAction = actionStem && folded.startsWith(actionStem);
+    const isObject = objectWords.has(folded);
+    const isMethod = methodRe.test(folded);
+    if ((isAction || isObject || isMethod) && !picked.includes(raw)) {
+      picked.push(raw);
+      if (picked.length === 5) {break;}
+    }
+  }
+  return picked.length >= 2 ? picked.join(' ') : null;
+}
+
+/**
  * Match URS items against the real ÚRS catalog via the frontoffice JSON API.
  * Deterministic, non-web (confidence 1.0 on an exact code). Fails soft to [].
+ * §5.2 Level 1: long lines query with the SHORT intent-derived query; the
+ * returned catalog family (siblings differing by method/compaction/band) is
+ * re-ranked by similarity to the FULL original description, so the right
+ * sibling — not the engine's relevance-to-two-words — lands on top.
  * @private
  */
 async function matchUrsItemsFrontoffice(text) {
@@ -319,8 +365,28 @@ async function matchUrsItemsFrontoffice(text) {
     return [];
   }
   try {
-    const items = await searchCatalog(text, { limit: 20 });
-    return items.slice(0, 5);
+    const intent = extractIntent(text);
+    const shortQuery = buildFrontofficeQuery(text, intent);
+    const items = await searchCatalog(shortQuery || text, { limit: 20 });
+    if (items.length === 0) {return [];}
+
+    const normFull = intent.normalized_text || normalizeText(text);
+    const scored = items.map(it => ({
+      ...it,
+      name_similarity: Number(calculateSimilarity(
+        normFull, normalizeText(it.full_description || it.description || '')
+      ).toFixed(3)),
+    }));
+    // Keep the catalog-scale confidence tiers (exact 1.0 / variant 0.9 /
+    // text-hit 0.8|0.75); similarity to the full line decides INSIDE a tier.
+    scored.sort((a, b) => {
+      const ar = a.item_type === 'REFERENTIAL' ? 0 : 1;
+      const br = b.item_type === 'REFERENTIAL' ? 0 : 1;
+      if (ar !== br) {return ar - br;}
+      if (b.confidence !== a.confidence) {return b.confidence - a.confidence;}
+      return b.name_similarity - a.name_similarity;
+    });
+    return scored.slice(0, 5);
   } catch (error) {
     logger.error(`[URSMatcher] Frontoffice matching error: ${error.message}`);
     return [];
