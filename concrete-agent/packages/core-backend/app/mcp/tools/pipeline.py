@@ -81,6 +81,54 @@ def _is_error(result) -> bool:
     return isinstance(result, dict) and bool(result.get("error"))
 
 
+# OOXML files embed the wall clock: every ZIP entry carries a modification
+# time and `docProps/core.xml` carries <dcterms:created>. Two renders of the
+# SAME rows therefore differ byte-for-byte if they happen in different seconds
+# — which would make a replayed run's `stages_sha256` drift for reasons that
+# have nothing to do with the numbers. Found by running the pipeline twice for
+# real: 7529 vs 7528 bytes across two invocations, identical within one.
+_VOLATILE_OOXML_MEMBERS = frozenset({"docProps/core.xml"})
+
+
+def _stable_export_view(soupis: dict) -> dict:
+    """Replace the volatile XLSX blob with a clock-independent content digest.
+
+    The digest covers every archive member except the timestamp-bearing ones,
+    and ignores ZIP metadata entirely — so it still changes when a row, a
+    value or a column changes, but not merely because the clock moved.
+    """
+    if not isinstance(soupis, dict):
+        return soupis
+    view = {k: v for k, v in soupis.items() if k != "file_base64"}
+    blob = soupis.get("file_base64")
+    if not blob:
+        return view
+
+    import base64
+    import hashlib
+    import io
+    import zipfile
+
+    try:
+        raw = base64.b64decode(blob)
+        digest = hashlib.sha256()
+        with zipfile.ZipFile(io.BytesIO(raw)) as zf:
+            for name in sorted(zf.namelist()):
+                if name in _VOLATILE_OOXML_MEMBERS:
+                    continue
+                digest.update(name.encode("utf-8"))
+                digest.update(zf.read(name))
+        view["content_sha256"] = digest.hexdigest()
+    except Exception:
+        # Not an archive (or unreadable) — fall back to hashing the bytes we
+        # got. Honest: a non-reproducible digest is better than pretending the
+        # payload was not there.
+        import hashlib as _h
+
+        view["content_sha256"] = _h.sha256(str(blob).encode("utf-8")).hexdigest()
+    return view
+
+
 def _elements_from_plan(plan: dict) -> list[dict]:
     """Canonical element list for decomposition = the engine mapper's output.
 
@@ -159,9 +207,17 @@ async def run_document_to_soupis(
     }
     run = start_run(inputs, catalog_version=_catalog_version())
 
+    # Results of stages that already succeeded. Carried into a failure response
+    # too: a caller who paid for the whole run should not lose three finished
+    # stages because the fourth failed, and re-running is not free. The `error`
+    # + `stage` fields make the incompleteness unmistakable, and the manifest
+    # proves exactly which stages produced these.
+    out: dict = {"run_id": run.run_id}
+
     def _fail(stage: str, result) -> dict:
-        """Stop the chain, report the failing stage verbatim."""
+        """Stop the chain, report the failing stage verbatim, keep partials."""
         return {
+            **out,
             "error": (result or {}).get("error", "stage_failed"),
             "stage": stage,
             "detail": result,
@@ -196,6 +252,7 @@ async def run_document_to_soupis(
         input_obj=passport_args,
         output_obj=passport,
     )
+    out["passport"] = passport
 
     # The passport tool wraps its emit; the plan stage needs the passport body.
     passport_body = passport.get("passport") if isinstance(passport, dict) else None
@@ -220,12 +277,7 @@ async def run_document_to_soupis(
         input_obj=passport_body,
         output_obj=plan,
     )
-
-    out: dict = {
-        "run_id": run.run_id,
-        "passport": passport,
-        "plan": plan,
-    }
+    out["plan"] = plan
 
     # ── Stage 3: decompose — elements → work items (work-first) ─────────────
     elements = _elements_from_plan(plan)
@@ -306,7 +358,9 @@ async def run_document_to_soupis(
             tool="export_soupis",
             status=STATUS_OK,
             input_obj=export_args,
-            output_obj=soupis,
+            # Hash the clock-independent view, not the raw XLSX bytes — see
+            # _stable_export_view. The caller still gets the real file below.
+            output_obj=_stable_export_view(soupis),
         )
         out["soupis"] = soupis
 

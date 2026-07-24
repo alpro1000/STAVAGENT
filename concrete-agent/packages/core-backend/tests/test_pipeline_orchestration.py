@@ -87,6 +87,53 @@ def test_run_id_changes_with_inputs_and_with_catalog_version():
     assert a.run_id != c.run_id, "a different catalog vintage is a different result"
 
 
+def _xlsx_like(sheet_bytes: bytes, *, created: str, zip_date) -> str:
+    """Minimal OOXML-shaped archive with a wall clock baked in, base64'd."""
+    import base64
+    import io
+    import zipfile
+
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as zf:
+        zf.writestr(
+            zipfile.ZipInfo("docProps/core.xml", date_time=zip_date),
+            f"<cp:coreProperties><dcterms:created>{created}</dcterms:created>"
+            f"</cp:coreProperties>",
+        )
+        zf.writestr(
+            zipfile.ZipInfo("xl/worksheets/sheet1.xml", date_time=zip_date),
+            sheet_bytes,
+        )
+    return base64.b64encode(buf.getvalue()).decode()
+
+
+def test_export_digest_ignores_the_embedded_clock_but_not_the_content():
+    """OOXML bakes in a timestamp; replay must not drift because of it.
+
+    Found by running the pipeline for real — the same rows rendered 7529 vs
+    7528 bytes across two invocations (identical within one), which would have
+    made `stages_sha256` unreproducible for any run that exports.
+    """
+    rows = b"<sheetData><row><c><v>693.35</v></c></row></sheetData>"
+
+    early = {"row_count": 1, "file_base64": _xlsx_like(
+        rows, created="2026-07-24T18:35:06Z", zip_date=(2026, 7, 24, 18, 35, 6))}
+    later = {"row_count": 1, "file_base64": _xlsx_like(
+        rows, created="2031-01-01T00:00:00Z", zip_date=(2031, 1, 1, 0, 0, 0))}
+    changed = {"row_count": 1, "file_base64": _xlsx_like(
+        b"<sheetData><row><c><v>999.99</v></c></row></sheetData>",
+        created="2026-07-24T18:35:06Z", zip_date=(2026, 7, 24, 18, 35, 6))}
+
+    d_early = pipe._stable_export_view(early)["content_sha256"]
+    d_later = pipe._stable_export_view(later)["content_sha256"]
+    d_changed = pipe._stable_export_view(changed)["content_sha256"]
+
+    assert d_early == d_later, "clock movement must not change the digest"
+    assert d_early != d_changed, "a changed value MUST change the digest"
+    # The volatile blob itself never reaches the manifest.
+    assert "file_base64" not in pipe._stable_export_view(early)
+
+
 # ── Orchestration ───────────────────────────────────────────────────────────
 
 
@@ -187,6 +234,10 @@ async def test_failing_stage_stops_chain_and_is_reported(monkeypatch, stub_stage
     # Downstream stages must NOT have run — no fabricated numbers past a failure.
     assert "decompose" not in stub_stages and "export" not in stub_stages
     assert "plan" not in out and "breakdown" not in out
+    # ...but the stage that DID succeed is still returned: the caller paid for
+    # the whole run and should not have to redo finished work. `error` + `stage`
+    # keep the incompleteness unmistakable.
+    assert out["passport"] == _PASSPORT
 
     by_name = {s["name"]: s for s in out["manifest"]["stages"]}
     assert by_name["plan"]["status"] == "failed"
@@ -194,6 +245,35 @@ async def test_failing_stage_stops_chain_and_is_reported(monkeypatch, stub_stage
     # The manifest still shows how far the run got.
     assert by_name["structure"]["status"] == "ok"
     assert out["run_id"].startswith("run-")
+
+
+@pytest.mark.asyncio
+async def test_failed_export_still_returns_the_finished_breakdown(monkeypatch, stub_stages):
+    """A late failure must not throw away three stages the caller paid for.
+
+    Found by running the pipeline for real: the XLSX renderer blew up and the
+    response came back with the passport, plan and breakdown discarded, forcing
+    a full re-run of work that had already succeeded.
+    """
+    async def failing_export(**kwargs):
+        stub_stages.append("export")
+        return {"error": "render_failed", "message": "openpyxl missing"}
+
+    monkeypatch.setattr(pipe, "_EXPORT", failing_export)
+    out = await pipe.run_document_to_soupis(
+        tz_text="TZ", with_breakdown=True, with_export=True
+    )
+
+    assert out["error"] == "render_failed"
+    assert out["stage"] == "export"
+    # Everything that finished is still in hand.
+    assert out["passport"] == _PASSPORT
+    assert out["plan"] == _PLAN
+    assert out["breakdown"] == _BREAKDOWN
+    assert "soupis" not in out
+    by_name = {s["name"]: s for s in out["manifest"]["stages"]}
+    assert by_name["decompose"]["status"] == "ok"
+    assert by_name["export"]["status"] == "failed"
 
 
 @pytest.mark.asyncio
