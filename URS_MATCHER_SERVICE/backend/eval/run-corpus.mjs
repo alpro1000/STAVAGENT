@@ -73,17 +73,17 @@ export function parseCorpus(filePath, { mode } = {}) {
   raw.split('\n').forEach((line, idx) => {
     const fileLine = idx + 1;
     const l = line.trim();
-    if (!l || l.startsWith('//')) return;
+    if (!l || l.startsWith('//')) {return;}
     let row;
     try {
       row = JSON.parse(l);
     } catch (e) {
       throw new Error(`${filePath}:${fileLine}: invalid JSON — ${e.message}`);
     }
-    if (!row.id) throw new Error(`${filePath}:${fileLine}: missing id`);
-    if (seenIds.has(row.id)) throw new Error(`${filePath}:${fileLine}: duplicate id "${row.id}"`);
+    if (!row.id) {throw new Error(`${filePath}:${fileLine}: missing id`);}
+    if (seenIds.has(row.id)) {throw new Error(`${filePath}:${fileLine}: duplicate id "${row.id}"`);}
     seenIds.add(row.id);
-    if (!row.description) throw new Error(`${filePath}:${fileLine} (${row.id}): missing description`);
+    if (!row.description) {throw new Error(`${filePath}:${fileLine} (${row.id}): missing description`);}
     if (!('expected_code' in row)) {
       throw new Error(`${filePath}:${fileLine} (${row.id}): missing expected_code (use null for a "nonexistent" line)`);
     }
@@ -158,7 +158,7 @@ export async function runRows(rows, { matcher, skipCheck = null, onlineCounter =
   // Sequential ON PURPOSE: web sources are rate-limited, and per-row
   // online-call attribution against the single shared counter is only correct
   // one row at a time. Do not parallelize.
-  for (const row of rows) results.push(await runOne(matcher, skipCheck, row, onlineCounter));
+  for (const row of rows) {results.push(await runOne(matcher, skipCheck, row, onlineCounter));}
   return results;
 }
 
@@ -182,7 +182,7 @@ export function computeMetrics(results) {
   const fabricated = honestyPool.filter((r) => r.top_code !== null).length;
   const honest = honestyPool.filter((r) => r.top_code === null).length;
   const totalOnline = results.reduce((s, r) => s + (r.online_calls || 0), 0);
-  const pct = (n, d) => (d === 0 ? null : +(n / d).toFixed(4));
+  const pct = (n, d) => (d === 0 ? null : Number((n / d).toFixed(4)));
   return {
     n_lines: results.length,
     n_errors: errors.length,
@@ -221,7 +221,7 @@ export function compare(a, b) {
     delta[k] = {
       a: va,
       b: vb,
-      delta: va == null || vb == null ? null : +(vb - va).toFixed(4),
+      delta: va == null || vb == null ? null : Number((vb - va).toFixed(4)),
       direction: METRIC_DIRECTION[k],
     };
   }
@@ -282,7 +282,7 @@ async function cliRun(argv) {
   const allowIncomplete = argv.includes('--allow-incomplete');
   const positional = argv.filter((x, i) => !x.startsWith('--') && argv[i - 1] !== '--mode' && argv[i - 1] !== '--db' && argv[i - 1] !== '--out');
   const corpusPath = positional[0];
-  if (!corpusPath || !mode || !['otskp', 'urs'].includes(mode) || !dbArg) usage();
+  if (!corpusPath || !mode || !['otskp', 'urs'].includes(mode) || !dbArg) {usage();}
 
   const rows = parseCorpus(corpusPath, { mode });
   if (!allowIncomplete && !rows.some((r) => r.category === 'nonexistent')) {
@@ -311,8 +311,15 @@ async function cliRun(argv) {
   // Fetch spy: counts RESOLVED requests to the exact online-source hosts (a
   // failed/offline attempt is not a served online call; attempts are recorded
   // separately). Handles string / URL / Request arguments.
+  // HTTP-status breakdown is recorded too ("молчание ≠ успех", third
+  // occurrence of the class — this time in the meter itself): a proxy that
+  // refuses egress with 403 still RESOLVES the fetch, and a run full of
+  // proxy-403s used to read as "the channel was consulted". online_status
+  // makes a blocked channel visible in the run record: all-4xx = the online
+  // door was never actually reachable, whatever the resolved count says.
   let resolved = 0;
   let attempts = 0;
+  const statusCounts = {};
   const origFetch = globalThis.fetch;
   globalThis.fetch = (input, ...rest) => {
     let host = '';
@@ -321,9 +328,15 @@ async function cliRun(argv) {
       host = raw ? new URL(raw).hostname : '';
     } catch { /* counting must never break a run */ }
     const counted = onlineHosts.has(host);
-    if (counted) attempts += 1;
+    if (counted) {attempts += 1;}
     const p = origFetch(input, ...rest);
-    if (counted) p.then(() => { resolved += 1; }, () => {});
+    if (counted) {
+      p.then((res) => {
+        resolved += 1;
+        const s = String(res?.status ?? 'unknown');
+        statusCounts[s] = (statusCounts[s] || 0) + 1;
+      }, () => {});
+    }
     return p;
   };
 
@@ -363,6 +376,7 @@ async function cliRun(argv) {
       urs_local_conf_floor: process.env.URS_LOCAL_CONF_FLOOR || '(default: MEDIUM 0.6)',
       db: { path: dbPath, urs_items_count: count },
       online_attempts: attempts,
+      online_status: statusCounts,
     },
     metrics: computeMetrics(results),
     results,
@@ -380,7 +394,7 @@ const isMain = process.argv[1] && import.meta.url === pathToFileURL(path.resolve
 if (isMain) {
   const argv = process.argv.slice(2);
   if (argv[0] === '--compare') {
-    if (argv.length !== 3) usage();
+    if (argv.length !== 3) {usage();}
     try {
       const a = JSON.parse(fs.readFileSync(argv[1], 'utf-8'));
       const b = JSON.parse(fs.readFileSync(argv[2], 'utf-8'));
