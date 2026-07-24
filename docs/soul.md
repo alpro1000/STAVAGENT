@@ -3579,6 +3579,16 @@ flat `severity` column, so the table schema does not change again.
 
 **Co dál:** Gate 7 dle `docs/specs/zeleznicni-svrsek-spodek/tasks.md` — deploy → živý MCP test → golden objekt → katalogové kódy (824-1/ÚOŽI/OTSKP ŽS) → TZ-extraction vstup → spodek deterministika z příčných řezů → RCPSP/Portal integrace.
 
+## 2026-07-24 — Session: Zeleznice kiosk DEPLOY + 2. dávka Přílohy A + Portal karta (v4.43 follow-up)
+
+**Rozhodnuto:** (1) **Deploy hotový a živě ověřený** — Cloud Run `zeleznice-planner-api` (build SUCCESS, `/health` → `{"status":"ok","service":"zeleznice-planner-api","engine_version":"1.0.0"}`), Vercel frontend živě (`stavagent-tau.vercel.app`, cílová doména `zeleznice.stavagent.cz` — CNAME + Vercel attach na straně Alexandra), **živý MCP `calculate_railway_works` přes prod CORE→kiosk vrátil plný RailPlanResult** (1680 pražců/km, 120.42 t EN 13674-1, svary, lože preset ⚠️, BK řetězec, honest NEPOČÍTÁNO pro null-normy) → Gate 7 live-MCP acceptance uzavřena. (2) **2. dávka Přílohy A** (PR #1546, merge-commit): S8/3 příloha III/15 **SVM 1000 CZ** = první předpisová norma v enginu (stroj `svm_1000_cz`, 400 m/h conf 0.85, osádka 12, R≥300 m — vložen PŘED `pokladac_kolejovych_poli` aby ho auto-pick vzal); + Výjimka č. 45 z S3, svářečský postup P-NA-M-04/2021 (sken, vision), skriptum Plášek VUT — vše do `concrete-agent/.../knowledge_base/B{6,7,9}_*` s METADATA. (3) **Portal karta Železnice** (PR #1548, merge-commit `4052ecf`): šestý kiosk viditelný v dispečeru (`PortalPage` SERVICES) + na landing CZ/EN (`MODULES` 4. karta, podnadpis „…a samostatný kiosk pro železnici") + `KioskLinksPanel`/`ProjectCard` KIOSK_META (union `kiosk_type` +`'zeleznice'`); icon `Train` (lucide 0.263.1 nemá TrainFront/TrainTrack — ověřeno); tsc + vite build čisté; CI zelené.
+
+**Odmítnuto:** ikona TrainFront/TrainTrack (v nainstalované lucide-react 0.263.1 neexistují — místo odhadu ověřeno proti balíčku); zařazení železnice do „propojeného betonářského tria" na landingu (je to samostatný obor, v1 bez Portal integrace — podnadpis to říká poctivě); squash merge (Pattern 12 — oba PR merge-commitem).
+
+**Otevřené otázky:** doména `zeleznice.stavagent.cz` — čeká na Alexandrův Vercel attach + DNS CNAME (`zeleznice` → `cname.vercel-dns.com`); karta na tuto subdoménu už odkazuje, link naskočí po propagaci. Gate 7 zbytek (blokováno na Alexandrovi): situace+podélný profil P137, zbytek Přílohy A (S3 díly, S3/1-2-5, S4, další S8/3 listy ASP/čistička/stabilizátor/pluh, TKP kap. 8, **ÚRS 824-1 příloha „Rozdělení pražců"** — cs-urs.cz 403 anti-bot, stáhnout ručně, třídník ŽS) → nahradit orientační hodnoty + golden celého řetězce vs P137 soupis-etalon + katalogové kódy not_verified→candidate/exact.
+
+**Co dál:** po propagaci domény ověřit živý odkaz z Portalu; po dodání zbytku Přílohy A + situace/profilu P137 → kalibrace KB + golden full-chain test.
+
 ---
 
 ## 10. Document metadata
