@@ -17,7 +17,7 @@ import { API_URL } from '../../services/api';
 
 interface KioskLink {
   link_id: string;
-  kiosk_type: 'monolit' | 'registry' | 'urs_matcher';
+  kiosk_type: 'monolit' | 'registry' | 'urs_matcher' | 'zeleznice';
   kiosk_project_id: string;
   status: 'active' | 'inactive';
   last_sync?: string;
@@ -35,6 +35,7 @@ const KIOSK_META: Record<string, { label: string; icon: string; color: string; u
   monolit: { label: 'Kalkulátor betonáže', icon: 'Hexagon', color: '#6366f1', url: 'https://kalkulator.stavagent.cz' },
   registry: { label: 'Registr Rozpočtů', icon: 'BarChart3', color: '#f59e0b', url: 'https://registry.stavagent.cz' },
   urs_matcher: { label: 'Klasifikátor stavebních prací', icon: 'Search', color: '#22c55e', url: 'https://klasifikator.stavagent.cz' },
+  zeleznice: { label: 'Železnice — svršek a spodek', icon: 'Train', color: '#0891b2', url: 'https://zeleznice.stavagent.cz' },
 };
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────

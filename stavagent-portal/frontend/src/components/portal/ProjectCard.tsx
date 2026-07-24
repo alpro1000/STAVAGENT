@@ -64,6 +64,12 @@ const KIOSK_META: Record<string, { label: string; icon: string; buildUrl: (link:
     buildUrl: (link, portalId) =>
       withAuth(`https://klasifikator.stavagent.cz/?project_id=${link.kiosk_project_id}&portal_project=${portalId}`),
   },
+  zeleznice: {
+    label: 'Železnice — svršek a spodek',
+    icon: 'Train',
+    buildUrl: (link, portalId) =>
+      withAuth(`https://zeleznice.stavagent.cz/?project_id=${link.kiosk_project_id}&portal_project=${portalId}`),
+  },
 };
 
 const PROJECT_TYPE_META: Record<string, { label: string; icon: string }> = {

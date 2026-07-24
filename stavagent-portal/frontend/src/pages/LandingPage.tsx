@@ -9,7 +9,7 @@ import {
   ArrowRight, LogIn, User, Calculator, HardHat, Building2, Landmark,
   TableProperties, FileSearch, Link, Cpu, Upload,
   Search, FileOutput, Database, Brain, ChevronDown, ChevronUp,
-  Check, Mail, Code, Info,
+  Check, Mail, Code, Info, Train,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useHeadMeta } from '../hooks/useHeadMeta';
@@ -119,6 +119,16 @@ const MODULES = [
       '30 systémů bednění (DOKA, PERI, ULMA, NOE, tradiční), 24 typů prvků',
     ],
     cta: 'Otevřít Kalkulátor', href: 'https://kalkulator.stavagent.cz', external: true,
+  },
+  {
+    icon: Train, title: 'Železnice — svršek a spodek',
+    desc: 'Samostatný oborový kiosk. Rozklad železniční trati z délky koleje a sestavy svršku — ne z objemu betonu. Rozdělení pražců, kolejnice a upevnění, výhybky, bezstyková kolej, lože z příčného profilu, nasazení mechanizace podle režimu.',
+    bullets: [
+      'Rozdělení pražců podle ÚRS 824-1, kolejnice EN 13674-1, upevňovací komplety per uzel',
+      'Bezstyková kolej jako řetězec (příprava → svařování → upnutí 17–23 °C → závěrné svary → měření), výhybky kusově',
+      'Výkon strojů podle režimu z technologických listů SŽ; bez normy = poctivě NEPOČÍTÁNO (žádný AI odhad)',
+    ],
+    cta: 'Otevřít Železnici', href: 'https://zeleznice.stavagent.cz', external: true,
   },
 ];
 
@@ -380,7 +390,7 @@ export default function LandingPage() {
       <section id="moduly" style={sectionStyle()}>
         <h2 style={h2Style}>Co StavAgent umí</h2>
         <p style={subtitleStyle}>
-          Tři propojené nástroje pro celý workflow přípraváře.
+          Tři propojené nástroje pro workflow přípraváře — a samostatný kiosk pro železnici.
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           {MODULES.map((m, i) => (

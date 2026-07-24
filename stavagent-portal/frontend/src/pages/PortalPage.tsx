@@ -110,6 +110,17 @@ const SERVICES: Service[] = [
     status: 'active',
     tags: ['Čerpadlo', 'Porovnání', 'Příplatky', 'Kalendář']
   },
+  // Samostatný oborový kiosk (mimo betonářský workflow) — deterministický
+  // rozklad železničního svršku + spodku z délky koleje × sestavy.
+  {
+    id: 'zeleznice-planner',
+    name: 'Železnice — svršek a spodek',
+    description: 'Deterministický rozklad železniční trati z délky koleje × sestavy svršku. Rozdělení pražců (ÚRS 824-1), kolejnice a upevnění, výhybky kusově, bezstyková kolej (řetězec svařování), lože z příčného profilu, mechanizace podle režimu. Každé číslo se vzorcem a zdrojem.',
+    icon: 'Train',
+    url: 'https://zeleznice.stavagent.cz',
+    status: 'active',
+    tags: ['Svršek', 'Spodek', 'Pražce', 'Výhybky', 'BK', 'Mechanizace']
+  },
   // ===== BETA =====
   {
     id: 'document-analysis',
