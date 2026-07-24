@@ -10,7 +10,7 @@
  *
  * RTS / unknown: name-based fallback via detectWorkTypeFromName.
  *
- * Reference: OTSKP catalog (17,904 entries), URS classification system.
+ * Reference: OTSKP catalog (17,940 entries), URS classification system.
  */
 
 // ─── Types ──────────────────────────────────────────────────────────────────

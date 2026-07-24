@@ -115,7 +115,7 @@ StavAgent is a distributed system for construction cost estimation, audit, and c
 
 **Key Responsibilities**:
 - **Excel import**: Parse construction cost estimates from uploaded files
-- **OTSKP integration**: 17,904 Czech construction codes with accent-insensitive search
+- **OTSKP integration**: 17,940 Czech construction codes with accent-insensitive search
 - **Cost normalization**: Convert m², kg, ks → CZK/m³ of concrete element
 - **KROS calculation**: Proper rounding (step 50 CZK)
 - **Duration estimation**: Calculate project timeline in months/weeks
@@ -126,7 +126,7 @@ StavAgent is a distributed system for construction cost estimation, audit, and c
 - Database: PostgreSQL (or SQLite for dev)
 - Excel Processing: exceljs, xlsx
 - HTTP Client: Axios
-- OTSKP Data: 17,904 codes with local search
+- OTSKP Data: 17,940 codes with local search
 
 **Frontend Tech Stack**:
 - Framework: React 18 + TypeScript

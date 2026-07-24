@@ -144,7 +144,7 @@
 - 25 formwork systémů
 - 23 typů konstrukčních prvků (9 mostních + 13 pozemních + transport)
 - 921+ engineering tests → 1036+ po Gate 2
-- OTSKP database 17 904 položek
+- OTSKP database 17 940 položek
 - Pile engine: Ø600/900/1200/1500 × 4 geologie × 3 metody
 
 **Точность:** ±10-15% (orientational). Finální rozhodnutí zůstává у přípraváře / statika.

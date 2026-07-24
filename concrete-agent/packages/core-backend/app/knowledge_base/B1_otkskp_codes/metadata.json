@@ -3,7 +3,7 @@
   "last_updated": "2026-07-19",
   "version": "2.0",
   "source": "Cenová soustava OTSKP 2026 (SFDI otevřený formát)",
-  "description": "OTSKP cost catalogue — 2026 SFDI open format (17 940 items). Legacy 2025_03_otskp.xml (17 904) retained only as a test fixture.",
+  "description": "OTSKP cost catalogue — 2026 SFDI open format (17 940 items). Legacy 2025_03_otskp.xml (17 940) retained only as a test fixture.",
   "files": [
     "2026_otskp.xml",
     "xmk_tskp_tridnik.xml"

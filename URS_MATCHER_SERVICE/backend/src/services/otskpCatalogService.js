@@ -3,7 +3,7 @@
  * Parses the configured OTSKP catalog XML (Cenová soustava OTSKP) and provides
  * search/lookup — codes, names, units, prices, technical specifications. The
  * catalog filename + version come from the single source of truth in
- * config/otskpCatalog.js (default 2025_03 / 17 904; 2026 SFDI / ~17 940 via env).
+ * config/otskpCatalog.js (default 2025_03 / 17 940; 2026 SFDI / ~17 940 via env).
  *
  * Structure: XC4 → CenoveSoustavy → Polozky → Polozka[]
  * Each Polozka: { znacka (code), nazev (name), MJ (unit), jedn_cena (price), technicka_specifikace }

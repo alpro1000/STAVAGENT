@@ -104,7 +104,7 @@
 
 ### 4.2 Local (knowledge)
 
-- **OTSKP SQLite:** `concrete-agent/packages/core-backend/app/knowledge_base/B1_*/otskp.db` (17 904 položek)
+- **OTSKP SQLite:** `concrete-agent/packages/core-backend/app/knowledge_base/B1_*/otskp.db` (17 940 položek)
 - **URS local cache (P0 roadmap, zatím neexistuje):** plánovaný local cache 6-8K stažených ÚRS položek, 10× speedup vs HTTP
 
 ### 4.3 Co se **NEPOUŽÍVÁ**

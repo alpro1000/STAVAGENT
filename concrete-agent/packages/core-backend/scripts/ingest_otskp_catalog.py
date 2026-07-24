@@ -258,7 +258,7 @@ def main(argv=None) -> int:
 
     n = build_sqlite(items, args.db_out, version)
     logger.info("Wrote %d items to %s (catalog_version=%r).", n, args.db_out, version)
-    logger.info("NOTE: tool descriptions cite the item count — update if it changed (was 17,904).")
+    logger.info("NOTE: tool descriptions cite the item count — update if it changed (was 17,940).")
 
     if args.index:
         written = index_pgvector(items, version)

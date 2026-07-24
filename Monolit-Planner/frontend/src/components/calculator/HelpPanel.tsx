@@ -239,7 +239,7 @@ export default function HelpPanel({ onClose }: HelpPanelProps) {
                 <li><strong>ČSN EN 12812</strong> — Podpěrná lešení — Požadavky na provedení a obecný návrh</li>
                 <li><strong>Zákoník práce §83/§116</strong> — max. směna, příplatky noc / přesčas</li>
                 <li><strong>Katalogy DOKA / PERI / NOE / ULMA</strong> — normy montáže/demontáže (h/m²)</li>
-                <li><strong>OTSKP (17 904 položek)</strong> — katalog prací pro mosty (regex 11 pravidel)</li>
+                <li><strong>OTSKP (17 940 položek)</strong> — katalog prací pro mosty (regex 11 pravidel)</li>
                 <li><strong>KROS</strong> — zaokrouhlení cen: ceil(x/50) × 50</li>
                 <li><strong>PMI PMBOK</strong> — PERT, CPM, RCPSP metodika</li>
               </ul>

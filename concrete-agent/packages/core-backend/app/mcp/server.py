@@ -2,7 +2,7 @@
 STAVAGENT MCP Server v1.0
 
 MCP (Model Context Protocol) server exposing Czech construction tools:
-- OTSKP code lookup (17,904 verified catalog items)
+- OTSKP code lookup (17,940 verified catalog items)
 - URS code search (via Perplexity + URS Matcher)
 - Element classification (22 structural types)
 - Concrete works calculator (7-engine pipeline)
@@ -26,7 +26,7 @@ mcp = FastMCP(
         "České stavební nástroje pro analýzu rozpočtů, kalkulaci betonáže "
         "a vyhledávání v cenových soustavách OTSKP/ÚRS. "
         "AI modely české kataložní kódy neznají — tyto nástroje "
-        "prohledávají reálné databáze 17 904 OTSKP a 39 000+ ÚRS položek."
+        "prohledávají reálné databáze 17 940 OTSKP a 39 000+ ÚRS položek."
     ),
 )
 

@@ -61,7 +61,7 @@
 │ • Persona "rozpočtář" → OTSKP/URS codes, kompletnost dle ZZVZ   │
 │ • Persona "stavbyvedoucí" → pomocné práce, sequence              │
 │ • Persona "projektant" → TZ requirements, normy                  │
-│ • Inputs: katalogy (OTSKP 17904, ÚRS 12K) + historical patterns  │
+│ • Inputs: katalogy (OTSKP 17940, ÚRS 12K) + historical patterns  │
 └───────────────────────────┬─────────────────────────────────────┘
                             │
                             ▼
@@ -180,7 +180,7 @@
 ### Vrstva 3: Classification
 
 **Co dělá:**
-- OTSKP code → element_type mapping (z otskp.db, 17904 entries)
+- OTSKP code → element_type mapping (z otskp.db, 17940 entries)
 - TZ context → element_type detection (keyword scoring)
 - Catalog routing per project_type (veřejná=OTSKP, privát=URS, D&B=oba)
 - Disambiguation rules pro ambiguous cases (zárubní vs pilíř, římsa vs operne_zdi)
@@ -307,7 +307,7 @@
 | **2. Extraction** | XC4 parser | ✅ | 100% | Funguje (testovali na SO-250) |
 | **2. Extraction** | Excel parser | ⚠️ | 85% | KROS OK, RTS edge cases |
 | **2. Extraction** | Vision | ❌ | 0% | Spec exists, never built |
-| **3. Classification** | OTSKP code lookup | ✅ | 100% | otskp.db 17904 entries |
+| **3. Classification** | OTSKP code lookup | ✅ | 100% | otskp.db 17940 entries |
 | **3. Classification** | TZ context classifier | ⚠️ | 70% | Po PR #1145: SO-250 keywords fixed; standalone phrases ještě failující |
 | **3. Classification** | Catalog routing | ⚠️ | 60% | OTSKP routing OK, URS limited (sandbox blocked) |
 | **4. Geometry** | Geometry Calculator UI | ❌ | **0%** | Spec z 24.03.2026, **NEVER DEPLOYED** |

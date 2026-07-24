@@ -142,7 +142,7 @@ Remaining follow-up: header links from the `_SO202_Bridge` / `_KROS_Adapter_Wrap
 - **Physical work is universal; catalogs/codes/prices/formats are local** (Pattern 16). One vocab →
   N adapters = one engine, N markets.
 - **Controlled vocab (~50–100) removes the primary hallucination source** — the LLM never sees
-  17 904 OTSKP / 39 000 ÚRS — making "regex/catalog = 1.0, AI = fallback" *technically enforceable*.
+  17 940 OTSKP / 39 000 ÚRS — making "regex/catalog = 1.0, AI = fallback" *technically enforceable*.
 - **Deterministic Bind** kills the token-overlap mis-binding class (D2).
 - **Three axes, not two:** axis B (workflow) holds the real Definition-of-Done and golden tests
   (SO250/SO202/HK212) and defines the very tool the vocab feeds. Burying it as "done element

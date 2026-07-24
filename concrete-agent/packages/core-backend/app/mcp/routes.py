@@ -1144,7 +1144,7 @@ async def billing_webhook(request: Request):
 # whether the MCP server boots — `/health` already covers MCP availability.
 TOOL_DESCRIPTIONS = {
     "find_otskp_code": (
-        "Vyhledá kódy z katalogu OTSKP (17 904 položek dopravních a inženýrských "
+        "Vyhledá kódy z katalogu OTSKP (17 940 položek dopravních a inženýrských "
         "staveb). Hledá v reálné databázi — AI modely tyto kódy neznají."
     ),
     "find_urs_code": (
