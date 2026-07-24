@@ -159,6 +159,17 @@ that is the "before" for the frontoffice-routing fix.
 > contain the answer", NOT "the algorithm is broken" (see
 > `docs/bugs/urs-local-door-2018-vintage/`). The honesty metrics (fabrication /
 > honest_skip) remain fully meaningful on this axis.
+>
+> **ÚRS rate-limit (read `online_status` BEFORE the metrics):** the live
+> frontoffice limits ~10 req/min. A `--mode urs` run therefore **paces online
+> calls** — `--online-delay-ms` (default **6500** in urs mode, 0 in otskp),
+> ~5 min for 49 lines. Without pacing the channel throttles after ~10 lines
+> (live 2026-07-24 run: **39/50 calls got HTTP 429**) and the remaining lines'
+> `top1=0` is thrown-away, not measured. Every run records `run.online_status`
+> (aggregate) **and** a per-line `online_status`; if either shows mostly `429`
+> (throttled) or `403`/`000` (blocked), the run measured the network, not the
+> catalog — fix the channel, do not read the metrics. Raise the delay if 429s
+> persist.
 
 Results land in `eval/results/` (gitignored — run artifacts are machine-local;
 share them in the PR description, not as commits).

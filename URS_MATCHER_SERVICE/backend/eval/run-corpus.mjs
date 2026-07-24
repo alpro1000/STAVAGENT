@@ -122,24 +122,34 @@ export function parseCorpus(filePath, { mode } = {}) {
 // The pipeline emits `urs_code` on every branch (frontoffice, local, web,
 // OTSKP-supplement, learned); `code` is kept as a fallback only.
 // ---------------------------------------------------------------------------
-export async function runOne(matcher, skipCheck, row, onlineCounter) {
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const tallyStatuses = (arr) => arr.reduce((a, s) => { a[s] = (a[s] || 0) + 1; return a; }, {});
+
+export async function runOne(matcher, skipCheck, row, onlineCounter, statusLog = null) {
   const base = {
     id: row.id,
     category: row.category ?? 'plain',
     expected_code: row.expected_code ?? null,
   };
+  // Per-line online status (statusLog is the shared spy log; slice by length,
+  // same before/after discipline as the online-call counter). Lets a re-run
+  // say PER LINE whether the frontoffice was reached-and-empty (200) or merely
+  // throttled (429) — the aggregate online_status alone cannot: a run where
+  // most lines are 429 has thrown-away, not measured, those lines.
+  const statusBefore = statusLog ? statusLog.length : 0;
+  const perLineStatus = () => (statusLog ? { online_status: tallyStatuses(statusLog.slice(statusBefore)) } : {});
   const skipReason = skipCheck ? skipCheck(row.description) : null;
   if (skipReason) {
     // The matcher's own input pre-filter would drop this line. Tagged so the
     // metrics can separate "matcher said no" from "input filter ate it".
-    return { ...base, input_filtered: skipReason, top_code: null, candidate_codes: [], online_calls: 0 };
+    return { ...base, input_filtered: skipReason, top_code: null, candidate_codes: [], online_calls: 0, ...perLineStatus() };
   }
   const before = onlineCounter ? onlineCounter() : 0;
   let candidates;
   try {
     candidates = await matcher(row.description, row.quantity ?? 0, row.unit ?? 'ks');
   } catch (e) {
-    return { ...base, error: e.message, top_code: null, candidate_codes: [], online_calls: onlineCounter ? onlineCounter() - before : 0 };
+    return { ...base, error: e.message, top_code: null, candidate_codes: [], online_calls: onlineCounter ? onlineCounter() - before : 0, ...perLineStatus() };
   }
   const list = Array.isArray(candidates) ? candidates : [];
   const codeOf = (c) => c?.urs_code ?? c?.code ?? null;
@@ -150,15 +160,22 @@ export async function runOne(matcher, skipCheck, row, onlineCounter) {
     top_confidence: Number.isFinite(top?.confidence) ? top.confidence : null,
     candidate_codes: list.map(codeOf).filter(Boolean),
     online_calls: onlineCounter ? onlineCounter() - before : 0,
+    ...perLineStatus(),
   };
 }
 
-export async function runRows(rows, { matcher, skipCheck = null, onlineCounter = null } = {}) {
+export async function runRows(rows, { matcher, skipCheck = null, onlineCounter = null, onlineStatusLog = null, onlineDelayMs = 0 } = {}) {
   const results = [];
   // Sequential ON PURPOSE: web sources are rate-limited, and per-row
   // online-call attribution against the single shared counter is only correct
   // one row at a time. Do not parallelize.
-  for (const row of rows) {results.push(await runOne(matcher, skipCheck, row, onlineCounter));}
+  // onlineDelayMs paces BETWEEN rows (not after the last): the live frontoffice
+  // limits ~10 req/min, and a back-to-back run throttles after ~10 lines — the
+  // 2026-07-24 live run got 39/50 lines 429'd and its metrics were unusable.
+  for (let i = 0; i < rows.length; i++) {
+    if (i > 0 && onlineDelayMs > 0) {await sleep(onlineDelayMs);}
+    results.push(await runOne(matcher, skipCheck, rows[i], onlineCounter, onlineStatusLog));
+  }
   return results;
 }
 
@@ -280,7 +297,8 @@ async function cliRun(argv) {
   const dbArg = argValue(argv, '--db');
   const outFile = argValue(argv, '--out');
   const allowIncomplete = argv.includes('--allow-incomplete');
-  const positional = argv.filter((x, i) => !x.startsWith('--') && argv[i - 1] !== '--mode' && argv[i - 1] !== '--db' && argv[i - 1] !== '--out');
+  const valueFlags = ['--mode', '--db', '--out', '--online-delay-ms'];
+  const positional = argv.filter((x, i) => !x.startsWith('--') && !valueFlags.includes(argv[i - 1]));
   const corpusPath = positional[0];
   if (!corpusPath || !mode || !['otskp', 'urs'].includes(mode) || !dbArg) {usage();}
 
@@ -320,6 +338,7 @@ async function cliRun(argv) {
   let resolved = 0;
   let attempts = 0;
   const statusCounts = {};
+  const statusLog = []; // ordered per-call statuses, sliced per row for online_status
   const origFetch = globalThis.fetch;
   globalThis.fetch = (input, ...rest) => {
     let host = '';
@@ -335,10 +354,19 @@ async function cliRun(argv) {
         resolved += 1;
         const s = String(res?.status ?? 'unknown');
         statusCounts[s] = (statusCounts[s] || 0) + 1;
+        statusLog.push(s);
       }, () => {});
     }
     return p;
   };
+
+  // Pace online calls between rows (default 6500 ms in urs mode — the live
+  // frontoffice ~10 req/min limit; 0 in otskp mode which is offline). A
+  // back-to-back urs run throttles after ~10 lines and measures nothing.
+  const delayArg = argValue(argv, '--online-delay-ms');
+  const onlineDelayMs = delayArg != null ? Number(delayArg)
+    : (process.env.EVAL_ONLINE_DELAY_MS != null ? Number(process.env.EVAL_ONLINE_DELAY_MS)
+      : (mode === 'urs' ? 6500 : 0));
 
   const { matchUrsItems, shouldSkipText } = await import('../src/services/ursMatcher.js');
 
@@ -351,10 +379,15 @@ async function cliRun(argv) {
     throw new Error(`eval DB ${dbPath} holds ${count} urs_items (< floor ${floor}) — this is not a real catalog (auto-seed is 36 toy items). Build it via the importer; see eval/README.md.`);
   }
 
+  if (onlineDelayMs > 0) {
+    console.error(`[run-corpus] pacing online calls: ${onlineDelayMs} ms between ${rows.length} rows (~${Math.round(onlineDelayMs * (rows.length - 1) / 1000)}s)`);
+  }
   const results = await runRows(rows, {
     matcher: matchUrsItems,
     skipCheck: shouldSkipText,
     onlineCounter: () => resolved,
+    onlineStatusLog: statusLog,
+    onlineDelayMs,
   });
 
   const out = {
@@ -374,6 +407,7 @@ async function cliRun(argv) {
       urs_catalog_mode: process.env.URS_CATALOG_MODE || '(default: local)',
       urs_learning: 'disabled',
       urs_local_conf_floor: process.env.URS_LOCAL_CONF_FLOOR || '(default: MEDIUM 0.6)',
+      online_delay_ms: onlineDelayMs,
       db: { path: dbPath, urs_items_count: count },
       online_attempts: attempts,
       online_status: statusCounts,
