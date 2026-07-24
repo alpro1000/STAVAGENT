@@ -1,7 +1,7 @@
 """
 MCP Tool: find_otskp_code
 
-Searches the OTSKP catalog (17,904 verified items from Czech pricing system
+Searches the OTSKP catalog (17,940 verified items from Czech pricing system
 for transport and engineering structures). Uses the existing OTSKPDatabase
 from app.pricing.otskp_engine and the XML-parsed in-memory catalog.
 

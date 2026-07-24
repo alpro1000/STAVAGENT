@@ -30,7 +30,7 @@
 - 25 formwork systems (DOKA 6, PERI 13, ULMA 3, NOE 1, Místní 1)
 - 23 element types (9 bridge + 13 building + 1 transport)
 - 921+ engineering tests (после Gate 2 — 1036)
-- OTSKP database 17,904 položek
+- OTSKP database 17,940 položek
 - Pile engine: Ø600/900/1200/1500 × 4 geologies × 3 methods
 
 **Точность:** ±10–15% (orientational, not engineering substitute). Финальное решение остаётся за přípravář / statik.

@@ -427,7 +427,7 @@ async function matchUrsItemsPerplexity(text) {
 }
 
 /**
- * Match URS items using OTSKP catalog (17,904 items, local XML)
+ * Match URS items using OTSKP catalog (17,940 items, local XML)
  * Used as supplement when local DB returns weak results
  * @private
  */

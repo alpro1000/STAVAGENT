@@ -1320,7 +1320,7 @@ Pilot URS WebSearch verified 13 codes selectively, found 6 wrong leafs (family O
 
 WebSearch is the **fallback**, not the first resort. Explicit priority when verifying/finding a catalog code:
 
-1. **Catalog API / MCP tool** (authoritative) — `find_urs_code` / `find_otskp_code` MCP tools query the real 17 904-code OTSKP + 39 000+-code ÚRS databases. A hit here returns the actual catalog leaf + popis — ground truth.
+1. **Catalog API / MCP tool** (authoritative) — `find_urs_code` / `find_otskp_code` MCP tools query the real 17 940-code OTSKP + 39 000+-code ÚRS databases. A hit here returns the actual catalog leaf + popis — ground truth.
 2. **WebSearch** (snippet inference) — only when the API is blocked/unavailable or returns nothing. Returns chapter-level context (e.g. cs-urs.cz `800-764 Klempířské`) confirming *family*, rarely the specific 9-digit leaf.
 3. **Blank + MANUAL LOOKUP flag** (Pattern 26) — when neither yields a defensible code.
 

@@ -90,7 +90,7 @@ User rozhodne (s confidence = 0.99 — human override)
 ```
 concrete-agent/packages/core-backend/app/knowledge_base/
 ├── B0_sources/           # Original PDFs, scans
-├── B1_otskp/             # OTSKP price catalog (17 904 položek)
+├── B1_otskp/             # OTSKP price catalog (17 940 položek)
 ├── B2_csn_en_206/        # ČSN EN 206 (concrete classes)
 ├── B3_current_prices/    # Live market prices (vendor cenníky)
 ├── B4_productivity/      # Productivity rates (rebar, formwork, pour)

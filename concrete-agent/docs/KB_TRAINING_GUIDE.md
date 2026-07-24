@@ -83,7 +83,7 @@ app/knowledge_base/
     }
   ],
   "metadata": {
-    "total_codes": 17904,
+    "total_codes": 17940,
     "last_updated": "2025-11-16",
     "source": "KROS4 Catalog"
   }

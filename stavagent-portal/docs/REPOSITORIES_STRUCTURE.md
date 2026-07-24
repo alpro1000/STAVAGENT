@@ -28,7 +28,7 @@
   - Frontend (React + TypeScript)
   - Auth система
   - Admin панель
-  - OTSKP справочник (17,904 кодов)
+  - OTSKP справочник (17,940 кодов)
   - MonolithProjects API (киоск Monolit)
   - Документы (CORE integration уже частично есть)
 ```

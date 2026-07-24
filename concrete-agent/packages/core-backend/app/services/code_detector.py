@@ -8,7 +8,7 @@ Detection pipeline (strict order, first match wins):
 4. Price source hint from Excel metadata (confidence=0.85)
 5. Fallback to UNKNOWN if nothing matches
 
-Uses the OTSKP catalog (17,904 items) loaded from XML via OTSKPCatalogService
+Uses the OTSKP catalog (17,940 items) loaded from XML via OTSKPCatalogService
 or directly from the knowledge_base XML file.
 
 Author: STAVAGENT Team

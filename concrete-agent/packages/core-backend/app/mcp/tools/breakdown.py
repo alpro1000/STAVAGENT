@@ -521,7 +521,7 @@ async def create_work_breakdown(
 
     Pipeline: element classification (23 types) → work decomposition (formwork
     assembly+disassembly, rebar, concrete, curing, prestress...) → OTSKP/ÚRS
-    code matching from the real database of 17,904 OTSKP + 39,000 ÚRS items.
+    code matching from the real database of 17,940 OTSKP + 39,000 ÚRS items.
 
     AI models CANNOT reliably assign Czech catalog codes — this tool uses
     deterministic database lookup with verified prices.
@@ -576,7 +576,7 @@ async def create_work_breakdown(
             - 'komunikace': road/communication infrastructure
 
         catalog: Preferred pricing catalog for code matching.
-            - 'otskp': OTSKP D6 catalog (17,904 items, transport structures)
+            - 'otskp': OTSKP D6 catalog (17,940 items, transport structures)
             - 'urs': ÚRS catalog (39,000+ items, building construction)
             - 'both': search both catalogs (slower, more complete)
             - 'none': work-first alias — forces a code-less list (no matching)

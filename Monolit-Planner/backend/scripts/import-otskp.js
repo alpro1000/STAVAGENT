@@ -3,7 +3,7 @@
  * Usage: node scripts/import-otskp.js
  *
  * This script:
- * 1. Reads the OTSKP XML catalog file (17,904 Czech construction codes)
+ * 1. Reads the OTSKP XML catalog file (17,940 Czech construction codes)
  * 2. Parses each <Polozka> element extracting code, name, unit, price, specification
  * 3. Clears existing OTSKP codes from database
  * 4. Inserts all codes as a transaction (all-or-nothing)

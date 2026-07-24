@@ -144,7 +144,7 @@ Therefore:
 | Stage **4 Decompose** | emits an **axis-A vocabulary code** + params. The LLM chooses from a controlled vocabulary (~50–100 codes). |
 | Stage **5 Bind** | **deterministic adapter**: `(vocabulary_code, params) → catalog candidates`. |
 
-The LLM **never sees** the 17 904 OTSKP / ~39 000 ÚRS entries. This is what makes the confidence ladder (`catalog/regex = 1.0`, `AI = fallback`) technically enforceable rather than merely declared.
+The LLM **never sees** the 17 940 OTSKP / ~39 000 ÚRS entries. This is what makes the confidence ladder (`catalog/regex = 1.0`, `AI = fallback`) technically enforceable rather than merely declared.
 
 **Dependency:** the axis-A vocabulary is therefore a **blocking prerequisite** for stage 4 output, not a nice-to-have. See §11.
 

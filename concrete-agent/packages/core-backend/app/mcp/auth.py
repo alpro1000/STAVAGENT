@@ -64,6 +64,11 @@ TOOL_COSTS = {
     "extract_tz_fields": 10,  # stage-1 TZ field extraction (mirrors analyze)
     "validate_drawing_element": 0,  # deterministic grounding gate (Part B) — free
     "calculate_railway_works": 10,  # whole railway section decomposition (rail sibling of calculate_from_passport)
+    # One call runs build_bridge_passport (15) + calculate_from_passport (10) +
+    # create_work_breakdown (20) + export_soupis (10) = 55 à la carte. Priced
+    # below the sum: the orchestrated run is the path we want callers on, and
+    # it does the composition (and the replay manifest) for them.
+    "run_document_to_soupis": 40,
 }
 
 FREE_CREDITS = 200

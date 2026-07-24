@@ -19,7 +19,7 @@ Monolit-Planner is a **Node.js + React full-stack application** serving as a spe
 - ⏱️ **Estimate project duration** in months and weeks
 - 🔄 **Toggle work mode**: 30 days/month (continuous) or 22 days/month (working days only)
 - 📤 **Export to XLSX/CSV** for KROS4 integration
-- 🔍 **17,904 OTSKP codes**: Czech construction catalog with accent-insensitive search
+- 🔍 **17,940 OTSKP codes**: Czech construction catalog with accent-insensitive search
 - 📱 **Responsive design**: Desktop, tablet, and mobile
 
 **Technologies**:
@@ -88,7 +88,7 @@ npm run dev
    - **Toggle**: 30 days (continuous) or 22 days (working days)
 
 4. **OTSKP Integration** ⭐ NEW
-   - **17,904 construction codes** from Czech OTSKP catalog
+   - **17,940 construction codes** from Czech OTSKP catalog
    - **Accent-insensitive search** (v1.2.0): Find "ZÁKLADY" by searching "zaklady" or "27 211" by searching "27211"
    - **Autocomplete search** by code or name with flexible matching
    - **Automatic code lookup** (v1.2.0): When parsing XLSX estimates, system automatically finds matching OTSKP codes by work name and type
@@ -224,7 +224,7 @@ npm run dev
 
 5. **Database Enhancements**
    - New `search_name` field in `otskp_codes` table with pre-computed normalized text
-   - Automatic migration for 17,904 existing codes
+   - Automatic migration for 17,940 existing codes
    - New index `idx_otskp_search_name` for O(log n) search performance
    - **Files**: `backend/src/db/init.js`, `backend/scripts/import-otskp.js`
 
@@ -242,16 +242,16 @@ npm run dev
 | **SQLite Case-Sensitivity** | "základy" → 0 results, "ZÁKLADY" → 71 results | Added `UPPER()` to search queries |
 | **Route Ordering** | `/count` endpoint unreachable (caught by `/:code`) | Reordered: /search → /count → /stats/summary → /:code → /import |
 | **Authorization Bypass** | Hardcoded fallback token "default-token-change-this" | Fail-closed: return 401 if `OTSKP_IMPORT_TOKEN` env var missing |
-| **Production Code Gap** | Render had 0 OTSKP codes, local dev had 17,904 | Created secure import endpoint requiring token auth |
+| **Production Code Gap** | Render had 0 OTSKP codes, local dev had 17,940 | Created secure import endpoint requiring token auth |
 
 ### ✅ What Works
 
-- ✅ Accent-insensitive search works for all 17,904 OTSKP codes
+- ✅ Accent-insensitive search works for all 17,940 OTSKP codes
 - ✅ Automatic code lookup finds matches by work name with type filtering
 - ✅ Prefabricated elements properly excluded from estimate parsing
 - ✅ Tablet responsive design verified on iPad/Android tablet viewport sizes
 - ✅ Database migration runs automatically on first start
-- ✅ Import endpoint successfully imports all 17,904 codes with proper validation
+- ✅ Import endpoint successfully imports all 17,940 codes with proper validation
 - ✅ Security: No hardcoded secrets, fail-closed authorization
 
 ### ⚠️ Known Issues & Limitations

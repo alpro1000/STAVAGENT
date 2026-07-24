@@ -51,7 +51,7 @@ Vision НЕ блокер autonomy — его делает хост. Блокер
 | Способность | Status | Confidence |
 |---|---|---|
 | Parse rozpočet/soupis (xlsx/pdf razítko) | ✅ production | regex=1.0 |
-| OTSKP code match (DB 17904) | ✅ production | DB=1.0 |
+| OTSKP code match (DB 17940) | ✅ production | DB=1.0 |
 | 7-engine calculator (manual params) | ✅ production | deterministic |
 | Schema validation (Pydantic) | ✅ production | 1.0 |
 | Concrete grade regex, element classification | ✅ production | regex=1.0 |
