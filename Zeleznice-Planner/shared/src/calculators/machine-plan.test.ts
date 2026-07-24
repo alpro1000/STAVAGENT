@@ -86,20 +86,40 @@ describe('omezení strojů (acceptance 9)', () => {
 });
 
 describe('honest-blank: chybějící norma = NEPOČÍTÁNO (AI odhad zakázán)', () => {
-  it('pokládka roštu nemá výkon v KB → doba NEPOČÍTÁNA s důvodem', () => {
+  it('úprava lože (pluh SSP) nemá výkon v KB → doba NEPOČÍTÁNA s důvodem', () => {
     const p = plan();
-    const row = p.machine_deployment.find(r => r.phase_id === 'pokladka_rostu')!;
+    const row = p.machine_deployment.find(r => r.phase_id === 'doplneni_loze')!;
     expect(row.days.status).toBe('nepocitano');
     expect(row.days.reason_cs).toContain('není v KB');
   });
 
-  it('user norm doplní chybějící normu pokládky (m/h)', () => {
+  it('user norm doplní chybějící normu úpravy lože (m/h)', () => {
     const p = plan({
-      user_machine_norms: [{ machine_id: 'pokladac_kolejovych_poli', rate_value: 50, rate_unit: 'm/h' }],
+      user_machine_norms: [{ machine_id: 'pluh_uprava_loze', rate_value: 500, rate_unit: 'm/h' }],
     });
-    const row = p.machine_deployment.find(r => r.phase_id === 'pokladka_rostu')!;
-    expect(row.hours.value).toBeCloseTo(20, 2);
+    const row = p.machine_deployment.find(r => r.phase_id === 'doplneni_loze')!;
+    expect(row.hours.value).toBeCloseTo(2, 2);
     expect(row.hours.confidence).toBe(0.99);
+  });
+});
+
+describe('S8/3 technologický list — první předpisová norma (conf 0.85)', () => {
+  it('pokládka roštu auto-volí SVM 1000 CZ: 1000 m / 400 m/h = 2.5 h, osádka 12', () => {
+    const p = plan();
+    const row = p.machine_deployment.find(r => r.phase_id === 'pokladka_rostu')!;
+    expect(row.machine?.machine_id).toBe('svm_1000_cz');
+    expect(row.hours.value).toBeCloseTo(2.5, 2);
+    expect(row.machine?.rate_confidence).toBe(0.85);
+    expect(row.machine?.crew_size).toBe(12);
+    const crew = p.crews.machine_crews.find(c => c.machine_id === 'svm_1000_cz');
+    expect(crew?.crew_size).toBe(12);
+  });
+
+  it('poloměr úseku pod 300 m → ⚠️ omezení SVM z přílohy III/15', () => {
+    const p = plan({ curve_min_radius_m: 250 });
+    expect(
+      p.warnings.some(w => w.includes('Obnovovací stroj SVM 1000 CZ') && w.includes('300')),
+    ).toBe(true);
   });
 });
 
