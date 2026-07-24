@@ -92,12 +92,12 @@ async function runMigrations(db) {
 
     // Migration 1: Add portal_project_id to jobs table (for unified Portal linking)
     try {
-      const columns = await db.all("PRAGMA table_info(jobs)");
+      const columns = await db.all('PRAGMA table_info(jobs)');
       const hasPortalProjectId = columns.some(col => col.name === 'portal_project_id');
 
       if (!hasPortalProjectId) {
-        await db.exec("ALTER TABLE jobs ADD COLUMN portal_project_id TEXT");
-        await db.exec("CREATE INDEX IF NOT EXISTS idx_jobs_portal_project ON jobs(portal_project_id)");
+        await db.exec('ALTER TABLE jobs ADD COLUMN portal_project_id TEXT');
+        await db.exec('CREATE INDEX IF NOT EXISTS idx_jobs_portal_project ON jobs(portal_project_id)');
         logger.info('[DB] ✓ Migration 1: Added portal_project_id to jobs table');
       } else {
         logger.info('[DB] ✓ Migration 1: portal_project_id already exists');
@@ -194,7 +194,7 @@ async function runMigrations(db) {
     // stay NULL (COALESCE falls back to the legacy ASCII comparison) until
     // an importer backfills them.
     try {
-      const cols = await db.all("PRAGMA table_info(urs_items)");
+      const cols = await db.all('PRAGMA table_info(urs_items)');
       if (!cols.some(c => c.name === 'search_name')) {
         await db.exec('ALTER TABLE urs_items ADD COLUMN search_name TEXT');
         logger.info('[DB] ✓ Migration 3: Added search_name to urs_items');
@@ -216,6 +216,21 @@ async function runMigrations(db) {
       }
     } catch (error) {
       logger.warn(`[DB] Migration 3 error: ${error.message}`);
+    }
+
+    // Migration 4: source column (provenance of each urs_items row; the
+    // 2018-vintage quarantine filters on it — see db/catalogVintage.js).
+    // Importers ALTER-add it, but a DB born from schema.sql alone would make
+    // the quarantined SQL error out and the local door die silently (same
+    // landmine class as search_name / Migration 3).
+    try {
+      const cols4 = await db.all('PRAGMA table_info(urs_items)');
+      if (!cols4.some(c => c.name === 'source')) {
+        await db.exec('ALTER TABLE urs_items ADD COLUMN source TEXT');
+        logger.info('[DB] ✓ Migration 4: Added source to urs_items');
+      }
+    } catch (error) {
+      logger.warn(`[DB] Migration 4 error: ${error.message}`);
     }
 
     logger.info('[DB] Migrations completed');

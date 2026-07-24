@@ -12,6 +12,7 @@
 import { getDatabase } from '../db/init.js';
 import { logger } from '../utils/logger.js';
 import crypto from 'crypto';
+import { vintageQuarantineSql } from '../db/catalogVintage.js';
 
 /**
  * Compute context hash from project context
@@ -540,7 +541,7 @@ export async function searchLocalCatalog(normalizedText, originalText = '', limi
     const query = `
       SELECT urs_code, urs_name, unit, description
       FROM urs_items
-      WHERE ${conditions}
+      WHERE (${conditions})${vintageQuarantineSql()}
       LIMIT ?
     `;
 

@@ -11,6 +11,7 @@ import crypto from 'crypto';
 import { getDatabase } from '../db/init.js';
 import { logger } from '../utils/logger.js';
 import { normalizeText } from '../utils/textNormalizer.js';
+import { vintageQuarantineSql } from '../db/catalogVintage.js';
 import { calculateSimilarity } from '../utils/similarity.js';
 
 const CONFIDENCE_THRESHOLDS = {
@@ -146,13 +147,13 @@ async function searchLocalCatalog(normalizedTextCs, sectionCodeHint = null) {
     let exactMatch;
     if (sectionCodeHint) {
       exactMatch = await db.get(
-        'SELECT * FROM urs_items WHERE LOWER(urs_name) = ? AND section_code = ? LIMIT 1',
+        `SELECT * FROM urs_items WHERE LOWER(urs_name) = ? AND section_code = ?${vintageQuarantineSql()} LIMIT 1`,
         [normalizedTextCs.toLowerCase(), sectionCodeHint]
       );
     }
     if (!exactMatch) {
       exactMatch = await db.get(
-        'SELECT * FROM urs_items WHERE LOWER(urs_name) = ? LIMIT 1',
+        `SELECT * FROM urs_items WHERE LOWER(urs_name) = ?${vintageQuarantineSql()} LIMIT 1`,
         [normalizedTextCs.toLowerCase()]
       );
     }
@@ -176,7 +177,7 @@ async function searchLocalCatalog(normalizedTextCs, sectionCodeHint = null) {
       candidates = await db.all(
         `SELECT * FROM urs_items
          WHERE section_code = ?
-         AND (urs_name LIKE ? OR urs_name LIKE ? OR description LIKE ?)
+         AND (urs_name LIKE ? OR urs_name LIKE ? OR description LIKE ?)${vintageQuarantineSql()}
          LIMIT 15`,
         [sectionCodeHint, `%${searchTerms[0]}%`, `%${searchTerms[searchTerms.length - 1]}%`, `%${searchTerms[0]}%`]
       );
@@ -186,7 +187,7 @@ async function searchLocalCatalog(normalizedTextCs, sectionCodeHint = null) {
       // Fallback: search without section hint
       candidates = await db.all(
         `SELECT * FROM urs_items
-         WHERE urs_name LIKE ? OR urs_name LIKE ? OR description LIKE ?
+         WHERE (urs_name LIKE ? OR urs_name LIKE ? OR description LIKE ?)${vintageQuarantineSql()}
          LIMIT 15`,
         [`%${searchTerms[0]}%`, `%${searchTerms[searchTerms.length - 1]}%`, `%${searchTerms[0]}%`]
       );

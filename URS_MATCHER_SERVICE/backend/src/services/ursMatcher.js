@@ -14,6 +14,7 @@ import { searchCatalog } from './frontofficeClient.js';
 import { lookupLearnedMapping, learnMapping } from './concreteAgentKB.js';
 import otskpCatalogService from './otskpCatalogService.js';
 import { extractIntent } from './intentExtractor.js';
+import { vintageQuarantineSql } from '../db/catalogVintage.js';
 
 const CONFIDENCE_THRESHOLDS = {
   EXACT: 0.95,
@@ -217,7 +218,7 @@ async function matchUrsItemsLocal(text) {
         const phrases = intent.search_phrases.slice(0, 3);
         const condP = phrases.map(() => `(${SEARCH_EXPR} LIKE ?)`);
         items = await db.all(
-          `SELECT * FROM urs_items WHERE ${condP.join(' OR ')} LIMIT 200`,
+          `SELECT * FROM urs_items WHERE (${condP.join(' OR ')})${vintageQuarantineSql()} LIMIT 200`,
           phrases.map(p => `%${p}%`)
         );
       }
@@ -230,7 +231,7 @@ async function matchUrsItemsLocal(text) {
 
         const conditions = searchWords.map(() => `(${SEARCH_EXPR} LIKE ?)`);
         const wordItems = await db.all(
-          `SELECT * FROM urs_items WHERE ${conditions.join(' OR ')} LIMIT 500`,
+          `SELECT * FROM urs_items WHERE (${conditions.join(' OR ')})${vintageQuarantineSql()} LIMIT 500`,
           searchWords.map(w => `%${w}%`)
         );
         const seen = new Set(items.map(i => i.urs_code));
@@ -245,7 +246,7 @@ async function matchUrsItemsLocal(text) {
         const cond2 = shortWords.map(() => `${SEARCH_EXPR} LIKE ?`);
         const params2 = shortWords.map(w => `%${w}%`);
         const extra = await db.all(
-          `SELECT * FROM urs_items WHERE ${cond2.join(' OR ')} LIMIT 200`,
+          `SELECT * FROM urs_items WHERE (${cond2.join(' OR ')})${vintageQuarantineSql()} LIMIT 200`,
           params2
         );
         const seen = new Set(items.map(i => i.urs_code));
@@ -429,11 +430,11 @@ export async function generateRelatedItems(items) {
     if (sectionCodes.length > 0) {
       const placeholders = sectionCodes.map(() => '?').join(',');
       allCandidates = await db.all(
-        `SELECT urs_code, urs_name FROM urs_items WHERE section_code IN (${placeholders})`,
+        `SELECT urs_code, urs_name FROM urs_items WHERE section_code IN (${placeholders})${vintageQuarantineSql()}`,
         sectionCodes
       );
     } else {
-      allCandidates = await db.all('SELECT urs_code, urs_name FROM urs_items LIMIT 5000');
+      allCandidates = await db.all(`SELECT urs_code, urs_name FROM urs_items WHERE 1=1${vintageQuarantineSql()} LIMIT 5000`);
     }
 
     // Apply tech-rules
